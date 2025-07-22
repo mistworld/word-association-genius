@@ -4,7 +4,1133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>연상천재 - IQ 140 연상퀴즈</title>
+    
+    <!-- 🚀 PWA 메타태그 -->
+    <meta name="description" content="당신은 천재인가요? 시냅스가 연결되는 짜릿한 쾌감을 느껴보세요!">
+    <meta name="keywords" content="연상게임, 퀴즈, IQ테스트, 브레인게임, 두뇌게임">
+    <meta name="author" content="연상천재">
+    <meta name="theme-color" content="#7e22ce">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="연상천재">
+    <meta name="msapplication-TileColor" content="#7e22ce">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- 🔗 PWA 매니페스트 -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- 📱 아이콘들 -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+    
+    <!-- 🎨 스플래시 화면 (iOS) -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-startup-image" href="icon-512.png">
     <style>
+        /* 🚀 완전 자동 화면 맞춤 시스템 */
+        :root {
+            /* 화면 크기에 따른 동적 폰트 크기 */
+            --base-font: clamp(14px, 4vw, 20px);
+            --small-font: clamp(12px, 3vw, 16px);
+            --medium-font: clamp(16px, 4.5vw, 24px);
+            --large-font: clamp(20px, 6vw, 36px);
+            --xl-font: clamp(24px, 8vw, 48px);
+            
+            /* 동적 여백 및 패딩 */
+            --base-padding: clamp(10px, 3vw, 20px);
+            --card-padding: clamp(15px, 4vw, 30px);
+            --button-padding: clamp(8px, 2vw, 15px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #7e22ce 50%, #4c1d95 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* 전체 컨테이너 자동 조정 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--base-padding);
+            max-width: 100vw;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* 헤더 자동 조정 */
+        .header {
+            background: white;
+            border-radius: 24px;
+            padding: var(--card-padding);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: var(--base-padding);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--base-padding);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: clamp(50px, 15vw, 60px);
+            height: clamp(50px, 15vw, 60px);
+            background: #7e22ce;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(24px, 8vw, 30px);
+        }
+
+        .logo h1 {
+            font-size: var(--xl-font);
+            color: #333;
+        }
+
+        .logo p {
+            font-size: var(--medium-font);
+            color: #666;
+        }
+
+        .stats {
+            display: flex;
+            align-items: center;
+            gap: var(--base-padding);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* 키 카운트 자동 조정 */
+        .key-count {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fef3c7;
+            padding: var(--button-padding) calc(var(--button-padding) * 1.5);
+            border-radius: 30px;
+            font-size: var(--medium-font);
+            font-weight: bold;
+            color: #d97706;
+        }
+
+        .round-info {
+            text-align: center;
+        }
+
+        .round-info .count {
+            font-size: var(--large-font);
+            font-weight: bold;
+            color: #333;
+        }
+
+        .round-info .label {
+            font-size: var(--medium-font);
+            color: #666;
+        }
+
+        /* 🎵 음악 제어 패널 자동 조정 */
+        .music-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: #f8fafc;
+            padding: clamp(8px, 2vw, 12px);
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+            min-width: clamp(100px, 25vw, 140px);
+        }
+
+        .music-btn-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .music-btn {
+            padding: clamp(4px, 1.5vw, 6px) clamp(6px, 2vw, 10px);
+            border: none;
+            border-radius: 8px;
+            font-size: clamp(9px, 2.5vw, 11px);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+            min-width: clamp(40px, 12vw, 60px);
+        }
+
+        .music-btn.play {
+            background: #10b981;
+            color: white;
+        }
+
+        .music-btn.pause {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .music-btn.mute {
+            background: #6b7280;
+            color: white;
+        }
+
+        .music-btn.unmute {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .music-btn.switch {
+            background: #7e22ce;
+            color: white;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .music-btn:disabled {
+            background: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .music-status {
+            font-size: clamp(8px, 2vw, 9px);
+            color: #64748b;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* 🎵 음악 시작 오버레이 자동 조정 */
+        .music-start-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .music-start-card {
+            background: white;
+            border-radius: 24px;
+            padding: var(--card-padding);
+            text-align: center;
+            width: clamp(280px, 90vw, 500px);
+            margin: var(--base-padding);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .music-start-icon {
+            font-size: clamp(60px, 20vw, 80px);
+            margin-bottom: var(--base-padding);
+            animation: bounce 2s infinite;
+        }
+
+        .music-start-title {
+            font-size: var(--large-font);
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .music-start-text {
+            font-size: var(--medium-font);
+            margin-bottom: var(--card-padding);
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .music-start-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .music-start-btn {
+            padding: var(--button-padding);
+            border: none;
+            border-radius: 16px;
+            font-size: var(--medium-font);
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .music-start-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .music-start-btn.with-music {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .music-start-btn.without-music {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 24px;
+            padding: var(--card-padding);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .round-select {
+            text-align: center;
+        }
+
+        .round-select h2 {
+            font-size: var(--xl-font);
+            margin-bottom: var(--card-padding);
+            color: #333;
+        }
+
+        /* 라운드 그리드 완전 자동 조정 */
+        .round-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(45px, 12vw, 70px), 1fr));
+            gap: clamp(6px, 2vw, 12px);
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: var(--base-padding);
+        }
+
+        .round-button {
+            width: clamp(45px, 12vw, 70px);
+            height: clamp(45px, 12vw, 70px);
+            border: none;
+            border-radius: clamp(8px, 3vw, 16px);
+            font-size: clamp(14px, 4vw, 20px);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .round-button:hover {
+            transform: scale(1.1);
+        }
+
+        .round-button.completed {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .round-button.playable {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .round-button.locked {
+            background: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .icon {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: clamp(20px, 6vw, 24px);
+            height: clamp(20px, 6vw, 24px);
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(12px, 4vw, 16px);
+        }
+
+        /* 로딩 화면 */
+        .loading {
+            text-align: center;
+            padding: clamp(40px, 15vw, 60px);
+        }
+
+        .loading-spinner {
+            width: clamp(40px, 12vw, 50px);
+            height: clamp(40px, 12vw, 50px);
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #7e22ce;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: var(--medium-font);
+            color: #666;
+        }
+
+        /* 오류 화면 */
+        .error {
+            text-align: center;
+            padding: clamp(40px, 15vw, 60px);
+            color: #ef4444;
+        }
+
+        .error-icon {
+            font-size: clamp(40px, 15vw, 60px);
+            margin-bottom: var(--base-padding);
+        }
+
+        .error-title {
+            font-size: var(--large-font);
+            margin-bottom: 15px;
+        }
+
+        .error-text {
+            font-size: var(--medium-font);
+            margin-bottom: var(--base-padding);
+        }
+
+        .retry-button {
+            background: #7e22ce;
+            color: white;
+            border: none;
+            padding: var(--button-padding) var(--card-padding);
+            border-radius: 12px;
+            font-size: var(--medium-font);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .retry-button:hover {
+            background: #6b21a8;
+        }
+
+        /* 게임플레이 스타일 */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--base-padding);
+            flex-wrap: wrap;
+            gap: var(--base-padding);
+        }
+
+        .game-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .home-button {
+            width: clamp(40px, 12vw, 50px);
+            height: clamp(40px, 12vw, 50px);
+            background: #f3f4f6;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: var(--medium-font);
+            transition: background 0.2s;
+        }
+
+        .home-button:hover {
+            background: #e5e7eb;
+        }
+
+        .round-title {
+            font-size: var(--large-font);
+            font-weight: bold;
+            color: #333;
+        }
+
+        .problem-number {
+            font-size: var(--medium-font);
+            color: #666;
+        }
+
+        .file-info {
+            font-size: var(--small-font);
+            color: #888;
+            font-style: italic;
+        }
+
+        /* 진행 도트 자동 조정 */
+        .progress-dots {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: clamp(2px, 1vw, 4px);
+            background: #f3f4f6;
+            padding: clamp(4px, 1.5vw, 8px);
+            border-radius: 12px;
+        }
+
+        .dot {
+            width: clamp(8px, 3vw, 12px);
+            height: clamp(8px, 3vw, 12px);
+            border-radius: 50%;
+            background: #d1d5db;
+        }
+
+        .dot.completed {
+            background: #10b981;
+        }
+
+        .dot.current {
+            background: #7e22ce;
+        }
+
+        .genius-timer {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: var(--base-padding);
+            color: white;
+        }
+
+        .genius-timer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .genius-timer-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: var(--medium-font);
+            font-weight: bold;
+        }
+
+        .genius-timer-count {
+            font-size: var(--large-font);
+            font-weight: bold;
+        }
+
+        .timer-bar {
+            height: 12px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .timer-progress {
+            height: 100%;
+            background: white;
+            transition: width 1s linear;
+        }
+
+        /* 게임 콘텐츠 자동 조정 */
+        .game-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--base-padding);
+        }
+
+        /* 힌트 섹션 자동 조정 */
+        .hints-section h2 {
+            font-size: var(--large-font);
+            margin-bottom: var(--base-padding);
+        }
+
+        .hint-item {
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .hint-content {
+            background: #f9fafb;
+            padding: 16px;
+        }
+
+        .hint-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .hint-number {
+            width: clamp(30px, 8vw, 40px);
+            height: clamp(30px, 8vw, 40px);
+            background: #7e22ce;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--medium-font);
+            font-weight: bold;
+        }
+
+        .hint-text {
+            font-size: var(--medium-font);
+            font-weight: bold;
+            color: #333;
+        }
+
+        .description-button {
+            background: #dbeafe;
+            border: none;
+            padding: var(--button-padding) var(--medium-font);
+            border-radius: 30px;
+            font-size: var(--medium-font);
+            color: #1e40af;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .description-button:hover {
+            background: #bfdbfe;
+        }
+
+        .description {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 10px;
+            font-size: var(--medium-font);
+            line-height: 1.6;
+            color: #4b5563;
+        }
+
+        .locked-hint {
+            padding: var(--medium-font);
+            background: #f3f4f6;
+            text-align: center;
+        }
+
+        .locked-hint-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-size: var(--medium-font);
+            color: #6b7280;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .answer-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* 정보 박스 자동 조정 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: clamp(8px, 2vw, 15px);
+        }
+
+        .info-box {
+            background: #fef3c7;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .info-box.category {
+            background: #d1fae5;
+        }
+
+        .info-box.chosung {
+            background: #fed7aa;
+        }
+
+        .info-label {
+            font-size: var(--small-font);
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: var(--medium-font);
+            font-weight: bold;
+            color: #333;
+        }
+
+        .chosung-button {
+            background: none;
+            border: none;
+            color: #1e40af;
+            font-size: var(--medium-font);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .help-mode {
+            background: #dbeafe;
+            border: 2px solid #60a5fa;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .help-icon {
+            width: clamp(30px, 10vw, 40px);
+            height: clamp(30px, 10vw, 40px);
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--medium-font);
+        }
+
+        .help-text {
+            font-size: var(--medium-font);
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        .help-sub {
+            font-size: var(--medium-font);
+            color: #3b82f6;
+        }
+
+        /* 답변 입력창 자동 조정 */
+        .answer-input {
+            width: 100%;
+            padding: var(--button-padding);
+            font-size: var(--medium-font);
+            font-weight: bold;
+            border: 2px solid #9ca3af;
+            border-radius: 16px;
+            background: white;
+            box-sizing: border-box;
+        }
+
+        .correct-answer {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 24px;
+            padding: var(--medium-font);
+            text-align: center;
+            color: white;
+        }
+
+        .correct-icon {
+            font-size: clamp(60px, 20vw, 80px);
+            margin-bottom: 15px;
+        }
+
+        .correct-title {
+            font-size: var(--xl-font);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .correct-text {
+            font-size: var(--large-font);
+            color: #d1fae5;
+            margin-bottom: 10px;
+        }
+
+        .correct-category {
+            font-size: var(--medium-font);
+            color: #a7f3d0;
+        }
+
+        /* 버튼들 자동 조정 */
+        .next-button {
+            width: 100%;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            border: none;
+            padding: var(--medium-font);
+            border-radius: 24px;
+            font-size: var(--large-font);
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            min-height: clamp(40px, 12vw, 60px);
+        }
+
+        .next-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* 모달 자동 조정 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: var(--card-padding);
+            width: clamp(280px, 90vw, 400px);
+            margin: var(--base-padding);
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: clamp(60px, 20vw, 80px);
+            margin-bottom: var(--base-padding);
+        }
+
+        .modal-title {
+            font-size: var(--large-font);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .modal-text {
+            font-size: var(--medium-font);
+            margin-bottom: var(--base-padding);
+            color: #666;
+        }
+
+        .modal-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: var(--base-padding);
+        }
+
+        .modal-button {
+            padding: var(--button-padding) calc(var(--button-padding) * 1.5);
+            border: none;
+            border-radius: 24px;
+            font-size: var(--medium-font);
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: all 0.2s;
+            min-height: clamp(40px, 12vw, 60px);
+        }
+
+        .modal-button:hover,
+        .modal-button:focus {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            outline: 3px solid rgba(255,255,255,0.5);
+        }
+
+        .modal-button.green {
+            background: #10b981;
+        }
+
+        .modal-button.yellow {
+            background: #f59e0b;
+        }
+
+        .modal-button.gray {
+            background: #6b7280;
+            grid-column: 1 / -1;
+        }
+
+        /* 라운드 완료 화면 자동 조정 */
+        .round-complete {
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .complete-icon {
+            font-size: clamp(80px, 25vw, 120px);
+            margin-bottom: var(--card-padding);
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .complete-title {
+            font-size: clamp(32px, 10vw, 50px);
+            font-weight: bold;
+            margin-bottom: var(--base-padding);
+            color: #333;
+        }
+
+        .reward-box {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            border-radius: 24px;
+            padding: var(--medium-font);
+            margin-bottom: var(--base-padding);
+            color: white;
+        }
+
+        .reward-icon {
+            font-size: clamp(60px, 20vw, 80px);
+            margin-bottom: 15px;
+        }
+
+        .reward-text {
+            font-size: clamp(24px, 8vw, 40px);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .reward-detail {
+            font-size: var(--medium-font);
+            color: #fef3c7;
+        }
+
+        .unlock-box {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 24px;
+            padding: var(--base-padding);
+            margin-bottom: var(--base-padding);
+            color: white;
+        }
+
+        .unlock-icon {
+            font-size: clamp(50px, 15vw, 60px);
+            margin-bottom: 10px;
+        }
+
+        .unlock-text {
+            font-size: var(--medium-font);
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .action-button {
+            padding: var(--base-padding);
+            border: none;
+            border-radius: 24px;
+            font-size: var(--medium-font);
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+        }
+
+        .action-button.purple {
+            background: linear-gradient(135deg, #7e22ce, #2563eb);
+        }
+
+        .action-button.gray {
+            background: linear-gradient(135deg, #4b5563, #374151);
+        }
+
+        @keyframes slideInRight {
+            0% { 
+                transform: translateX(100%); 
+                opacity: 0; 
+            }
+            100% { 
+                transform: translateX(0); 
+                opacity: 1; 
+            }
+        }
+
+        /* 🎵 음악 상태 알림 */
+        .music-notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1001;
+            font-size: var(--small-font);
+            animation: slideInRight 0.5s ease;
+            max-width: 280px;
+        }
+
+        .music-notification.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .music-notification.warning {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+        }
+
+        /* 🚀 완전 자동 반응형 최적화 */
+
+        /* 태블릿 이상에서 2열 레이아웃 */
+        @media (min-width: 768px) {
+            .game-content {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .header {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            
+            .stats {
+                flex-direction: row;
+            }
+        }
+
+        /* 세로 모드 최적화 */
+        @media (orientation: portrait) {
+            .round-grid {
+                grid-template-columns: repeat(auto-fit, minmax(clamp(50px, 15vw, 80px), 1fr));
+                max-height: 60vh;
+            }
+            
+            .music-start-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 가로 모드 최적화 */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .header {
+                padding: clamp(8px, 2vh, 15px);
+            }
+            
+            .main-content {
+                padding: clamp(15px, 3vh, 25px);
+            }
+            
+            .round-grid {
+                max-height: 50vh;
+                grid-template-columns: repeat(auto-fit, minmax(clamp(40px, 8vw, 60px), 1fr));
+            }
+        }
+
+        /* 초소형 화면 (320px 이하) 최적화 */
+        @media (max-width: 320px) {
+            .round-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .game-content {
+                gap: clamp(8px, 2vw, 12px);
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 대형 화면 (데스크톱) 최적화 */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            
+            .round-grid {
+                grid-template-columns: repeat(10, 1fr);
+                max-height: 70vh;
+            }
+            
+            .game-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* 터치 최적화 */
+        @media (pointer: coarse) {
+            button, .round-button, .modal-button {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            .answer-input {
+                min-height: 44px;
+            }
+        }
+
+        /* 안전 영역 고려 (아이폰 노치 등) */
+        @supports (padding: max(0px)) {
+            .container {
+                padding-left: max(var(--base-padding), env(safe-area-inset-left));
+                padding-right: max(var(--base-padding), env(safe-area-inset-right));
+                padding-bottom: max(var(--base-padding), env(safe-area-inset-bottom));
+            }
+        }
+    </style>
         * {
             margin: 0;
             padding: 0;
@@ -2704,6 +3830,218 @@
 
         // 🎵 게임 시작
         initGame();
+
+        // 🚀 PWA Service Worker 등록
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('✅ Service Worker 등록 성공:', registration.scope);
+                        
+                        // 업데이트 확인
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            console.log('🔄 Service Worker 업데이트 발견');
+                            
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // 새 버전이 있음을 알림
+                                    if (confirm('🚀 새 버전이 있습니다! 새로고침하시겠습니까?')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        console.warn('❌ Service Worker 등록 실패:', error);
+                    });
+            });
+        }
+
+        // 📱 PWA 설치 프롬프트
+        let deferredPrompt;
+        let installButton;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('📱 PWA 설치 프롬프트 준비됨');
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // 설치 버튼 표시
+            showInstallButton();
+        });
+
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('🎉 PWA가 성공적으로 설치되었습니다!');
+            hideInstallButton();
+            
+            // 설치 완료 알림
+            setTimeout(() => {
+                AudioManager.showMusicNotification('🎉 연상천재가 설치되었습니다!', 'success');
+            }, 1000);
+        });
+
+        function showInstallButton() {
+            // 이미 버튼이 있으면 중복 생성 방지
+            if (document.getElementById('installBtn')) return;
+            
+            const installBtn = document.createElement('button');
+            installBtn.id = 'installBtn';
+            installBtn.innerHTML = '📱 앱 설치';
+            installBtn.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #7e22ce, #2563eb);
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                z-index: 9999;
+                animation: pulse 2s infinite;
+            `;
+            
+            installBtn.addEventListener('click', installPWA);
+            document.body.appendChild(installBtn);
+            installButton = installBtn;
+        }
+
+        function hideInstallButton() {
+            if (installButton) {
+                installButton.remove();
+                installButton = null;
+            }
+        }
+
+        async function installPWA() {
+            if (!deferredPrompt) {
+                console.log('설치 프롬프트를 사용할 수 없습니다');
+                return;
+            }
+
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                console.log('✅ 사용자가 PWA 설치를 승인했습니다');
+            } else {
+                console.log('❌ 사용자가 PWA 설치를 거부했습니다');
+            }
+            
+            deferredPrompt = null;
+            hideInstallButton();
+        }
+
+        // 🚀 PWA Service Worker 등록
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('✅ Service Worker 등록 성공:', registration.scope);
+                        
+                        // 업데이트 확인
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            console.log('🔄 Service Worker 업데이트 발견');
+                            
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // 새 버전이 있음을 알림
+                                    if (confirm('🚀 새 버전이 있습니다! 새로고침하시겠습니까?')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        console.warn('❌ Service Worker 등록 실패:', error);
+                    });
+            });
+        }
+
+        // 📱 PWA 설치 프롬프트
+        let deferredPrompt;
+        let installButton;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('📱 PWA 설치 프롬프트 준비됨');
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // 설치 버튼 표시
+            showInstallButton();
+        });
+
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('🎉 PWA가 성공적으로 설치되었습니다!');
+            hideInstallButton();
+            
+            // 설치 완료 알림
+            setTimeout(() => {
+                AudioManager.showMusicNotification('🎉 연상천재가 설치되었습니다!', 'success');
+            }, 1000);
+        });
+
+        function showInstallButton() {
+            // 이미 버튼이 있으면 중복 생성 방지
+            if (document.getElementById('installBtn')) return;
+            
+            const installBtn = document.createElement('button');
+            installBtn.id = 'installBtn';
+            installBtn.innerHTML = '📱 앱 설치';
+            installBtn.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #7e22ce, #2563eb);
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                z-index: 9999;
+                animation: pulse 2s infinite;
+            `;
+            
+            installBtn.addEventListener('click', installPWA);
+            document.body.appendChild(installBtn);
+            installButton = installBtn;
+        }
+
+        function hideInstallButton() {
+            if (installButton) {
+                installButton.remove();
+                installButton = null;
+            }
+        }
+
+        async function installPWA() {
+            if (!deferredPrompt) {
+                console.log('설치 프롬프트를 사용할 수 없습니다');
+                return;
+            }
+
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                console.log('✅ 사용자가 PWA 설치를 승인했습니다');
+            } else {
+                console.log('❌ 사용자가 PWA 설치를 거부했습니다');
+            }
+            
+            deferredPrompt = null;
+            hideInstallButton();
+        }
     </script>
 </body>
 </html>
