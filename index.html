@@ -2089,35 +2089,211 @@
 
         /* 반응형 */
         @media (max-width: 768px) {
+            /* 🚀 모바일 자동 크기 조정 */
+            :root {
+                --mobile-font-scale: clamp(0.7, 2.5vw, 1);
+                --mobile-padding: clamp(8px, 3vw, 15px);
+            }
+            
+            .container {
+                padding: var(--mobile-padding);
+            }
+            
+            .header {
+                padding: var(--mobile-padding);
+                flex-direction: column;
+                gap: var(--mobile-padding);
+            }
+            
+            .logo h1 {
+                font-size: calc(48px * var(--mobile-font-scale));
+            }
+            
+            .logo p {
+                font-size: calc(24px * var(--mobile-font-scale));
+            }
+            
+            .logo-icon {
+                width: calc(60px * var(--mobile-font-scale));
+                height: calc(60px * var(--mobile-font-scale));
+                font-size: calc(30px * var(--mobile-font-scale));
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: var(--mobile-padding);
+            }
+            
+            .key-count {
+                font-size: calc(28px * var(--mobile-font-scale));
+                padding: var(--mobile-padding) calc(var(--mobile-padding) * 1.5);
+            }
+            
+            .round-info .count {
+                font-size: calc(36px * var(--mobile-font-scale));
+            }
+            
+            .round-info .label {
+                font-size: calc(20px * var(--mobile-font-scale));
+            }
+            
             .game-content {
                 grid-template-columns: 1fr;
             }
             
+            .hints-section h2 {
+                font-size: calc(32px * var(--mobile-font-scale));
+            }
+            
+            .hint-text {
+                font-size: calc(28px * var(--mobile-font-scale));
+            }
+            
+            .hint-number {
+                width: calc(40px * var(--mobile-font-scale));
+                height: calc(40px * var(--mobile-font-scale));
+                font-size: calc(24px * var(--mobile-font-scale));
+            }
+            
+            .answer-input {
+                font-size: calc(28px * var(--mobile-font-scale));
+                padding: var(--mobile-padding);
+            }
+            
             .round-grid {
-                grid-template-columns: repeat(5, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(clamp(45px, 12vw, 70px), 1fr));
+                gap: clamp(6px, 2vw, 12px);
+            }
+            
+            .round-button {
+                width: clamp(45px, 12vw, 70px);
+                height: clamp(45px, 12vw, 70px);
+                font-size: calc(20px * var(--mobile-font-scale));
             }
             
             .info-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .info-value {
+                font-size: calc(28px * var(--mobile-font-scale));
+            }
+            
+            .info-label {
+                font-size: calc(18px * var(--mobile-font-scale));
+            }
 
             .music-controls {
-                min-width: 120px;
+                min-width: clamp(100px, 25vw, 140px);
             }
 
             .music-btn {
-                font-size: 10px;
-                padding: 5px 8px;
-                min-width: 50px;
+                font-size: clamp(9px, 2.5vw, 11px);
+                padding: clamp(4px, 1.5vw, 6px) clamp(6px, 2vw, 10px);
+                min-width: clamp(40px, 12vw, 60px);
             }
 
             .music-start-card {
-                margin: 20px;
-                padding: 30px;
+                margin: var(--mobile-padding);
+                padding: calc(var(--mobile-padding) * 2);
+                width: clamp(280px, 90vw, 500px);
             }
 
             .music-start-buttons {
                 grid-template-columns: 1fr;
+            }
+            
+            .music-start-title {
+                font-size: calc(32px * var(--mobile-font-scale));
+            }
+            
+            .music-start-text {
+                font-size: calc(18px * var(--mobile-font-scale));
+            }
+            
+            .modal-content {
+                width: clamp(280px, 90vw, 400px);
+                margin: var(--mobile-padding);
+            }
+            
+            .modal-title {
+                font-size: calc(32px * var(--mobile-font-scale));
+            }
+            
+            .modal-text {
+                font-size: calc(20px * var(--mobile-font-scale));
+            }
+            
+            .modal-button {
+                font-size: calc(20px * var(--mobile-font-scale));
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            .next-button {
+                font-size: calc(30px * var(--mobile-font-scale));
+                min-height: 60px;
+            }
+            
+            .complete-title {
+                font-size: clamp(32px, 10vw, 50px);
+            }
+            
+            .reward-text {
+                font-size: clamp(24px, 8vw, 40px);
+            }
+            
+            .action-button {
+                font-size: calc(24px * var(--mobile-font-scale));
+                min-height: 60px;
+            }
+            
+            /* 터치 최적화 */
+            button, .round-button, .modal-button {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
+        
+        /* 초소형 화면 최적화 */
+        @media (max-width: 360px) {
+            .round-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 세로 모드 최적화 */
+        @media (orientation: portrait) and (max-width: 768px) {
+            .round-grid {
+                max-height: 60vh;
+            }
+        }
+        
+        /* 가로 모드 최적화 */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .header {
+                padding: 10px;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .round-grid {
+                max-height: 50vh;
+            }
+        }
+        
+        /* 안전 영역 고려 (아이폰 노치) */
+        @supports (padding: max(0px)) {
+            .container {
+                padding-left: max(20px, env(safe-area-inset-left));
+                padding-right: max(20px, env(safe-area-inset-right));
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
             }
         }
     </style>
