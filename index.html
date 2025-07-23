@@ -989,186 +989,436 @@
             background: linear-gradient(135deg, #f59e0b, #f97316);
         }
 
-        /* 🚀 모바일 자동 크기 조정 */
+        /* 🚀 모바일 한 화면 최적화 */
         @media (max-width: 768px) {
             /* 동적 크기 조정 변수 */
             :root {
                 --mobile-scale: clamp(0.7, 2.5vw, 1);
-                --mobile-padding: clamp(10px, 3vw, 20px);
+                --mobile-padding: clamp(5px, 2vw, 10px);
+                --mobile-small-padding: clamp(3px, 1vw, 6px);
             }
             
+            /* 전체 컨테이너 높이 제한 */
             .container {
-                padding: var(--mobile-padding);
+                padding: var(--mobile-small-padding);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
             }
             
+            /* 헤더 초컴팩트 */
             .header {
-                padding: var(--mobile-padding);
+                padding: var(--mobile-small-padding);
+                margin-bottom: var(--mobile-small-padding);
                 flex-direction: column;
-                gap: var(--mobile-padding);
+                gap: var(--mobile-small-padding);
+            }
+            
+            .logo {
+                gap: var(--mobile-small-padding);
             }
             
             .logo h1 {
-                font-size: calc(48px * var(--mobile-scale));
+                font-size: calc(28px * var(--mobile-scale));
             }
             
             .logo p {
-                font-size: calc(24px * var(--mobile-scale));
+                font-size: calc(16px * var(--mobile-scale));
             }
             
             .logo-icon {
-                width: calc(60px * var(--mobile-scale));
-                height: calc(60px * var(--mobile-scale));
-                font-size: calc(30px * var(--mobile-scale));
+                width: calc(40px * var(--mobile-scale));
+                height: calc(40px * var(--mobile-scale));
+                font-size: calc(20px * var(--mobile-scale));
             }
             
             .stats {
-                flex-direction: column;
-                gap: var(--mobile-padding);
+                flex-direction: row;
+                gap: var(--mobile-small-padding);
                 align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
             }
             
             .key-count {
-                font-size: calc(28px * var(--mobile-scale));
-                padding: var(--mobile-padding) calc(var(--mobile-padding) * 1.5);
+                font-size: calc(18px * var(--mobile-scale));
+                padding: calc(var(--mobile-small-padding) * 0.8) var(--mobile-small-padding);
             }
             
             .round-info .count {
-                font-size: calc(36px * var(--mobile-scale));
+                font-size: calc(20px * var(--mobile-scale));
             }
             
             .round-info .label {
+                font-size: calc(14px * var(--mobile-scale));
+            }
+            
+            /* 메인 콘텐츠 높이 제한 */
+            .main-content {
+                padding: var(--mobile-padding);
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+            
+            /* 게임 헤더 컴팩트 */
+            .game-header {
+                margin-bottom: var(--mobile-small-padding);
+                gap: var(--mobile-small-padding);
+            }
+            
+            .home-button {
+                width: calc(35px * var(--mobile-scale));
+                height: calc(35px * var(--mobile-scale));
+                font-size: calc(18px * var(--mobile-scale));
+            }
+            
+            .round-title {
                 font-size: calc(20px * var(--mobile-scale));
             }
             
+            .problem-number {
+                font-size: calc(16px * var(--mobile-scale));
+            }
+            
+            .file-info {
+                font-size: calc(12px * var(--mobile-scale));
+            }
+            
+            /* 천재 타이머 초컴팩트 */
+            .genius-timer {
+                padding: var(--mobile-small-padding);
+                margin-bottom: var(--mobile-small-padding);
+            }
+            
+            .genius-timer-text {
+                font-size: calc(16px * var(--mobile-scale));
+            }
+            
+            .genius-timer-count {
+                font-size: calc(20px * var(--mobile-scale));
+            }
+            
+            .timer-bar {
+                height: 8px;
+            }
+            
+            /* 게임 콘텐츠 - 완전 세로 + 높이 제한 */
             .game-content {
                 grid-template-columns: 1fr;
-                gap: var(--mobile-padding);
+                gap: var(--mobile-small-padding);
+                flex: 1;
+                overflow: hidden;
+                display: grid;
+                grid-template-rows: 1fr auto;
+            }
+            
+            /* 힌트 섹션 - 스크롤 가능 + 높이 제한 */
+            .hints-section {
+                overflow-y: auto;
+                max-height: 40vh;
+                padding-right: var(--mobile-small-padding);
             }
             
             .hints-section h2 {
-                font-size: calc(32px * var(--mobile-scale));
+                font-size: calc(20px * var(--mobile-scale));
+                margin-bottom: var(--mobile-small-padding);
+                position: sticky;
+                top: 0;
+                background: white;
+                z-index: 10;
+                padding-bottom: var(--mobile-small-padding);
             }
             
-            .hint-text {
-                font-size: calc(28px * var(--mobile-scale));
+            .hint-item {
+                margin-bottom: var(--mobile-small-padding);
             }
             
-            .hint-number {
-                width: calc(40px * var(--mobile-scale));
-                height: calc(40px * var(--mobile-scale));
-                font-size: calc(24px * var(--mobile-scale));
-            }
-            
-            .answer-input {
-                font-size: calc(28px * var(--mobile-scale));
+            .hint-content {
                 padding: var(--mobile-padding);
             }
             
-            /* 라운드 그리드 완전 자동 조정 */
-            .round-grid {
-                grid-template-columns: repeat(auto-fit, minmax(clamp(45px, 12vw, 70px), 1fr));
-                gap: clamp(6px, 2vw, 12px);
-                max-height: 60vh;
+            .hint-header {
+                gap: var(--mobile-small-padding);
+                margin-bottom: var(--mobile-small-padding);
             }
             
-            .round-button {
-                width: clamp(45px, 12vw, 70px);
-                height: clamp(45px, 12vw, 70px);
-                font-size: calc(20px * var(--mobile-scale));
+            .hint-number {
+                width: calc(25px * var(--mobile-scale));
+                height: calc(25px * var(--mobile-scale));
+                font-size: calc(16px * var(--mobile-scale));
+                flex-shrink: 0;
+            }
+            
+            .hint-text {
+                font-size: calc(18px * var(--mobile-scale));
+                line-height: 1.3;
+            }
+            
+            .description {
+                font-size: calc(14px * var(--mobile-scale));
+                padding: var(--mobile-padding);
+                margin-top: var(--mobile-small-padding);
+                line-height: 1.4;
+            }
+            
+            .description-button {
+                padding: var(--mobile-small-padding) var(--mobile-padding);
+                font-size: calc(14px * var(--mobile-scale));
+            }
+            
+            .locked-hint {
+                padding: var(--mobile-padding);
+            }
+            
+            .locked-hint-content {
+                font-size: calc(16px * var(--mobile-scale));
+                gap: var(--mobile-small-padding);
+            }
+            
+            /* 답변 섹션 - 컴팩트 */
+            .answer-section {
+                gap: var(--mobile-small-padding);
+                flex-shrink: 0;
             }
             
             .info-grid {
                 grid-template-columns: 1fr;
-                gap: var(--mobile-padding);
+                gap: var(--mobile-small-padding);
+            }
+            
+            .info-box {
+                padding: var(--mobile-padding);
             }
             
             .info-value {
-                font-size: calc(28px * var(--mobile-scale));
+                font-size: calc(18px * var(--mobile-scale));
             }
             
             .info-label {
-                font-size: calc(18px * var(--mobile-scale));
+                font-size: calc(14px * var(--mobile-scale));
+                margin-bottom: 2px;
             }
-
+            
+            .answer-input {
+                font-size: calc(20px * var(--mobile-scale));
+                padding: var(--mobile-padding);
+                min-height: 44px;
+            }
+            
+            .help-mode {
+                padding: var(--mobile-padding);
+            }
+            
+            .help-icon {
+                width: calc(25px * var(--mobile-scale));
+                height: calc(25px * var(--mobile-scale));
+                font-size: calc(14px * var(--mobile-scale));
+            }
+            
+            .help-text, .help-sub {
+                font-size: calc(14px * var(--mobile-scale));
+            }
+            
+            /* 정답 화면 컴팩트 */
+            .correct-answer {
+                padding: var(--mobile-padding);
+            }
+            
+            .correct-icon {
+                font-size: calc(50px * var(--mobile-scale));
+                margin-bottom: var(--mobile-small-padding);
+            }
+            
+            .correct-title {
+                font-size: calc(24px * var(--mobile-scale));
+                margin-bottom: var(--mobile-small-padding);
+            }
+            
+            .correct-text {
+                font-size: calc(18px * var(--mobile-scale));
+                margin-bottom: var(--mobile-small-padding);
+            }
+            
+            .correct-category {
+                font-size: calc(16px * var(--mobile-scale));
+            }
+            
+            .next-button {
+                font-size: calc(20px * var(--mobile-scale));
+                padding: var(--mobile-padding);
+                min-height: 50px;
+            }
+            
+            /* 진행 도트 컴팩트 */
+            .progress-dots {
+                grid-template-columns: repeat(6, 1fr);
+                gap: clamp(1px, 0.5vw, 2px);
+                padding: clamp(2px, 1vw, 4px);
+            }
+            
+            .dot {
+                width: clamp(6px, 2vw, 8px);
+                height: clamp(6px, 2vw, 8px);
+            }
+            
+            /* 라운드 그리드 최적화 */
+            .round-grid {
+                grid-template-columns: repeat(auto-fit, minmax(clamp(40px, 10vw, 60px), 1fr));
+                gap: clamp(4px, 1.5vw, 8px);
+                max-height: 60vh;
+                padding: var(--mobile-small-padding);
+            }
+            
+            .round-button {
+                width: clamp(40px, 10vw, 60px);
+                height: clamp(40px, 10vw, 60px);
+                font-size: calc(16px * var(--mobile-scale));
+            }
+            
+            .icon {
+                width: clamp(16px, 4vw, 20px);
+                height: clamp(16px, 4vw, 20px);
+                font-size: clamp(10px, 3vw, 14px);
+                top: -4px;
+                right: -4px;
+            }
+            
+            /* 음악 컨트롤 초컴팩트 */
             .music-controls {
-                min-width: clamp(100px, 25vw, 140px);
+                min-width: clamp(80px, 20vw, 120px);
+                padding: var(--mobile-small-padding);
+                gap: 3px;
             }
 
             .music-btn {
-                font-size: clamp(9px, 2.5vw, 11px);
-                padding: clamp(4px, 1.5vw, 6px) clamp(6px, 2vw, 10px);
-                min-width: clamp(40px, 12vw, 60px);
+                font-size: clamp(8px, 2vw, 10px);
+                padding: clamp(2px, 1vw, 4px) clamp(4px, 1.5vw, 6px);
+                min-width: clamp(30px, 8vw, 45px);
             }
 
+            .music-status {
+                font-size: clamp(7px, 1.5vw, 8px);
+            }
+
+            /* 모달 컴팩트 */
+            .modal-content {
+                width: clamp(260px, 85vw, 350px);
+                margin: var(--mobile-small-padding);
+                padding: var(--mobile-padding);
+            }
+            
+            .modal-icon {
+                font-size: clamp(50px, 15vw, 70px);
+                margin-bottom: var(--mobile-padding);
+            }
+            
+            .modal-title {
+                font-size: calc(24px * var(--mobile-scale));
+                margin-bottom: var(--mobile-small-padding);
+            }
+            
+            .modal-text {
+                font-size: calc(16px * var(--mobile-scale));
+                margin-bottom: var(--mobile-padding);
+            }
+            
+            .modal-button {
+                font-size: calc(16px * var(--mobile-scale));
+                min-height: 40px;
+                min-width: 40px;
+                padding: var(--mobile-small-padding);
+            }
+            
+            .modal-buttons {
+                gap: var(--mobile-small-padding);
+                margin-bottom: var(--mobile-padding);
+            }
+            
+            /* 음악 시작 오버레이 컴팩트 */
             .music-start-card {
-                margin: var(--mobile-padding);
-                padding: calc(var(--mobile-padding) * 2);
-                width: clamp(280px, 90vw, 500px);
+                margin: var(--mobile-small-padding);
+                padding: var(--mobile-padding);
+                width: clamp(260px, 85vw, 400px);
+            }
+
+            .music-start-icon {
+                font-size: clamp(50px, 15vw, 70px);
+                margin-bottom: var(--mobile-padding);
+            }
+            
+            .music-start-title {
+                font-size: calc(24px * var(--mobile-scale));
+                margin-bottom: var(--mobile-small-padding);
+            }
+            
+            .music-start-text {
+                font-size: calc(16px * var(--mobile-scale));
+                margin-bottom: var(--mobile-padding);
             }
 
             .music-start-buttons {
                 grid-template-columns: 1fr;
-                gap: var(--mobile-padding);
+                gap: var(--mobile-small-padding);
             }
             
-            .music-start-title {
-                font-size: calc(32px * var(--mobile-scale));
-            }
-            
-            .music-start-text {
-                font-size: calc(18px * var(--mobile-scale));
-            }
-            
-            .modal-content {
-                width: clamp(280px, 90vw, 400px);
-                margin: var(--mobile-padding);
-                padding: calc(var(--mobile-padding) * 1.5);
-            }
-            
-            .modal-title {
-                font-size: calc(32px * var(--mobile-scale));
-            }
-            
-            .modal-text {
-                font-size: calc(20px * var(--mobile-scale));
-            }
-            
-            .modal-button {
-                font-size: calc(20px * var(--mobile-scale));
-                min-height: 44px;
-                min-width: 44px;
-                padding: calc(var(--mobile-padding) * 0.8);
-            }
-            
-            .next-button {
-                font-size: calc(30px * var(--mobile-scale));
-                min-height: 60px;
+            .music-start-btn {
                 padding: var(--mobile-padding);
+                font-size: calc(16px * var(--mobile-scale));
             }
             
+            /* 라운드 완료 화면 컴팩트 */
             .complete-title {
-                font-size: clamp(32px, 10vw, 50px);
+                font-size: clamp(24px, 8vw, 36px);
+                margin-bottom: var(--mobile-padding);
+            }
+            
+            .complete-icon {
+                font-size: clamp(60px, 18vw, 90px);
+                margin-bottom: var(--mobile-padding);
             }
             
             .reward-text {
-                font-size: clamp(24px, 8vw, 40px);
+                font-size: clamp(20px, 6vw, 32px);
+            }
+            
+            .reward-detail, .unlock-text {
+                font-size: calc(16px * var(--mobile-scale));
             }
             
             .action-button {
-                font-size: calc(24px * var(--mobile-scale));
-                min-height: 60px;
+                font-size: calc(18px * var(--mobile-scale));
+                min-height: 50px;
                 padding: var(--mobile-padding);
             }
             
-            .progress-dots {
-                grid-template-columns: repeat(6, 1fr);
-                gap: clamp(2px, 1vw, 4px);
-                padding: clamp(4px, 1.5vw, 8px);
+            /* 로딩/에러 화면 컴팩트 */
+            .loading, .error {
+                padding: clamp(30px, 10vw, 50px);
             }
             
-            .dot {
-                width: clamp(8px, 3vw, 12px);
-                height: clamp(8px, 3vw, 12px);
+            .loading-spinner {
+                width: clamp(30px, 8vw, 40px);
+                height: clamp(30px, 8vw, 40px);
+                margin-bottom: var(--mobile-padding);
+            }
+            
+            .loading-text, .error-text {
+                font-size: calc(18px * var(--mobile-scale));
+            }
+            
+            .error-title {
+                font-size: calc(24px * var(--mobile-scale));
+            }
+            
+            .error-icon {
+                font-size: clamp(40px, 12vw, 50px);
+            }
+            
+            .retry-button {
+                font-size: calc(16px * var(--mobile-scale));
+                padding: var(--mobile-padding) var(--mobile-padding);
             }
             
             /* 터치 최적화 */
@@ -1180,9 +1430,28 @@
             .answer-input {
                 min-height: 44px;
             }
+            
+            /* 스크롤바 스타일링 */
+            .hints-section::-webkit-scrollbar {
+                width: 4px;
+            }
+            
+            .hints-section::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 2px;
+            }
+            
+            .hints-section::-webkit-scrollbar-thumb {
+                background: #7e22ce;
+                border-radius: 2px;
+            }
+            
+            .hints-section::-webkit-scrollbar-thumb:hover {
+                background: #6b21a8;
+            }
         }
         
-        /* 초소형 화면 최적화 */
+        /* 초소형 화면 (360px 이하) 추가 최적화 */
         @media (max-width: 360px) {
             .round-grid {
                 grid-template-columns: repeat(4, 1fr);
@@ -1195,33 +1464,43 @@
             .modal-buttons {
                 grid-template-columns: 1fr;
             }
+            
+            .info-grid .info-box {
+                padding: clamp(4px, 2vw, 8px);
+            }
+            
+            .hints-section {
+                max-height: 35vh;
+            }
         }
         
-        /* 가로 모드 최적화 */
-        @media (orientation: landscape) and (max-height: 500px) {
+        /* 매우 작은 높이 화면 (iPhone SE 가로모드 등) */
+        @media (max-height: 500px) {
             .header {
-                padding: 10px;
+                padding: 5px;
+                margin-bottom: 5px;
             }
             
             .main-content {
-                padding: 15px;
+                padding: 8px;
             }
             
-            .round-grid {
-                max-height: 50vh;
+            .hints-section {
+                max-height: 25vh;
             }
             
             .music-start-card {
-                padding: 20px;
+                padding: 15px;
             }
         }
         
         /* 안전 영역 고려 (아이폰 노치) */
         @supports (padding: max(0px)) {
             .container {
-                padding-left: max(20px, env(safe-area-inset-left));
-                padding-right: max(20px, env(safe-area-inset-right));
-                padding-bottom: max(20px, env(safe-area-inset-bottom));
+                padding-left: max(5px, env(safe-area-inset-left));
+                padding-right: max(5px, env(safe-area-inset-right));
+                padding-bottom: max(5px, env(safe-area-inset-bottom));
+                padding-top: max(5px, env(safe-area-inset-top));
             }
         }
     </style>
