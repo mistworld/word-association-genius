@@ -993,25 +993,35 @@
         @media (max-width: 768px) {
             /* 동적 크기 조정 변수 */
             :root {
-                --mobile-scale: clamp(0.7, 2.5vw, 1);
-                --mobile-padding: clamp(5px, 2vw, 10px);
-                --mobile-small-padding: clamp(3px, 1vw, 6px);
+                --mobile-scale: clamp(0.6, 2vw, 0.9);
+                --mobile-padding: clamp(4px, 1.5vw, 8px);
+                --mobile-small-padding: clamp(2px, 0.8vw, 4px);
+            }
+            
+            /* 🔥 핵심: 전체 높이를 viewport로 완전 제한 */
+            body {
+                height: 100vh;
+                overflow: hidden; /* 바디 스크롤 방지 */
             }
             
             /* 전체 컨테이너 높이 제한 */
             .container {
                 padding: var(--mobile-small-padding);
-                min-height: 100vh;
+                height: 100vh; /* min-height에서 height로 변경 */
                 display: flex;
                 flex-direction: column;
+                overflow: hidden; /* 컨테이너 스크롤 방지 */
             }
             
-            /* 헤더 초컴팩트 */
+            /* 헤더 초컴팩트 - 높이 대폭 축소 */
             .header {
                 padding: var(--mobile-small-padding);
                 margin-bottom: var(--mobile-small-padding);
                 flex-direction: column;
-                gap: var(--mobile-small-padding);
+                gap: 3px; /* 매우 작은 간격 */
+                flex-shrink: 0; /* 헤더 크기 고정 */
+                max-height: 15vh; /* 헤더 최대 높이 제한 */
+                overflow: hidden;
             }
             
             .logo {
@@ -1019,289 +1029,314 @@
             }
             
             .logo h1 {
-                font-size: calc(28px * var(--mobile-scale));
+                font-size: calc(20px * var(--mobile-scale)); /* 더 작게 */
             }
             
             .logo p {
-                font-size: calc(16px * var(--mobile-scale));
+                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
             }
             
             .logo-icon {
-                width: calc(40px * var(--mobile-scale));
-                height: calc(40px * var(--mobile-scale));
-                font-size: calc(20px * var(--mobile-scale));
+                width: calc(30px * var(--mobile-scale)); /* 더 작게 */
+                height: calc(30px * var(--mobile-scale));
+                font-size: calc(16px * var(--mobile-scale));
             }
             
             .stats {
                 flex-direction: row;
-                gap: var(--mobile-small-padding);
+                gap: 3px; /* 매우 작은 간격 */
                 align-items: center;
                 justify-content: center;
                 flex-wrap: wrap;
             }
             
             .key-count {
-                font-size: calc(18px * var(--mobile-scale));
-                padding: calc(var(--mobile-small-padding) * 0.8) var(--mobile-small-padding);
+                font-size: calc(14px * var(--mobile-scale)); /* 더 작게 */
+                padding: 3px 6px; /* 더 작은 패딩 */
             }
             
             .round-info .count {
-                font-size: calc(20px * var(--mobile-scale));
+                font-size: calc(16px * var(--mobile-scale));
             }
             
             .round-info .label {
-                font-size: calc(14px * var(--mobile-scale));
+                font-size: calc(10px * var(--mobile-scale)); /* 더 작게 */
             }
             
-            /* 메인 콘텐츠 높이 제한 */
+            /* 메인 콘텐츠 높이 제한 - 핵심 해결책 */
             .main-content {
                 padding: var(--mobile-padding);
-                flex: 1;
+                flex: 1; /* 남은 공간 전체 사용 */
+                display: flex;
+                flex-direction: column;
+                overflow: hidden; /* 메인 컨텐츠 자체는 스크롤 방지 */
+                max-height: calc(85vh - 60px); /* 헤더 영역 제외한 나머지 */
+            }
+            
+            /* 라운드 선택 화면 최적화 */
+            .round-select {
+                height: 100%;
                 display: flex;
                 flex-direction: column;
                 overflow: hidden;
             }
             
-            /* 게임 헤더 컴팩트 */
-            .game-header {
+            .round-select h2 {
+                font-size: calc(18px * var(--mobile-scale));
                 margin-bottom: var(--mobile-small-padding);
+                flex-shrink: 0; /* 제목 크기 고정 */
+            }
+            
+            /* 게임 헤더 초컴팩트 */
+            .game-header {
+                margin-bottom: 2px; /* 매우 작은 간격 */
                 gap: var(--mobile-small-padding);
             }
             
             .home-button {
-                width: calc(35px * var(--mobile-scale));
-                height: calc(35px * var(--mobile-scale));
-                font-size: calc(18px * var(--mobile-scale));
+                width: calc(28px * var(--mobile-scale)); /* 더 작게 */
+                height: calc(28px * var(--mobile-scale));
+                font-size: calc(14px * var(--mobile-scale));
             }
             
             .round-title {
-                font-size: calc(20px * var(--mobile-scale));
+                font-size: calc(16px * var(--mobile-scale)); /* 더 작게 */
             }
             
             .problem-number {
-                font-size: calc(16px * var(--mobile-scale));
+                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
             }
             
             .file-info {
-                font-size: calc(12px * var(--mobile-scale));
+                font-size: calc(9px * var(--mobile-scale)); /* 더 작게 */
             }
             
             /* 천재 타이머 초컴팩트 */
             .genius-timer {
-                padding: var(--mobile-small-padding);
-                margin-bottom: var(--mobile-small-padding);
+                padding: 4px; /* 매우 작은 패딩 */
+                margin-bottom: 2px; /* 매우 작은 간격 */
             }
             
             .genius-timer-text {
-                font-size: calc(16px * var(--mobile-scale));
+                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
             }
             
             .genius-timer-count {
-                font-size: calc(20px * var(--mobile-scale));
+                font-size: calc(16px * var(--mobile-scale)); /* 더 작게 */
             }
             
             .timer-bar {
-                height: 8px;
+                height: 6px; /* 더 얇게 */
             }
             
-            /* 게임 콘텐츠 - 완전 세로 + 높이 제한 */
+            /* 게임 콘텐츠 - 완전 세로 + 높이 제한 + 스크롤 최적화 */
             .game-content {
                 grid-template-columns: 1fr;
-                gap: var(--mobile-small-padding);
+                gap: 2px; /* 매우 작은 간격 */
                 flex: 1;
                 overflow: hidden;
                 display: grid;
-                grid-template-rows: 1fr auto;
+                grid-template-rows: 1fr auto; /* 힌트는 확장 가능, 답변은 고정 */
+                max-height: 100%; /* 부모 높이 제한 */
             }
             
             /* 힌트 섹션 - 스크롤 가능 + 높이 제한 */
             .hints-section {
                 overflow-y: auto;
-                max-height: 40vh;
-                padding-right: var(--mobile-small-padding);
+                overflow-x: hidden;
+                max-height: 100%; /* 그리드 영역 내에서 최대 높이 */
+                padding-right: 2px;
+                /* 스크롤바 스타일링 */
+                scrollbar-width: thin;
+                scrollbar-color: #7e22ce #f1f1f1;
             }
             
             .hints-section h2 {
-                font-size: calc(20px * var(--mobile-scale));
-                margin-bottom: var(--mobile-small-padding);
+                font-size: calc(14px * var(--mobile-scale)); /* 더 작게 */
+                margin-bottom: 2px; /* 매우 작은 간격 */
                 position: sticky;
                 top: 0;
                 background: white;
                 z-index: 10;
-                padding-bottom: var(--mobile-small-padding);
+                padding-bottom: 2px;
             }
             
             .hint-item {
-                margin-bottom: var(--mobile-small-padding);
+                margin-bottom: 2px; /* 매우 작은 간격 */
             }
             
             .hint-content {
-                padding: var(--mobile-padding);
+                padding: 3px; /* 매우 작은 패딩 */
             }
             
             .hint-header {
-                gap: var(--mobile-small-padding);
-                margin-bottom: var(--mobile-small-padding);
+                gap: 3px; /* 매우 작은 간격 */
+                margin-bottom: 2px;
             }
             
             .hint-number {
-                width: calc(25px * var(--mobile-scale));
-                height: calc(25px * var(--mobile-scale));
-                font-size: calc(16px * var(--mobile-scale));
+                width: calc(20px * var(--mobile-scale)); /* 더 작게 */
+                height: calc(20px * var(--mobile-scale));
+                font-size: calc(12px * var(--mobile-scale));
                 flex-shrink: 0;
             }
             
             .hint-text {
-                font-size: calc(18px * var(--mobile-scale));
-                line-height: 1.3;
+                font-size: calc(14px * var(--mobile-scale)); /* 더 작게 */
+                line-height: 1.2; /* 줄간격 축소 */
             }
             
             .description {
-                font-size: calc(14px * var(--mobile-scale));
-                padding: var(--mobile-padding);
-                margin-top: var(--mobile-small-padding);
-                line-height: 1.4;
+                font-size: calc(11px * var(--mobile-scale)); /* 더 작게 */
+                padding: 3px; /* 매우 작은 패딩 */
+                margin-top: 2px;
+                line-height: 1.3;
             }
             
             .description-button {
-                padding: var(--mobile-small-padding) var(--mobile-padding);
-                font-size: calc(14px * var(--mobile-scale));
+                padding: 2px 6px; /* 매우 작은 패딩 */
+                font-size: calc(10px * var(--mobile-scale)); /* 더 작게 */
             }
             
             .locked-hint {
-                padding: var(--mobile-padding);
+                padding: 6px; /* 작은 패딩 */
             }
             
             .locked-hint-content {
-                font-size: calc(16px * var(--mobile-scale));
-                gap: var(--mobile-small-padding);
+                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
+                gap: 3px;
             }
             
-            /* 답변 섹션 - 컴팩트 */
+            /* 답변 섹션 - 초컴팩트 */
             .answer-section {
-                gap: var(--mobile-small-padding);
+                gap: 2px; /* 매우 작은 간격 */
                 flex-shrink: 0;
+                padding-bottom: 2px;
             }
             
             .info-grid {
                 grid-template-columns: 1fr;
-                gap: var(--mobile-small-padding);
+                gap: 2px; /* 매우 작은 간격 */
             }
             
             .info-box {
-                padding: var(--mobile-padding);
+                padding: 3px; /* 매우 작은 패딩 */
             }
             
             .info-value {
-                font-size: calc(18px * var(--mobile-scale));
+                font-size: calc(14px * var(--mobile-scale)); /* 더 작게 */
             }
             
             .info-label {
-                font-size: calc(14px * var(--mobile-scale));
-                margin-bottom: 2px;
+                font-size: calc(10px * var(--mobile-scale)); /* 더 작게 */
+                margin-bottom: 1px;
             }
             
             .answer-input {
-                font-size: calc(20px * var(--mobile-scale));
-                padding: var(--mobile-padding);
-                min-height: 44px;
+                font-size: calc(16px * var(--mobile-scale)); /* 더 작게 */
+                padding: 6px; /* 작은 패딩 */
+                min-height: 36px; /* 터치하기 충분한 크기 */
             }
             
             .help-mode {
-                padding: var(--mobile-padding);
+                padding: 4px; /* 작은 패딩 */
             }
             
             .help-icon {
-                width: calc(25px * var(--mobile-scale));
-                height: calc(25px * var(--mobile-scale));
-                font-size: calc(14px * var(--mobile-scale));
+                width: calc(20px * var(--mobile-scale)); /* 더 작게 */
+                height: calc(20px * var(--mobile-scale));
+                font-size: calc(10px * var(--mobile-scale));
             }
             
             .help-text, .help-sub {
-                font-size: calc(14px * var(--mobile-scale));
+                font-size: calc(11px * var(--mobile-scale)); /* 더 작게 */
             }
             
-            /* 정답 화면 컴팩트 */
+            /* 정답 화면 초컴팩트 */
             .correct-answer {
-                padding: var(--mobile-padding);
+                padding: 6px; /* 작은 패딩 */
             }
             
             .correct-icon {
-                font-size: calc(50px * var(--mobile-scale));
-                margin-bottom: var(--mobile-small-padding);
+                font-size: calc(30px * var(--mobile-scale)); /* 더 작게 */
+                margin-bottom: 2px;
             }
             
             .correct-title {
-                font-size: calc(24px * var(--mobile-scale));
-                margin-bottom: var(--mobile-small-padding);
+                font-size: calc(18px * var(--mobile-scale)); /* 더 작게 */
+                margin-bottom: 2px;
             }
             
             .correct-text {
-                font-size: calc(18px * var(--mobile-scale));
-                margin-bottom: var(--mobile-small-padding);
+                font-size: calc(14px * var(--mobile-scale)); /* 더 작게 */
+                margin-bottom: 2px;
             }
             
             .correct-category {
-                font-size: calc(16px * var(--mobile-scale));
+                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
             }
             
             .next-button {
-                font-size: calc(20px * var(--mobile-scale));
-                padding: var(--mobile-padding);
-                min-height: 50px;
+                font-size: calc(16px * var(--mobile-scale)); /* 더 작게 */
+                padding: 8px; /* 작은 패딩 */
+                min-height: 40px; /* 터치하기 충분한 크기 */
             }
             
-            /* 진행 도트 컴팩트 */
+            /* 진행 도트 초컴팩트 */
             .progress-dots {
                 grid-template-columns: repeat(6, 1fr);
-                gap: clamp(1px, 0.5vw, 2px);
-                padding: clamp(2px, 1vw, 4px);
+                gap: 1px;
+                padding: 2px;
             }
             
             .dot {
-                width: clamp(6px, 2vw, 8px);
-                height: clamp(6px, 2vw, 8px);
+                width: 6px; /* 더 작게 */
+                height: 6px;
             }
             
-            /* 라운드 그리드 최적화 */
+            /* 라운드 그리드 최적화 - 화면에 맞게 */
             .round-grid {
-                grid-template-columns: repeat(auto-fit, minmax(clamp(40px, 10vw, 60px), 1fr));
-                gap: clamp(4px, 1.5vw, 8px);
-                max-height: 60vh;
-                padding: var(--mobile-small-padding);
+                grid-template-columns: repeat(5, 1fr); /* 5열로 고정 */
+                gap: 3px; /* 작은 간격 */
+                flex: 1; /* 남은 공간 모두 사용 */
+                overflow-y: auto; /* 세로 스크롤 */
+                padding: 2px;
+                max-height: 100%; /* 부모 높이 제한 */
             }
             
             .round-button {
-                width: clamp(40px, 10vw, 60px);
-                height: clamp(40px, 10vw, 60px);
-                font-size: calc(16px * var(--mobile-scale));
+                width: 100%; /* 그리드 셀에 맞춤 */
+                aspect-ratio: 1; /* 정사각형 유지 */
+                min-width: 45px; /* 최소 터치 크기 */
+                min-height: 45px;
+                font-size: calc(12px * var(--mobile-scale));
             }
             
             .icon {
-                width: clamp(16px, 4vw, 20px);
-                height: clamp(16px, 4vw, 20px);
-                font-size: clamp(10px, 3vw, 14px);
-                top: -4px;
-                right: -4px;
+                width: 14px; /* 더 작게 */
+                height: 14px;
+                font-size: 10px;
+                top: -2px;
+                right: -2px;
             }
             
             /* 음악 컨트롤 초컴팩트 */
             .music-controls {
-                min-width: clamp(80px, 20vw, 120px);
-                padding: var(--mobile-small-padding);
-                gap: 3px;
+                min-width: 80px; /* 더 작게 */
+                padding: 2px;
+                gap: 1px;
             }
 
             .music-btn {
-                font-size: clamp(8px, 2vw, 10px);
-                padding: clamp(2px, 1vw, 4px) clamp(4px, 1.5vw, 6px);
-                min-width: clamp(30px, 8vw, 45px);
+                font-size: 8px; /* 더 작게 */
+                padding: 2px 3px;
+                min-width: 35px; /* 더 작게 */
             }
 
             .music-status {
-                font-size: clamp(7px, 1.5vw, 8px);
+                font-size: 6px; /* 더 작게 */
             }
-
+            
             /* 모달 컴팩트 */
             .modal-content {
                 width: clamp(260px, 85vw, 350px);
@@ -1421,40 +1456,46 @@
                 padding: var(--mobile-padding) var(--mobile-padding);
             }
             
-            /* 터치 최적화 */
+            /* 스크롤바 스타일링 - 모든 스크롤 영역에 적용 */
+            .hints-section::-webkit-scrollbar,
+            .round-grid::-webkit-scrollbar {
+                width: 3px; /* 더 얇게 */
+            }
+            
+            .hints-section::-webkit-scrollbar-track,
+            .round-grid::-webkit-scrollbar-track {
+                background: #f8f9fa;
+                border-radius: 2px;
+            }
+            
+            .hints-section::-webkit-scrollbar-thumb,
+            .round-grid::-webkit-scrollbar-thumb {
+                background: #7e22ce;
+                border-radius: 2px;
+                opacity: 0.7;
+            }
+            
+            .hints-section::-webkit-scrollbar-thumb:hover,
+            .round-grid::-webkit-scrollbar-thumb:hover {
+                background: #6b21a8;
+                opacity: 1;
+            }
+            
+            /* 터치 최적화 - 최소 터치 크기 보장 */
             button, .round-button, .modal-button {
-                min-height: 44px;
-                min-width: 44px;
+                min-height: 36px; /* iOS 권장 최소 크기 */
+                min-width: 36px;
             }
             
             .answer-input {
-                min-height: 44px;
-            }
-            
-            /* 스크롤바 스타일링 */
-            .hints-section::-webkit-scrollbar {
-                width: 4px;
-            }
-            
-            .hints-section::-webkit-scrollbar-track {
-                background: #f1f1f1;
-                border-radius: 2px;
-            }
-            
-            .hints-section::-webkit-scrollbar-thumb {
-                background: #7e22ce;
-                border-radius: 2px;
-            }
-            
-            .hints-section::-webkit-scrollbar-thumb:hover {
-                background: #6b21a8;
+                min-height: 36px; /* 입력창도 터치하기 쉽게 */
             }
         }
         
         /* 초소형 화면 (360px 이하) 추가 최적화 */
         @media (max-width: 360px) {
             .round-grid {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(4, 1fr); /* 4열로 줄임 */
             }
             
             .action-buttons {
@@ -1466,31 +1507,74 @@
             }
             
             .info-grid .info-box {
-                padding: clamp(4px, 2vw, 8px);
+                padding: 2px; /* 더 작은 패딩 */
             }
             
-            .hints-section {
-                max-height: 35vh;
+            /* 폰트 크기 더 축소 */
+            .logo h1 {
+                font-size: 16px !important;
+            }
+            
+            .hints-section h2 {
+                font-size: 12px !important;
+            }
+            
+            .hint-text {
+                font-size: 11px !important;
             }
         }
         
-        /* 매우 작은 높이 화면 (iPhone SE 가로모드 등) */
+        /* 매우 작은 높이 화면 (iPhone SE 가로모드 등) - 강화 */
         @media (max-height: 500px) {
             .header {
-                padding: 5px;
-                margin-bottom: 5px;
+                padding: 2px;
+                margin-bottom: 2px;
+                max-height: 12vh; /* 헤더 높이 더 축소 */
             }
             
             .main-content {
-                padding: 8px;
-            }
-            
-            .hints-section {
-                max-height: 25vh;
+                padding: 4px;
+                max-height: calc(88vh - 20px); /* 헤더 영역 제외 */
             }
             
             .music-start-card {
-                padding: 15px;
+                padding: 10px;
+                max-height: 80vh; /* 음악 시작 카드 높이 제한 */
+            }
+            
+            /* 게임 화면에서 타이머 완전 축소 */
+            .genius-timer {
+                padding: 2px;
+                margin-bottom: 1px;
+            }
+            
+            .genius-timer-text {
+                font-size: 10px;
+            }
+            
+            .genius-timer-count {
+                font-size: 12px;
+            }
+        }
+        
+        /* 극도로 작은 높이 (400px 이하) */
+        @media (max-height: 400px) {
+            .header {
+                max-height: 10vh;
+            }
+            
+            .main-content {
+                max-height: calc(90vh - 10px);
+            }
+            
+            /* 로고 텍스트 숨기기 */
+            .logo p {
+                display: none;
+            }
+            
+            /* 게임에서 파일 정보 숨기기 */
+            .file-info {
+                display: none;
             }
         }
         
