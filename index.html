@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+        
+        // 🎵 음악 제어 함수들<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
     <title>연상천재 - IQ 140 연상퀴즈</title>
     
     <!-- 🚀 PWA 메타태그 -->
@@ -993,21 +994,24 @@
         @media (max-width: 768px) {
             /* 동적 크기 조정 변수 */
             :root {
-                --mobile-scale: clamp(0.6, 2vw, 0.9);
-                --mobile-padding: clamp(4px, 1.5vw, 8px);
-                --mobile-small-padding: clamp(2px, 0.8vw, 4px);
+                --mobile-scale: clamp(0.5, 1.8vw, 0.8);
+                --mobile-padding: clamp(3px, 1.2vw, 6px);
+                --mobile-small-padding: clamp(1px, 0.6vw, 3px);
+                --mobile-header-height: clamp(60px, 12vh, 80px);
             }
             
             /* 🔥 핵심: 전체 높이를 viewport로 완전 제한 */
             body {
                 height: 100vh;
+                height: 100dvh; /* 동적 뷰포트 높이 사용 */
                 overflow: hidden; /* 바디 스크롤 방지 */
             }
             
             /* 전체 컨테이너 높이 제한 */
             .container {
                 padding: var(--mobile-small-padding);
-                height: 100vh; /* min-height에서 height로 변경 */
+                height: 100vh;
+                height: 100dvh; /* 동적 뷰포트 높이 사용 */
                 display: flex;
                 flex-direction: column;
                 overflow: hidden; /* 컨테이너 스크롤 방지 */
@@ -1016,51 +1020,56 @@
             /* 헤더 초컴팩트 - 높이 대폭 축소 */
             .header {
                 padding: var(--mobile-small-padding);
-                margin-bottom: var(--mobile-small-padding);
+                margin-bottom: 1px; /* 매우 작은 간격 */
                 flex-direction: column;
-                gap: 3px; /* 매우 작은 간격 */
+                gap: 1px; /* 매우 작은 간격 */
                 flex-shrink: 0; /* 헤더 크기 고정 */
-                max-height: 15vh; /* 헤더 최대 높이 제한 */
+                height: var(--mobile-header-height); /* 고정 높이 */
                 overflow: hidden;
+                display: flex;
+                justify-content: space-between;
             }
             
             .logo {
-                gap: var(--mobile-small-padding);
+                gap: 2px; /* 매우 작은 간격 */
+                flex-shrink: 0;
             }
             
             .logo h1 {
-                font-size: calc(20px * var(--mobile-scale)); /* 더 작게 */
+                font-size: calc(16px * var(--mobile-scale)); /* 더 작게 */
             }
             
             .logo p {
-                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
+                font-size: calc(9px * var(--mobile-scale)); /* 더 작게 */
+                display: none; /* 공간 절약을 위해 숨김 */
             }
             
             .logo-icon {
-                width: calc(30px * var(--mobile-scale)); /* 더 작게 */
-                height: calc(30px * var(--mobile-scale));
-                font-size: calc(16px * var(--mobile-scale));
+                width: calc(24px * var(--mobile-scale)); /* 더 작게 */
+                height: calc(24px * var(--mobile-scale));
+                font-size: calc(12px * var(--mobile-scale));
             }
             
             .stats {
                 flex-direction: row;
-                gap: 3px; /* 매우 작은 간격 */
+                gap: 2px; /* 매우 작은 간격 */
                 align-items: center;
                 justify-content: center;
                 flex-wrap: wrap;
+                flex-shrink: 0;
             }
             
             .key-count {
-                font-size: calc(14px * var(--mobile-scale)); /* 더 작게 */
-                padding: 3px 6px; /* 더 작은 패딩 */
+                font-size: calc(10px * var(--mobile-scale)); /* 더 작게 */
+                padding: 2px 4px; /* 더 작은 패딩 */
             }
             
             .round-info .count {
-                font-size: calc(16px * var(--mobile-scale));
+                font-size: calc(12px * var(--mobile-scale));
             }
             
             .round-info .label {
-                font-size: calc(10px * var(--mobile-scale)); /* 더 작게 */
+                font-size: calc(8px * var(--mobile-scale)); /* 더 작게 */
             }
             
             /* 메인 콘텐츠 높이 제한 - 핵심 해결책 */
@@ -1070,7 +1079,7 @@
                 display: flex;
                 flex-direction: column;
                 overflow: hidden; /* 메인 컨텐츠 자체는 스크롤 방지 */
-                max-height: calc(85vh - 60px); /* 헤더 영역 제외한 나머지 */
+                height: calc(100dvh - var(--mobile-header-height) - 10px); /* 헤더 영역 제외 */
             }
             
             /* 라운드 선택 화면 최적화 */
@@ -1089,167 +1098,224 @@
             
             /* 게임 헤더 초컴팩트 */
             .game-header {
-                margin-bottom: 2px; /* 매우 작은 간격 */
-                gap: var(--mobile-small-padding);
+                margin-bottom: 1px; /* 매우 작은 간격 */
+                gap: 2px;
+                flex-shrink: 0;
             }
             
             .home-button {
-                width: calc(28px * var(--mobile-scale)); /* 더 작게 */
-                height: calc(28px * var(--mobile-scale));
-                font-size: calc(14px * var(--mobile-scale));
-            }
-            
-            .round-title {
-                font-size: calc(16px * var(--mobile-scale)); /* 더 작게 */
-            }
-            
-            .problem-number {
-                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
-            }
-            
-            .file-info {
-                font-size: calc(9px * var(--mobile-scale)); /* 더 작게 */
-            }
-            
-            /* 천재 타이머 초컴팩트 */
-            .genius-timer {
-                padding: 4px; /* 매우 작은 패딩 */
-                margin-bottom: 2px; /* 매우 작은 간격 */
-            }
-            
-            .genius-timer-text {
-                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
-            }
-            
-            .genius-timer-count {
-                font-size: calc(16px * var(--mobile-scale)); /* 더 작게 */
-            }
-            
-            .timer-bar {
-                height: 6px; /* 더 얇게 */
-            }
-            
-            /* 게임 콘텐츠 - 완전 세로 + 높이 제한 + 스크롤 최적화 */
-            .game-content {
-                grid-template-columns: 1fr;
-                gap: 2px; /* 매우 작은 간격 */
-                flex: 1;
-                overflow: hidden;
-                display: grid;
-                grid-template-rows: 1fr auto; /* 힌트는 확장 가능, 답변은 고정 */
-                max-height: 100%; /* 부모 높이 제한 */
-            }
-            
-            /* 힌트 섹션 - 스크롤 가능 + 높이 제한 */
-            .hints-section {
-                overflow-y: auto;
-                overflow-x: hidden;
-                max-height: 100%; /* 그리드 영역 내에서 최대 높이 */
-                padding-right: 2px;
-                /* 스크롤바 스타일링 */
-                scrollbar-width: thin;
-                scrollbar-color: #7e22ce #f1f1f1;
-            }
-            
-            .hints-section h2 {
-                font-size: calc(14px * var(--mobile-scale)); /* 더 작게 */
-                margin-bottom: 2px; /* 매우 작은 간격 */
-                position: sticky;
-                top: 0;
-                background: white;
-                z-index: 10;
-                padding-bottom: 2px;
-            }
-            
-            .hint-item {
-                margin-bottom: 2px; /* 매우 작은 간격 */
-            }
-            
-            .hint-content {
-                padding: 3px; /* 매우 작은 패딩 */
-            }
-            
-            .hint-header {
-                gap: 3px; /* 매우 작은 간격 */
-                margin-bottom: 2px;
-            }
-            
-            .hint-number {
-                width: calc(20px * var(--mobile-scale)); /* 더 작게 */
-                height: calc(20px * var(--mobile-scale));
-                font-size: calc(12px * var(--mobile-scale));
-                flex-shrink: 0;
-            }
-            
-            .hint-text {
-                font-size: calc(14px * var(--mobile-scale)); /* 더 작게 */
-                line-height: 1.2; /* 줄간격 축소 */
-            }
-            
-            .description {
-                font-size: calc(11px * var(--mobile-scale)); /* 더 작게 */
-                padding: 3px; /* 매우 작은 패딩 */
-                margin-top: 2px;
-                line-height: 1.3;
-            }
-            
-            .description-button {
-                padding: 2px 6px; /* 매우 작은 패딩 */
-                font-size: calc(10px * var(--mobile-scale)); /* 더 작게 */
-            }
-            
-            .locked-hint {
-                padding: 6px; /* 작은 패딩 */
-            }
-            
-            .locked-hint-content {
-                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
-                gap: 3px;
-            }
-            
-            /* 답변 섹션 - 초컴팩트 */
-            .answer-section {
-                gap: 2px; /* 매우 작은 간격 */
-                flex-shrink: 0;
-                padding-bottom: 2px;
-            }
-            
-            .info-grid {
-                grid-template-columns: 1fr;
-                gap: 2px; /* 매우 작은 간격 */
-            }
-            
-            .info-box {
-                padding: 3px; /* 매우 작은 패딩 */
-            }
-            
-            .info-value {
-                font-size: calc(14px * var(--mobile-scale)); /* 더 작게 */
-            }
-            
-            .info-label {
-                font-size: calc(10px * var(--mobile-scale)); /* 더 작게 */
-                margin-bottom: 1px;
-            }
-            
-            .answer-input {
-                font-size: calc(16px * var(--mobile-scale)); /* 더 작게 */
-                padding: 6px; /* 작은 패딩 */
-                min-height: 36px; /* 터치하기 충분한 크기 */
-            }
-            
-            .help-mode {
-                padding: 4px; /* 작은 패딩 */
-            }
-            
-            .help-icon {
                 width: calc(20px * var(--mobile-scale)); /* 더 작게 */
                 height: calc(20px * var(--mobile-scale));
                 font-size: calc(10px * var(--mobile-scale));
             }
             
+            .round-title {
+                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
+            }
+            
+            .problem-number {
+                font-size: calc(9px * var(--mobile-scale)); /* 더 작게 */
+            }
+            
+            .file-info {
+                display: none; /* 공간 절약을 위해 숨김 */
+            }
+            
+            /* 천재 타이머 초컴팩트 */
+            .genius-timer {
+                padding: 2px; /* 매우 작은 패딩 */
+                margin-bottom: 1px; /* 매우 작은 간격 */
+                flex-shrink: 0;
+            }
+            
+            .genius-timer-text {
+                font-size: calc(9px * var(--mobile-scale)); /* 더 작게 */
+            }
+            
+            .genius-timer-count {
+                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
+            }
+            
+            .timer-bar {
+                height: 4px; /* 더 얇게 */
+            }
+            
+            /* 🔥 게임 콘텐츠 - 키보드 대응 + 극도 압축 */
+            .game-content {
+                grid-template-columns: 1fr;
+                gap: 1px; /* 매우 작은 간격 */
+                flex: 1;
+                overflow: hidden;
+                display: grid;
+                grid-template-rows: 1fr auto; /* 힌트는 확장 가능, 답변은 고정 */
+                max-height: 100%; /* 부모 높이 제한 */
+                transition: all 0.3s ease; /* 키보드 애니메이션 */
+            }
+            
+            /* 키보드가 나타날 때 게임 콘텐츠 조정 */
+            .game-content.keyboard-active {
+                grid-template-rows: 0.3fr auto; /* 힌트 영역 더 축소 */
+            }
+            
+            /* 힌트 섹션 - 극도 압축 + 스크롤 최적화 */
+            .hints-section {
+                overflow-y: auto;
+                overflow-x: hidden;
+                max-height: 100%; /* 그리드 영역 내에서 최대 높이 */
+                padding-right: 1px;
+                /* 스크롤바 스타일링 */
+                scrollbar-width: thin;
+                scrollbar-color: #7e22ce transparent;
+            }
+            
+            .hints-section h2 {
+                font-size: calc(10px * var(--mobile-scale)); /* 더 작게 */
+                margin-bottom: 1px; /* 매우 작은 간격 */
+                position: sticky;
+                top: 0;
+                background: white;
+                z-index: 10;
+                padding: 1px 0;
+                border-bottom: 1px solid #e5e7eb;
+            }
+            
+            .hint-item {
+                margin-bottom: 1px; /* 매우 작은 간격 */
+                border-radius: 8px; /* 더 작은 반경 */
+            }
+            
+            .hint-content {
+                padding: 2px; /* 매우 작은 패딩 */
+            }
+            
+            .hint-header {
+                gap: 2px; /* 매우 작은 간격 */
+                margin-bottom: 1px;
+                align-items: flex-start; /* 상단 정렬 */
+            }
+            
+            .hint-number {
+                width: calc(16px * var(--mobile-scale)); /* 더 작게 */
+                height: calc(16px * var(--mobile-scale));
+                font-size: calc(8px * var(--mobile-scale));
+                flex-shrink: 0;
+            }
+            
+            .hint-text {
+                font-size: calc(10px * var(--mobile-scale)); /* 더 작게 */
+                line-height: 1.1; /* 줄간격 더 축소 */
+                word-break: keep-all; /* 한글 단어 보호 */
+                font-weight: normal; /* 굵기 줄임 */
+            }
+            
+            .description {
+                font-size: calc(8px * var(--mobile-scale)); /* 더 작게 */
+                padding: 2px; /* 매우 작은 패딩 */
+                margin-top: 1px;
+                line-height: 1.2;
+                border-radius: 4px;
+            }
+            
+            .description-button {
+                padding: 1px 3px; /* 매우 작은 패딩 */
+                font-size: calc(7px * var(--mobile-scale)); /* 더 작게 */
+                border-radius: 8px;
+            }
+            
+            .locked-hint {
+                padding: 3px; /* 작은 패딩 */
+            }
+            
+            .locked-hint-content {
+                font-size: calc(9px * var(--mobile-scale)); /* 더 작게 */
+                gap: 2px;
+            }
+            
+            /* 🔥 답변 섹션 - 키보드 대응 최적화 */
+            .answer-section {
+                gap: 1px; /* 매우 작은 간격 */
+                flex-shrink: 0;
+                padding: 1px;
+                background: white;
+                border-top: 1px solid #e5e7eb;
+                position: relative;
+                transition: all 0.3s ease;
+            }
+            
+            /* 키보드 활성화 시 답변 섹션 고정 */
+            .answer-section.keyboard-active {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+                background: white;
+                border-top: 2px solid #7e22ce;
+            }
+            
+            .info-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1px; /* 매우 작은 간격 */
+            }
+            
+            .info-box {
+                padding: 2px; /* 매우 작은 패딩 */
+                border-radius: 6px;
+            }
+            
+            .info-value {
+                font-size: calc(9px * var(--mobile-scale)); /* 더 작게 */
+                line-height: 1.1;
+            }
+            
+            .info-label {
+                font-size: calc(7px * var(--mobile-scale)); /* 더 작게 */
+                margin-bottom: 1px;
+            }
+            
+            /* 🔥 답변 입력창 - 키보드 대응 */
+            .answer-input {
+                font-size: calc(12px * var(--mobile-scale)); /* 더 작게 */
+                padding: 4px; /* 작은 패딩 */
+                min-height: 32px; /* 터치하기 충분한 크기 */
+                border-radius: 8px;
+                border: 2px solid #9ca3af;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+            
+            /* 포커스 시 스타일 */
+            .answer-input:focus {
+                border-color: #7e22ce;
+                box-shadow: 0 0 0 3px rgba(126, 34, 206, 0.1);
+                outline: none;
+            }
+            
+            /* 키보드 활성화 시 입력창 스타일 */
+            .answer-input.keyboard-active {
+                position: sticky;
+                top: 0;
+                z-index: 1001;
+                background: white;
+                border-color: #f59e0b;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            }
+            
+            .help-mode {
+                padding: 2px; /* 작은 패딩 */
+                border-radius: 8px;
+            }
+            
+            .help-icon {
+                width: calc(16px * var(--mobile-scale)); /* 더 작게 */
+                height: calc(16px * var(--mobile-scale));
+                font-size: calc(8px * var(--mobile-scale));
+            }
+            
             .help-text, .help-sub {
-                font-size: calc(11px * var(--mobile-scale)); /* 더 작게 */
+                font-size: calc(8px * var(--mobile-scale)); /* 더 작게 */
+                line-height: 1.2;
             }
             
             /* 정답 화면 초컴팩트 */
@@ -1284,9 +1350,10 @@
             
             /* 진행 도트 초컴팩트 */
             .progress-dots {
-                grid-template-columns: repeat(6, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(6px, 1fr));
                 gap: 1px;
                 padding: 2px;
+                max-width: 200px; /* 최대 너비 제한 */
             }
             
             .dot {
@@ -1456,23 +1523,40 @@
                 padding: var(--mobile-padding) var(--mobile-padding);
             }
             
+            /* 🔥 키보드 활성화 상태 전용 스타일 */
+            body.keyboard-active {
+                overflow: hidden;
+            }
+            
+            body.keyboard-active .hints-section {
+                max-height: 25vh !important;
+            }
+            
+            body.keyboard-active .game-content {
+                grid-template-rows: 0.4fr auto !important;
+            }
+            
+            body.keyboard-active .answer-section {
+                border-top: 2px solid #7e22ce;
+                box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+            }
+            
             /* 스크롤바 스타일링 - 모든 스크롤 영역에 적용 */
             .hints-section::-webkit-scrollbar,
             .round-grid::-webkit-scrollbar {
-                width: 3px; /* 더 얇게 */
+                width: 2px; /* 더 얇게 */
             }
             
             .hints-section::-webkit-scrollbar-track,
             .round-grid::-webkit-scrollbar-track {
-                background: #f8f9fa;
-                border-radius: 2px;
+                background: transparent;
             }
             
             .hints-section::-webkit-scrollbar-thumb,
             .round-grid::-webkit-scrollbar-thumb {
                 background: #7e22ce;
                 border-radius: 2px;
-                opacity: 0.7;
+                opacity: 0.6;
             }
             
             .hints-section::-webkit-scrollbar-thumb:hover,
@@ -1494,6 +1578,11 @@
         
         /* 초소형 화면 (360px 이하) 추가 최적화 */
         @media (max-width: 360px) {
+            :root {
+                --mobile-scale: 0.4 !important;
+                --mobile-header-height: 50px !important;
+            }
+            
             .round-grid {
                 grid-template-columns: repeat(4, 1fr); /* 4열로 줄임 */
             }
@@ -1507,64 +1596,84 @@
             }
             
             .info-grid .info-box {
-                padding: 2px; /* 더 작은 패딩 */
+                padding: 1px; /* 더 작은 패딩 */
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr; /* 세로 배치 */
             }
             
             /* 폰트 크기 더 축소 */
             .logo h1 {
-                font-size: 16px !important;
-            }
-            
-            .hints-section h2 {
                 font-size: 12px !important;
             }
             
+            .hints-section h2 {
+                font-size: 8px !important;
+            }
+            
             .hint-text {
-                font-size: 11px !important;
+                font-size: 8px !important;
+            }
+            
+            .music-controls {
+                min-width: 50px !important;
+            }
+            
+            .music-btn {
+                font-size: 5px !important;
+                min-width: 24px !important;
             }
         }
         
         /* 매우 작은 높이 화면 (iPhone SE 가로모드 등) - 강화 */
         @media (max-height: 500px) {
+            :root {
+                --mobile-header-height: 40px !important;
+            }
+            
             .header {
-                padding: 2px;
-                margin-bottom: 2px;
-                max-height: 12vh; /* 헤더 높이 더 축소 */
+                padding: 1px;
+                margin-bottom: 1px;
             }
             
             .main-content {
-                padding: 4px;
-                max-height: calc(88vh - 20px); /* 헤더 영역 제외 */
+                padding: 2px;
             }
             
             .music-start-card {
-                padding: 10px;
-                max-height: 80vh; /* 음악 시작 카드 높이 제한 */
+                padding: 8px;
+                max-height: 70vh; /* 음악 시작 카드 높이 제한 */
             }
             
             /* 게임 화면에서 타이머 완전 축소 */
             .genius-timer {
-                padding: 2px;
+                padding: 1px;
                 margin-bottom: 1px;
             }
             
             .genius-timer-text {
-                font-size: 10px;
+                font-size: 7px;
             }
             
             .genius-timer-count {
-                font-size: 12px;
+                font-size: 9px;
+            }
+            
+            /* 키보드 모드에서 힌트 영역 더 축소 */
+            body.keyboard-active .hints-section {
+                max-height: 15vh !important;
             }
         }
         
         /* 극도로 작은 높이 (400px 이하) */
         @media (max-height: 400px) {
-            .header {
-                max-height: 10vh;
+            :root {
+                --mobile-header-height: 35px !important;
             }
             
-            .main-content {
-                max-height: calc(90vh - 10px);
+            .header {
+                height: 35px !important;
             }
             
             /* 로고 텍스트 숨기기 */
@@ -1572,9 +1681,37 @@
                 display: none;
             }
             
-            /* 게임에서 파일 정보 숨기기 */
-            .file-info {
-                display: none;
+            /* 천재 타이머 숨기기 */
+            .genius-timer {
+                display: none !important;
+            }
+            
+            /* 키보드 모드에서 힌트 영역 최소화 */
+            body.keyboard-active .hints-section {
+                max-height: 10vh !important;
+            }
+            
+            body.keyboard-active .game-content {
+                grid-template-rows: 0.2fr auto !important;
+            }
+        }
+        
+        /* 극소형 높이 (350px 이하) - 최종 압축 */
+        @media (max-height: 350px) {
+            .hints-section h2 {
+                display: none; /* 힌트 제목 숨기기 */
+            }
+            
+            .progress-dots {
+                display: none; /* 진행 도트 숨기기 */
+            }
+            
+            .home-button {
+                display: none; /* 홈 버튼 숨기기 */
+            }
+            
+            body.keyboard-active .game-content {
+                grid-template-rows: 0.1fr auto !important;
             }
         }
         
@@ -2072,7 +2209,150 @@
             }
         };
 
+        // 🔥 모바일 키보드 대응 시스템
+        const MobileKeyboard = {
+            isActive: false,
+            originalViewportHeight: window.innerHeight,
+            currentViewportHeight: window.innerHeight,
+            
+            init() {
+                // Visual Viewport API 지원 여부 확인
+                if (window.visualViewport) {
+                    window.visualViewport.addEventListener('resize', this.handleViewportChange.bind(this));
+                } else {
+                    // 폴백: window resize 이벤트 사용
+                    window.addEventListener('resize', this.handleWindowResize.bind(this));
+                }
+                
+                // 입력창 포커스/블러 이벤트
+                document.addEventListener('focusin', this.handleInputFocus.bind(this));
+                document.addEventListener('focusout', this.handleInputBlur.bind(this));
+                
+                console.log('🔥 모바일 키보드 대응 시스템 초기화 완료');
+            },
+            
+            handleViewportChange() {
+                const viewport = window.visualViewport;
+                const heightDiff = this.originalViewportHeight - viewport.height;
+                
+                // 키보드가 나타났는지 확인 (높이 차이가 150px 이상)
+                if (heightDiff > 150) {
+                    if (!this.isActive) {
+                        this.activateKeyboardMode();
+                    }
+                } else {
+                    if (this.isActive) {
+                        this.deactivateKeyboardMode();
+                    }
+                }
+            },
+            
+            handleWindowResize() {
+                const currentHeight = window.innerHeight;
+                const heightDiff = this.originalViewportHeight - currentHeight;
+                
+                // 키보드 감지 (높이 차이가 150px 이상)
+                if (heightDiff > 150) {
+                    if (!this.isActive) {
+                        this.activateKeyboardMode();
+                    }
+                } else {
+                    if (this.isActive) {
+                        this.deactivateKeyboardMode();
+                    }
+                }
+            },
+            
+            handleInputFocus(event) {
+                if (event.target.classList.contains('answer-input')) {
+                    console.log('📱 답변 입력창 포커스');
+                    // 약간의 지연 후 키보드 모드 활성화 (키보드 애니메이션 대기)
+                    setTimeout(() => {
+                        this.activateKeyboardMode();
+                        this.scrollToInput(event.target);
+                    }, 300);
+                }
+            },
+            
+            handleInputBlur(event) {
+                if (event.target.classList.contains('answer-input')) {
+                    console.log('📱 답변 입력창 블러');
+                    // 약간의 지연 후 키보드 모드 비활성화
+                    setTimeout(() => {
+                        this.deactivateKeyboardMode();
+                    }, 100);
+                }
+            },
+            
+            activateKeyboardMode() {
+                this.isActive = true;
+                console.log('⌨️ 키보드 모드 활성화');
+                
+                // CSS 클래스 추가
+                document.body.classList.add('keyboard-active');
+                
+                const gameContent = document.querySelector('.game-content');
+                const answerSection = document.querySelector('.answer-section');
+                const answerInput = document.querySelector('.answer-input');
+                
+                if (gameContent) gameContent.classList.add('keyboard-active');
+                if (answerSection) answerSection.classList.add('keyboard-active');
+                if (answerInput) answerInput.classList.add('keyboard-active');
+                
+                // 힌트 섹션 높이 조정
+                const hintsSection = document.querySelector('.hints-section');
+                if (hintsSection) {
+                    hintsSection.style.maxHeight = '30vh';
+                }
+            },
+            
+            deactivateKeyboardMode() {
+                this.isActive = false;
+                console.log('⌨️ 키보드 모드 비활성화');
+                
+                // CSS 클래스 제거
+                document.body.classList.remove('keyboard-active');
+                
+                const gameContent = document.querySelector('.game-content');
+                const answerSection = document.querySelector('.answer-section');
+                const answerInput = document.querySelector('.answer-input');
+                
+                if (gameContent) gameContent.classList.remove('keyboard-active');
+                if (answerSection) answerSection.classList.remove('keyboard-active');
+                if (answerInput) answerInput.classList.remove('keyboard-active');
+                
+                // 힌트 섹션 높이 복원
+                const hintsSection = document.querySelector('.hints-section');
+                if (hintsSection) {
+                    hintsSection.style.maxHeight = '100%';
+                }
+            },
+            
+            scrollToInput(inputElement) {
+                if (inputElement && this.isActive) {
+                    // 입력창이 보이도록 스크롤 조정
+                    setTimeout(() => {
+                        inputElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }, 100);
+                }
+            }
+        };
+
         // 🎵 음악 제어 함수들
+        function toggleBGMPlayPause() {
+            AudioManager.togglePlayPause();
+        }
+
+        function toggleMusicMute() {
+            AudioManager.toggleMute();
+        }
+
+        function switchBGM() {
+            AudioManager.manualSwitchBGM();
+        }
         function toggleBGMPlayPause() {
             AudioManager.togglePlayPause();
         }
@@ -2164,10 +2444,23 @@
             const fileNumber = getFileNumber(roundNumber);
             const problems = await loadProblems(fileNumber);
             
-            // 테스트용: 간단한 3문제만 사용
-            const roundProblems = problems.slice(0, 3);
+            // 라운드별 문제 선택 
+            const problemsPerRound = 6; // 모바일 최적화를 위해 6문제로 조정
+            const startIndex = ((roundNumber - 1) % 10) * problemsPerRound;
+            const endIndex = startIndex + problemsPerRound;
             
-            console.log(`라운드 ${roundNumber}: 파일 ${fileNumber}, 문제 ${roundProblems.length}개 로드됨`);
+            let roundProblems = problems.slice(startIndex, endIndex);
+            
+            // 만약 지정된 범위에 문제가 부족하면 처음부터 가져오기
+            if (roundProblems.length < problemsPerRound) {
+                roundProblems = problems.slice(0, Math.min(problemsPerRound, problems.length));
+            }
+            
+            if (roundProblems.length === 0) {
+                throw new Error(`라운드 ${roundNumber}에 해당하는 문제가 없습니다.`);
+            }
+            
+            console.log(`라운드 ${roundNumber}: 파일 ${fileNumber}, 문제 ${roundProblems.length}개 로드됨 (${startIndex+1}~${startIndex+roundProblems.length}번째)`);
             
             return roundProblems;
         }
@@ -2186,7 +2479,7 @@
             document.getElementById('app').innerHTML = html;
         }
 
-        function showError(message = '문제를 불러오는 중 오류가 발생했습니다.', detail = '') {
+        function showError(message = '문제를 불러오는 중 오류가 발생했습니다.', detail = '', fileNumber = null) {
             const html = `
                 <div class="container">
                     <div class="main-content">
@@ -2195,6 +2488,12 @@
                             <div class="error-title">오류 발생</div>
                             <div class="error-text">${message}</div>
                             ${detail ? `<div class="error-text" style="font-size: 16px; margin-top: 10px;">${detail}</div>` : ''}
+                            ${fileNumber ? `<div class="error-text" style="font-size: 14px; margin-top: 15px; color: #666;">
+                                확인사항:<br/>
+                                • problems_${fileNumber}.json 파일이 서버에 업로드되어 있나요?<br/>
+                                • 파일 형식이 올바른 JSON인가요?<br/>
+                                • 브라우저 개발자도구 → Network 탭에서 파일 요청을 확인해보세요
+                            </div>` : ''}
                             <button class="retry-button" onclick="renderRoundMap()">
                                 다시 시도
                             </button>
@@ -2344,7 +2643,8 @@
                 console.error('라운드 시작 실패:', error);
                 showError(
                     `라운드 ${roundNumber}을 시작할 수 없습니다.`, 
-                    `problems_${fileNumber}.json 파일이 있는지 확인해주세요.`
+                    `오류: ${error.message}`,
+                    fileNumber
                 );
             } finally {
                 isLoading = false;
@@ -2430,9 +2730,10 @@
                                     💾 자동저장
                                 </div>
                                 <div class="progress-dots">
-                                    ${Array.from({ length: totalProblems }, (_, i) => `
+                                    ${Array.from({ length: Math.min(totalProblems, 6) }, (_, i) => `
                                         <div class="dot ${i < gameState.currentProblem ? 'completed' : i === gameState.currentProblem ? 'current' : ''}"></div>
                                     `).join('')}
+                                    ${totalProblems > 6 ? `<div style="font-size: 10px; color: #666; text-align: center; margin-top: 2px;">${gameState.currentProblem + 1}/${totalProblems}</div>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -2534,6 +2835,11 @@
                                         class="answer-input" 
                                         placeholder="정답을 입력하세요 (Enter로 확인)"
                                         value="${gameState.userAnswer}"
+                                        autocomplete="off"
+                                        autocorrect="off"
+                                        autocapitalize="off"
+                                        spellcheck="false"
+                                        inputmode="text"
                                         oninput="
                                             gameState.userAnswer = this.value;
                                             saveGame();
@@ -3273,6 +3579,11 @@
 
         function initGame() {
             const savedGameState = loadGame();
+            
+            // 🔥 모바일 키보드 대응 시스템 초기화
+            if (window.innerWidth <= 768) {
+                MobileKeyboard.init();
+            }
             
             // 🎵 음악 시작 오버레이 표시
             const startOverlayHtml = `
