@@ -764,10 +764,21 @@
             cursor: pointer;
             transition: transform 0.2s;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            position: relative;
         }
 
         .next-button:hover {
             transform: scale(1.05);
+        }
+
+        .next-button:focus {
+            outline: 3px solid rgba(249, 115, 22, 0.5);
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3), 0 0 0 3px rgba(249, 115, 22, 0.3);
+        }
+
+        .next-button:active {
+            transform: scale(0.98);
         }
 
         /* 모달 스타일 */
@@ -1346,6 +1357,11 @@
                 font-size: calc(16px * var(--mobile-scale)); /* 더 작게 */
                 padding: 8px; /* 작은 패딩 */
                 min-height: 40px; /* 터치하기 충분한 크기 */
+            }
+
+            .next-button:focus {
+                outline: 2px solid rgba(249, 115, 22, 0.8);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px rgba(249, 115, 22, 0.4);
             }
             
             /* 진행 도트 초컴팩트 */
@@ -2209,7 +2225,31 @@
             }
         };
 
-        // 🔥 모바일 키보드 대응 시스템
+        // 🆕 정답 후 엔터키 처리 시스템
+        let nextProblemKeyListener = null;
+
+        function addNextProblemKeyListener() {
+            // 기존 리스너가 있으면 제거
+            removeNextProblemKeyListener();
+            
+            nextProblemKeyListener = function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    nextProblem();
+                }
+            };
+            
+            document.addEventListener('keydown', nextProblemKeyListener);
+            console.log('⌨️ 다음 문제 엔터키 리스너 추가됨');
+        }
+
+        function removeNextProblemKeyListener() {
+            if (nextProblemKeyListener) {
+                document.removeEventListener('keydown', nextProblemKeyListener);
+                nextProblemKeyListener = null;
+                console.log('⌨️ 다음 문제 엔터키 리스너 제거됨');
+            }
+        }
         const MobileKeyboard = {
             isActive: false,
             originalViewportHeight: window.innerHeight,
@@ -2506,6 +2546,9 @@
 
         function renderRoundMap() {
             if (isLoading) return;
+            
+            // 🆕 엔터키 리스너 정리
+            removeNextProblemKeyListener();
             
             clearSavedGameState();
             
@@ -2862,8 +2905,11 @@
                                         <div class="correct-category">(${problem.category})</div>
                                     </div>
                                     
-                                    <button class="next-button" onclick="nextProblem()">
+                                    <button class="next-button" onclick="nextProblem()" id="nextProblemBtn">
                                         ${gameState.currentProblem === totalProblems - 1 ? '🏆 라운드 완료' : '🚀 다음 문제'}
+                                        <div style="font-size: 14px; opacity: 0.8; margin-top: 2px;">
+                                            💡 클릭 또는 Enter키
+                                        </div>
                                     </button>
                                 `}
                             </div>
@@ -2874,9 +2920,25 @@
             
             document.getElementById('app').innerHTML = html;
             
-            const input = document.querySelector('.answer-input');
-            if (input) {
-                input.focus();
+            // 입력창 또는 다음 문제 버튼에 포커스
+            if (!gameState.isCorrect) {
+                // 정답을 맞추지 않은 상태 - 입력창에 포커스
+                const input = document.querySelector('.answer-input');
+                if (input) {
+                    input.focus();
+                }
+                // 정답 후 엔터키 리스너 제거
+                removeNextProblemKeyListener();
+            } else {
+                // 정답을 맞춘 상태 - 다음 문제 버튼에 포커스 및 엔터키 리스너 추가
+                const nextBtn = document.getElementById('nextProblemBtn');
+                if (nextBtn) {
+                    nextBtn.focus();
+                    // 약간의 지연 후 엔터키 리스너 추가 (렌더링 완료 대기)
+                    setTimeout(() => {
+                        addNextProblemKeyListener();
+                    }, 100);
+                }
             }
             
             if (gameState.unlockedHints.includes(4) && !gameState.canShowDescriptions) {
@@ -2956,6 +3018,9 @@
         function nextProblem() {
             AudioManager.playSound('click');
             
+            // 🆕 엔터키 리스너 제거
+            removeNextProblemKeyListener();
+            
             const totalProblems = gameState.problems.length;
             
             if (gameState.currentProblem === totalProblems - 1) {
@@ -2987,6 +3052,9 @@
 
         function renderRoundComplete() {
             AudioManager.playSound('complete');
+            
+            // 🆕 엔터키 리스너 정리
+            removeNextProblemKeyListener();
             
             const totalRoundKeys = gameState.roundKeys + 1;
             const nextRoundAvailable = currentRound < 100;
@@ -3615,6 +3683,9 @@
 
         setInterval(saveGame, 5000);
         window.addEventListener('beforeunload', saveGame);
+        
+        // 🆕 페이지 이탈 시 이벤트 리스너 정리
+        window.addEventListener('beforeunload', removeNextProblemKeyListener);
 
         // 🚀 PWA Service Worker 등록
         if ('serviceWorker' in navigator) {
