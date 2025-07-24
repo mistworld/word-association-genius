@@ -1,5 +1,4 @@
-        
-        // 🎵 음악 제어 함수들<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -613,6 +612,55 @@
             color: #4b5563;
         }
 
+        /* 🆕 정답 후 설명 강조 스타일 */
+        .description.after-correct {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;
+            border: 2px solid #10b981 !important;
+            font-weight: bold !important;
+            font-size: 22px !important;
+            line-height: 1.6 !important;
+            padding: 20px !important;
+            margin-top: 15px !important;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
+            animation: highlightPulse 2s ease-in-out 2;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .explanation-notice {
+            animation: slideInFromTop 0.8s ease;
+            margin: 15px 0;
+        }
+
+        @keyframes slideInFromTop {
+            0% { 
+                transform: translateY(-20px); 
+                opacity: 0; 
+            }
+            100% { 
+                transform: translateY(0); 
+                opacity: 1; 
+            }
+        }
+
+        .explanation-timer {
+            animation: fadeInScale 0.5s ease;
+        }
+
+        @keyframes fadeInScale {
+            0% { 
+                transform: scale(0.8); 
+                opacity: 0; 
+            }
+            100% { 
+                transform: scale(1); 
+                opacity: 1; 
+            }
+        }
+
         .locked-hint {
             padding: 24px;
             background: #f3f4f6;
@@ -779,6 +827,12 @@
 
         .next-button:active {
             transform: scale(0.98);
+        }
+
+        .next-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* 모달 스타일 */
@@ -1059,6 +1113,7 @@
                 gap: 2px;
                 flex-wrap: wrap;
             }
+            
             .logo {
                 gap: 2px; /* 매우 작은 간격 */
                 flex-shrink: 0;
@@ -1251,6 +1306,36 @@
                 margin-top: 1px;
                 line-height: 1.2;
                 border-radius: 4px;
+            }
+
+            /* 🆕 모바일에서 정답 후 설명 강조 스타일 */
+            .description.after-correct {
+                background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;
+                border: 2px solid #10b981 !important;
+                font-weight: bold !important;
+                font-size: calc(12px * var(--mobile-scale)) !important;
+                line-height: 1.4 !important;
+                padding: 8px !important;
+                margin-top: 5px !important;
+                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
+            }
+            
+            .explanation-notice {
+                margin: 5px 0 !important;
+            }
+            
+            .explanation-notice div {
+                padding: 8px !important;
+                font-size: calc(12px * var(--mobile-scale)) !important;
+            }
+            
+            .explanation-timer {
+                margin-bottom: 8px !important;
+            }
+            
+            .explanation-timer div {
+                padding: 6px !important;
+                font-size: calc(10px * var(--mobile-scale)) !important;
             }
             
             .description-button {
@@ -2312,6 +2397,7 @@
                 console.log('⌨️ 다음 문제 엔터키 리스너 제거됨');
             }
         }
+
         const MobileKeyboard = {
             isActive: false,
             originalViewportHeight: window.innerHeight,
@@ -2536,17 +2622,6 @@
         };
 
         // 🎵 음악 제어 함수들
-        function toggleBGMPlayPause() {
-            AudioManager.togglePlayPause();
-        }
-
-        function toggleMusicMute() {
-            AudioManager.toggleMute();
-        }
-
-        function switchBGM() {
-            AudioManager.manualSwitchBGM();
-        }
         function toggleBGMPlayPause() {
             AudioManager.togglePlayPause();
         }
@@ -2883,6 +2958,7 @@
             }
         }
 
+        // 🆕 정답 후 설명 표시 개선된 renderGame 함수
         function renderGame() {
             const problem = gameState.problems[gameState.currentProblem];
             
@@ -2954,6 +3030,21 @@
                         <div class="game-content">
                             <div class="hints-section">
                                 <h2>🧩 힌트</h2>
+                                
+                                <!-- 🆕 정답 후 설명 강조 안내 -->
+                                ${gameState.isCorrect && gameState.showAllAfterCorrect ? `
+                                    <div class="explanation-notice">
+                                        <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border: 2px solid #3b82f6; border-radius: 16px; padding: 15px; margin: 10px 0; text-align: center;">
+                                            <div style="font-size: 18px; font-weight: bold; color: #1e40af; margin-bottom: 8px;">
+                                                📚 힌트 설명이 공개되었습니다!
+                                            </div>
+                                            <div style="font-size: 14px; color: #3b82f6;">
+                                                위 힌트들의 자세한 설명을 확인해보세요
+                                            </div>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                                
                                 ${problem.hints.map((hint, index) => `
                                     <div class="hint-item">
                                         ${gameState.unlockedHints.includes(index) ? `
@@ -2968,8 +3059,8 @@
                                                     </button>
                                                 ` : ''}
                                                 ${gameState.showDescriptions[index] || gameState.showAllAfterCorrect ? `
-                                                    <div class="description">
-                                                        ${problem.descriptions[index]}
+                                                    <div class="description ${gameState.showAllAfterCorrect ? 'after-correct' : ''}">
+                                                        ${gameState.showAllAfterCorrect ? '📖 ' : ''}${problem.descriptions[index]}
                                                     </div>
                                                 ` : ''}
                                             </div>
@@ -3059,10 +3150,22 @@
                                         <div class="correct-category">(${problem.category})</div>
                                     </div>
                                     
-                                    <button class="next-button" onclick="nextProblem()" id="nextProblemBtn">
+                                    <!-- 🆕 정답 후 설명 읽기 시간 제공 -->
+                                    <div id="explanationTimer" class="explanation-timer" style="display: block;">
+                                        <div style="background: #fef3c7; border-radius: 12px; padding: 12px; margin-bottom: 15px; text-align: center;">
+                                            <div style="font-size: 16px; font-weight: bold; color: #d97706; margin-bottom: 5px;">
+                                                📖 설명을 확인하세요!
+                                            </div>
+                                            <div style="font-size: 14px; color: #92400e;">
+                                                <span id="explanationCountdown">5</span>초 후 다음 문제로 진행 가능
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="next-button" onclick="nextProblem()" id="nextProblemBtn" disabled style="opacity: 0.5; cursor: not-allowed;">
                                         ${gameState.currentProblem === totalProblems - 1 ? '🏆 라운드 완료' : '🚀 다음 문제'}
                                         <div style="font-size: 14px; opacity: 0.8; margin-top: 2px;">
-                                            💡 클릭 또는 Enter키
+                                            📖 설명을 읽어보세요...
                                         </div>
                                     </button>
                                 `}
@@ -3074,25 +3177,75 @@
             
             document.getElementById('app').innerHTML = html;
             
-            // 입력창 또는 다음 문제 버튼에 포커스
+            // 🆕 정답 후 처리 로직 개선
             if (!gameState.isCorrect) {
                 // 정답을 맞추지 않은 상태 - 입력창에 포커스
                 const input = document.querySelector('.answer-input');
                 if (input) {
                     input.focus();
                 }
-                // 정답 후 엔터키 리스너 제거
                 removeNextProblemKeyListener();
             } else {
-                // 정답을 맞춘 상태 - 다음 문제 버튼에 포커스 및 엔터키 리스너 추가
+                // 🆕 정답을 맞춘 상태 - 설명 읽기 시간 제공
+                removeNextProblemKeyListener(); // 즉시 엔터키 리스너 제거
+                
+                // 5초 카운트다운 후 버튼 활성화
+                let countdown = 5;
+                const countdownElement = document.getElementById('explanationCountdown');
                 const nextBtn = document.getElementById('nextProblemBtn');
-                if (nextBtn) {
-                    nextBtn.focus();
-                    // 약간의 지연 후 엔터키 리스너 추가 (렌더링 완료 대기)
-                    setTimeout(() => {
-                        addNextProblemKeyListener();
-                    }, 100);
-                }
+                const timerElement = document.getElementById('explanationTimer');
+                
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    if (countdownElement) {
+                        countdownElement.textContent = countdown;
+                    }
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        
+                        // 버튼 활성화
+                        if (nextBtn) {
+                            nextBtn.disabled = false;
+                            nextBtn.style.opacity = '1';
+                            nextBtn.style.cursor = 'pointer';
+                            nextBtn.querySelector('div').textContent = '💡 클릭 또는 Enter키';
+                            nextBtn.focus(); // 이제 포커스 설정
+                        }
+                        
+                        // 타이머 숨기기
+                        if (timerElement) {
+                            timerElement.style.display = 'none';
+                        }
+                        
+                        // 이제 엔터키 리스너 추가
+                        setTimeout(() => {
+                            addNextProblemKeyListener();
+                        }, 100);
+                        
+                        // 자동 스크롤로 설명 영역 강조
+                        const hintsSection = document.querySelector('.hints-section');
+                        if (hintsSection) {
+                            hintsSection.scrollTop = 0; // 맨 위로 스크롤하여 설명들이 보이도록
+                        }
+                    }
+                }, 1000);
+                
+                // 설명이 잘 보이도록 힌트 섹션 강조
+                setTimeout(() => {
+                    const hintsSection = document.querySelector('.hints-section');
+                    if (hintsSection) {
+                        hintsSection.style.border = '3px solid #3b82f6';
+                        hintsSection.style.borderRadius = '16px';
+                        hintsSection.style.animation = 'pulse 2s ease-in-out 3';
+                        
+                        // 3초 후 강조 효과 제거
+                        setTimeout(() => {
+                            hintsSection.style.border = '';
+                            hintsSection.style.animation = '';
+                        }, 3000);
+                    }
+                }, 500);
             }
             
             if (gameState.unlockedHints.includes(4) && !gameState.canShowDescriptions) {
@@ -3111,6 +3264,7 @@
             }, 100);
         }
 
+        // 🆕 개선된 checkAnswer 함수
         function checkAnswer(value) {
             const problem = gameState.problems[gameState.currentProblem];
             
@@ -3125,21 +3279,23 @@
                     AudioManager.playSound('genius'); // 🆕 천재 전용 효과음!
                     gameState.roundKeys++;
                     gameState.geniusCount++;
-                    showModal('genius');
+                    setTimeout(() => showModal('genius'), 300); // 약간 지연 후 모달 표시
                 } else {
                     AudioManager.playSound('correct'); // 일반 정답 효과음
                     
                     if (gameState.showChosung) {
-                        showModal('chosung-correct');
+                        setTimeout(() => showModal('chosung-correct'), 300);
                     } else {
                         const hintCount = gameState.unlockedHints.length;
-                        switch (hintCount) {
-                            case 3: showModal('sharp'); break;
-                            case 4: showModal('skilled'); break;
-                            case 5: showModal('focus'); break;
-                            case 6: showModal('sleepy'); break;
-                            default: showModal('correct');
-                        }
+                        setTimeout(() => {
+                            switch (hintCount) {
+                                case 3: showModal('sharp'); break;
+                                case 4: showModal('skilled'); break;
+                                case 5: showModal('focus'); break;
+                                case 6: showModal('sleepy'); break;
+                                default: showModal('correct');
+                            }
+                        }, 300);
                     }
                 }
                 
@@ -3150,7 +3306,7 @@
                 gameState.showCharacterCount = true;
                 gameState.showCategory = true;
                 gameState.showChosung = true;
-                gameState.showDescriptions = Array(6).fill(true);
+                gameState.showDescriptions = Array(6).fill(true); // 모든 설명 표시
                 gameState.canShowDescriptions = true;
                 
                 renderGame();
