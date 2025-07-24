@@ -1028,59 +1028,85 @@
                 overflow: hidden; /* 컨테이너 스크롤 방지 */
             }
             
-            /* 헤더 초컴팩트 - 높이 대폭 축소 */
+            /* 헤더 초컴팩트 - 2줄 레이아웃으로 변경 */
             .header {
                 padding: var(--mobile-small-padding);
                 margin-bottom: 1px; /* 매우 작은 간격 */
                 flex-direction: column;
-                gap: 1px; /* 매우 작은 간격 */
+                gap: 2px; /* 약간 늘림 */
                 flex-shrink: 0; /* 헤더 크기 고정 */
-                height: var(--mobile-header-height); /* 고정 높이 */
-                overflow: hidden;
+                height: auto; /* 자동 높이로 변경 */
+                max-height: none; /* 최대 높이 제한 해제 */
+                overflow: visible; /* 오버플로 표시 */
                 display: flex;
                 justify-content: space-between;
             }
             
+            /* 🆕 헤더를 2줄로 분할 */
+            .header-top-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                gap: 2px;
+            }
+            
+            .header-bottom-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                gap: 2px;
+                flex-wrap: wrap;
+            }
             .logo {
                 gap: 2px; /* 매우 작은 간격 */
                 flex-shrink: 0;
+                display: flex;
+                align-items: center;
             }
             
             .logo h1 {
-                font-size: calc(16px * var(--mobile-scale)); /* 더 작게 */
+                font-size: calc(14px * var(--mobile-scale)); /* 더 작게 */
+                white-space: nowrap; /* 줄바꿈 방지 */
             }
             
             .logo p {
-                font-size: calc(9px * var(--mobile-scale)); /* 더 작게 */
-                display: none; /* 공간 절약을 위해 숨김 */
+                display: none; /* 공간 절약을 위해 완전 숨김 */
             }
             
             .logo-icon {
-                width: calc(24px * var(--mobile-scale)); /* 더 작게 */
-                height: calc(24px * var(--mobile-scale));
-                font-size: calc(12px * var(--mobile-scale));
+                width: calc(20px * var(--mobile-scale)); /* 더 작게 */
+                height: calc(20px * var(--mobile-scale));
+                font-size: calc(10px * var(--mobile-scale));
             }
             
             .stats {
-                flex-direction: row;
-                gap: 2px; /* 매우 작은 간격 */
+                display: flex;
                 align-items: center;
-                justify-content: center;
-                flex-wrap: wrap;
+                gap: 2px; /* 매우 작은 간격 */
+                flex-wrap: nowrap; /* 줄바꿈 방지 */
                 flex-shrink: 0;
             }
             
             .key-count {
                 font-size: calc(10px * var(--mobile-scale)); /* 더 작게 */
                 padding: 2px 4px; /* 더 작은 패딩 */
+                white-space: nowrap; /* 줄바꿈 방지 */
+                flex-shrink: 0;
+            }
+            
+            .round-info {
+                text-align: center;
+                flex-shrink: 0;
             }
             
             .round-info .count {
-                font-size: calc(12px * var(--mobile-scale));
+                font-size: calc(10px * var(--mobile-scale)); /* 더 작게 */
             }
             
             .round-info .label {
-                font-size: calc(8px * var(--mobile-scale)); /* 더 작게 */
+                font-size: calc(7px * var(--mobile-scale)); /* 더 작게 */
             }
             
             /* 메인 콘텐츠 높이 제한 - 핵심 해결책 */
