@@ -2727,6 +2727,12 @@
             
             console.log(`📊 problems_${fileNumber}.json 전체 문제 수:`, problems.length);
             
+            // 🚨 파일 내용이 적은 경우 경고
+            if (problems.length < 60) {
+                console.warn(`⚠️ 주의: problems_${fileNumber}.json에 ${problems.length}개 문제만 있습니다!`);
+                console.warn(`💡 권장: 60개 문제 필요 (10라운드 × 6문제)`);
+            }
+            
             // 라운드별 문제 선택 계산
             const problemsPerRound = 6;
             const startIndex = ((roundNumber - 1) % 10) * problemsPerRound;
@@ -2742,22 +2748,38 @@
             let roundProblems = problems.slice(startIndex, endIndex);
             
             // 선택된 문제들 확인
-            console.log(`📝 라운드 ${roundNumber} 선택된 ${roundProblems.length}개 문제:`);
+            console.log(`📝 라운드 ${roundNumber} 1차 선택된 ${roundProblems.length}개 문제:`);
             roundProblems.forEach((problem, index) => {
                 console.log(`   ${index + 1}. [${startIndex + index}] ${problem.answer[0]} - ${problem.hints[0]}`);
             });
             
-            // 만약 지정된 범위에 문제가 부족하면 처음부터 가져오기
+            // 🚨 문제 부족 시 강제로 6개 맞추기
             if (roundProblems.length < problemsPerRound) {
                 console.warn(`⚠️ 문제 부족! 요청: ${problemsPerRound}개, 실제: ${roundProblems.length}개`);
                 console.warn(`📁 파일에 실제로 ${problems.length}개 문제 존재`);
-                console.warn(`🔄 폴백 로직 실행: 처음 ${problemsPerRound}개 문제 사용`);
                 
-                roundProblems = problems.slice(0, Math.min(problemsPerRound, problems.length));
+                if (problems.length >= problemsPerRound) {
+                    // 파일에 6개 이상 문제가 있으면 처음부터 6개 선택
+                    console.warn(`🔄 폴백 로직 실행: 처음 ${problemsPerRound}개 문제 사용`);
+                    roundProblems = problems.slice(0, problemsPerRound);
+                } else {
+                    // 파일에 6개 미만이면 있는 만큼 반복해서 6개 만들기
+                    console.warn(`🔄 문제 반복 로직 실행: ${problems.length}개 문제를 반복해서 ${problemsPerRound}개 만들기`);
+                    roundProblems = [];
+                    for (let i = 0; i < problemsPerRound; i++) {
+                        const problemIndex = i % problems.length;
+                        roundProblems.push({
+                            ...problems[problemIndex],
+                            // 같은 문제 반복 시 번호 추가로 구분
+                            answer: [`${problems[problemIndex].answer[0]} (${Math.floor(i / problems.length) + 1})`],
+                            hints: problems[problemIndex].hints.map(hint => `${hint} (${Math.floor(i / problems.length) + 1})`)
+                        });
+                    }
+                }
                 
-                console.log(`🆘 폴백으로 선택된 문제들:`);
+                console.log(`🆘 최종 선택된 ${roundProblems.length}개 문제:`);
                 roundProblems.forEach((problem, index) => {
-                    console.log(`   ${index + 1}. [${index}] ${problem.answer[0]} - ${problem.hints[0]}`);
+                    console.log(`   ${index + 1}. ${problem.answer[0]} - ${problem.hints[0]}`);
                 });
             }
             
@@ -2765,7 +2787,12 @@
                 throw new Error(`라운드 ${roundNumber}에 해당하는 문제가 없습니다.`);
             }
             
-            console.log(`✅ 라운드 ${roundNumber} 문제 선택 완료!\n`);
+            // 🚨 최종 확인
+            if (roundProblems.length !== problemsPerRound) {
+                console.error(`❌ 심각한 오류: ${problemsPerRound}개 문제가 필요한데 ${roundProblems.length}개만 선택됨!`);
+            } else {
+                console.log(`✅ 라운드 ${roundNumber} 문제 선택 완료 (${roundProblems.length}개)!\n`);
+            }
             
             return roundProblems;
         }
@@ -3376,22 +3403,37 @@
             
             const totalProblems = gameState.problems.length;
             
-            console.log(`➡️ 다음 문제로 이동: ${gameState.currentProblem + 1}/${totalProblems}`);
+            console.log(`\n➡️ ===== 다음 문제 처리 시작 =====`);
+            console.log(`📊 현재 상황:`);
+            console.log(`   - 현재 문제 번호: ${gameState.currentProblem + 1}/${totalProblems}`);
+            console.log(`   - 전체 문제 수: ${totalProblems}개`);
+            console.log(`   - 다음 문제로 갈 수 있나?: ${gameState.currentProblem < totalProblems - 1 ? 'Yes' : 'No'}`);
+            
+            // 🚨 문제 수 체크
+            if (totalProblems !== 6) {
+                console.error(`❌ 심각한 오류: 라운드당 6개 문제가 있어야 하는데 ${totalProblems}개만 있습니다!`);
+                console.error(`🔍 gameState.problems 내용:`, gameState.problems.map(p => p.answer[0]));
+            }
             
             if (gameState.currentProblem === totalProblems - 1) {
-                console.log('🏆 라운드 완료!');
+                console.log(`🏁 라운드 종료 조건 만족: ${gameState.currentProblem + 1} === ${totalProblems}`);
+                console.log('🏆 라운드 완료 처리 시작!');
+                
                 clearSavedGameState();
                 completedRounds.push(currentRound);
                 keys += gameState.roundKeys + 1;
                 currentScreen = 'roundComplete';
                 renderRoundComplete();
             } else {
+                console.log(`📝 다음 문제로 이동: ${gameState.currentProblem + 1} → ${gameState.currentProblem + 2}`);
+                
                 gameState.currentProblem++;
                 
                 // 🆕 다음 문제 정보 로그
                 const nextProblem = gameState.problems[gameState.currentProblem];
-                console.log(`📝 문제 ${gameState.currentProblem + 1}: ${nextProblem.answer[0]}`);
-                console.log(`💡 힌트1: ${nextProblem.hints[0]}`);
+                console.log(`🎯 새로운 문제 ${gameState.currentProblem + 1}:`);
+                console.log(`   - 정답: ${nextProblem.answer[0]}`);
+                console.log(`   - 힌트1: ${nextProblem.hints[0]}`);
                 
                 gameState.unlockedHints = [0, 1];
                 gameState.showCharacterCount = false;
@@ -3410,6 +3452,8 @@
                 startTimer();
                 saveGame();
             }
+            
+            console.log(`✅ 다음 문제 처리 완료\n`);
         }
 
         function renderRoundComplete() {
