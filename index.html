@@ -631,34 +631,12 @@
         }
 
         .explanation-notice {
-            animation: slideInFromTop 0.8s ease;
             margin: 15px 0;
-        }
-
-        @keyframes slideInFromTop {
-            0% { 
-                transform: translateY(-20px); 
-                opacity: 0; 
-            }
-            100% { 
-                transform: translateY(0); 
-                opacity: 1; 
-            }
+            /* 🆕 애니메이션 제거 */
         }
 
         .explanation-timer {
-            animation: fadeInScale 0.5s ease;
-        }
-
-        @keyframes fadeInScale {
-            0% { 
-                transform: scale(0.8); 
-                opacity: 0; 
-            }
-            100% { 
-                transform: scale(1); 
-                opacity: 1; 
-            }
+            /* 🆕 애니메이션 제거 */
         }
 
         .locked-hint {
@@ -933,8 +911,8 @@
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
+            25% { transform: translateX(-2px); } /* 🆕 움직임 줄임 */
+            75% { transform: translateX(2px); }  /* 🆕 움직임 줄임 */
         }
 
         .complete-title {
@@ -2374,10 +2352,12 @@
 
         // 🆕 정답 후 엔터키 처리 시스템
         let nextProblemKeyListener = null;
+        let skipProblemKeyListener = null; // 🆕 힌트 상태에서 문제 건너뛰기용
 
         function addNextProblemKeyListener() {
             // 기존 리스너가 있으면 제거
             removeNextProblemKeyListener();
+            removeSkipProblemKeyListener(); // 🆕 건너뛰기 리스너도 제거
             
             nextProblemKeyListener = function(event) {
                 if (event.key === 'Enter') {
@@ -2396,6 +2376,80 @@
                 nextProblemKeyListener = null;
                 console.log('⌨️ 다음 문제 엔터키 리스너 제거됨');
             }
+        }
+
+        // 🆕 힌트 상태에서 문제 건너뛰기 리스너
+        function addSkipProblemKeyListener() {
+            // 기존 리스너가 있으면 제거
+            removeSkipProblemKeyListener();
+            removeNextProblemKeyListener(); // 다음 문제 리스너도 제거
+            
+            skipProblemKeyListener = function(event) {
+                // 입력창에 포커스가 있으면 정답 확인 우선
+                const activeElement = document.activeElement;
+                if (activeElement && activeElement.classList.contains('answer-input')) {
+                    return; // 입력창에서는 기본 동작 (정답 확인) 유지
+                }
+                
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    
+                    // 확인 모달 표시
+                    const modalHtml = `
+                        <div class="modal" onclick="if(event.target === this) closeModal()">
+                            <div class="modal-content">
+                                <div class="modal-icon">⏭️</div>
+                                <h3 class="modal-title">문제 건너뛰기</h3>
+                                <p class="modal-text">현재 문제를 포기하고 다음 문제로 넘어가시겠습니까?</p>
+                                <div class="modal-buttons">
+                                    <button class="modal-button yellow" onclick="skipCurrentProblem()">
+                                        ⏭️ 건너뛰기
+                                    </button>
+                                    <button class="modal-button gray modal-primary" onclick="closeModal()">
+                                        취소
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.insertAdjacentHTML('beforeend', modalHtml);
+                    
+                    // 모달 키보드 이벤트 리스너 추가
+                    setTimeout(() => {
+                        document.addEventListener('keydown', handleModalKeypress);
+                        const primaryBtn = document.querySelector('.modal-primary');
+                        if (primaryBtn) {
+                            primaryBtn.focus();
+                        }
+                    }, 100);
+                }
+            };
+            
+            document.addEventListener('keydown', skipProblemKeyListener);
+            console.log('⌨️ 문제 건너뛰기 엔터키 리스너 추가됨');
+        }
+
+        function removeSkipProblemKeyListener() {
+            if (skipProblemKeyListener) {
+                document.removeEventListener('keydown', skipProblemKeyListener);
+                skipProblemKeyListener = null;
+                console.log('⌨️ 문제 건너뛰기 엔터키 리스너 제거됨');
+            }
+        }
+
+        // 🆕 현재 문제 건너뛰기 함수
+        function skipCurrentProblem() {
+            closeModal();
+            
+            console.log('⏭️ 문제 건너뛰기 실행');
+            AudioManager.playSound('click');
+            
+            // 건너뛴 문제는 틀린 것으로 처리 (보상 없음)
+            gameState.isCorrect = false;
+            
+            // 바로 다음 문제로 이동
+            nextProblem();
         }
 
         const MobileKeyboard = {
@@ -2839,8 +2893,9 @@
         function renderRoundMap() {
             if (isLoading) return;
             
-            // 🆕 엔터키 리스너 정리
+            // 🆕 모든 엔터키 리스너 정리
             removeNextProblemKeyListener();
+            removeSkipProblemKeyListener(); // 🆕 건너뛰기 리스너도 정리
             
             clearSavedGameState();
             
@@ -3255,6 +3310,9 @@
                     input.focus();
                 }
                 removeNextProblemKeyListener();
+                
+                // 🆕 힌트 상태에서 엔터키로 문제 건너뛰기 활성화
+                addSkipProblemKeyListener();
             } else {
                 // 🆕 정답을 맞춘 상태 - 설명 읽기 시간 제공
                 removeNextProblemKeyListener(); // 즉시 엔터키 리스너 제거
@@ -3386,11 +3444,12 @@
                 
                 const input = document.querySelector('.answer-input');
                 if (input) {
-                    input.style.animation = 'shake 0.5s';
+                    // 🆕 흔들림 효과 줄임 (0.5초 → 0.2초)
+                    input.style.animation = 'shake 0.2s';
                     setTimeout(() => {
                         input.style.animation = '';
                         input.select();
-                    }, 500);
+                    }, 200); // 시간도 단축
                 }
             }
         }
@@ -3459,8 +3518,9 @@
         function renderRoundComplete() {
             AudioManager.playSound('complete');
             
-            // 🆕 엔터키 리스너 정리
+            // 🆕 모든 엔터키 리스너 정리
             removeNextProblemKeyListener();
+            removeSkipProblemKeyListener(); // 🆕 건너뛰기 리스너도 정리
             
             const totalRoundKeys = gameState.roundKeys + 1;
             const nextRoundAvailable = currentRound < 100;
@@ -4091,8 +4151,12 @@
         setInterval(saveGame, 5000);
         window.addEventListener('beforeunload', saveGame);
         
-        // 🆕 페이지 이탈 시 이벤트 리스너 정리
-        window.addEventListener('beforeunload', removeNextProblemKeyListener);
+        // 🆕 페이지 이탈 시 모든 이벤트 리스너 정리
+        window.addEventListener('beforeunload', () => {
+            saveGame();
+            removeNextProblemKeyListener();
+            removeSkipProblemKeyListener(); // 🆕 건너뛰기 리스너도 정리
+        });
 
         // 🚀 PWA Service Worker 등록
         if ('serviceWorker' in navigator) {
