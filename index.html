@@ -17,6 +17,12 @@
     <meta name="msapplication-TileColor" content="#7e22ce">
     <meta name="msapplication-tap-highlight" content="no">
     
+    <!-- 🔥 캐시 방지 메타태그 (개발용) -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="version" content="1.0.0">
+    
     <!-- 🔗 PWA 매니페스트 -->
     <link rel="manifest" href="manifest.json">
     
@@ -2351,14 +2357,258 @@
             }
         };
 
-        // 🆕 정답 후 엔터키 처리 시스템
+        // 🔥 캐시 관리 시스템
+        const CacheManager = {
+            version: '1.0.0', // 🆕 버전 업데이트 시 이 숫자를 변경하세요!
+            
+            init() {
+                this.checkVersion();
+                this.addDeveloperTools();
+                console.log(`🔥 캐시 관리 시스템 초기화 완료 (버전: ${this.version})`);
+            },
+            
+            // 버전 체크 및 자동 새로고침
+            checkVersion() {
+                const savedVersion = localStorage.getItem('게임_버전');
+                const currentVersion = this.version;
+                
+                console.log(`📋 버전 체크: 저장된 버전=${savedVersion}, 현재 버전=${currentVersion}`);
+                
+                if (savedVersion && savedVersion !== currentVersion) {
+                    console.log('🔄 새 버전 감지! 캐시를 클리어하고 새로고침합니다.');
+                    this.clearAllCache();
+                    localStorage.setItem('게임_버전', currentVersion);
+                    
+                    // 사용자에게 알림 후 새로고침
+                    alert(`🚀 새 버전(${currentVersion})이 업데이트되었습니다!\n페이지가 새로고침됩니다.`);
+                    location.reload(true); // 강제 새로고침
+                    return;
+                }
+                
+                // 첫 방문이면 현재 버전 저장
+                if (!savedVersion) {
+                    localStorage.setItem('게임_버전', currentVersion);
+                    console.log(`✅ 첫 방문: 버전 ${currentVersion} 저장됨`);
+                }
+            },
+            
+            // 모든 캐시 클리어
+            clearAllCache() {
+                try {
+                    // 1. 브라우저 캐시 클리어 시도
+                    if ('caches' in window) {
+                        caches.keys().then(cacheNames => {
+                            cacheNames.forEach(cacheName => {
+                                caches.delete(cacheName);
+                                console.log(`🗑️ 캐시 삭제됨: ${cacheName}`);
+                            });
+                        });
+                    }
+                    
+                    // 2. Service Worker 캐시 클리어
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.getRegistrations().then(registrations => {
+                            registrations.forEach(registration => {
+                                registration.update();
+                                console.log('🔄 Service Worker 업데이트 요청됨');
+                            });
+                        });
+                    }
+                    
+                    // 3. 로컬 스토리지 임시 백업 후 문제 캐시만 클리어
+                    const gameData = localStorage.getItem('연상천재_게임데이터');
+                    
+                    // problems 관련 캐시 변수 클리어
+                    if (window.problemsCache) {
+                        window.problemsCache = {};
+                        console.log('🗑️ 문제 캐시 클리어됨');
+                    }
+                    
+                    console.log('✅ 전체 캐시 클리어 완료');
+                    
+                } catch (error) {
+                    console.warn('⚠️ 캐시 클리어 중 오류:', error);
+                }
+            },
+            
+            // 🛠️ 개발자 도구 추가
+            addDeveloperTools() {
+                // Ctrl+Shift+D로 개발자 도구 열기
+                document.addEventListener('keydown', (event) => {
+                    if (event.ctrlKey && event.shiftKey && event.key === 'D') {
+                        event.preventDefault();
+                        this.showDeveloperPanel();
+                    }
+                });
+                
+                console.log('🛠️ 개발자 도구 활성화: Ctrl+Shift+D로 열기');
+            },
+            
+            // 개발자 패널 표시
+            showDeveloperPanel() {
+                const modalHtml = `
+                    <div class="modal">
+                        <div class="modal-content" style="max-width: 500px;">
+                            <div class="modal-icon">🛠️</div>
+                            <h3 class="modal-title">개발자 도구</h3>
+                            
+                            <div style="margin: 20px 0; text-align: left;">
+                                <div style="margin-bottom: 15px; padding: 10px; background: #f8fafc; border-radius: 8px;">
+                                    <h4 style="margin: 0 0 10px 0;">📋 현재 상태</h4>
+                                    <div style="font-size: 14px; color: #666;">
+                                        게임 버전: ${this.version}<br/>
+                                        저장된 버전: ${localStorage.getItem('게임_버전') || '없음'}<br/>
+                                        문제 캐시: ${Object.keys(problemsCache || {}).length}개 파일<br/>
+                                        완료 라운드: ${completedRounds.length}개<br/>
+                                        보유 열쇠: ${keys}개
+                                    </div>
+                                </div>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                    <button onclick="CacheManager.forceClearCache()" style="padding: 10px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                                        🗑️ 캐시 클리어
+                                    </button>
+                                    <button onclick="CacheManager.forceReload()" style="padding: 10px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                                        🔄 강제 새로고침
+                                    </button>
+                                    <button onclick="CacheManager.resetGameData()" style="padding: 10px; background: #f59e0b; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                                        ⚠️ 게임 초기화
+                                    </button>
+                                    <button onclick="CacheManager.downloadDebugInfo()" style="padding: 10px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                                        📋 디버그 정보
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <button class="modal-button gray modal-primary" onclick="closeModal()">닫기</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                
+                setTimeout(() => {
+                    document.addEventListener('keydown', handleModalKeypress);
+                    const primaryBtn = document.querySelector('.modal-primary');
+                    if (primaryBtn) {
+                        primaryBtn.focus();
+                    }
+                }, 100);
+            },
+            
+            // 강제 캐시 클리어
+            forceClearCache() {
+                closeModal();
+                this.clearAllCache();
+                AudioManager.showMusicNotification('🗑️ 캐시가 클리어되었습니다!', 'success');
+                
+                setTimeout(() => {
+                    if (confirm('캐시 클리어 완료!\n새로고침하시겠습니까?')) {
+                        location.reload(true);
+                    }
+                }, 1000);
+            },
+            
+            // 강제 새로고침
+            forceReload() {
+                closeModal();
+                AudioManager.showMusicNotification('🔄 강제 새로고침 중...', 'warning');
+                
+                setTimeout(() => {
+                    location.reload(true);
+                }, 500);
+            },
+            
+            // 게임 데이터 초기화
+            resetGameData() {
+                closeModal();
+                
+                if (confirm('⚠️ 정말로 모든 게임 데이터를 초기화하시겠습니까?\n\n- 완료한 라운드 초기화\n- 보유 열쇠 초기화\n- 저장된 게임 삭제\n\n이 작업은 되돌릴 수 없습니다!')) {
+                    // 게임 데이터만 초기화 (버전 정보는 유지)
+                    const version = localStorage.getItem('게임_버전');
+                    localStorage.clear();
+                    if (version) {
+                        localStorage.setItem('게임_버전', version);
+                    }
+                    
+                    AudioManager.showMusicNotification('⚠️ 게임 데이터가 초기화되었습니다!', 'warning');
+                    
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                }
+            },
+            
+            // 디버그 정보 다운로드
+            downloadDebugInfo() {
+                closeModal();
+                
+                const debugInfo = {
+                    timestamp: new Date().toISOString(),
+                    gameVersion: this.version,
+                    savedVersion: localStorage.getItem('게임_버전'),
+                    completedRounds: completedRounds,
+                    keys: keys,
+                    currentScreen: currentScreen,
+                    gameState: gameState,
+                    problemsCache: Object.keys(problemsCache || {}),
+                    userAgent: navigator.userAgent,
+                    localStorage: Object.keys(localStorage),
+                    audioInfo: AudioManager.getCurrentBGMInfo()
+                };
+                
+                const jsonStr = JSON.stringify(debugInfo, null, 2);
+                const blob = new Blob([jsonStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `연상천재_디버그정보_${new Date().toISOString().slice(0, 16).replace(/:/g, '').replace('T', '_')}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                AudioManager.showMusicNotification('📋 디버그 정보가 다운로드되었습니다!', 'success');
+            },
+            
+            // 새 버전 확인 (수동)
+            checkForUpdates() {
+                // 실제로는 서버에서 최신 버전 정보를 가져와야 하지만,
+                // 여기서는 간단히 현재 페이지를 다시 로드해서 확인
+                console.log('🔍 업데이트 확인 중...');
+                
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = location.href + '?check=' + Date.now();
+                
+                iframe.onload = () => {
+                    try {
+                        const iframeVersion = iframe.contentDocument.querySelector('meta[name="version"]')?.content;
+                        if (iframeVersion && iframeVersion !== this.version) {
+                            if (confirm(`🚀 새 버전(${iframeVersion})이 있습니다!\n업데이트하시겠습니까?`)) {
+                                this.clearAllCache();
+                                location.reload(true);
+                            }
+                        } else {
+                            AudioManager.showMusicNotification('✅ 최신 버전입니다!', 'success');
+                        }
+                    } catch (error) {
+                        console.warn('업데이트 확인 실패:', error);
+                    }
+                    
+                    document.body.removeChild(iframe);
+                };
+                
+                document.body.appendChild(iframe);
+            }
+        };
         let nextProblemKeyListener = null;
-        let skipProblemKeyListener = null; // 🆕 힌트 상태에서 문제 건너뛰기용
+        let skipProblemKeyListener = null; // 🆕 힌트 상태에서 다음 문제 이동용
 
         function addNextProblemKeyListener() {
             // 기존 리스너가 있으면 제거
             removeNextProblemKeyListener();
-            removeSkipProblemKeyListener(); // 🆕 건너뛰기 리스너도 제거
+            removeSkipProblemKeyListener(); // 🆕 다음 문제 이동 리스너도 제거
             
             nextProblemKeyListener = function(event) {
                 if (event.key === 'Enter') {
@@ -2379,7 +2629,7 @@
             }
         }
 
-        // 🆕 힌트 상태에서 문제 건너뛰기 리스너 (모달 없이 바로 실행)
+        // 🆕 힌트 상태에서 다음 문제 이동 리스너 (확인 모달 없이 바로 실행)
         function addSkipProblemKeyListener() {
             // 기존 리스너가 있으면 제거
             removeSkipProblemKeyListener();
@@ -2401,20 +2651,20 @@
             };
             
             document.addEventListener('keydown', skipProblemKeyListener);
-            console.log('⌨️ 문제 건너뛰기 엔터키 리스너 추가됨');
+            console.log('⌨️ 다음 문제 이동 엔터키 리스너 추가됨 (힌트 상태)');
         }
 
         function removeSkipProblemKeyListener() {
             if (skipProblemKeyListener) {
                 document.removeEventListener('keydown', skipProblemKeyListener);
                 skipProblemKeyListener = null;
-                console.log('⌨️ 문제 건너뛰기 엔터키 리스너 제거됨');
+                console.log('⌨️ 다음 문제 이동 엔터키 리스너 제거됨 (힌트 상태)');
             }
         }
 
-        // 🆕 현재 문제 건너뛰기 함수 (모달 제거)
+        // 🆕 현재 문제에서 다음 문제로 이동 함수
         function skipCurrentProblem() {
-            console.log('⏭️ 문제 건너뛰기 실행');
+            console.log('⏭️ 다음 문제로 이동 실행');
             AudioManager.playSound('click');
             
             // 건너뛴 문제는 틀린 것으로 처리 (보상 없음)
@@ -2867,7 +3117,7 @@
             
             // 🆕 모든 엔터키 리스너 정리
             removeNextProblemKeyListener();
-            removeSkipProblemKeyListener(); // 🆕 건너뛰기 리스너도 정리
+            removeSkipProblemKeyListener(); // 🆕 다음 문제 이동 리스너도 정리
             
             clearSavedGameState();
             
@@ -3131,7 +3381,7 @@
                                 <!-- 🆕 엔터키 안내 (정답 상태가 아닐 때만) -->
                                 ${!gameState.isCorrect ? `
                                     <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 8px; margin-bottom: 15px; font-size: 14px; color: #0369a1; text-align: center;">
-                                        💡 <strong>Enter</strong>키로 문제 건너뛰기 가능
+                                        💡 <strong>Enter</strong>키로 다음 문제로 이동
                                     </div>
                                     <style>
                                         @media (max-width: 768px) {
@@ -3299,7 +3549,7 @@
                 }
                 removeNextProblemKeyListener();
                 
-                // 🆕 힌트 상태에서 엔터키로 문제 건너뛰기 활성화
+                // 🆕 힌트 상태에서 엔터키로 다음 문제 이동 활성화
                 addSkipProblemKeyListener();
             } else {
                 // 🆕 정답을 맞춘 상태 - 설명 읽기 시간 제공
@@ -3508,7 +3758,7 @@
             
             // 🆕 모든 엔터키 리스너 정리
             removeNextProblemKeyListener();
-            removeSkipProblemKeyListener(); // 🆕 건너뛰기 리스너도 정리
+            removeSkipProblemKeyListener(); // 🆕 다음 문제 이동 리스너도 정리
             
             const totalRoundKeys = gameState.roundKeys + 1;
             const nextRoundAvailable = currentRound < 100;
@@ -4143,7 +4393,7 @@
         window.addEventListener('beforeunload', () => {
             saveGame();
             removeNextProblemKeyListener();
-            removeSkipProblemKeyListener(); // 🆕 건너뛰기 리스너도 정리
+            removeSkipProblemKeyListener(); // 🆕 다음 문제 이동 리스너도 정리
         });
 
         // 🚀 PWA Service Worker 등록
