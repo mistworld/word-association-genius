@@ -21,7 +21,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="1.0.0">
+    <meta name="version" content="1.0.1">
     
     <!-- 🔗 PWA 매니페스트 -->
     <link rel="manifest" href="manifest.json">
@@ -2359,7 +2359,8 @@
 
         // 🔥 캐시 관리 시스템
         const CacheManager = {
-            version: '1.0.0', // 🆕 버전 업데이트 시 이 숫자를 변경하세요!
+            // 🆕 HTML 메타태그에서 버전 자동 읽기
+            version: document.querySelector('meta[name="version"]')?.content || '1.0.1',
             
             init() {
                 this.checkVersion();
@@ -3166,6 +3167,9 @@
                                 </button>
                                 <button onclick="showAudioSettings()" style="padding: 8px 12px; background: #f59e0b; color: white; border: none; border-radius: 8px; font-size: 12px; cursor: pointer;" title="음량 설정">
                                     🎵 설정
+                                </button>
+                                <button onclick="CacheManager.forceClearCache()" style="padding: 8px 12px; background: #ef4444; color: white; border: none; border-radius: 8px; font-size: 12px; cursor: pointer;" title="캐시 클리어 후 새로고침">
+                                    🔄 캐시클리어
                                 </button>
                             </div>
                         </div>
@@ -4351,6 +4355,9 @@
         }
 
         function initGame() {
+            // 🔥 캐시 관리 시스템 초기화 (가장 먼저 실행)
+            CacheManager.init();
+            
             const savedGameState = loadGame();
             
             // 🔥 모바일 키보드 대응 시스템 초기화
@@ -4504,6 +4511,33 @@
 
         // 🎵 게임 시작
         initGame();
+        
+        // 🔥 개발자를 위한 콘솔 도움말 출력
+        console.log(`
+🎮 연상천재 게임 개발자 도구
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 현재 버전: ${CacheManager.version}
+
+🛠️ 개발자 단축키:
+   Ctrl+Shift+D  →  개발자 패널 열기
+
+🔧 캐시 관리:
+   CacheManager.forceClearCache()  →  캐시 클리어
+   CacheManager.forceReload()      →  강제 새로고침
+   CacheManager.checkForUpdates()  →  업데이트 확인
+
+📊 게임 상태:
+   completedRounds  →  완료된 라운드 확인
+   keys             →  보유 열쇠 확인  
+   gameState        →  현재 게임 상태 확인
+
+🎵 오디오 관리:
+   AudioManager     →  음악 시스템 제어
+
+💡 팁: 파일 수정 후 캐시 문제가 있으면 '🔄 캐시클리어' 버튼을 누르세요!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        `);
     </script>
 </body>
 </html>
