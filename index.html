@@ -2660,7 +2660,7 @@
             }
         }
 
-        // 문제 데이터 캐시 (서버에서 불러온 실제 데이터 저장용)
+        // 🔍 강화된 디버깅이 적용된 문제 데이터 캐시
         const problemsCache = {};
         
         // 게임 상태
@@ -2671,23 +2671,32 @@
         let gameState = {};
         let isLoading = false;
 
-        // JSON 파일에서 문제 로드 (서버에서 실제 파일 불러오기)
+        // 🔍 강화된 디버깅 loadProblems 함수
         async function loadProblems(fileNumber) {
             if (problemsCache[fileNumber]) {
-                console.log(`캐시에서 problems_${fileNumber}.json 로드됨`);
+                console.log(`📦 캐시에서 problems_${fileNumber}.json 로드됨 (${problemsCache[fileNumber].length}개 문제)`);
                 return problemsCache[fileNumber];
             }
 
             try {
-                console.log(`problems_${fileNumber}.json 파일 로딩 시도...`);
-                const response = await fetch(`problems_${fileNumber}.json`);
+                console.log(`🌐 problems_${fileNumber}.json 파일 새로 로딩 시도...`);
+                const response = await fetch(`problems_${fileNumber}.json?t=${Date.now()}`); // 캐시 방지
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
                 
                 const problems = await response.json();
-                console.log(`problems_${fileNumber}.json 성공적으로 로드됨 (문제 ${problems.length}개)`);
+                console.log(`✅ problems_${fileNumber}.json 성공적으로 로드됨 (문제 ${problems.length}개)`);
+                
+                // 첫 몇 개 문제의 답 확인
+                console.log(`🔍 파일 ${fileNumber} 처음 3개 문제:`, 
+                    problems.slice(0, 3).map((p, i) => `${i}: ${p.answer[0]}`));
+                
+                if (problems.length >= 12) {
+                    console.log(`🔍 파일 ${fileNumber} 6~8번 문제:`, 
+                        problems.slice(6, 9).map((p, i) => `${i+6}: ${p.answer[0]}`));
+                }
                 
                 // 데이터 검증
                 if (!Array.isArray(problems) || problems.length === 0) {
@@ -2698,8 +2707,8 @@
                 return problems;
                 
             } catch (error) {
-                console.error(`problems_${fileNumber}.json 로드 실패:`, error);
-                throw error; // 에러를 다시 던져서 상위에서 처리하도록
+                console.error(`❌ problems_${fileNumber}.json 로드 실패:`, error);
+                throw error;
             }
         }
 
@@ -2709,27 +2718,54 @@
             return fileNumber;
         }
 
+        // 🔍 강화된 디버깅 getProblemsForRound 함수
         async function getProblemsForRound(roundNumber) {
+            console.log(`\n🎯 ===== 라운드 ${roundNumber} 문제 선택 시작 =====`);
+            
             const fileNumber = getFileNumber(roundNumber);
             const problems = await loadProblems(fileNumber);
             
-            // 라운드별 문제 선택 
-            const problemsPerRound = 6; // 모바일 최적화를 위해 6문제로 조정
+            console.log(`📊 problems_${fileNumber}.json 전체 문제 수:`, problems.length);
+            
+            // 라운드별 문제 선택 계산
+            const problemsPerRound = 6;
             const startIndex = ((roundNumber - 1) % 10) * problemsPerRound;
             const endIndex = startIndex + problemsPerRound;
             
+            console.log(`🧮 라운드 ${roundNumber} 인덱스 계산:
+    - 파일번호: ${fileNumber}
+    - (roundNumber - 1) % 10 = (${roundNumber} - 1) % 10 = ${(roundNumber - 1) % 10}
+    - startIndex: ${(roundNumber - 1) % 10} × ${problemsPerRound} = ${startIndex}
+    - endIndex: ${startIndex} + ${problemsPerRound} = ${endIndex}
+    - 선택할 문제: ${startIndex}~${endIndex-1}번째`);
+            
             let roundProblems = problems.slice(startIndex, endIndex);
+            
+            // 선택된 문제들 확인
+            console.log(`📝 라운드 ${roundNumber} 선택된 ${roundProblems.length}개 문제:`);
+            roundProblems.forEach((problem, index) => {
+                console.log(`   ${index + 1}. [${startIndex + index}] ${problem.answer[0]} - ${problem.hints[0]}`);
+            });
             
             // 만약 지정된 범위에 문제가 부족하면 처음부터 가져오기
             if (roundProblems.length < problemsPerRound) {
+                console.warn(`⚠️ 문제 부족! 요청: ${problemsPerRound}개, 실제: ${roundProblems.length}개`);
+                console.warn(`📁 파일에 실제로 ${problems.length}개 문제 존재`);
+                console.warn(`🔄 폴백 로직 실행: 처음 ${problemsPerRound}개 문제 사용`);
+                
                 roundProblems = problems.slice(0, Math.min(problemsPerRound, problems.length));
+                
+                console.log(`🆘 폴백으로 선택된 문제들:`);
+                roundProblems.forEach((problem, index) => {
+                    console.log(`   ${index + 1}. [${index}] ${problem.answer[0]} - ${problem.hints[0]}`);
+                });
             }
             
             if (roundProblems.length === 0) {
                 throw new Error(`라운드 ${roundNumber}에 해당하는 문제가 없습니다.`);
             }
             
-            console.log(`라운드 ${roundNumber}: 파일 ${fileNumber}, 문제 ${roundProblems.length}개 로드됨 (${startIndex+1}~${startIndex+roundProblems.length}번째)`);
+            console.log(`✅ 라운드 ${roundNumber} 문제 선택 완료!\n`);
             
             return roundProblems;
         }
@@ -2869,9 +2905,11 @@
             }, 100);
         }
 
+        // 🔍 강화된 디버깅 startRound 함수
         async function startRound(roundNumber) {
             if (isLoading) return;
             
+            console.log(`\n🚀 ===== 라운드 ${roundNumber} 시작 =====`);
             AudioManager.playSound('click');
             
             isLoading = true;
@@ -2907,12 +2945,17 @@
                     currentFileNumber: fileNumber
                 };
                 
+                console.log(`🎮 라운드 ${roundNumber} 게임 상태 초기화 완료:`);
+                console.log(`   - 총 문제 수: ${problems.length}`);
+                console.log(`   - 첫 번째 문제: ${problems[0].answer[0]}`);
+                console.log(`   - 첫 번째 힌트: ${problems[0].hints[0]}`);
+                
                 renderGame();
                 startTimer();
                 saveGame();
                 
             } catch (error) {
-                console.error('라운드 시작 실패:', error);
+                console.error('❌ 라운드 시작 실패:', error);
                 showError(
                     `라운드 ${roundNumber}을 시작할 수 없습니다.`, 
                     `오류: ${error.message}`,
@@ -3325,15 +3368,18 @@
             }
         }
 
+        // 🔍 강화된 디버깅 nextProblem 함수
         function nextProblem() {
             AudioManager.playSound('click');
             
-            // 🆕 엔터키 리스너 제거
             removeNextProblemKeyListener();
             
             const totalProblems = gameState.problems.length;
             
+            console.log(`➡️ 다음 문제로 이동: ${gameState.currentProblem + 1}/${totalProblems}`);
+            
             if (gameState.currentProblem === totalProblems - 1) {
+                console.log('🏆 라운드 완료!');
                 clearSavedGameState();
                 completedRounds.push(currentRound);
                 keys += gameState.roundKeys + 1;
@@ -3341,6 +3387,12 @@
                 renderRoundComplete();
             } else {
                 gameState.currentProblem++;
+                
+                // 🆕 다음 문제 정보 로그
+                const nextProblem = gameState.problems[gameState.currentProblem];
+                console.log(`📝 문제 ${gameState.currentProblem + 1}: ${nextProblem.answer[0]}`);
+                console.log(`💡 힌트1: ${nextProblem.hints[0]}`);
+                
                 gameState.unlockedHints = [0, 1];
                 gameState.showCharacterCount = false;
                 gameState.showCategory = false;
@@ -3749,6 +3801,7 @@
             AudioManager.playSound(soundType);
         }
 
+        // 🔍 강화된 디버깅 saveGame 함수
         function saveGame() {
             const saveData = {
                 completedRounds: completedRounds,
@@ -3773,7 +3826,7 @@
             
             try {
                 localStorage.setItem('연상천재_게임데이터', JSON.stringify(saveData));
-                console.log('게임 저장됨 (localStorage):', saveData);
+                console.log(`💾 게임 저장됨: 라운드 ${currentRound}, 문제 ${gameState?.currentProblem + 1 || 0}`);
             } catch (error) {
                 console.error('저장 실패:', error);
                 window.gameData = saveData;
