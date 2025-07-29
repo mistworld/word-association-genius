@@ -612,7 +612,7 @@
             color: #4b5563;
         }
 
-        /* 🆕 정답 후 설명 강조 스타일 */
+        /* 🆕 정답 후 설명 강조 스타일 (움직임 제거) */
         .description.after-correct {
             background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;
             border: 2px solid #10b981 !important;
@@ -622,12 +622,12 @@
             padding: 20px !important;
             margin-top: 15px !important;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
-            animation: highlightPulse 2s ease-in-out 2;
+            /* 🆕 애니메이션 제거 */
         }
 
         @keyframes highlightPulse {
+            /* 🆕 애니메이션 비활성화 */
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
         }
 
         .explanation-notice {
@@ -1286,7 +1286,7 @@
                 border-radius: 4px;
             }
 
-            /* 🆕 모바일에서 정답 후 설명 강조 스타일 */
+            /* 🆕 모바일에서 정답 후 설명 강조 스타일 (움직임 제거) */
             .description.after-correct {
                 background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;
                 border: 2px solid #10b981 !important;
@@ -1296,6 +1296,7 @@
                 padding: 8px !important;
                 margin-top: 5px !important;
                 box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
+                /* 🆕 애니메이션 제거 */
             }
             
             .explanation-notice {
@@ -2378,7 +2379,7 @@
             }
         }
 
-        // 🆕 힌트 상태에서 문제 건너뛰기 리스너
+        // 🆕 힌트 상태에서 문제 건너뛰기 리스너 (모달 없이 바로 실행)
         function addSkipProblemKeyListener() {
             // 기존 리스너가 있으면 제거
             removeSkipProblemKeyListener();
@@ -2394,35 +2395,8 @@
                 if (event.key === 'Enter') {
                     event.preventDefault();
                     
-                    // 확인 모달 표시
-                    const modalHtml = `
-                        <div class="modal" onclick="if(event.target === this) closeModal()">
-                            <div class="modal-content">
-                                <div class="modal-icon">⏭️</div>
-                                <h3 class="modal-title">문제 건너뛰기</h3>
-                                <p class="modal-text">현재 문제를 포기하고 다음 문제로 넘어가시겠습니까?</p>
-                                <div class="modal-buttons">
-                                    <button class="modal-button yellow" onclick="skipCurrentProblem()">
-                                        ⏭️ 건너뛰기
-                                    </button>
-                                    <button class="modal-button gray modal-primary" onclick="closeModal()">
-                                        취소
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.body.insertAdjacentHTML('beforeend', modalHtml);
-                    
-                    // 모달 키보드 이벤트 리스너 추가
-                    setTimeout(() => {
-                        document.addEventListener('keydown', handleModalKeypress);
-                        const primaryBtn = document.querySelector('.modal-primary');
-                        if (primaryBtn) {
-                            primaryBtn.focus();
-                        }
-                    }, 100);
+                    // 🆕 확인 모달 없이 바로 다음 문제로 이동
+                    skipCurrentProblem();
                 }
             };
             
@@ -2438,10 +2412,8 @@
             }
         }
 
-        // 🆕 현재 문제 건너뛰기 함수
+        // 🆕 현재 문제 건너뛰기 함수 (모달 제거)
         function skipCurrentProblem() {
-            closeModal();
-            
             console.log('⏭️ 문제 건너뛰기 실행');
             AudioManager.playSound('click');
             
@@ -3156,6 +3128,22 @@
                             <div class="hints-section">
                                 <h2>🧩 힌트</h2>
                                 
+                                <!-- 🆕 엔터키 안내 (정답 상태가 아닐 때만) -->
+                                ${!gameState.isCorrect ? `
+                                    <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 8px; margin-bottom: 15px; font-size: 14px; color: #0369a1; text-align: center;">
+                                        💡 <strong>Enter</strong>키로 문제 건너뛰기 가능
+                                    </div>
+                                    <style>
+                                        @media (max-width: 768px) {
+                                            .hints-section div[style*="background: #f0f9ff"] {
+                                                font-size: calc(8px * var(--mobile-scale)) !important;
+                                                padding: 4px !important;
+                                                margin-bottom: 8px !important;
+                                            }
+                                        }
+                                    </style>
+                                ` : ''}
+                                
                                 <!-- 🆕 정답 후 설명 강조 안내 -->
                                 ${gameState.isCorrect && gameState.showAllAfterCorrect ? `
                                     <div class="explanation-notice">
@@ -3359,21 +3347,21 @@
                     }
                 }, 1000);
                 
-                // 설명이 잘 보이도록 힌트 섹션 강조
+                // 설명이 잘 보이도록 힌트 섹션 약간 강조 (움직임 제거)
                 setTimeout(() => {
                     const hintsSection = document.querySelector('.hints-section');
                     if (hintsSection) {
-                        hintsSection.style.border = '3px solid #3b82f6';
+                        hintsSection.style.border = '2px solid #3b82f6'; // 🆕 테두리만 적용
                         hintsSection.style.borderRadius = '16px';
-                        hintsSection.style.animation = 'pulse 2s ease-in-out 3';
+                        // 🆕 애니메이션 완전 제거
                         
-                        // 3초 후 강조 효과 제거
+                        // 1초 후 강조 효과 제거 (시간 단축)
                         setTimeout(() => {
                             hintsSection.style.border = '';
-                            hintsSection.style.animation = '';
-                        }, 3000);
+                            hintsSection.style.borderRadius = '';
+                        }, 1000); // 🆕 3초 → 1초로 단축
                     }
-                }, 500);
+                }, 200); // 🆕 0.5초 → 0.2초로 단축
             }
             
             if (gameState.unlockedHints.includes(4) && !gameState.canShowDescriptions) {
