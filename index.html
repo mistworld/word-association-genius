@@ -21,7 +21,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="1.0.2">
+    <meta name="version" content="1.0.3">
     
     <!-- 🔗 PWA 매니페스트 -->
     <link rel="manifest" href="manifest.json">
@@ -2391,7 +2391,7 @@
         // 🔥 캐시 관리 시스템
         const CacheManager = {
             // 🆕 HTML 메타태그에서 버전 자동 읽기
-            version: document.querySelector('meta[name="version"]')?.content || '1.0.1',
+            version: document.querySelector('meta[name="version"]')?.content || '1.0.3',
             
             init() {
                 this.checkVersion();
@@ -2635,12 +2635,10 @@
             }
         };
         let nextProblemKeyListener = null;
-        let skipProblemKeyListener = null; // 🆕 힌트 상태에서 다음 문제 이동용
 
         function addNextProblemKeyListener() {
             // 기존 리스너가 있으면 제거
             removeNextProblemKeyListener();
-            removeSkipProblemKeyListener(); // 🆕 다음 문제 이동 리스너도 제거
             
             nextProblemKeyListener = function(event) {
                 if (event.key === 'Enter') {
@@ -2659,51 +2657,6 @@
                 nextProblemKeyListener = null;
                 console.log('⌨️ 다음 문제 엔터키 리스너 제거됨');
             }
-        }
-
-        // 🆕 힌트 상태에서 다음 문제 이동 리스너 (확인 모달 없이 바로 실행)
-        function addSkipProblemKeyListener() {
-            // 기존 리스너가 있으면 제거
-            removeSkipProblemKeyListener();
-            removeNextProblemKeyListener(); // 다음 문제 리스너도 제거
-            
-            skipProblemKeyListener = function(event) {
-                // 입력창에 포커스가 있으면 정답 확인 우선
-                const activeElement = document.activeElement;
-                if (activeElement && activeElement.classList.contains('answer-input')) {
-                    return; // 입력창에서는 기본 동작 (정답 확인) 유지
-                }
-                
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    
-                    // 🆕 확인 모달 없이 바로 다음 문제로 이동
-                    skipCurrentProblem();
-                }
-            };
-            
-            document.addEventListener('keydown', skipProblemKeyListener);
-            console.log('⌨️ 다음 문제 이동 엔터키 리스너 추가됨 (힌트 상태)');
-        }
-
-        function removeSkipProblemKeyListener() {
-            if (skipProblemKeyListener) {
-                document.removeEventListener('keydown', skipProblemKeyListener);
-                skipProblemKeyListener = null;
-                console.log('⌨️ 다음 문제 이동 엔터키 리스너 제거됨 (힌트 상태)');
-            }
-        }
-
-        // 🆕 현재 문제에서 다음 문제로 이동 함수
-        function skipCurrentProblem() {
-            console.log('⏭️ 다음 문제로 이동 실행');
-            AudioManager.playSound('click');
-            
-            // 건너뛴 문제는 틀린 것으로 처리 (보상 없음)
-            gameState.isCorrect = false;
-            
-            // 바로 다음 문제로 이동
-            nextProblem();
         }
 
         const MobileKeyboard = {
@@ -3149,7 +3102,6 @@
             
             // 🆕 모든 엔터키 리스너 정리
             removeNextProblemKeyListener();
-            removeSkipProblemKeyListener(); // 🆕 다음 문제 이동 리스너도 정리
             
             clearSavedGameState();
             
@@ -3413,22 +3365,6 @@
                             <div class="hints-section">
                                 <h2>🧩 힌트</h2>
                                 
-                                <!-- 🆕 엔터키 안내 (정답 상태가 아닐 때만) -->
-                                ${!gameState.isCorrect ? `
-                                    <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 8px; margin-bottom: 15px; font-size: 14px; color: #0369a1; text-align: center;">
-                                        💡 <strong>Enter</strong>키로 다음 문제로 이동
-                                    </div>
-                                    <style>
-                                        @media (max-width: 768px) {
-                                            .hints-section div[style*="background: #f0f9ff"] {
-                                                font-size: calc(8px * var(--mobile-scale)) !important;
-                                                padding: 4px !important;
-                                                margin-bottom: 8px !important;
-                                            }
-                                        }
-                                    </style>
-                                ` : ''}
-                                
                                 <!-- 🆕 정답 후 설명 강조 안내 (축소) -->
                                 ${gameState.isCorrect && gameState.showAllAfterCorrect ? `
                                     <div class="explanation-notice">
@@ -3588,9 +3524,6 @@
                     input.focus();
                 }
                 removeNextProblemKeyListener();
-                
-                // 🆕 힌트 상태에서 엔터키로 다음 문제 이동 활성화
-                addSkipProblemKeyListener();
             } else {
                 // 🆕 정답을 맞춘 상태 - 설명 읽기 시간 제공
                 removeNextProblemKeyListener(); // 즉시 엔터키 리스너 제거
@@ -3798,7 +3731,6 @@
             
             // 🆕 모든 엔터키 리스너 정리
             removeNextProblemKeyListener();
-            removeSkipProblemKeyListener(); // 🆕 다음 문제 이동 리스너도 정리
             
             const totalRoundKeys = gameState.roundKeys + 1;
             const nextRoundAvailable = currentRound < 100;
@@ -4436,7 +4368,6 @@
         window.addEventListener('beforeunload', () => {
             saveGame();
             removeNextProblemKeyListener();
-            removeSkipProblemKeyListener(); // 🆕 다음 문제 이동 리스너도 정리
         });
 
         // 🚀 PWA Service Worker 등록
