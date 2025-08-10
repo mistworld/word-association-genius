@@ -3384,20 +3384,20 @@
                                 
                                 ${problem.hints.map((hint, index) => `
                                     <div class="hint-item">
-                                        ${gameState.unlockedHints.includes(index) ? `
+                                        ${gameState.unlockedHints.includes(index) || gameState.isCorrect ? `
                                             <div class="hint-content">
                                                 <div class="hint-header">
                                                     <div class="hint-number">${index + 1}</div>
                                                     <div class="hint-text">💭 ${hint}</div>
                                                 </div>
-                                                ${gameState.canShowDescriptions && !gameState.showDescriptions[index] && !gameState.showAllAfterCorrect ? `
+                                                ${gameState.canShowDescriptions && !gameState.showDescriptions[index] && !gameState.showAllAfterCorrect && !gameState.isCorrect ? `
                                                     <button class="description-button" onclick="showModal('description-${index}')">
                                                         📖 설명보기
                                                     </button>
                                                 ` : ''}
-                                                ${gameState.showDescriptions[index] || gameState.showAllAfterCorrect ? `
-                                                    <div class="description ${gameState.showAllAfterCorrect ? 'after-correct' : ''}">
-                                                        ${gameState.showAllAfterCorrect ? '📖 ' : ''}${problem.descriptions[index]}
+                                                ${(gameState.showDescriptions[index] || gameState.showAllAfterCorrect || gameState.isCorrect) && problem.descriptions && problem.descriptions[index] ? `
+                                                    <div class="description ${gameState.showAllAfterCorrect || gameState.isCorrect ? 'after-correct' : ''}">
+                                                        📖 ${problem.descriptions[index]}
                                                     </div>
                                                 ` : ''}
                                             </div>
