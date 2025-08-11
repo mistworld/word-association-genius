@@ -9,12 +9,12 @@
     <meta name="description" content="당신은 천재인가요? 시냅스가 연결되는 짜릿한 쾌감을 느껴보세요!">
     <meta name="keywords" content="연상게임, 퀴즈, IQ테스트, 브레인게임, 두뇌게임">
     <meta name="author" content="연상천재">
-    <meta name="theme-color" content="#7e22ce">
+    <meta name="theme-color" content="#6366f1">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="연상천재">
-    <meta name="msapplication-TileColor" content="#7e22ce">
+    <meta name="msapplication-TileColor" content="#6366f1">
     <meta name="msapplication-tap-highlight" content="no">
     
     <!-- 🆕 iOS 전체화면 및 노치 대응 -->
@@ -36,7 +36,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="2.0.0">
+    <meta name="version" content="2.1.0">
     
     <!-- 🔗 PWA 매니페스트 -->
     <link rel="manifest" href="manifest.json">
@@ -48,11 +48,11 @@
     <link rel="apple-touch-icon" href="icon-192.png">
     
     <style>
-        /* 🎨 CSS 변수 정의 */
+        /* 🎨 CSS 변수 정의 - 모던 컬러 팔레트 */
         :root {
-            --primary: #7e22ce;
-            --primary-dark: #6b21a8;
-            --primary-light: #a855f7;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #8b5cf6;
             --secondary: #f59e0b;
             --secondary-dark: #d97706;
             --success: #10b981;
@@ -64,29 +64,38 @@
             --bg-secondary: #f8fafc;
             --bg-tertiary: #f1f5f9;
             --bg-card: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.95);
             
             --text-primary: #1e293b;
             --text-secondary: #64748b;
             --text-tertiary: #94a3b8;
+            --text-white: #ffffff;
             
             --border: #e2e8f0;
             --border-light: #f1f5f9;
             
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
             
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
             --radius-xl: 20px;
+            --radius-2xl: 24px;
             --radius-full: 9999px;
             
-            --header-height: 56px;
+            --header-height: 64px;
             --bottom-nav-height: 0px;
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
+            
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            --gradient-genius: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
         }
 
         /* 🌙 다크모드 */
@@ -96,6 +105,7 @@
                 --bg-secondary: #1e293b;
                 --bg-tertiary: #334155;
                 --bg-card: #1e293b;
+                --bg-glass: rgba(30, 41, 59, 0.95);
                 
                 --text-primary: #f1f5f9;
                 --text-secondary: #cbd5e1;
@@ -103,6 +113,8 @@
                 
                 --border: #334155;
                 --border-light: #475569;
+                
+                --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
             }
         }
 
@@ -134,11 +146,11 @@
             min-height: 100dvh;
             display: flex;
             flex-direction: column;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             position: relative;
         }
 
-        /* 🎯 헤더 */
+        /* 🎯 헤더 - 모던 글래스 디자인 */
         .app-header {
             position: fixed;
             top: 0;
@@ -146,12 +158,12 @@
             right: 0;
             height: calc(var(--header-height) + var(--safe-top));
             padding-top: var(--safe-top);
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--bg-glass);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-lg);
             z-index: 100;
-            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--border-light);
         }
 
         .header-content {
@@ -159,25 +171,31 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 16px;
+            padding: 0 20px;
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
 
         .header-logo {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-radius: var(--radius-md);
+            width: 44px;
+            height: 44px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 24px;
             box-shadow: var(--shadow-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header-logo:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
         }
 
         .header-title {
@@ -186,40 +204,47 @@
         }
 
         .header-title h1 {
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 700;
             color: var(--text-primary);
             line-height: 1.2;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .header-title p {
-            font-size: 11px;
+            font-size: 13px;
             color: var(--text-secondary);
             margin-top: 2px;
+            font-weight: 500;
         }
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         .header-badge {
-            background: var(--bg-tertiary);
-            padding: 6px 10px;
+            background: var(--gradient-card);
+            padding: 8px 14px;
             border-radius: var(--radius-full);
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 13px;
+            gap: 6px;
+            font-size: 14px;
             font-weight: 600;
             color: var(--text-primary);
             box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
         }
 
         .header-badge.gold {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            background: var(--gradient-genius);
             color: white;
+            border: none;
         }
 
         /* 📱 메인 콘텐츠 영역 */
@@ -232,19 +257,82 @@
         }
 
         .content-wrapper {
-            padding: 16px;
+            padding: 24px;
             max-width: 600px;
             margin: 0 auto;
             width: 100%;
         }
 
-        /* 🎮 라운드 선택 화면 */
+        /* 🎮 라운드 선택 화면 - 카드 기반 디자인 */
         .round-select-container {
-            animation: fadeInUp 0.5s ease;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .welcome-card {
+            background: var(--gradient-card);
+            border-radius: var(--radius-2xl);
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-light);
+            text-align: center;
+        }
+
+        .welcome-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: var(--bg-tertiary);
+            padding: 16px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .section-header {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .section-title {
@@ -255,41 +343,46 @@
         }
 
         .section-subtitle {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--text-secondary);
         }
 
         .round-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 24px;
         }
 
         .round-button {
             aspect-ratio: 1;
-            background: var(--bg-card);
+            background: var(--gradient-card);
             border: 2px solid var(--border);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-primary);
             position: relative;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
         }
 
         .round-button::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, transparent, rgba(124, 58, 237, 0.1));
+            background: var(--gradient-primary);
             opacity: 0;
             transition: opacity 0.3s;
+        }
+
+        .round-button:hover::before {
+            opacity: 0.1;
         }
 
         .round-button:active {
@@ -297,18 +390,20 @@
         }
 
         .round-button.completed {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: var(--gradient-success);
             border-color: transparent;
             color: white;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            box-shadow: var(--shadow-lg);
+            animation: pulse-success 2s infinite;
         }
 
         .round-button.playable {
-            background: linear-gradient(135deg, #f59e0b, #f97316);
+            background: var(--gradient-genius);
             border-color: transparent;
             color: white;
-            animation: pulse 2s infinite;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            animation: pulse-genius 2s infinite;
+            box-shadow: var(--shadow-lg);
+            transform: scale(1.05);
         }
 
         .round-button.locked {
@@ -316,15 +411,16 @@
             border-color: var(--border-light);
             color: var(--text-tertiary);
             cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .round-icon {
             position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 20px;
-            height: 20px;
-            background: white;
+            top: 6px;
+            right: 6px;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -335,88 +431,93 @@
 
         /* 🎮 게임 플레이 화면 */
         .game-container {
-            animation: fadeInUp 0.5s ease;
+            animation: fadeInUp 0.6s ease;
         }
 
         .game-progress-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow-md);
+            background: var(--gradient-card);
+            border-radius: var(--radius-2xl);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
         }
 
         .progress-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .progress-title {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             color: var(--text-secondary);
         }
 
         .progress-count {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--primary);
+            background: var(--bg-tertiary);
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
         }
 
         .progress-dots {
             display: flex;
-            gap: 6px;
+            gap: 8px;
         }
 
         .progress-dot {
             flex: 1;
-            height: 6px;
+            height: 8px;
             background: var(--border);
-            border-radius: 3px;
-            transition: all 0.3s;
+            border-radius: 4px;
+            transition: all 0.4s;
         }
 
         .progress-dot.completed {
-            background: var(--success);
+            background: var(--gradient-success);
         }
 
         .progress-dot.current {
-            background: var(--primary);
+            background: var(--gradient-primary);
             animation: pulse 1.5s infinite;
         }
 
         /* ⚡ 천재 타이머 */
         .genius-timer-card {
-            background: linear-gradient(135deg, #f59e0b, #f97316);
-            border-radius: var(--radius-xl);
-            padding: 14px;
-            margin-bottom: 16px;
-            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
-            animation: slideInDown 0.5s ease;
+            background: var(--gradient-genius);
+            border-radius: var(--radius-2xl);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-xl);
+            animation: slideInDown 0.6s ease;
         }
 
         .genius-timer-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 16px;
         }
 
         .genius-timer-label {
             color: white;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .genius-timer-count {
             color: white;
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 24px;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .genius-timer-bar {
@@ -431,7 +532,7 @@
             background: white;
             border-radius: 4px;
             transition: width 1s linear;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
         }
 
         /* 💡 힌트 카드 */
@@ -442,54 +543,60 @@
         .hints-header {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .hints-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             color: var(--text-primary);
         }
 
         .hint-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            margin-bottom: 12px;
+            background: var(--gradient-card);
+            border-radius: var(--radius-2xl);
+            margin-bottom: 16px;
             overflow: hidden;
-            box-shadow: var(--shadow-md);
-            transition: all 0.3s;
-            animation: fadeIn 0.5s ease;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.4s;
+            animation: fadeIn 0.6s ease;
+            border: 1px solid var(--border-light);
+        }
+
+        .hint-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
         }
 
         .hint-card.locked {
             background: var(--bg-tertiary);
-            opacity: 0.8;
+            opacity: 0.7;
         }
 
         .hint-content {
-            padding: 14px;
+            padding: 20px;
         }
 
         .hint-header {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
+            gap: 16px;
         }
 
         .hint-number {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-primary);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
             flex-shrink: 0;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
         }
 
         .hint-text-wrapper {
@@ -497,7 +604,7 @@
         }
 
         .hint-text {
-            font-size: 15px;
+            font-size: 16px;
             line-height: 1.6;
             color: var(--text-primary);
             font-weight: 500;
@@ -508,16 +615,16 @@
             align-items: center;
             gap: 8px;
             color: var(--text-tertiary);
-            font-size: 14px;
+            font-size: 15px;
             padding: 8px 0;
         }
 
         .hint-description {
-            margin-top: 12px;
-            padding: 12px;
+            margin-top: 16px;
+            padding: 16px;
             background: var(--bg-tertiary);
-            border-radius: var(--radius-md);
-            font-size: 13px;
+            border-radius: var(--radius-lg);
+            font-size: 14px;
             line-height: 1.6;
             color: var(--text-secondary);
         }
@@ -526,23 +633,29 @@
             background: linear-gradient(135deg, #dbeafe, #bfdbfe);
             color: var(--info);
             font-weight: 500;
-            animation: slideInUp 0.3s ease;
+            animation: slideInUp 0.4s ease;
         }
 
         .description-button {
-            margin-top: 10px;
+            margin-top: 12px;
             background: var(--bg-tertiary);
             border: none;
-            padding: 8px 16px;
+            padding: 10px 18px;
             border-radius: var(--radius-full);
-            font-size: 13px;
+            font-size: 14px;
             color: var(--primary);
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             cursor: pointer;
             transition: all 0.3s;
+        }
+
+        .description-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-1px);
         }
 
         .description-button:active {
@@ -555,47 +668,54 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: var(--bg-card);
-            padding: 16px;
-            padding-bottom: calc(var(--safe-bottom) + 16px);
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 20px;
+            padding-bottom: calc(var(--safe-bottom) + 20px);
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
             z-index: 90;
-            border-top-left-radius: var(--radius-xl);
-            border-top-right-radius: var(--radius-xl);
+            border-top-left-radius: var(--radius-2xl);
+            border-top-right-radius: var(--radius-2xl);
+            border-top: 1px solid var(--border-light);
         }
 
         .info-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .info-box {
             background: var(--bg-tertiary);
-            padding: 10px;
-            border-radius: var(--radius-md);
+            padding: 14px;
+            border-radius: var(--radius-lg);
             text-align: center;
-            transition: all 0.3s;
+            transition: all 0.4s;
+            border: 1px solid var(--border-light);
         }
 
         .info-box.active {
-            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            background: var(--gradient-primary);
+            color: white;
+            transform: scale(1.02);
+            box-shadow: var(--shadow-md);
         }
 
         .info-label {
-            font-size: 11px;
-            color: var(--text-tertiary);
-            margin-bottom: 4px;
-            font-weight: 500;
+            font-size: 12px;
+            color: inherit;
+            margin-bottom: 6px;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .info-value {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: inherit;
         }
 
         .chosung-button {
@@ -610,79 +730,87 @@
 
         .answer-input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 18px 20px;
             border: 2px solid var(--border);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             font-size: 16px;
             font-weight: 500;
             background: var(--bg-primary);
             color: var(--text-primary);
             transition: all 0.3s;
+            box-shadow: var(--shadow-sm);
         }
 
         .answer-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            transform: translateY(-1px);
         }
 
         .answer-input.shake {
-            animation: shake 0.3s;
+            animation: shake 0.4s;
             border-color: var(--error);
         }
 
         /* 🎉 정답 패널 */
         .correct-panel {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: var(--gradient-success);
             border-radius: var(--radius-xl);
-            padding: 20px;
+            padding: 24px;
             text-align: center;
             color: white;
-            margin-bottom: 12px;
-            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
-            animation: slideInUp 0.5s ease;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-xl);
+            animation: slideInUp 0.6s ease;
         }
 
         .correct-icon {
-            font-size: 48px;
-            margin-bottom: 8px;
+            font-size: 56px;
+            margin-bottom: 12px;
             animation: bounce 1s infinite;
         }
 
         .correct-title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
 
         .correct-answer {
-            font-size: 20px;
+            font-size: 22px;
             opacity: 0.95;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .correct-category {
-            font-size: 14px;
+            font-size: 16px;
             opacity: 0.8;
         }
 
         /* 🚀 다음 버튼 */
         .next-button {
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 18px;
+            background: var(--gradient-primary);
             color: white;
             border: none;
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             font-size: 16px;
             font-weight: 700;
-            box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+            box-shadow: var(--shadow-lg);
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+        }
+
+        .next-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
         }
 
         .next-button:active {
@@ -696,75 +824,80 @@
 
         /* 🎊 라운드 완료 */
         .complete-container {
-            padding: 20px;
-            animation: fadeInUp 0.5s ease;
+            padding: 24px;
+            animation: fadeInUp 0.6s ease;
         }
 
         .complete-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: 32px 24px;
+            background: var(--gradient-card);
+            border-radius: var(--radius-2xl);
+            padding: 40px 24px;
             text-align: center;
-            box-shadow: var(--shadow-xl);
+            box-shadow: var(--shadow-2xl);
+            border: 1px solid var(--border-light);
         }
 
         .complete-icon {
-            font-size: 80px;
-            margin-bottom: 16px;
+            font-size: 96px;
+            margin-bottom: 20px;
             animation: bounce 1s infinite;
         }
 
         .complete-title {
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 32px;
+            font-weight: 800;
             color: var(--text-primary);
-            margin-bottom: 24px;
+            margin-bottom: 28px;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .reward-box {
-            background: linear-gradient(135deg, #f59e0b, #f97316);
-            border-radius: var(--radius-xl);
-            padding: 20px;
-            margin-bottom: 16px;
+            background: var(--gradient-genius);
+            border-radius: var(--radius-2xl);
+            padding: 24px;
+            margin-bottom: 20px;
             color: white;
-            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+            box-shadow: var(--shadow-xl);
         }
 
         .reward-icon {
-            font-size: 48px;
-            margin-bottom: 8px;
+            font-size: 56px;
+            margin-bottom: 12px;
         }
 
         .reward-text {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
 
         .reward-detail {
-            font-size: 14px;
+            font-size: 16px;
             opacity: 0.9;
         }
 
         .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 16px;
+            margin-top: 24px;
         }
 
         .action-button {
-            padding: 14px;
+            padding: 16px;
             border: none;
             border-radius: var(--radius-lg);
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .action-button.primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--gradient-primary);
             color: white;
             grid-column: span 2;
         }
@@ -774,97 +907,74 @@
             color: var(--text-primary);
         }
 
-        /* 🎵 음악 컨트롤 */
-        .music-controls {
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* 🎵 음악 컨트롤 - 플로팅 액션 버튼 */
+        .floating-actions {
             position: fixed;
-            bottom: calc(var(--safe-bottom) + 20px);
-            right: 20px;
+            bottom: calc(var(--safe-bottom) + 24px);
+            right: 24px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
             z-index: 80;
         }
 
-        .music-fab {
-            width: 48px;
-            height: 48px;
+        .fab {
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            background: var(--bg-card);
-            box-shadow: var(--shadow-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .music-fab:active {
-            transform: scale(0.9);
-        }
-
-        .music-fab.playing {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
-        }
-
-        .music-panel {
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            padding: 12px;
+            background: var(--gradient-card);
             box-shadow: var(--shadow-xl);
-            display: none;
-            animation: slideInUp 0.3s ease;
-        }
-
-        .music-panel.active {
-            display: block;
-        }
-
-        .music-button {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 4px;
-            border: none;
-            border-radius: var(--radius-md);
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-light);
         }
 
-        .music-button.play {
-            background: var(--success);
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        .fab.music.playing {
+            background: var(--gradient-success);
             color: white;
+            animation: pulse 2s infinite;
         }
 
-        .music-button.pause {
-            background: var(--warning);
-            color: white;
-        }
-
-        .music-button.switch {
-            background: var(--primary);
+        .fab.settings {
+            background: var(--gradient-primary);
             color: white;
         }
 
         /* 🔧 설정 메뉴 */
         .settings-menu {
             position: fixed;
-            bottom: calc(var(--safe-bottom) + 80px);
-            right: 20px;
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            padding: 8px;
-            box-shadow: var(--shadow-xl);
+            bottom: calc(var(--safe-bottom) + 150px);
+            right: 24px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 12px;
+            box-shadow: var(--shadow-2xl);
             display: none;
             z-index: 85;
-            animation: slideInUp 0.3s ease;
+            animation: slideInUp 0.4s ease;
+            border: 1px solid var(--border-light);
+            min-width: 200px;
         }
 
         .settings-menu.active {
@@ -873,18 +983,19 @@
 
         .settings-button {
             width: 100%;
-            padding: 10px;
+            padding: 14px 16px;
             border: none;
             background: none;
             text-align: left;
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-primary);
             cursor: pointer;
             transition: all 0.3s;
             border-radius: var(--radius-md);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            font-weight: 500;
         }
 
         .settings-button:hover {
@@ -903,39 +1014,40 @@
             justify-content: center;
             z-index: 1000;
             padding: 20px;
-            animation: fadeIn 0.3s;
+            animation: fadeIn 0.4s;
         }
 
         .modal-content {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: 24px;
-            max-width: 360px;
+            background: var(--gradient-card);
+            border-radius: var(--radius-2xl);
+            padding: 28px;
+            max-width: 400px;
             width: 100%;
-            box-shadow: var(--shadow-xl);
-            animation: slideInUp 0.4s ease;
+            box-shadow: var(--shadow-2xl);
+            animation: slideInUp 0.5s ease;
+            border: 1px solid var(--border-light);
         }
 
         .modal-icon {
-            font-size: 64px;
+            font-size: 72px;
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             animation: bounce 1s infinite;
         }
 
         .modal-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: var(--text-primary);
         }
 
         .modal-text {
-            font-size: 14px;
+            font-size: 16px;
             text-align: center;
             color: var(--text-secondary);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             line-height: 1.6;
         }
 
@@ -947,10 +1059,10 @@
         }
 
         .modal-button {
-            padding: 12px;
+            padding: 14px;
             border: none;
             border-radius: var(--radius-lg);
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -972,77 +1084,9 @@
             grid-column: span 2;
         }
 
-        /* 🎵 음악 시작 오버레이 */
-        .music-start-overlay {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            padding: 20px;
-        }
-
-        .music-start-card {
-            background: white;
-            border-radius: var(--radius-xl);
-            padding: 32px 24px;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            box-shadow: var(--shadow-xl);
-            animation: slideInUp 0.5s ease;
-        }
-
-        .music-start-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-
-        .music-start-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-
-        .music-start-text {
-            font-size: 16px;
-            margin-bottom: 28px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .music-start-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .music-start-btn {
-            padding: 16px;
-            border: none;
-            border-radius: var(--radius-lg);
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .music-start-btn.with-music {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-        }
-
-        .music-start-btn.without-music {
-            background: linear-gradient(135deg, #6b7280, #4b5563);
-            color: white;
+        .modal-button:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         /* 📊 로딩 */
@@ -1052,21 +1096,21 @@
             align-items: center;
             justify-content: center;
             min-height: 60vh;
-            animation: fadeIn 0.5s;
+            animation: fadeIn 0.6s;
         }
 
         .loading-spinner {
-            width: 48px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
             border: 4px solid var(--border);
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .loading-text {
-            font-size: 16px;
+            font-size: 18px;
             color: var(--text-secondary);
             font-weight: 500;
         }
@@ -1074,38 +1118,44 @@
         /* ⚠️ 에러 */
         .error {
             text-align: center;
-            padding: 40px 20px;
+            padding: 48px 24px;
         }
 
         .error-icon {
-            font-size: 64px;
-            margin-bottom: 16px;
+            font-size: 72px;
+            margin-bottom: 20px;
             color: var(--error);
         }
 
         .error-title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .error-text {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--text-secondary);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            line-height: 1.6;
         }
 
         .retry-button {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 14px 28px;
             border-radius: var(--radius-lg);
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+        }
+
+        .retry-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         /* 🎨 애니메이션 */
@@ -1117,7 +1167,7 @@
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -1158,19 +1208,46 @@
             }
         }
 
+        @keyframes pulse-success {
+            0%, 100% { 
+                box-shadow: var(--shadow-lg);
+            }
+            50% { 
+                box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            }
+        }
+
+        @keyframes pulse-genius {
+            0%, 100% { 
+                box-shadow: var(--shadow-lg);
+            }
+            50% { 
+                box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+            }
+        }
+
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-12px); }
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         /* 📱 모바일 최적화 */
@@ -1185,17 +1262,18 @@
 
         /* 💫 특수 효과 */
         .help-mode-badge {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            background: var(--gradient-primary);
             color: white;
-            padding: 12px;
+            padding: 16px;
             border-radius: var(--radius-lg);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            gap: 12px;
+            font-size: 15px;
             font-weight: 600;
-            animation: slideInDown 0.5s ease;
+            animation: slideInDown 0.6s ease;
+            box-shadow: var(--shadow-lg);
         }
 
         /* 📱 반응형 */
@@ -1204,8 +1282,8 @@
                 grid-template-columns: repeat(4, 1fr);
             }
             
-            .section-title {
-                font-size: 20px;
+            .welcome-title {
+                font-size: 24px;
             }
         }
 
@@ -1221,43 +1299,47 @@
 
         /* 🌟 설명 타이머 */
         .explanation-timer {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            background: var(--gradient-genius);
             border-radius: var(--radius-lg);
-            padding: 12px;
-            margin-bottom: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
             text-align: center;
             color: white;
-            animation: slideInUp 0.3s ease;
+            animation: slideInUp 0.4s ease;
+            box-shadow: var(--shadow-lg);
         }
 
         .explanation-timer-text {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .explanation-timer-count {
-            font-size: 12px;
+            font-size: 14px;
             opacity: 0.9;
         }
 
         /* 알림 토스트 */
         .toast {
             position: fixed;
-            top: calc(var(--header-height) + var(--safe-top) + 20px);
+            top: calc(var(--header-height) + var(--safe-top) + 24px);
             left: 50%;
             transform: translateX(-50%);
-            background: var(--bg-card);
-            padding: 12px 20px;
+            background: var(--gradient-card);
+            padding: 16px 24px;
             border-radius: var(--radius-full);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-xl);
             z-index: 200;
-            animation: slideInDown 0.3s ease;
+            animation: slideInDown 0.4s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            gap: 12px;
+            font-size: 15px;
             font-weight: 600;
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
 
         .toast.success {
@@ -1273,6 +1355,41 @@
         .toast.warning {
             background: var(--warning);
             color: white;
+        }
+
+        /* 고급 UI 효과 */
+        .glass-effect {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .hover-lift {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-2px);
+        }
+
+        /* 접근성 개선 */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* 다크모드 전환 효과 */
+        @media (prefers-color-scheme: dark) {
+            .welcome-card,
+            .game-progress-card,
+            .hint-card,
+            .modal-content,
+            .complete-card {
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
         }
     </style>
 </head>
@@ -1642,7 +1759,7 @@
             
             // 🎵 음악 컨트롤 UI 업데이트
             updateMusicControls() {
-                const musicFab = document.querySelector('.music-fab');
+                const musicFab = document.querySelector('.fab.music');
                 if (musicFab) {
                     if (this.isPlaying && !this.isMuted) {
                         musicFab.classList.add('playing');
@@ -1651,34 +1768,6 @@
                         musicFab.classList.remove('playing');
                         musicFab.innerHTML = '🔇';
                     }
-                }
-                
-                const playBtn = document.getElementById('musicPlayBtn');
-                const muteBtn = document.getElementById('musicMuteBtn');
-                const switchBtn = document.getElementById('musicSwitchBtn');
-                
-                if (playBtn) {
-                    if (this.isMuted) {
-                        playBtn.textContent = '🔇 음소거 중';
-                        playBtn.className = 'music-button pause';
-                        playBtn.disabled = true;
-                    } else if (this.isPlaying) {
-                        playBtn.textContent = '⏸️ 일시정지';
-                        playBtn.className = 'music-button pause';
-                        playBtn.disabled = false;
-                    } else {
-                        playBtn.textContent = '▶️ 재생';
-                        playBtn.className = 'music-button play';
-                        playBtn.disabled = false;
-                    }
-                }
-                
-                if (muteBtn) {
-                    muteBtn.textContent = this.isMuted ? '🔊 음소거 해제' : '🔇 음소거';
-                }
-                
-                if (switchBtn) {
-                    switchBtn.textContent = `🔄 BGM${this.bgmIndex + 1}→${(this.bgmIndex + 1) % 2 + 1}`;
                 }
             },
             
@@ -1760,7 +1849,7 @@
         // 🔥 캐시 관리 시스템 (원본 유지)
         const CacheManager = {
             // 🆕 HTML 메타태그에서 버전 자동 읽기
-            version: document.querySelector('meta[name="version"]')?.content || '2.0.0',
+            version: document.querySelector('meta[name="version"]')?.content || '2.1.0',
             
             init() {
                 this.checkVersion();
@@ -2130,9 +2219,27 @@
                     <div class="app-content">
                         <div class="content-wrapper">
                             <div class="round-select-container">
+                                <!-- 웰컴 카드 -->
+                                <div class="welcome-card">
+                                    <div class="welcome-icon">🧠</div>
+                                    <h2 class="welcome-title">당신은 천재인가요?</h2>
+                                    <p class="welcome-subtitle">시냅스가 연결되는 짜릿한 쾌감을 느껴보세요!</p>
+                                    
+                                    <div class="stats-grid">
+                                        <div class="stat-item">
+                                            <div class="stat-value">${completedRounds.length}</div>
+                                            <div class="stat-label">완료 라운드</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-value">${keys}</div>
+                                            <div class="stat-label">보유 열쇠</div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="section-header">
                                     <h2 class="section-title">도전할 라운드를 선택하세요</h2>
-                                    <p class="section-subtitle">시냅스가 연결되는 짜릿한 쾌감!</p>
+                                    <p class="section-subtitle">준비됐나요? 뇌를 깨워보세요!</p>
                                 </div>
                                 
                                 <div class="round-grid">
@@ -2144,7 +2251,7 @@
                                         
                                         return `
                                             <button 
-                                                class="round-button ${isCompleted ? 'completed' : isPlayable ? 'playable' : isLocked ? 'locked' : ''}"
+                                                class="round-button ${isCompleted ? 'completed' : isPlayable ? 'playable' : isLocked ? 'locked' : ''} hover-lift"
                                                 onclick="${isLocked ? `showModal('locked-round')` : `startRound(${roundNumber})`}"
                                             >
                                                 ${roundNumber}
@@ -2159,43 +2266,31 @@
                         </div>
                     </div>
                     
-                    <!-- 음악 컨트롤 -->
-                    <div class="music-controls">
-                        <button class="music-fab" onclick="toggleMusicPanel()">
+                    <!-- 플로팅 액션 버튼들 -->
+                    <div class="floating-actions">
+                        <button class="fab music" onclick="toggleMusic()">
                             ${AudioManager.isPlaying ? '🎵' : '🔇'}
                         </button>
-                        <div class="music-panel" id="musicPanel">
-                            <button id="musicPlayBtn" class="music-button play" onclick="AudioManager.togglePlayPause()">
-                                ▶️ 재생
-                            </button>
-                            <button id="musicSwitchBtn" class="music-button switch" onclick="AudioManager.manualSwitchBGM()">
-                                🔄 BGM 전환
-                            </button>
-                            <button id="musicMuteBtn" class="music-button pause" onclick="AudioManager.toggleMute()">
-                                🔇 음소거
-                            </button>
-                        </div>
+                        <button class="fab settings" onclick="toggleSettingsMenu()">
+                            ⚙️
+                        </button>
                     </div>
                     
                     <!-- 설정 메뉴 -->
                     <div class="settings-menu" id="settingsMenu">
-                        <button class="settings-button" onclick="exportSave()">
+                        <button class="settings-button" onclick="AudioManager.playSound('click'); showAudioSettings()">
+                            🎵 음악 설정
+                        </button>
+                        <button class="settings-button" onclick="AudioManager.playSound('click'); exportSave()">
                             📁 게임 저장
                         </button>
-                        <button class="settings-button" onclick="showImportModal()">
+                        <button class="settings-button" onclick="AudioManager.playSound('click'); showImportModal()">
                             📂 게임 불러오기
                         </button>
-                        <button class="settings-button" onclick="showAudioSettings()">
-                            🎵 음량 설정
-                        </button>
-                        <button class="settings-button" onclick="CacheManager.forceClearCache()">
+                        <button class="settings-button" onclick="AudioManager.playSound('click'); CacheManager.forceClearCache()">
                             🔄 캐시 클리어
                         </button>
                     </div>
-                    
-                    <button class="music-fab" style="bottom: calc(var(--safe-bottom) + 140px);" onclick="toggleSettingsMenu()">
-                        ⚙️
-                    </button>
                 </div>
             `;
             
@@ -2326,7 +2421,7 @@
                         </div>
                     </div>
                     
-                    <div class="app-content" style="padding-bottom: 180px;">
+                    <div class="app-content" style="padding-bottom: 200px;">
                         <div class="content-wrapper">
                             <div class="game-container">
                                 <div class="game-progress-card">
@@ -2368,7 +2463,7 @@
                                     </div>
                                     
                                     ${problem.hints.map((hint, index) => `
-                                        <div class="hint-card ${gameState.unlockedHints.includes(index) || gameState.isCorrect ? '' : 'locked'}">
+                                        <div class="hint-card ${gameState.unlockedHints.includes(index) || gameState.isCorrect ? '' : 'locked'} hover-lift">
                                             ${gameState.unlockedHints.includes(index) || gameState.isCorrect ? `
                                                 <div class="hint-content">
                                                     <div class="hint-header">
@@ -2408,7 +2503,7 @@
                         </div>
                     </div>
                     
-                    <div class="answer-section">
+                    <div class="answer-section glass-effect">
                         ${gameState.isCorrect && gameState.showAllAfterCorrect ? `
                             <div class="explanation-timer" id="explanationTimer">
                                 <div class="explanation-timer-text">📖 설명을 확인하세요!</div>
@@ -2468,6 +2563,13 @@
                                 ${gameState.showAllAfterCorrect ? '<span style="font-size: 12px; opacity: 0.8;">설명을 읽어보세요...</span>' : ''}
                             </button>
                         `}
+                    </div>
+                    
+                    <!-- 플로팅 액션 버튼들 -->
+                    <div class="floating-actions">
+                        <button class="fab music" onclick="toggleMusic()">
+                            ${AudioManager.isPlaying ? '🎵' : '🔇'}
+                        </button>
                     </div>
                 </div>
             `;
@@ -2659,12 +2761,12 @@
                                     </div>
                                     
                                     ${nextRoundAvailable ? `
-                                        <div class="reward-box" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                        <div class="reward-box" style="background: var(--gradient-success);">
                                             <div class="reward-icon">🔓</div>
                                             <div class="reward-text">라운드 ${currentRound + 1} 해제!</div>
                                         </div>
                                     ` : `
-                                        <div class="reward-box" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">
+                                        <div class="reward-box" style="background: var(--gradient-genius);">
                                             <div class="reward-icon">👑</div>
                                             <div class="reward-text">모든 라운드 완료!</div>
                                             <div class="reward-detail">축하합니다! 진정한 연상천재입니다!</div>
@@ -2738,9 +2840,9 @@
                 case 'focus':
                     modalContent = `
                         <div class="modal-icon">🎯</div>
-                        <h3 class="modal-title" style="color: #7e22ce">집중합시다!</h3>
+                        <h3 class="modal-title" style="color: #6366f1">집중합시다!</h3>
                         <p class="modal-text">조금 더 집중해보세요!</p>
-                        <button class="modal-button modal-primary" style="background: #7e22ce; color: white;" onclick="closeModal()">화이팅! 💪</button>
+                        <button class="modal-button modal-primary" style="background: #6366f1; color: white;" onclick="closeModal()">화이팅! 💪</button>
                     `;
                     break;
                     
@@ -2844,20 +2946,64 @@
             }, 100);
         }
 
-        function setBGMVolume(value) {
-            const volume = value / 100;
-            AudioManager.setBGMVolume(volume);
-            document.getElementById('bgmVolumeText').textContent = `${Math.round(volume * 100)}%`;
+        function closeModal() {
+            const modal = document.querySelector('.modal');
+            if (modal) {
+                modal.remove();
+            }
+            document.removeEventListener('keydown', handleModalKeypress);
         }
 
-        function setEffectVolume(value) {
-            const volume = value / 100;
-            AudioManager.setEffectVolume(volume);
-            document.getElementById('effectVolumeText').textContent = `${Math.round(volume * 100)}%`;
+        function handleModalKeypress(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const focusedBtn = document.activeElement;
+                if (focusedBtn && focusedBtn.classList.contains('modal-button')) {
+                    focusedBtn.click();
+                } else {
+                    const primaryBtn = document.querySelector('.modal-primary');
+                    if (primaryBtn) {
+                        primaryBtn.click();
+                    }
+                }
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                closeModal();
+            }
         }
 
-        function testSound(soundType) {
-            AudioManager.playSound(soundType);
+        function watchAdAndUnlock(type) {
+            closeModal();
+            setTimeout(() => {
+                unlock(type);
+            }, 1000);
+        }
+
+        function useKeyAndUnlock(type) {
+            if (keys > 0) {
+                keys--;
+                closeModal();
+                unlock(type);
+            } else {
+                closeModal();
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function unlock(type) {
+            AudioManager.playSound('hint');
+            
+            if (type === 'chosung') {
+                gameState.showChosung = true;
+            } else if (type.startsWith('hint-')) {
+                const index = parseInt(type.split('-')[1]);
+                gameState.unlockedHints.push(index);
+            } else if (type.startsWith('description-')) {
+                const index = parseInt(type.split('-')[1]);
+                gameState.showDescriptions[index] = true;
+            }
+            renderGame();
+            saveGame();
         }
 
         // 키 리스너 관련 함수
@@ -2990,7 +3136,7 @@
                         <input type="file" id="saveFileInput" accept=".json" style="
                             margin: 20px 0;
                             padding: 10px;
-                            border: 2px dashed #7e22ce;
+                            border: 2px dashed #6366f1;
                             border-radius: 12px;
                             width: 100%;
                             text-align: center;
@@ -3090,81 +3236,139 @@
         }
 
         // UI 토글 함수들
-        function toggleMusicPanel() {
-            const panel = document.getElementById('musicPanel');
-            if (panel) {
-                panel.classList.toggle('active');
-            }
-            document.getElementById('settingsMenu')?.classList.remove('active');
+        function toggleMusic() {
+            AudioManager.playSound('click');
+            AudioManager.togglePlayPause();
         }
 
         function toggleSettingsMenu() {
+            AudioManager.playSound('click');
             const menu = document.getElementById('settingsMenu');
             if (menu) {
                 menu.classList.toggle('active');
             }
-            document.getElementById('musicPanel')?.classList.remove('active');
         }
 
-        // 음악 시작 함수들
-        async function startWithMusic() {
-            hideStartOverlay();
-            await AudioManager.init();
-            await AudioManager.unlockAudio();
-            await AudioManager.startBGM();
-            renderRoundMap();
-        }
-
-        async function startWithoutMusic() {
-            hideStartOverlay();
-            await AudioManager.init();
-            AudioManager.isMuted = true;
-            renderRoundMap();
-        }
-
-        function hideStartOverlay() {
-            const overlay = document.querySelector('.music-start-overlay');
-            if (overlay) {
-                overlay.style.animation = 'fadeOut 0.5s ease';
-                setTimeout(() => {
-                    overlay.remove();
-                }, 500);
-            }
-        }
-
-        // 초기화 함수
-        function initGame() {
-            // 캐시 관리 시스템 초기화
-            CacheManager.init();
+        // 음악 설정 함수
+        function showAudioSettings() {
+            const bgmInfo = AudioManager.getCurrentBGMInfo();
             
-            const savedGameState = loadGame();
-            
-            // 음악 시작 오버레이 표시
-            const startOverlayHtml = `
-                <div class="music-start-overlay">
-                    <div class="music-start-card">
-                        <div class="music-start-icon">🧠</div>
-                        <h2 class="music-start-title">당신은 천재인가요?</h2>
-                        <p class="music-start-text">
-                            아니면... 그저 평범한가요?<br/>
-                            시냅스가 연결되는<br/>
-                            <strong>짜릿한 쾌감을 느껴보세요</strong>
-                        </p>
-                        <div class="music-start-buttons">
-                            <button class="music-start-btn with-music" onclick="startWithMusic()">
-                                <span style="font-size: 24px;">🎵</span>
-                                <span>음악과 함께</span>
-                            </button>
-                            <button class="music-start-btn without-music" onclick="startWithoutMusic()">
-                                <span style="font-size: 24px;">🔇</span>
-                                <span>조용히 시작</span>
-                            </button>
+            const modalHtml = `
+                <div class="modal">
+                    <div class="modal-content" style="max-width: 450px;">
+                        <div class="modal-icon">🎵</div>
+                        <h3 class="modal-title">음악 및 효과음 설정</h3>
+                        
+                        <div style="margin: 20px 0; text-align: left;">
+                            <div style="margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-radius: 12px;">
+                                <h4 style="margin: 0 0 10px 0; color: #333;">🎼 현재 BGM 상태</h4>
+                                <div style="font-size: 14px; color: #666;">
+                                    재생 중: ${bgmInfo.currentFile}<br/>
+                                    상태: ${bgmInfo.isMuted ? '음소거' : bgmInfo.isPlaying ? `BGM ${bgmInfo.currentIndex} 재생 중` : `BGM ${bgmInfo.currentIndex} 준비됨`}
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 20px; padding: 15px; background: var(--bg-tertiary); border-radius: 12px;">
+                                <h4 style="margin: 0 0 15px 0; color: var(--text-primary);">🔊 볼륨 설정</h4>
+                                
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">
+                                        🎼 배경음악: <span id="bgmVolumeText">${Math.round(AudioManager.bgmVolume * 100)}%</span>
+                                    </label>
+                                    <input type="range" id="bgmVolumeSlider" min="0" max="100" 
+                                           value="${AudioManager.bgmVolume * 100}" 
+                                           style="width: 100%; accent-color: var(--primary);" 
+                                           oninput="setBGMVolume(this.value)" />
+                                </div>
+                                
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">
+                                        🔊 효과음: <span id="effectVolumeText">${Math.round(AudioManager.effectVolume * 100)}%</span>
+                                    </label>
+                                    <input type="range" id="effectVolumeSlider" min="0" max="100" 
+                                           value="${AudioManager.effectVolume * 100}" 
+                                           style="width: 100%; accent-color: var(--primary);" 
+                                           oninput="setEffectVolume(this.value)" />
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 12px;">
+                                <h4 style="margin: 0 0 15px 0; color: #333;">🎮 음악 제어</h4>
+                                
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 15px;">
+                                    <button onclick="AudioManager.togglePlayPause()" style="padding: 8px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                                        ${AudioManager.isPlaying ? '⏸️ 일시정지' : '▶️ 재생'}
+                                    </button>
+                                    <button onclick="AudioManager.manualSwitchBGM()" style="padding: 8px; background: var(--secondary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                                        🔄 BGM 전환
+                                    </button>
+                                    <button onclick="AudioManager.toggleMute()" style="padding: 8px; background: var(--warning); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; grid-column: span 2;">
+                                        ${AudioManager.isMuted ? '🔊 음소거 해제' : '🔇 음소거'}
+                                    </button>
+                                </div>
+                                
+                                <h4 style="margin: 15px 0 10px 0; color: #333;">🎮 효과음 테스트</h4>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                                    <button onclick="testSound('correct')" style="padding: 8px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                                        ✅ 정답음
+                                    </button>
+                                    <button onclick="testSound('wrong')" style="padding: 8px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                                        ❌ 오답음
+                                    </button>
+                                    <button onclick="testSound('genius')" style="padding: 8px; background: linear-gradient(135deg, #f59e0b, #f97316); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">
+                                        ⚡ 천재음
+                                    </button>
+                                    <button onclick="testSound('complete')" style="padding: 8px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                                        🎉 완료음
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <button class="modal-button green modal-primary" onclick="closeModal()">완료</button>
                     </div>
                 </div>
             `;
             
-            document.body.insertAdjacentHTML('beforeend', startOverlayHtml);
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            setTimeout(() => {
+                document.addEventListener('keydown', handleModalKeypress);
+                const primaryBtn = document.querySelector('.modal-primary');
+                if (primaryBtn) {
+                    primaryBtn.focus();
+                }
+            }, 100);
+        }
+
+        function setBGMVolume(value) {
+            const volume = value / 100;
+            AudioManager.setBGMVolume(volume);
+            document.getElementById('bgmVolumeText').textContent = `${Math.round(volume * 100)}%`;
+        }
+
+        function setEffectVolume(value) {
+            const volume = value / 100;
+            AudioManager.setEffectVolume(volume);
+            document.getElementById('effectVolumeText').textContent = `${Math.round(volume * 100)}%`;
+        }
+
+        function testSound(soundType) {
+            AudioManager.playSound(soundType);
+        }
+
+        // 초기화 함수
+        async function initGame() {
+            // 캐시 관리 시스템 초기화
+            CacheManager.init();
+            
+            // 오디오 시스템 초기화 (사용자 액션 없이도 준비)
+            await AudioManager.init();
+            
+            const savedGameState = loadGame();
+            
+            // 바로 라운드 맵으로 이동
+            renderRoundMap();
         }
 
         // 자동 저장 및 이벤트 리스너
@@ -3271,6 +3475,13 @@
             }
         });
 
+        // 첫 클릭 시 오디오 활성화
+        document.addEventListener('click', async () => {
+            if (!AudioManager.isAudioUnlocked) {
+                await AudioManager.unlockAudio();
+            }
+        }, { once: true });
+
         // 게임 시작
         initGame();
         
@@ -3281,8 +3492,8 @@
         
         // 개발자 콘솔 도움말
         console.log(`
-🎮 연상천재 게임 개발자 도구
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎮 연상천재 게임 개발자 도구 (모던 UI 버전)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📋 현재 버전: ${CacheManager.version}
 
@@ -3300,152 +3511,18 @@
 
 🎵 오디오 관리:
    AudioManager     →  음악 시스템 제어
+   AudioManager.togglePlayPause()  →  재생/일시정지
+   AudioManager.toggleMute()       →  음소거 토글
 
-💡 팁: 파일 수정 후 캐시 문제가 있으면 '🔄 캐시클리어' 버튼을 누르세요!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎨 UI 특징:
+   - 모던 글래스모피즘 디자인
+   - 부드러운 애니메이션과 마이크로 인터랙션
+   - 모바일 최적화 터치 인터페이스
+   - 다크모드 자동 지원
+
+💡 팁: 파일 수정 후 캐시 문제가 있으면 설정 메뉴의 '🔄 캐시클리어' 버튼을 누르세요!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         `);
     </script>
 </body>
 </html>
-                const primaryBtn = document.querySelector('.modal-primary');
-                if (primaryBtn) {
-                    primaryBtn.focus();
-                }
-            }, 100);
-        }
-
-        function closeModal() {
-            const modal = document.querySelector('.modal');
-            if (modal) {
-                modal.remove();
-            }
-            document.removeEventListener('keydown', handleModalKeypress);
-        }
-
-        function handleModalKeypress(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                const focusedBtn = document.activeElement;
-                if (focusedBtn && focusedBtn.classList.contains('modal-button')) {
-                    focusedBtn.click();
-                } else {
-                    const primaryBtn = document.querySelector('.modal-primary');
-                    if (primaryBtn) {
-                        primaryBtn.click();
-                    }
-                }
-            } else if (event.key === 'Escape') {
-                event.preventDefault();
-                closeModal();
-            }
-        }
-
-        function watchAdAndUnlock(type) {
-            closeModal();
-            setTimeout(() => {
-                unlock(type);
-            }, 1000);
-        }
-
-        function useKeyAndUnlock(type) {
-            if (keys > 0) {
-                keys--;
-                closeModal();
-                unlock(type);
-            } else {
-                closeModal();
-                alert('열쇠가 부족합니다!');
-            }
-        }
-
-        function unlock(type) {
-            AudioManager.playSound('hint');
-            
-            if (type === 'chosung') {
-                gameState.showChosung = true;
-            } else if (type.startsWith('hint-')) {
-                const index = parseInt(type.split('-')[1]);
-                gameState.unlockedHints.push(index);
-            } else if (type.startsWith('description-')) {
-                const index = parseInt(type.split('-')[1]);
-                gameState.showDescriptions[index] = true;
-            }
-            renderGame();
-            saveGame();
-        }
-
-        // 음악 설정 함수
-        function showAudioSettings() {
-            AudioManager.playSound('click');
-            
-            const bgmInfo = AudioManager.getCurrentBGMInfo();
-            
-            const modalHtml = `
-                <div class="modal">
-                    <div class="modal-content" style="max-width: 450px;">
-                        <div class="modal-icon">🎵</div>
-                        <h3 class="modal-title">음량 및 BGM 설정</h3>
-                        
-                        <div style="margin: 20px 0; text-align: left;">
-                            <div style="margin-bottom: 20px; padding: 15px; background: #ecfdf5; border-radius: 12px;">
-                                <h4 style="margin: 0 0 10px 0; color: #333;">🎼 현재 BGM 상태</h4>
-                                <div style="font-size: 14px; color: #666;">
-                                    재생 중: ${bgmInfo.currentFile}<br/>
-                                    상태: ${bgmInfo.isMuted ? '음소거' : bgmInfo.isPlaying ? `BGM ${bgmInfo.currentIndex} 재생 중` : `BGM ${bgmInfo.currentIndex} 준비됨`}
-                                </div>
-                            </div>
-
-                            <div style="margin-bottom: 20px; padding: 15px; background: #f8fafc; border-radius: 12px;">
-                                <h4 style="margin: 0 0 15px 0; color: #333;">🔊 볼륨 설정</h4>
-                                
-                                <div style="margin-bottom: 15px;">
-                                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">
-                                        🎼 배경음악: <span id="bgmVolumeText">${Math.round(AudioManager.bgmVolume * 100)}%</span>
-                                    </label>
-                                    <input type="range" id="bgmVolumeSlider" min="0" max="100" 
-                                           value="${AudioManager.bgmVolume * 100}" 
-                                           style="width: 100%;" 
-                                           oninput="setBGMVolume(this.value)" />
-                                </div>
-                                
-                                <div style="margin-bottom: 15px;">
-                                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">
-                                        🔊 효과음: <span id="effectVolumeText">${Math.round(AudioManager.effectVolume * 100)}%</span>
-                                    </label>
-                                    <input type="range" id="effectVolumeSlider" min="0" max="100" 
-                                           value="${AudioManager.effectVolume * 100}" 
-                                           style="width: 100%;" 
-                                           oninput="setEffectVolume(this.value)" />
-                                </div>
-                            </div>
-                            
-                            <div style="margin-bottom: 20px; padding: 15px; background: #fef3c7; border-radius: 12px;">
-                                <h4 style="margin: 0 0 15px 0; color: #333;">🎮 효과음 테스트</h4>
-                                
-                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
-                                    <button onclick="testSound('correct')" style="padding: 8px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
-                                        ✅ 정답음
-                                    </button>
-                                    <button onclick="testSound('wrong')" style="padding: 8px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
-                                        ❌ 오답음
-                                    </button>
-                                    <button onclick="testSound('genius')" style="padding: 8px; background: linear-gradient(135deg, #f59e0b, #f97316); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">
-                                        ⚡ 천재음
-                                    </button>
-                                    <button onclick="testSound('complete')" style="padding: 8px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
-                                        🎉 완료음
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button class="modal-button green modal-primary" onclick="closeModal()">확인</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-            
-            setTimeout(() => {
-                document.addEventListener('keydown', handleModalKeypress);
-                
