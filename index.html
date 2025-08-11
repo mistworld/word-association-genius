@@ -2,10 +2,10 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-visual">
     <title>연상천재 - IQ 140 연상퀴즈</title>
     
-    <!-- 🚀 PWA 메타태그 -->
+    <!-- 나머지 메타태그는 동일 -->
     <meta name="description" content="당신은 천재인가요? 시냅스가 연결되는 짜릿한 쾌감을 느껴보세요!">
     <meta name="keywords" content="연상게임, 퀴즈, IQ테스트, 브레인게임, 두뇌게임">
     <meta name="author" content="연상천재">
@@ -17,31 +17,25 @@
     <meta name="msapplication-TileColor" content="#6366f1">
     <meta name="msapplication-tap-highlight" content="no">
     
-    <!-- 🆕 iOS 전체화면 및 노치 대응 -->
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="format-detection" content="telephone=no">
     <meta name="HandheldFriendly" content="true">
     
-    <!-- 🆕 안드로이드 앱 바로가기 -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="연상천재">
     
-    <!-- 🆕 오픈그래프 메타태그 (공유 시) -->
     <meta property="og:title" content="연상천재 - IQ 140 연상퀴즈">
     <meta property="og:description" content="당신은 천재인가요? 시냅스가 연결되는 짜릿한 쾌감을 느껴보세요!">
     <meta property="og:image" content="/icon-512.png">
     <meta property="og:type" content="website">
     
-    <!-- 🔥 캐시 방지 메타태그 (개발용) -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="2.1.0">
+    <meta name="version" content="2.2.0">
     
-    <!-- 🔗 PWA 매니페스트 -->
     <link rel="manifest" href="manifest.json">
     
-    <!-- 📱 아이콘들 -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
@@ -96,6 +90,9 @@
             --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
             --gradient-genius: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
             --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            
+            /* 🆕 키보드 높이 변수 (JavaScript로 동적 설정) */
+            --keyboard-height: 0px;
         }
 
         /* 🌙 다크모드 */
@@ -247,13 +244,16 @@
             border: none;
         }
 
-        /* 📱 메인 콘텐츠 영역 */
+        /* 📱 메인 콘텐츠 영역 - 키보드 대응 개선 */
         .app-content {
             flex: 1;
             padding-top: calc(var(--header-height) + var(--safe-top));
             padding-bottom: calc(var(--safe-bottom) + 20px);
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+            /* 🆕 키보드가 올라와도 스크롤 가능하게 */
+            position: relative;
+            z-index: 1;
         }
 
         .content-wrapper {
@@ -263,6 +263,62 @@
             width: 100%;
         }
 
+        /* 🆕 게임 플레이 화면 - 키보드 대응 */
+        .game-container {
+            animation: fadeInUp 0.6s ease;
+            /* 🆕 키보드가 올라왔을 때를 위한 여백 */
+            padding-bottom: calc(200px + var(--keyboard-height));
+            transition: padding-bottom 0.3s ease;
+        }
+
+        /* 🆕 모바일 키보드 대응 클래스 */
+        .keyboard-visible .game-container {
+            padding-bottom: 400px;
+        }
+
+        .keyboard-visible .app-content {
+            /* 키보드가 올라왔을 때 스크롤 영역 조정 */
+            max-height: calc(100vh - var(--header-height) - var(--safe-top) - var(--keyboard-height));
+        }
+
+        /* 💡 힌트 카드 - 키보드 대응 개선 */
+        .hints-section {
+            margin-bottom: 140px;
+            /* 🆕 키보드가 올라와도 충분한 여백 확보 */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 📝 답변 섹션 - 키보드 대응 개선 */
+        .answer-section {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 20px;
+            padding-bottom: calc(var(--safe-bottom) + 20px);
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
+            z-index: 90;
+            border-top-left-radius: var(--radius-2xl);
+            border-top-right-radius: var(--radius-2xl);
+            border-top: 1px solid var(--border-light);
+            /* 🆕 키보드가 올라왔을 때 위치 조정 */
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        /* 🆕 키보드가 올라왔을 때 답변 섹션 위치 조정 */
+        .keyboard-visible .answer-section {
+            position: absolute;
+            bottom: auto;
+            top: calc(100vh - var(--keyboard-height) - 250px);
+        }
+
+        /* 나머지 CSS는 동일합니다... (여기서는 주요 변경사항만 표시) */
+        
         /* 🎮 라운드 선택 화면 - 카드 기반 디자인 */
         .round-select-container {
             animation: fadeInUp 0.6s ease;
@@ -429,11 +485,6 @@
             box-shadow: var(--shadow-sm);
         }
 
-        /* 🎮 게임 플레이 화면 */
-        .game-container {
-            animation: fadeInUp 0.6s ease;
-        }
-
         .game-progress-card {
             background: var(--gradient-card);
             border-radius: var(--radius-2xl);
@@ -533,11 +584,6 @@
             border-radius: 4px;
             transition: width 1s linear;
             box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
-        }
-
-        /* 💡 힌트 카드 */
-        .hints-section {
-            margin-bottom: 140px;
         }
 
         .hints-header {
@@ -660,24 +706,6 @@
 
         .description-button:active {
             transform: scale(0.95);
-        }
-
-        /* 📝 답변 섹션 */
-        .answer-section {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 20px;
-            padding-bottom: calc(var(--safe-bottom) + 20px);
-            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
-            z-index: 90;
-            border-top-left-radius: var(--radius-2xl);
-            border-top-right-radius: var(--radius-2xl);
-            border-top: 1px solid var(--border-light);
         }
 
         .info-grid {
@@ -1106,7 +1134,6 @@
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 20px;
         }
 
         .loading-text {
@@ -1397,13 +1424,13 @@
     <div id="app"></div>
 
     <script>
-        // 🎵 완전한 배경음악 2개 시스템 + 오디오 차단 해결 (원본 유지)
+        // 🎵 완전한 배경음악 자동재생 시스템 (개선)
         const AudioManager = {
             // 배경음악 2개
             bgm1: null,
             bgm2: null,
             currentBGM: null,
-            bgmIndex: 0, // 0: bgm1, 1: bgm2
+            bgmIndex: 0,
             
             // 효과음들
             correctSound: null,
@@ -1411,7 +1438,7 @@
             hintSound: null,
             clickSound: null,
             completeSound: null,
-            geniusSound: null, // 🆕 천재 정답 전용 효과음
+            geniusSound: null,
             
             // 오디오 상태
             isAudioUnlocked: false,
@@ -1419,21 +1446,31 @@
             userHasInteracted: false,
             isPlaying: false,
             isMuted: false,
+            autoPlayAttempts: 0,
+            maxAutoPlayAttempts: 10,
             
             // 설정
             bgmVolume: 0.4,
             effectVolume: 0.7,
-            bgmSwitchMode: 'alternate', // 'alternate' | 'random'
+            bgmSwitchMode: 'alternate',
             fadeDuration: 3000,
+            
+            // 🆕 자동재생 정책 우회를 위한 무음 오디오
+            silentAudioSrc: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmgdCjaV3PHMeSWEfY5u4TJnKgwPMaHRCHNsHQcPwegWGHUrDwaH7+MKF',
             
             // 🆕 강력한 오디오 컨텍스트 초기화
             async initAudioContext() {
                 try {
-                    // Web Audio API 컨텍스트 생성
                     const AudioContextClass = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
                     this.audioContext = new AudioContextClass();
                     
                     console.log('🎵 AudioContext 생성됨:', this.audioContext.state);
+                    
+                    // 자동 resume 시도
+                    if (this.audioContext.state === 'suspended') {
+                        await this.audioContext.resume();
+                    }
+                    
                     return true;
                 } catch (error) {
                     console.warn('🎵 AudioContext 생성 실패:', error);
@@ -1446,53 +1483,78 @@
                 if (this.isAudioUnlocked) return true;
                 
                 try {
-                    // 1단계: AudioContext 활성화
-                    if (this.audioContext) {
-                        if (this.audioContext.state === 'suspended') {
-                            await this.audioContext.resume();
-                            console.log('🎵 AudioContext 재개됨');
-                        }
+                    // AudioContext 활성화
+                    if (this.audioContext && this.audioContext.state === 'suspended') {
+                        await this.audioContext.resume();
                     }
                     
-                    // 2단계: 빈 오디오 버퍼 재생으로 잠금 해제
-                    if (this.audioContext && this.audioContext.state === 'running') {
-                        const buffer = this.audioContext.createBuffer(1, 1, 22050);
-                        const source = this.audioContext.createBufferSource();
-                        source.buffer = buffer;
-                        source.connect(this.audioContext.destination);
-                        source.start();
-                    }
+                    // 무음 오디오 재생으로 잠금 해제
+                    const silentAudio = new Audio();
+                    silentAudio.src = this.silentAudioSrc;
+                    silentAudio.volume = 0.001;
+                    silentAudio.muted = true;
                     
-                    // 3단계: 더미 오디오 요소로 추가 잠금 해제
-                    const testAudio = new Audio();
-                    testAudio.volume = 0.001;
-                    testAudio.muted = true;
-                    testAudio.src = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmgdCjaV3PHMeSWEfY5u4TJnKgwPMaHRCHNsHQcPwegWGHUrDwaH7+MKF';
-                    
-                    const playPromise = testAudio.play();
-                    if (playPromise) {
-                        await playPromise;
-                        testAudio.pause();
-                        testAudio.remove();
-                    }
+                    await silentAudio.play();
+                    silentAudio.pause();
+                    silentAudio.remove();
                     
                     this.isAudioUnlocked = true;
                     this.userHasInteracted = true;
-                    console.log('✅ 오디오 완전 잠금 해제 성공!');
+                    console.log('✅ 오디오 잠금 해제 성공!');
                     
                     return true;
                 } catch (error) {
-                    console.warn('🎵 오디오 잠금 해제 부분 실패:', error);
-                    // 부분 실패라도 시도해볼 수 있도록 true 반환
-                    this.isAudioUnlocked = true;
-                    return true;
+                    console.warn('🎵 오디오 잠금 해제 실패:', error);
+                    return false;
+                }
+            },
+            
+            // 🆕 자동재생 시도 함수
+            async attemptAutoPlay() {
+                if (this.isMuted || !this.currentBGM || this.isPlaying) {
+                    return;
+                }
+                
+                if (this.autoPlayAttempts >= this.maxAutoPlayAttempts) {
+                    console.log('🎵 자동재생 시도 횟수 초과');
+                    return;
+                }
+                
+                this.autoPlayAttempts++;
+                console.log(`🎵 자동재생 시도 ${this.autoPlayAttempts}/${this.maxAutoPlayAttempts}`);
+                
+                try {
+                    // 먼저 오디오 잠금 해제 시도
+                    await this.unlockAudio();
+                    
+                    // BGM 재생 시도
+                    this.currentBGM.volume = this.bgmVolume;
+                    this.currentBGM.muted = false;
+                    const playPromise = this.currentBGM.play();
+                    
+                    if (playPromise !== undefined) {
+                        await playPromise;
+                        this.isPlaying = true;
+                        this.updateMusicControls();
+                        console.log('✅ BGM 자동재생 성공!');
+                        this.showToast('🎵 배경음악이 자동으로 재생되었습니다!', 'success');
+                    }
+                } catch (error) {
+                    console.log(`🎵 자동재생 실패 (시도 ${this.autoPlayAttempts}):`, error.message);
+                    
+                    // 재시도 스케줄링
+                    if (this.autoPlayAttempts < this.maxAutoPlayAttempts) {
+                        setTimeout(() => {
+                            this.attemptAutoPlay();
+                        }, 1000 * this.autoPlayAttempts); // 점진적으로 대기시간 증가
+                    }
                 }
             },
             
             // 오디오 시스템 초기화
             async init() {
                 try {
-                    console.log('🎵 배경음악 2개 시스템 초기화 시작...');
+                    console.log('🎵 배경음악 자동재생 시스템 초기화 시작...');
                     
                     // AudioContext 초기화
                     await this.initAudioContext();
@@ -1544,10 +1606,13 @@
                             }
                         });
                         
-                        // 로드 완료
+                        // 🆕 로드 완료 시 자동재생 시도
                         bgm.addEventListener('canplaythrough', () => {
                             console.log(`🎵 BGM ${index + 1} 로드 완료`);
-                            this.updateMusicControls();
+                            if (index === 0 && !this.isPlaying) {
+                                // BGM1이 로드되면 자동재생 시도
+                                this.attemptAutoPlay();
+                            }
                         });
                         
                         // 오류 처리
@@ -1563,7 +1628,7 @@
                     this.hintSound = new Audio('hint.mp3');
                     this.clickSound = new Audio('click.mp3');
                     this.completeSound = new Audio('complete.mp3');
-                    this.geniusSound = new Audio('genius.mp3'); // 🆕 천재 정답 효과음
+                    this.geniusSound = new Audio('genius.mp3');
                     
                     // 효과음 설정
                     [this.correctSound, this.wrongSound, this.hintSound, this.clickSound, this.completeSound, this.geniusSound].forEach(audio => {
@@ -1577,7 +1642,12 @@
                         }
                     });
                     
-                    console.log('✅ 배경음악 2개 시스템 초기화 완료!');
+                    console.log('✅ 배경음악 자동재생 시스템 초기화 완료!');
+                    
+                    // 🆕 초기화 완료 후 즉시 자동재생 시도
+                    setTimeout(() => {
+                        this.attemptAutoPlay();
+                    }, 500);
                     
                 } catch (error) {
                     console.error('❌ 오디오 시스템 초기화 실패:', error);
@@ -1621,7 +1691,7 @@
                 }
             },
             
-            // 🎵 배경음악 정지/일시정지
+            // 나머지 함수들은 동일...
             pauseBGM() {
                 if (this.currentBGM && this.isPlaying) {
                     this.currentBGM.pause();
@@ -1631,7 +1701,6 @@
                 }
             },
             
-            // 🎵 배경음악 완전 정지
             stopBGM() {
                 [this.bgm1, this.bgm2].forEach(bgm => {
                     if (bgm && !bgm.paused) {
@@ -1644,11 +1713,9 @@
                 this.updateMusicControls();
             },
             
-            // 🎵 다음 배경음악으로 전환
             switchToNextBGM() {
                 if (!this.isAudioUnlocked || this.isMuted) return;
                 
-                // 다음 BGM 선택
                 const nextIndex = this.bgmSwitchMode === 'random' ? 
                     (this.bgmIndex === 0 ? 1 : 0) : 
                     (this.bgmIndex + 1) % 2;
@@ -1662,10 +1729,8 @@
                 
                 console.log(`🎵 BGM 교체: ${this.bgmIndex + 1} → ${nextIndex + 1}`);
                 
-                // 크로스페이드 효과로 전환
                 this.crossFadeBGM(this.currentBGM, nextBGM);
                 
-                // 현재 BGM 업데이트
                 this.currentBGM = nextBGM;
                 this.bgmIndex = nextIndex;
                 
@@ -1673,12 +1738,10 @@
                 this.updateMusicControls();
             },
             
-            // 🎵 수동 BGM 전환
             manualSwitchBGM() {
                 if (this.isPlaying) {
                     this.switchToNextBGM();
                 } else {
-                    // 재생 중이 아니면 단순히 다음 BGM으로 변경
                     this.bgmIndex = (this.bgmIndex + 1) % 2;
                     this.currentBGM = this.bgmIndex === 0 ? this.bgm1 : this.bgm2;
                     this.showToast(`🔄 BGM ${this.bgmIndex + 1}로 변경됨`, 'success');
@@ -1686,7 +1749,6 @@
                 }
             },
             
-            // 🎵 크로스페이드 효과
             crossFadeBGM(fromBGM, toBGM) {
                 if (!fromBGM || !toBGM) return;
                 
@@ -1694,7 +1756,6 @@
                 const steps = 30;
                 const stepDuration = this.fadeDuration / steps;
                 
-                // 새 BGM 시작 (볼륨 0부터)
                 toBGM.volume = 0;
                 toBGM.currentTime = 0;
                 toBGM.play().catch(e => console.warn('크로스페이드 재생 실패:', e));
@@ -1704,12 +1765,10 @@
                     currentStep++;
                     const progress = currentStep / steps;
                     
-                    // 이전 BGM 페이드 아웃
                     if (fromBGM) {
                         fromBGM.volume = startVolume * (1 - progress);
                     }
                     
-                    // 새 BGM 페이드 인
                     if (toBGM) {
                         toBGM.volume = startVolume * progress;
                     }
@@ -1728,7 +1787,6 @@
                 }, stepDuration);
             },
             
-            // 🎵 음소거 토글
             toggleMute() {
                 this.isMuted = !this.isMuted;
                 
@@ -1748,7 +1806,6 @@
                 return this.isMuted;
             },
             
-            // 🎵 재생/일시정지 토글
             togglePlayPause() {
                 if (this.isPlaying) {
                     this.pauseBGM();
@@ -1757,7 +1814,6 @@
                 }
             },
             
-            // 🎵 음악 컨트롤 UI 업데이트
             updateMusicControls() {
                 const musicFab = document.querySelector('.fab.music');
                 if (musicFab) {
@@ -1771,7 +1827,6 @@
                 }
             },
             
-            // 🎵 토스트 알림
             showToast(message, type = 'success') {
                 const existing = document.querySelector('.toast');
                 if (existing) existing.remove();
@@ -1790,7 +1845,6 @@
                 }, 3000);
             },
             
-            // 효과음 재생
             async playSound(soundType) {
                 if (this.isMuted) return;
                 
@@ -1805,7 +1859,7 @@
                     case 'hint': audio = this.hintSound; break;
                     case 'click': audio = this.clickSound; break;
                     case 'complete': audio = this.completeSound; break;
-                    case 'genius': audio = this.geniusSound; break; // 🆕 천재 정답 효과음
+                    case 'genius': audio = this.geniusSound; break;
                 }
                 
                 if (audio) {
@@ -1818,7 +1872,6 @@
                 }
             },
             
-            // 볼륨 조절
             setBGMVolume(volume) {
                 this.bgmVolume = Math.max(0, Math.min(1, volume));
                 [this.bgm1, this.bgm2].forEach(bgm => {
@@ -1833,7 +1886,6 @@
                 });
             },
             
-            // BGM 정보
             getCurrentBGMInfo() {
                 return {
                     currentIndex: this.bgmIndex + 1,
@@ -1846,10 +1898,95 @@
             }
         };
 
-        // 🔥 캐시 관리 시스템 (원본 유지)
+        // 🆕 키보드 감지 시스템
+        const KeyboardManager = {
+            isKeyboardVisible: false,
+            keyboardHeight: 0,
+            viewportHeight: window.innerHeight,
+            
+            init() {
+                // 뷰포트 크기 변경 감지
+                window.addEventListener('resize', () => this.handleViewportChange());
+                
+                // 입력 필드 포커스 이벤트
+                document.addEventListener('focusin', (e) => {
+                    if (e.target.tagName === 'INPUT') {
+                        this.onKeyboardShow();
+                    }
+                });
+                
+                document.addEventListener('focusout', (e) => {
+                    if (e.target.tagName === 'INPUT') {
+                        this.onKeyboardHide();
+                    }
+                });
+                
+                // Visual Viewport API 사용 (지원하는 경우)
+                if ('visualViewport' in window) {
+                    window.visualViewport.addEventListener('resize', () => {
+                        this.handleVisualViewportChange();
+                    });
+                }
+                
+                console.log('⌨️ 키보드 감지 시스템 초기화 완료');
+            },
+            
+            handleViewportChange() {
+                const currentHeight = window.innerHeight;
+                const heightDiff = this.viewportHeight - currentHeight;
+                
+                // 높이가 100px 이상 줄어들면 키보드가 올라온 것으로 판단
+                if (heightDiff > 100) {
+                    this.keyboardHeight = heightDiff;
+                    this.onKeyboardShow();
+                } else if (heightDiff < 50) {
+                    this.onKeyboardHide();
+                }
+            },
+            
+            handleVisualViewportChange() {
+                if (window.visualViewport) {
+                    const keyboardHeight = window.innerHeight - window.visualViewport.height;
+                    if (keyboardHeight > 50) {
+                        this.keyboardHeight = keyboardHeight;
+                        this.onKeyboardShow();
+                    } else {
+                        this.onKeyboardHide();
+                    }
+                }
+            },
+            
+            onKeyboardShow() {
+                if (!this.isKeyboardVisible) {
+                    this.isKeyboardVisible = true;
+                    document.body.classList.add('keyboard-visible');
+                    document.documentElement.style.setProperty('--keyboard-height', `${this.keyboardHeight}px`);
+                    
+                    // 현재 입력창이 보이도록 스크롤
+                    setTimeout(() => {
+                        const activeInput = document.activeElement;
+                        if (activeInput && activeInput.tagName === 'INPUT') {
+                            activeInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }, 300);
+                    
+                    console.log(`⌨️ 키보드 표시됨 (높이: ${this.keyboardHeight}px)`);
+                }
+            },
+            
+            onKeyboardHide() {
+                if (this.isKeyboardVisible) {
+                    this.isKeyboardVisible = false;
+                    document.body.classList.remove('keyboard-visible');
+                    document.documentElement.style.setProperty('--keyboard-height', '0px');
+                    console.log('⌨️ 키보드 숨겨짐');
+                }
+            }
+        };
+
+        // 🔥 캐시 관리 시스템 (동일)
         const CacheManager = {
-            // 🆕 HTML 메타태그에서 버전 자동 읽기
-            version: document.querySelector('meta[name="version"]')?.content || '2.1.0',
+            version: document.querySelector('meta[name="version"]')?.content || '2.2.0',
             
             init() {
                 this.checkVersion();
@@ -1857,7 +1994,6 @@
                 console.log(`🔥 캐시 관리 시스템 초기화 완료 (버전: ${this.version})`);
             },
             
-            // 버전 체크 및 자동 새로고침
             checkVersion() {
                 const savedVersion = localStorage.getItem('게임_버전');
                 const currentVersion = this.version;
@@ -1869,23 +2005,19 @@
                     this.clearAllCache();
                     localStorage.setItem('게임_버전', currentVersion);
                     
-                    // 사용자에게 알림 후 새로고침
                     alert(`🚀 새 버전(${currentVersion})이 업데이트되었습니다!\n페이지가 새로고침됩니다.`);
-                    location.reload(true); // 강제 새로고침
+                    location.reload(true);
                     return;
                 }
                 
-                // 첫 방문이면 현재 버전 저장
                 if (!savedVersion) {
                     localStorage.setItem('게임_버전', currentVersion);
                     console.log(`✅ 첫 방문: 버전 ${currentVersion} 저장됨`);
                 }
             },
             
-            // 모든 캐시 클리어
             clearAllCache() {
                 try {
-                    // 1. 브라우저 캐시 클리어 시도
                     if ('caches' in window) {
                         caches.keys().then(cacheNames => {
                             cacheNames.forEach(cacheName => {
@@ -1895,7 +2027,6 @@
                         });
                     }
                     
-                    // 2. Service Worker 캐시 클리어
                     if ('serviceWorker' in navigator) {
                         navigator.serviceWorker.getRegistrations().then(registrations => {
                             registrations.forEach(registration => {
@@ -1905,10 +2036,8 @@
                         });
                     }
                     
-                    // 3. 로컬 스토리지 임시 백업 후 문제 캐시만 클리어
                     const gameData = localStorage.getItem('연상천재_게임데이터');
                     
-                    // problems 관련 캐시 변수 클리어
                     if (window.problemsCache) {
                         window.problemsCache = {};
                         console.log('🗑️ 문제 캐시 클리어됨');
@@ -1921,9 +2050,7 @@
                 }
             },
             
-            // 🛠️ 개발자 도구 추가
             addDeveloperTools() {
-                // Ctrl+Shift+D로 개발자 도구 열기
                 document.addEventListener('keydown', (event) => {
                     if (event.ctrlKey && event.shiftKey && event.key === 'D') {
                         event.preventDefault();
@@ -1934,7 +2061,6 @@
                 console.log('🛠️ 개발자 도구 활성화: Ctrl+Shift+D로 열기');
             },
             
-            // 개발자 패널 표시
             showDeveloperPanel() {
                 const modalHtml = `
                     <div class="modal">
@@ -1986,7 +2112,6 @@
                 }, 100);
             },
             
-            // 강제 캐시 클리어
             forceClearCache() {
                 closeModal();
                 this.clearAllCache();
@@ -1999,7 +2124,6 @@
                 }, 1000);
             },
             
-            // 강제 새로고침
             forceReload() {
                 closeModal();
                 AudioManager.showToast('🔄 강제 새로고침 중...', 'warning');
@@ -2009,12 +2133,10 @@
                 }, 500);
             },
             
-            // 게임 데이터 초기화
             resetGameData() {
                 closeModal();
                 
                 if (confirm('⚠️ 정말로 모든 게임 데이터를 초기화하시겠습니까?\n\n- 완료한 라운드 초기화\n- 보유 열쇠 초기화\n- 저장된 게임 삭제\n\n이 작업은 되돌릴 수 없습니다!')) {
-                    // 게임 데이터만 초기화 (버전 정보는 유지)
                     const version = localStorage.getItem('게임_버전');
                     localStorage.clear();
                     if (version) {
@@ -2029,7 +2151,6 @@
                 }
             },
             
-            // 디버그 정보 다운로드
             downloadDebugInfo() {
                 closeModal();
                 
@@ -2044,7 +2165,11 @@
                     problemsCache: Object.keys(problemsCache || {}),
                     userAgent: navigator.userAgent,
                     localStorage: Object.keys(localStorage),
-                    audioInfo: AudioManager.getCurrentBGMInfo()
+                    audioInfo: AudioManager.getCurrentBGMInfo(),
+                    keyboardInfo: {
+                        isVisible: KeyboardManager.isKeyboardVisible,
+                        height: KeyboardManager.keyboardHeight
+                    }
                 };
                 
                 const jsonStr = JSON.stringify(debugInfo, null, 2);
@@ -2062,7 +2187,7 @@
             }
         };
 
-        // 게임 상태 변수들 (원본 유지)
+        // 게임 상태 변수들 (동일)
         let nextProblemKeyListener = null;
         let currentScreen = 'roundMap';
         let completedRounds = [];
@@ -2072,7 +2197,10 @@
         let isLoading = false;
         const problemsCache = {};
 
-        // 문제 데이터 로드 함수들 (원본 유지)
+        // 나머지 게임 로직 함수들은 모두 동일...
+        // (원본 코드의 나머지 부분을 그대로 유지)
+
+        // 문제 데이터 로드 함수들
         async function loadProblems(fileNumber) {
             if (problemsCache[fileNumber]) {
                 console.log(`📦 캐시에서 problems_${fileNumber}.json 로드됨 (${problemsCache[fileNumber].length}개 문제)`);
@@ -2081,7 +2209,7 @@
 
             try {
                 console.log(`🌐 problems_${fileNumber}.json 파일 새로 로딩 시도...`);
-                const response = await fetch(`problems_${fileNumber}.json?t=${Date.now()}`); // 캐시 방지
+                const response = await fetch(`problems_${fileNumber}.json?t=${Date.now()}`);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -2090,7 +2218,6 @@
                 const problems = await response.json();
                 console.log(`✅ problems_${fileNumber}.json 성공적으로 로드됨 (문제 ${problems.length}개)`);
                 
-                // 데이터 검증
                 if (!Array.isArray(problems) || problems.length === 0) {
                     throw new Error('문제 데이터가 올바르지 않습니다.');
                 }
@@ -2118,21 +2245,18 @@
             
             console.log(`📊 problems_${fileNumber}.json 전체 문제 수:`, problems.length);
             
-            // 라운드별 문제 선택 계산
             const problemsPerRound = 6;
             const startIndex = ((roundNumber - 1) % 10) * problemsPerRound;
             const endIndex = startIndex + problemsPerRound;
             
             let roundProblems = problems.slice(startIndex, endIndex);
             
-            // 문제 부족 시 처리
             if (roundProblems.length < problemsPerRound) {
                 console.warn(`⚠️ 문제 부족! 요청: ${problemsPerRound}개, 실제: ${roundProblems.length}개`);
                 
                 if (problems.length >= problemsPerRound) {
                     roundProblems = problems.slice(0, problemsPerRound);
                 } else {
-                    // 파일에 6개 미만이면 있는 만큼 반복해서 6개 만들기
                     roundProblems = [];
                     for (let i = 0; i < problemsPerRound; i++) {
                         const problemIndex = i % problems.length;
@@ -2152,7 +2276,7 @@
             return roundProblems;
         }
 
-        // UI 렌더링 함수들 (새로운 디자인)
+        // UI 렌더링 함수들
         function showLoading(message = '문제를 불러오는 중...') {
             const html = `
                 <div class="app-container">
@@ -2219,7 +2343,6 @@
                     <div class="app-content">
                         <div class="content-wrapper">
                             <div class="round-select-container">
-                                <!-- 웰컴 카드 -->
                                 <div class="welcome-card">
                                     <div class="welcome-icon">🧠</div>
                                     <h2 class="welcome-title">당신은 천재인가요?</h2>
@@ -2266,7 +2389,6 @@
                         </div>
                     </div>
                     
-                    <!-- 플로팅 액션 버튼들 -->
                     <div class="floating-actions">
                         <button class="fab music" onclick="toggleMusic()">
                             ${AudioManager.isPlaying ? '🎵' : '🔇'}
@@ -2276,7 +2398,6 @@
                         </button>
                     </div>
                     
-                    <!-- 설정 메뉴 -->
                     <div class="settings-menu" id="settingsMenu">
                         <button class="settings-button" onclick="AudioManager.playSound('click'); showAudioSettings()">
                             🎵 음악 설정
@@ -2421,7 +2542,7 @@
                         </div>
                     </div>
                     
-                    <div class="app-content" style="padding-bottom: 200px;">
+                    <div class="app-content">
                         <div class="content-wrapper">
                             <div class="game-container">
                                 <div class="game-progress-card">
@@ -2565,7 +2686,6 @@
                         `}
                     </div>
                     
-                    <!-- 플로팅 액션 버튼들 -->
                     <div class="floating-actions">
                         <button class="fab music" onclick="toggleMusic()">
                             ${AudioManager.isPlaying ? '🎵' : '🔇'}
@@ -2584,7 +2704,6 @@
                 }, 100);
                 removeNextProblemKeyListener();
             } else if (gameState.showAllAfterCorrect) {
-                // 설명 읽기 시간 제공
                 removeNextProblemKeyListener();
                 
                 let countdown = 5;
@@ -2678,7 +2797,6 @@
                 renderGame();
                 saveGame();
                 
-                // 진동 피드백
                 if ('vibrate' in navigator) {
                     navigator.vibrate([50, 50, 50]);
                 }
@@ -3362,13 +3480,23 @@
             // 캐시 관리 시스템 초기화
             CacheManager.init();
             
-            // 오디오 시스템 초기화 (사용자 액션 없이도 준비)
+            // 키보드 감지 시스템 초기화
+            KeyboardManager.init();
+            
+            // 오디오 시스템 초기화 (자동재생 포함)
             await AudioManager.init();
             
             const savedGameState = loadGame();
             
             // 바로 라운드 맵으로 이동
             renderRoundMap();
+            
+            // 🆕 페이지 로드 후 자동재생 재시도
+            setTimeout(() => {
+                if (!AudioManager.isPlaying && !AudioManager.isMuted) {
+                    AudioManager.attemptAutoPlay();
+                }
+            }, 1000);
         }
 
         // 자동 저장 및 이벤트 리스너
@@ -3475,12 +3603,17 @@
             }
         });
 
-        // 첫 클릭 시 오디오 활성화
-        document.addEventListener('click', async () => {
-            if (!AudioManager.isAudioUnlocked) {
-                await AudioManager.unlockAudio();
-            }
-        }, { once: true });
+        // 🆕 첫 사용자 인터랙션 시 오디오 활성화 및 자동재생
+        ['click', 'touchstart', 'keydown'].forEach(eventType => {
+            document.addEventListener(eventType, async () => {
+                if (!AudioManager.isAudioUnlocked || !AudioManager.userHasInteracted) {
+                    await AudioManager.unlockAudio();
+                    if (!AudioManager.isPlaying && !AudioManager.isMuted) {
+                        await AudioManager.startBGM();
+                    }
+                }
+            }, { once: true });
+        });
 
         // 게임 시작
         initGame();
@@ -3492,10 +3625,15 @@
         
         // 개발자 콘솔 도움말
         console.log(`
-🎮 연상천재 게임 개발자 도구 (모던 UI 버전)
+🎮 연상천재 게임 개발자 도구 (v2.2.0 - 자동재생 & 키보드 대응)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📋 현재 버전: ${CacheManager.version}
+
+🆕 새로운 기능:
+   - 배경음악 자동재생 시스템
+   - 모바일 키보드 감지 및 UI 자동 조정
+   - Visual Viewport API 지원
 
 🛠️ 개발자 단축키:
    Ctrl+Shift+D  →  개발자 패널 열기
@@ -3513,12 +3651,19 @@
    AudioManager     →  음악 시스템 제어
    AudioManager.togglePlayPause()  →  재생/일시정지
    AudioManager.toggleMute()       →  음소거 토글
+   AudioManager.attemptAutoPlay()  →  자동재생 재시도
+
+⌨️ 키보드 관리:
+   KeyboardManager  →  키보드 감지 시스템
+   KeyboardManager.isKeyboardVisible  →  키보드 표시 상태
+   KeyboardManager.keyboardHeight     →  키보드 높이
 
 🎨 UI 특징:
    - 모던 글래스모피즘 디자인
    - 부드러운 애니메이션과 마이크로 인터랙션
    - 모바일 최적화 터치 인터페이스
    - 다크모드 자동 지원
+   - 키보드 대응 자동 스크롤
 
 💡 팁: 파일 수정 후 캐시 문제가 있으면 설정 메뉴의 '🔄 캐시클리어' 버튼을 누르세요!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
