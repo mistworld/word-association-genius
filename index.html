@@ -32,7 +32,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="2.3.0">
+    <meta name="version" content="2.3.1">
     
     <link rel="manifest" href="manifest.json">
     
@@ -799,14 +799,10 @@
             color: var(--text-primary);
             transition: all 0.3s;
             box-shadow: var(--shadow-sm);
-            /* 🆕 기본적으로 비활성화 */
-            pointer-events: none;
-            opacity: 0.7;
+            cursor: pointer;
         }
 
         .answer-input.active {
-            pointer-events: auto;
-            opacity: 1;
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
@@ -2041,7 +2037,7 @@
 
         // 🔥 캐시 관리 시스템
         const CacheManager = {
-            version: document.querySelector('meta[name="version"]')?.content || '2.3.0',
+            version: document.querySelector('meta[name="version"]')?.content || '2.3.1',
             
             init() {
                 this.checkVersion();
@@ -2566,7 +2562,7 @@
             }
         }
 
-        // 🆕 키보드 토글 함수
+        // 🆕 키보드 토글 함수 - 입력창 직접 클릭 시에도 활성화
         function toggleKeyboard() {
             AudioManager.playSound('click');
             
@@ -2576,18 +2572,29 @@
             
             if (isInputActive) {
                 input.classList.add('active');
-                input.removeAttribute('readonly');
-                input.focus();
                 toggleBtn.classList.add('active');
                 toggleBtn.innerHTML = '⌨️';
                 console.log('⌨️ 키보드 활성화됨');
             } else {
                 input.classList.remove('active');
-                input.setAttribute('readonly', 'true');
                 input.blur();
                 toggleBtn.classList.remove('active');
                 toggleBtn.innerHTML = '💤';
                 console.log('⌨️ 키보드 비활성화됨');
+            }
+        }
+
+        // 🆕 입력창 클릭 시 활성화
+        function activateInput() {
+            if (!isInputActive) {
+                isInputActive = true;
+                const input = document.querySelector('.answer-input');
+                const toggleBtn = document.querySelector('.keyboard-toggle-btn');
+                
+                input.classList.add('active');
+                toggleBtn.classList.add('active');
+                toggleBtn.innerHTML = '⌨️';
+                console.log('⌨️ 입력창 클릭으로 키보드 활성화됨');
             }
         }
 
@@ -2755,7 +2762,7 @@
                                 </div>
                             </div>
                             
-                            <!-- 🆕 개선된 입력 영역 -->
+                            <!-- 🆕 개선된 입력 영역 - 입력창 직접 클릭 가능 -->
                             <div class="input-area">
                                 <button class="keyboard-toggle-btn ${isInputActive ? 'active' : ''}" onclick="toggleKeyboard()">
                                     ${isInputActive ? '⌨️' : '💤'}
@@ -2763,13 +2770,14 @@
                                 <input 
                                     type="text" 
                                     class="answer-input ${isInputActive ? 'active' : ''}" 
-                                    placeholder="키보드 버튼을 눌러 입력하세요"
+                                    placeholder="클릭하여 답을 입력하세요"
                                     value="${gameState.userAnswer}"
                                     autocomplete="off"
                                     autocorrect="off"
                                     autocapitalize="off"
                                     spellcheck="false"
-                                    ${!isInputActive ? 'readonly' : ''}
+                                    onclick="activateInput()"
+                                    onfocus="activateInput()"
                                     oninput="gameState.userAnswer = this.value; saveGame();"
                                     onkeydown="if(event.key === 'Enter') checkAnswer(this.value)"
                                 />
@@ -2792,6 +2800,9 @@
                 removeNextProblemKeyListener();
                 addNextProblemKeyListener();
                 
+                // 정답 후 모든 힌트 설명 표시
+                gameState.showAllAfterCorrect = true;
+                
                 setTimeout(() => {
                     const nextBtn = document.getElementById('nextProblemBtn');
                     if (nextBtn) {
@@ -2799,9 +2810,8 @@
                     }
                 }, 300);
             } else {
-                // 🆕 입력창 자동 포커스 제거
+                // 정답 전에는 엔터키 리스너 제거
                 removeNextProblemKeyListener();
-                isInputActive = false; // 기본적으로 키보드 비활성화
             }
             
             if (gameState.unlockedHints.includes(4) && !gameState.canShowDescriptions) {
@@ -2883,6 +2893,7 @@
                 gameState.showChosung = true;
                 gameState.showDescriptions = Array(6).fill(true);
                 gameState.canShowDescriptions = true;
+                gameState.showAllAfterCorrect = true; // 🆕 정답 후 모든 설명 표시
                 
                 // 🆕 키보드 비활성화
                 isInputActive = false;
@@ -3657,15 +3668,15 @@
         
         // 개발자 콘솔 도움말
         console.log(`
-🎮 연상천재 게임 개발자 도구 (v2.3.0 - 키보드 & 플로우 최적화)
+🎮 연상천재 게임 개발자 도구 (v2.3.1 - 키보드 & 정답 해설 수정)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📋 현재 버전: ${CacheManager.version}
 
-🆕 새로운 기능:
-   - 키보드 버튼을 눌러야만 입력창 활성화
-   - 힌트 클릭 시 키보드 자동 활성화 방지
-   - 정답 후 통합된 UI로 한 번에 다음 문제 진행
+🆕 수정된 기능:
+   - 입력창 직접 클릭 시 키보드 활성화
+   - 정답 후 힌트 설명 제대로 표시
+   - 정답 해설 창 복원
 
 🛠️ 개발자 단축키:
    Ctrl+Shift+D  →  개발자 패널 열기
@@ -3689,13 +3700,14 @@
 ⌨️ 키보드 관리:
    KeyboardManager  →  키보드 감지 시스템
    toggleKeyboard() →  키보드 토글
+   activateInput()  →  입력창 활성화
    isInputActive    →  입력 활성화 상태
 
 🎨 UI 특징:
-   - 키보드 아이콘 클릭 시에만 입력 활성화
-   - 힌트/정보 클릭 시 키보드 간섭 없음
-   - 정답 시 통합 패널로 모든 정보 한 번에 표시
-   - 원클릭으로 다음 문제 진행
+   - 입력창 직접 클릭 시 키보드 활성화
+   - 정답 후 모든 힌트 설명 표시
+   - 정답 패널에서 정보 확인 가능
+   - 다음 문제로 진행
 
 💡 팁: 파일 수정 후 캐시 문제가 있으면 설정 메뉴의 '🔄 캐시클리어' 버튼을 누르세요!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
