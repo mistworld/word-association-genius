@@ -1,108 +1,132 @@
-const CACHE_NAME = 'yeonsan-genius-v1.0.3';
+const CACHE_NAME = 'yeonsang-genius-v2.3.1';
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png',
-  '/bgm1.mp3',
-  '/bgm2.mp3',
-  '/correct.mp3',
-  '/wrong.mp3',
-  '/hint.mp3',
-  '/click.mp3',
-  '/complete.mp3',
-  '/genius.mp3',
-  // problems 파일들
-  '/problems_1.json',
-  '/problems_2.json',
-  '/problems_3.json',
-  '/problems_4.json',
-  '/problems_5.json',
-  '/problems_6.json',
-  '/problems_7.json',
-  '/problems_8.json',
-  '/problems_9.json',
-  '/problems_10.json'
+  '/favicon.ico',
+  // 문제 파일들은 동적으로 캐싱
 ];
 
-// 설치 이벤트
+// Service Worker 설치
 self.addEventListener('install', event => {
+  console.log('[SW] Installing Service Worker...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('캐시 열림');
+        console.log('[SW] Caching app shell');
         return cache.addAll(urlsToCache);
       })
-      .catch(err => {
-        console.error('캐시 실패:', err);
+      .then(() => {
+        console.log('[SW] Install complete, skip waiting');
+        return self.skipWaiting();
       })
   );
-  self.skipWaiting();
 });
 
-// 활성화 이벤트
+// Service Worker 활성화
 self.addEventListener('activate', event => {
+  console.log('[SW] Activating Service Worker...');
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
-            console.log('이전 캐시 삭제:', cacheName);
+            console.log('[SW] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
+    }).then(() => {
+      console.log('[SW] Claiming clients');
+      return self.clients.claim();
     })
   );
-  self.clients.claim();
 });
 
-// 패치 이벤트 (오프라인 지원)
+// 네트워크 요청 가로채기
 self.addEventListener('fetch', event => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // 같은 도메인의 요청만 처리
+  if (url.origin !== location.origin) {
+    return;
+  }
+
+  // problems_*.json 파일 처리
+  if (url.pathname.includes('problems_') && url.pathname.endsWith('.json')) {
+    event.respondWith(
+      caches.match(request)
+        .then(response => {
+          if (response) {
+            console.log('[SW] Cache hit:', url.pathname);
+            return response;
+          }
+          console.log('[SW] Fetching:', url.pathname);
+          return fetch(request).then(response => {
+            // 성공적인 응답만 캐싱
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+            // 응답 복제 후 캐싱
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME)
+              .then(cache => {
+                cache.put(request, responseToCache);
+              });
+            return response;
+          });
+        })
+    );
+    return;
+  }
+
+  // 음악 파일 처리 (캐싱하지 않음)
+  if (url.pathname.includes('.mp3')) {
+    event.respondWith(fetch(request));
+    return;
+  }
+
+  // 기본 전략: 캐시 우선, 없으면 네트워크
   event.respondWith(
-    caches.match(event.request)
+    caches.match(request)
       .then(response => {
-        // 캐시에서 찾으면 반환
         if (response) {
           return response;
         }
-        
-        // 네트워크 요청
-        return fetch(event.request).then(response => {
-          // 유효한 응답이 아니면 그대로 반환
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
+        return fetch(request).then(response => {
+          // 기본 HTML, CSS, JS만 캐싱
+          if (request.method === 'GET' && 
+              (url.pathname === '/' || 
+               url.pathname.endsWith('.html') || 
+               url.pathname.endsWith('.css') || 
+               url.pathname.endsWith('.js'))) {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME)
+              .then(cache => {
+                cache.put(request, responseToCache);
+              });
           }
-          
-          // 응답 복사
-          const responseToCache = response.clone();
-          
-          // 캐시에 저장
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseToCache);
-          });
-          
           return response;
         });
       })
       .catch(() => {
-        // 오프라인일 때 기본 페이지 반환
-        if (event.request.destination === 'document') {
+        // 오프라인 폴백
+        if (request.destination === 'document') {
           return caches.match('/index.html');
         }
       })
   );
 });
 
-// 백그라운드 동기화
+// 백그라운드 동기화 (옵션)
 self.addEventListener('sync', event => {
-  if (event.tag === 'sync-game-data') {
-    event.waitUntil(syncGameData());
-  }
+  console.log('[SW] Background sync:', event.tag);
 });
 
-async function syncGameData() {
-  // 게임 데이터 동기화 로직
-  console.log('게임 데이터 동기화 중...');
-}
+// 푸시 알림 (옵션)
+self.addEventListener('push', event => {
+  console.log('[SW] Push notification received');
+});
