@@ -251,7 +251,6 @@
             padding-bottom: calc(var(--safe-bottom) + 20px);
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            /* 🆕 키보드가 올라와도 스크롤 가능하게 */
             position: relative;
             z-index: 1;
         }
@@ -266,7 +265,6 @@
         /* 🆕 게임 플레이 화면 - 키보드 대응 */
         .game-container {
             animation: fadeInUp 0.6s ease;
-            /* 🆕 키보드가 올라왔을 때를 위한 여백 */
             padding-bottom: calc(200px + var(--keyboard-height));
             transition: padding-bottom 0.3s ease;
         }
@@ -277,14 +275,12 @@
         }
 
         .keyboard-visible .app-content {
-            /* 키보드가 올라왔을 때 스크롤 영역 조정 */
             max-height: calc(100vh - var(--header-height) - var(--safe-top) - var(--keyboard-height));
         }
 
         /* 💡 힌트 카드 - 키보드 대응 개선 */
         .hints-section {
             margin-bottom: 140px;
-            /* 🆕 키보드가 올라와도 충분한 여백 확보 */
             position: relative;
             z-index: 10;
         }
@@ -305,20 +301,16 @@
             border-top-left-radius: var(--radius-2xl);
             border-top-right-radius: var(--radius-2xl);
             border-top: 1px solid var(--border-light);
-            /* 🆕 키보드가 올라왔을 때 위치 조정 */
             transform: translateY(0);
             transition: transform 0.3s ease;
         }
 
-        /* 🆕 키보드가 올라왔을 때 답변 섹션 위치 조정 */
         .keyboard-visible .answer-section {
             position: absolute;
             bottom: auto;
             top: calc(100vh - var(--keyboard-height) - 250px);
         }
 
-        /* 나머지 CSS는 동일합니다... (여기서는 주요 변경사항만 표시) */
-        
         /* 🎮 라운드 선택 화면 - 카드 기반 디자인 */
         .round-select-container {
             animation: fadeInUp 0.6s ease;
@@ -608,6 +600,8 @@
             transition: all 0.4s;
             animation: fadeIn 0.6s ease;
             border: 1px solid var(--border-light);
+            /* 🆕 힌트 클릭 시 키보드 방지 */
+            pointer-events: auto;
         }
 
         .hint-card:hover {
@@ -665,6 +659,49 @@
             padding: 8px 0;
         }
 
+        .hint-description {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .hint-description.highlighted {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: var(--info);
+            font-weight: 500;
+            animation: slideInUp 0.4s ease;
+        }
+
+        .description-button {
+            margin-top: 12px;
+            background: var(--bg-tertiary);
+            border: none;
+            padding: 10px 18px;
+            border-radius: var(--radius-full);
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .description-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .description-button:active {
+            transform: scale(0.95);
+        }
+
         .info-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -713,9 +750,47 @@
             text-decoration: underline;
         }
 
+        /* 🆕 키보드 입력 영역 개선 */
+        .input-area {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .keyboard-toggle-btn {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-md);
+            flex-shrink: 0;
+        }
+
+        .keyboard-toggle-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .keyboard-toggle-btn:active {
+            transform: scale(0.95);
+        }
+
+        .keyboard-toggle-btn.active {
+            background: var(--gradient-success);
+            animation: pulse 1.5s infinite;
+        }
+
         .answer-input {
-            width: 100%;
-            padding: 18px 20px;
+            flex: 1;
+            padding: 16px 18px;
             border: 2px solid var(--border);
             border-radius: var(--radius-xl);
             font-size: 16px;
@@ -724,6 +799,16 @@
             color: var(--text-primary);
             transition: all 0.3s;
             box-shadow: var(--shadow-sm);
+            /* 🆕 기본적으로 비활성화 */
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .answer-input.active {
+            pointer-events: auto;
+            opacity: 1;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
 
         .answer-input:focus {
@@ -736,6 +821,93 @@
         .answer-input.shake {
             animation: shake 0.4s;
             border-color: var(--error);
+        }
+
+        /* 🎉 정답 패널 - 통합된 디자인 */
+        .correct-panel {
+            background: var(--gradient-success);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            text-align: center;
+            color: white;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-xl);
+            animation: slideInUp 0.6s ease;
+        }
+
+        .correct-icon {
+            font-size: 56px;
+            margin-bottom: 12px;
+            animation: bounce 1s infinite;
+        }
+
+        .correct-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .correct-answer {
+            font-size: 22px;
+            opacity: 0.95;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .correct-category {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        /* 🆕 통합 정답 패널 */
+        .integrated-correct-panel {
+            background: var(--gradient-success);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            text-align: center;
+            color: white;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-xl);
+            animation: slideInUp 0.6s ease;
+        }
+
+        .correct-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .correct-details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            opacity: 0.8;
+        }
+
+        .detail-value {
+            font-weight: 600;
         }
 
         /* 🚀 다음 버튼 */
@@ -1245,6 +1417,29 @@
             }
         }
 
+        /* 🌟 설명 타이머 */
+        .explanation-timer {
+            background: var(--gradient-genius);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+            color: white;
+            animation: slideInUp 0.4s ease;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .explanation-timer-text {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .explanation-timer-count {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
         /* 알림 토스트 */
         .toast {
             position: fixed;
@@ -1319,26 +1514,16 @@
     </style>
 </head>
 <body>
-    <div id="app">
-        <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-            <div style="text-align: center; color: white;">
-                <div style="font-size: 64px; margin-bottom: 20px;">🧠</div>
-                <h1 style="font-size: 32px; margin-bottom: 10px;">연상천재</h1>
-                <p style="font-size: 18px; opacity: 0.9;">로딩 중...</p>
-            </div>
-        </div>
-    </div>
+    <div id="app"></div>
 
     <script>
-        // 🎵 완전한 배경음악 자동재생 시스템 (개선)
+        // 🎵 완전한 배경음악 자동재생 시스템
         const AudioManager = {
-            // 배경음악 2개
             bgm1: null,
             bgm2: null,
             currentBGM: null,
             bgmIndex: 0,
             
-            // 효과음들
             correctSound: null,
             wrongSound: null,
             hintSound: null,
@@ -1346,7 +1531,6 @@
             completeSound: null,
             geniusSound: null,
             
-            // 오디오 상태
             isAudioUnlocked: false,
             audioContext: null,
             userHasInteracted: false,
@@ -1355,16 +1539,13 @@
             autoPlayAttempts: 0,
             maxAutoPlayAttempts: 10,
             
-            // 설정
             bgmVolume: 0.4,
             effectVolume: 0.7,
             bgmSwitchMode: 'alternate',
             fadeDuration: 3000,
             
-            // 🆕 자동재생 정책 우회를 위한 무음 오디오
             silentAudioSrc: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmgdCjaV3PHMeSWEfY5u4TJnKgwPMaHRCHNsHQcPwegWGHUrDwaH7+MKF',
             
-            // 🆕 강력한 오디오 컨텍스트 초기화
             async initAudioContext() {
                 try {
                     const AudioContextClass = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
@@ -1372,7 +1553,6 @@
                     
                     console.log('🎵 AudioContext 생성됨:', this.audioContext.state);
                     
-                    // 자동 resume 시도
                     if (this.audioContext.state === 'suspended') {
                         await this.audioContext.resume();
                     }
@@ -1384,17 +1564,14 @@
                 }
             },
             
-            // 🆕 확실한 오디오 잠금 해제
             async unlockAudio() {
                 if (this.isAudioUnlocked) return true;
                 
                 try {
-                    // AudioContext 활성화
                     if (this.audioContext && this.audioContext.state === 'suspended') {
                         await this.audioContext.resume();
                     }
                     
-                    // 무음 오디오 재생으로 잠금 해제
                     const silentAudio = new Audio();
                     silentAudio.src = this.silentAudioSrc;
                     silentAudio.volume = 0.001;
@@ -1415,7 +1592,6 @@
                 }
             },
             
-            // 🆕 자동재생 시도 함수
             async attemptAutoPlay() {
                 if (this.isMuted || !this.currentBGM || this.isPlaying) {
                     return;
@@ -1430,10 +1606,8 @@
                 console.log(`🎵 자동재생 시도 ${this.autoPlayAttempts}/${this.maxAutoPlayAttempts}`);
                 
                 try {
-                    // 먼저 오디오 잠금 해제 시도
                     await this.unlockAudio();
                     
-                    // BGM 재생 시도
                     this.currentBGM.volume = this.bgmVolume;
                     this.currentBGM.muted = false;
                     const playPromise = this.currentBGM.play();
@@ -1448,54 +1622,44 @@
                 } catch (error) {
                     console.log(`🎵 자동재생 실패 (시도 ${this.autoPlayAttempts}):`, error.message);
                     
-                    // 재시도 스케줄링
                     if (this.autoPlayAttempts < this.maxAutoPlayAttempts) {
                         setTimeout(() => {
                             this.attemptAutoPlay();
-                        }, 1000 * this.autoPlayAttempts); // 점진적으로 대기시간 증가
+                        }, 1000 * this.autoPlayAttempts);
                     }
                 }
             },
             
-            // 오디오 시스템 초기화
             async init() {
                 try {
                     console.log('🎵 배경음악 자동재생 시스템 초기화 시작...');
                     
-                    // AudioContext 초기화
                     await this.initAudioContext();
                     
-                    // 🎵 배경음악 2개 로드
                     this.bgm1 = new Audio();
                     this.bgm2 = new Audio();
                     
-                    // BGM1 설정
                     this.bgm1.src = 'bgm1.mp3';
                     this.bgm1.volume = this.bgmVolume;
                     this.bgm1.preload = 'auto';
                     this.bgm1.crossOrigin = 'anonymous';
                     
-                    // BGM2 설정
                     this.bgm2.src = 'bgm2.mp3';
                     this.bgm2.volume = this.bgmVolume;
                     this.bgm2.preload = 'auto';
                     this.bgm2.crossOrigin = 'anonymous';
                     
-                    // 현재 BGM을 BGM1으로 설정
                     this.currentBGM = this.bgm1;
                     this.bgmIndex = 0;
                     
-                    // 배경음악 이벤트 리스너
                     [this.bgm1, this.bgm2].forEach((bgm, index) => {
                         if (!bgm) return;
                         
-                        // 곡 종료 시 다음 곡으로 전환
                         bgm.addEventListener('ended', () => {
                             console.log(`🎵 BGM ${index + 1} 종료됨, 다음 곡으로 전환`);
                             this.switchToNextBGM();
                         });
                         
-                        // 재생/정지 이벤트
                         bgm.addEventListener('play', () => {
                             if (bgm === this.currentBGM) {
                                 this.isPlaying = true;
@@ -1512,23 +1676,19 @@
                             }
                         });
                         
-                        // 🆕 로드 완료 시 자동재생 시도
                         bgm.addEventListener('canplaythrough', () => {
                             console.log(`🎵 BGM ${index + 1} 로드 완료`);
                             if (index === 0 && !this.isPlaying) {
-                                // BGM1이 로드되면 자동재생 시도
                                 this.attemptAutoPlay();
                             }
                         });
                         
-                        // 오류 처리
                         bgm.addEventListener('error', (e) => {
                             console.warn(`🎵 BGM ${index + 1} 로드 실패:`, e);
                             this.showToast(`BGM ${index + 1} 파일을 찾을 수 없습니다`, 'error');
                         });
                     });
                     
-                    // 효과음들 로드
                     this.correctSound = new Audio('correct.mp3');
                     this.wrongSound = new Audio('wrong.mp3');
                     this.hintSound = new Audio('hint.mp3');
@@ -1536,7 +1696,6 @@
                     this.completeSound = new Audio('complete.mp3');
                     this.geniusSound = new Audio('genius.mp3');
                     
-                    // 효과음 설정
                     [this.correctSound, this.wrongSound, this.hintSound, this.clickSound, this.completeSound, this.geniusSound].forEach(audio => {
                         if (audio) {
                             audio.volume = this.effectVolume;
@@ -1550,7 +1709,6 @@
                     
                     console.log('✅ 배경음악 자동재생 시스템 초기화 완료!');
                     
-                    // 🆕 초기화 완료 후 즉시 자동재생 시도
                     setTimeout(() => {
                         this.attemptAutoPlay();
                     }, 500);
@@ -1560,7 +1718,6 @@
                 }
             },
             
-            // 🎵 배경음악 시작
             async startBGM() {
                 if (!this.isAudioUnlocked) {
                     const unlocked = await this.unlockAudio();
@@ -1575,13 +1732,11 @@
                 }
                 
                 try {
-                    // 다른 BGM 정지
                     const otherBGM = this.currentBGM === this.bgm1 ? this.bgm2 : this.bgm1;
                     if (otherBGM && !otherBGM.paused) {
                         otherBGM.pause();
                     }
                     
-                    // 현재 BGM 재생
                     this.currentBGM.currentTime = 0;
                     await this.currentBGM.play();
                     
@@ -1597,7 +1752,6 @@
                 }
             },
             
-            // 나머지 함수들은 동일...
             pauseBGM() {
                 if (this.currentBGM && this.isPlaying) {
                     this.currentBGM.pause();
@@ -1811,10 +1965,8 @@
             viewportHeight: window.innerHeight,
             
             init() {
-                // 뷰포트 크기 변경 감지
                 window.addEventListener('resize', () => this.handleViewportChange());
                 
-                // 입력 필드 포커스 이벤트
                 document.addEventListener('focusin', (e) => {
                     if (e.target.tagName === 'INPUT') {
                         this.onKeyboardShow();
@@ -1827,7 +1979,6 @@
                     }
                 });
                 
-                // Visual Viewport API 사용 (지원하는 경우)
                 if ('visualViewport' in window) {
                     window.visualViewport.addEventListener('resize', () => {
                         this.handleVisualViewportChange();
@@ -1841,7 +1992,6 @@
                 const currentHeight = window.innerHeight;
                 const heightDiff = this.viewportHeight - currentHeight;
                 
-                // 높이가 100px 이상 줄어들면 키보드가 올라온 것으로 판단
                 if (heightDiff > 100) {
                     this.keyboardHeight = heightDiff;
                     this.onKeyboardShow();
@@ -1868,7 +2018,6 @@
                     document.body.classList.add('keyboard-visible');
                     document.documentElement.style.setProperty('--keyboard-height', `${this.keyboardHeight}px`);
                     
-                    // 현재 입력창이 보이도록 스크롤
                     setTimeout(() => {
                         const activeInput = document.activeElement;
                         if (activeInput && activeInput.tagName === 'INPUT') {
@@ -1890,7 +2039,7 @@
             }
         };
 
-        // 🔥 캐시 관리 시스템 (동일)
+        // 🔥 캐시 관리 시스템
         const CacheManager = {
             version: document.querySelector('meta[name="version"]')?.content || '2.3.0',
             
@@ -2093,7 +2242,7 @@
             }
         };
 
-        // 게임 상태 변수들 (동일)
+        // 게임 상태 변수들
         let nextProblemKeyListener = null;
         let currentScreen = 'roundMap';
         let completedRounds = [];
@@ -2102,31 +2251,38 @@
         let gameState = {};
         let isLoading = false;
         const problemsCache = {};
+        let isInputActive = false; // 🆕 키보드 상태 추가
 
-        // 📝 내장 문제 데이터 (파일이 없을 때 사용)
-        const defaultProblems = {
-            1: [
-                // 라운드 1-10 문제들 (60문제)
-                { answer: ["사과"], hints: ["빨간색 또는 초록색입니다", "아침에 먹으면 금이라고 합니다", "뉴턴이 떨어지는 것을 보고 만유인력을 발견했습니다", "백설공주가 먹고 쓰러졌습니다", "애플의 로고입니다", "의사가 제일 싫어한다는 과일입니다"], category: "과일", chosung: "ㅅㄱ" },
-                { answer: ["컴퓨터"], hints: ["전자기기입니다", "키보드와 마우스를 사용합니다", "프로그래밍을 할 때 필요합니다", "CPU와 RAM이 있습니다", "데스크톱과 노트북이 있습니다", "인터넷을 하려면 필요합니다"], category: "전자기기", chosung: "ㅋㅍㅌ" },
-                { answer: ["김치"], hints: ["한국의 전통 음식입니다", "배추로 만듭니다", "빨간색입니다", "발효식품입니다", "밥과 함께 먹습니다", "매운맛이 납니다"], category: "음식", chosung: "ㄱㅊ" },
-                { answer: ["자동차"], hints: ["교통수단입니다", "바퀴가 4개입니다", "기름이나 전기로 움직입니다", "운전면허가 필요합니다", "도로에서 달립니다", "현대와 기아가 유명합니다"], category: "교통", chosung: "ㅈㄷㅊ" },
-                { answer: ["학교"], hints: ["교육기관입니다", "학생들이 다닙니다", "선생님이 계십니다", "수업을 듣는 곳입니다", "초중고대가 있습니다", "책상과 칠판이 있습니다"], category: "장소", chosung: "ㅎㄱ" },
-                { answer: ["휴대폰", "스마트폰", "핸드폰"], hints: ["전자기기입니다", "주머니에 넣고 다닙니다", "전화를 걸 수 있습니다", "카톡을 할 수 있습니다", "사진을 찍을 수 있습니다", "삼성과 애플이 유명합니다"], category: "전자기기", chosung: "ㅎㄷㅍ" },
+        // 문제 데이터 로드 함수들
+        async function loadProblems(fileNumber) {
+            if (problemsCache[fileNumber]) {
+                console.log(`📦 캐시에서 problems_${fileNumber}.json 로드됨 (${problemsCache[fileNumber].length}개 문제)`);
+                return problemsCache[fileNumber];
+            }
+
+            try {
+                console.log(`🌐 problems_${fileNumber}.json 파일 새로 로딩 시도...`);
+                const response = await fetch(`problems_${fileNumber}.json?t=${Date.now()}`);
                 
-                // 라운드 2
-                { answer: ["피아노"], hints: ["악기입니다", "건반이 88개입니다", "검은 건반과 흰 건반이 있습니다", "베토벤이 연주했습니다", "그랜드와 업라이트가 있습니다", "도레미파솔라시도를 칩니다"], category: "악기", chosung: "ㅍㅇㄴ" },
-                { answer: ["축구"], hints: ["스포츠입니다", "11명이 합니다", "공을 발로 찹니다", "골대가 있습니다", "월드컵이 유명합니다", "손흥민이 잘합니다"], category: "스포츠", chosung: "ㅊㄱ" },
-                { answer: ["커피"], hints: ["음료입니다", "카페인이 들어있습니다", "아침에 많이 마십니다", "아메리카노와 라떼가 있습니다", "스타벅스가 유명합니다", "원두를 갈아서 만듭니다"], category: "음료", chosung: "ㅋㅍ" },
-                { answer: ["병원"], hints: ["의료기관입니다", "아플 때 갑니다", "의사와 간호사가 있습니다", "주사를 맞는 곳입니다", "응급실이 있습니다", "흰 가운을 입습니다"], category: "장소", chosung: "ㅂㅇ" },
-                { answer: ["시계"], hints: ["시간을 알려줍니다", "손목에 차거나 벽에 겁니다", "시침과 분침이 있습니다", "알람 기능이 있습니다", "롤렉스가 유명합니다", "똑딱똑딱 소리가 납니다"], category: "물건", chosung: "ㅅㄱ" },
-                { answer: ["책"], hints: ["종이로 만들어졌습니다", "글자가 적혀있습니다", "도서관에 많습니다", "읽는 것입니다", "작가가 씁니다", "베스트셀러가 있습니다"], category: "물건", chosung: "ㅊ" },
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
                 
-                // 라운드 3
-                { answer: ["비행기"], hints: ["교통수단입니다", "하늘을 날아다닙니다", "날개가 있습니다", "공항에서 탑니다", "조종사가 운전합니다", "여행갈 때 탑니다"], category: "교통", chosung: "ㅂㅎㄱ" },
-                { answer: ["텔레비전", "TV", "티비"], hints: ["전자제품입니다", "영상을 보여줍니다", "리모컨으로 조작합니다", "채널을 돌려봅니다", "거실에 주로 있습니다", "뉴스와 드라마를 봅니다"], category: "전자기기", chosung: "ㅌㄹㅂㅈ" },
-                { answer: ["우산"], hints: ["비올 때 씁니다", "펴고 접을 수 있습니다", "손잡이가 있습니다", "비를 막아줍니다", "장마철에 필수입니다", "양산과 우산이 있습니다"], category: "물건", chosung: "ㅇㅅ" },
-                { answer: ["달"], hints: ["밤하늘에 있습니다", "지구의 위성입니다", "보름달과 초승달이 있습니다", "토끼가 떡방아를 찧는다고 합니다", "아폴로 11호가 착
+                const problems = await response.json();
+                console.log(`✅ problems_${fileNumber}.json 성공적으로 로드됨 (문제 ${problems.length}개)`);
+                
+                if (!Array.isArray(problems) || problems.length === 0) {
+                    throw new Error('문제 데이터가 올바르지 않습니다.');
+                }
+                
+                problemsCache[fileNumber] = problems;
+                return problems;
+                
+            } catch (error) {
+                console.error(`❌ problems_${fileNumber}.json 로드 실패:`, error);
+                throw error;
+            }
+        }
 
         function getFileNumber(roundNumber) {
             const fileNumber = Math.ceil(roundNumber / 10);
@@ -2175,12 +2331,6 @@
 
         // UI 렌더링 함수들
         function showLoading(message = '문제를 불러오는 중...') {
-            const app = document.getElementById('app');
-            if (!app) {
-                console.error('app element가 없습니다!');
-                return;
-            }
-            
             const html = `
                 <div class="app-container">
                     <div class="app-content">
@@ -2193,16 +2343,10 @@
                     </div>
                 </div>
             `;
-            app.innerHTML = html;
+            document.getElementById('app').innerHTML = html;
         }
 
         function showError(message = '문제를 불러오는 중 오류가 발생했습니다.', detail = '', fileNumber = null) {
-            const app = document.getElementById('app');
-            if (!app) {
-                console.error('app element가 없습니다!');
-                return;
-            }
-            
             const html = `
                 <div class="app-container">
                     <div class="app-content">
@@ -2220,17 +2364,11 @@
                     </div>
                 </div>
             `;
-            app.innerHTML = html;
+            document.getElementById('app').innerHTML = html;
         }
 
         function renderRoundMap() {
             if (isLoading) return;
-            
-            const app = document.getElementById('app');
-            if (!app) {
-                console.error('app element가 없습니다!');
-                return;
-            }
             
             removeNextProblemKeyListener();
             clearSavedGameState();
@@ -2330,7 +2468,7 @@
                 </div>
             `;
             
-            app.innerHTML = html;
+            document.getElementById('app').innerHTML = html;
             currentScreen = 'roundMap';
             
             setTimeout(() => {
@@ -2366,9 +2504,11 @@
                     showChosung: false,
                     userAnswer: '',
                     isCorrect: null,
+                    showAllAfterCorrect: false,
                     helpMode: false,
                     geniusTimer: 20,
                     geniusTimerActive: true,
+                    showDescriptions: Array(problems.length).fill(false),
                     canShowDescriptions: false,
                     roundKeys: 0,
                     geniusCount: 0,
@@ -2423,6 +2563,31 @@
             const progressElement = document.querySelector('.genius-timer-progress');
             if (progressElement) {
                 progressElement.style.width = `${(gameState.geniusTimer / 20) * 100}%`;
+            }
+        }
+
+        // 🆕 키보드 토글 함수
+        function toggleKeyboard() {
+            AudioManager.playSound('click');
+            
+            isInputActive = !isInputActive;
+            const input = document.querySelector('.answer-input');
+            const toggleBtn = document.querySelector('.keyboard-toggle-btn');
+            
+            if (isInputActive) {
+                input.classList.add('active');
+                input.removeAttribute('readonly');
+                input.focus();
+                toggleBtn.classList.add('active');
+                toggleBtn.innerHTML = '⌨️';
+                console.log('⌨️ 키보드 활성화됨');
+            } else {
+                input.classList.remove('active');
+                input.setAttribute('readonly', 'true');
+                input.blur();
+                toggleBtn.classList.remove('active');
+                toggleBtn.innerHTML = '💤';
+                console.log('⌨️ 키보드 비활성화됨');
             }
         }
 
@@ -2497,8 +2662,8 @@
                                     </div>
                                     
                                     ${problem.hints.map((hint, index) => `
-                                        <div class="hint-card ${gameState.unlockedHints.includes(index) ? '' : 'locked'} hover-lift">
-                                            ${gameState.unlockedHints.includes(index) ? `
+                                        <div class="hint-card ${gameState.unlockedHints.includes(index) || gameState.isCorrect ? '' : 'locked'} hover-lift">
+                                            ${gameState.unlockedHints.includes(index) || gameState.isCorrect ? `
                                                 <div class="hint-content">
                                                     <div class="hint-header">
                                                         <div class="hint-number">${index + 1}</div>
@@ -2506,6 +2671,16 @@
                                                             <div class="hint-text">${hint}</div>
                                                         </div>
                                                     </div>
+                                                    ${gameState.canShowDescriptions && !gameState.showDescriptions[index] && !gameState.showAllAfterCorrect && !gameState.isCorrect ? `
+                                                        <button class="description-button" onclick="showModal('description-${index}')">
+                                                            📖 설명보기
+                                                        </button>
+                                                    ` : ''}
+                                                    ${(gameState.showDescriptions[index] || gameState.showAllAfterCorrect || gameState.isCorrect) && problem.descriptions && problem.descriptions[index] ? `
+                                                        <div class="hint-description ${gameState.showAllAfterCorrect || gameState.isCorrect ? 'highlighted' : ''}">
+                                                            ${problem.descriptions[index]}
+                                                        </div>
+                                                    ` : ''}
                                                 </div>
                                             ` : `
                                                 <div class="hint-content" onclick="${index >= 3 ? `showModal('hint-${index}')` : ''}">
@@ -2528,42 +2703,78 @@
                     </div>
                     
                     <div class="answer-section glass-effect">
-                        <div class="info-grid">
-                            <div class="info-box ${gameState.showCharacterCount ? 'active' : ''}">
-                                <div class="info-label">글자수</div>
-                                <div class="info-value">
-                                    ${gameState.showCharacterCount ? `${problem.answer[0].length}글자` : '?'}
+                        ${gameState.isCorrect ? `
+                            <!-- 🆕 통합된 정답 패널 -->
+                            <div class="integrated-correct-panel">
+                                <div class="correct-badge">${getCorrectBadge()}</div>
+                                <div class="correct-icon">${getCorrectIcon()}</div>
+                                <div class="correct-title">${getCorrectTitle()}</div>
+                                <div class="correct-answer">${problem.answer.join(', ')}</div>
+                                
+                                <div class="correct-details">
+                                    <div class="detail-row">
+                                        <span class="detail-label">분류</span>
+                                        <span class="detail-value">${problem.category}</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">글자수</span>
+                                        <span class="detail-value">${problem.answer[0].length}글자</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">초성</span>
+                                        <span class="detail-value">${problem.chosung}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="info-box ${gameState.showCategory ? 'active' : ''}">
-                                <div class="info-label">분류</div>
-                                <div class="info-value">
-                                    ${gameState.showCategory ? problem.category : '?'}
+                            
+                            <button class="next-button" onclick="nextProblem()" id="nextProblemBtn">
+                                ${gameState.currentProblem === totalProblems - 1 ? '🏆 라운드 완료' : '다음 문제 →'}
+                            </button>
+                        ` : `
+                            <div class="info-grid">
+                                <div class="info-box ${gameState.showCharacterCount ? 'active' : ''}">
+                                    <div class="info-label">글자수</div>
+                                    <div class="info-value">
+                                        ${gameState.showCharacterCount ? `${problem.answer[0].length}글자` : '?'}
+                                    </div>
+                                </div>
+                                <div class="info-box ${gameState.showCategory ? 'active' : ''}">
+                                    <div class="info-label">분류</div>
+                                    <div class="info-value">
+                                        ${gameState.showCategory ? problem.category : '?'}
+                                    </div>
+                                </div>
+                                <div class="info-box ${gameState.showChosung ? 'active' : ''}">
+                                    <div class="info-label">초성</div>
+                                    <div class="info-value">
+                                        ${gameState.showChosung ? problem.chosung : 
+                                          gameState.unlockedHints.includes(5) ? 
+                                          `<button class="chosung-button" onclick="showModal('chosung')">해금</button>` : 
+                                          '🔒'}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="info-box ${gameState.showChosung ? 'active' : ''}">
-                                <div class="info-label">초성</div>
-                                <div class="info-value">
-                                    ${gameState.showChosung ? problem.chosung : 
-                                      gameState.unlockedHints.includes(5) ? 
-                                      `<button class="chosung-button" onclick="showModal('chosung')">해금</button>` : 
-                                      '🔒'}
-                                </div>
+                            
+                            <!-- 🆕 개선된 입력 영역 -->
+                            <div class="input-area">
+                                <button class="keyboard-toggle-btn ${isInputActive ? 'active' : ''}" onclick="toggleKeyboard()">
+                                    ${isInputActive ? '⌨️' : '💤'}
+                                </button>
+                                <input 
+                                    type="text" 
+                                    class="answer-input ${isInputActive ? 'active' : ''}" 
+                                    placeholder="키보드 버튼을 눌러 입력하세요"
+                                    value="${gameState.userAnswer}"
+                                    autocomplete="off"
+                                    autocorrect="off"
+                                    autocapitalize="off"
+                                    spellcheck="false"
+                                    ${!isInputActive ? 'readonly' : ''}
+                                    oninput="gameState.userAnswer = this.value; saveGame();"
+                                    onkeydown="if(event.key === 'Enter') checkAnswer(this.value)"
+                                />
                             </div>
-                        </div>
-                        
-                        <input 
-                            type="text" 
-                            class="answer-input" 
-                            placeholder="정답을 입력하세요"
-                            value="${gameState.userAnswer}"
-                            autocomplete="off"
-                            autocorrect="off"
-                            autocapitalize="off"
-                            spellcheck="false"
-                            oninput="gameState.userAnswer = this.value; saveGame();"
-                            onkeydown="if(event.key === 'Enter') checkAnswer(this.value)"
-                        />
+                        `}
                     </div>
                     
                     <div class="floating-actions">
@@ -2574,15 +2785,76 @@
                 </div>
             `;
             
-            const app = document.getElementById('app');
-            if (app) {
-                app.innerHTML = html;
+            document.getElementById('app').innerHTML = html;
+            
+            // 🆕 정답 후 처리 개선 - 즉시 키 리스너 활성화
+            if (gameState.isCorrect) {
+                removeNextProblemKeyListener();
+                addNextProblemKeyListener();
+                
+                setTimeout(() => {
+                    const nextBtn = document.getElementById('nextProblemBtn');
+                    if (nextBtn) {
+                        nextBtn.focus();
+                    }
+                }, 300);
+            } else {
+                // 🆕 입력창 자동 포커스 제거
+                removeNextProblemKeyListener();
+                isInputActive = false; // 기본적으로 키보드 비활성화
             }
             
-            // UI 업데이트
+            if (gameState.unlockedHints.includes(4) && !gameState.canShowDescriptions) {
+                gameState.canShowDescriptions = true;
+            }
+            
+            if (gameState.unlockedHints.includes(5) && !gameState.helpMode) {
+                gameState.helpMode = true;
+                gameState.showCategory = true;
+                gameState.showCharacterCount = true;
+            }
+            
             setTimeout(() => {
                 AudioManager.updateMusicControls();
             }, 100);
+        }
+
+        // 🆕 정답 시 표시할 내용 결정 함수들
+        function getCorrectBadge() {
+            if (gameState.geniusTimerActive && gameState.unlockedHints.length === 2) {
+                return '⚡ 시냅스 폭발!';
+            } else if (gameState.showChosung) {
+                return '😅 초성이 살렸다';
+            } else {
+                const hintCount = gameState.unlockedHints.length;
+                switch (hintCount) {
+                    case 3: return '🔥 날카로운데요?';
+                    case 4: return '👍 실력자 인정!';
+                    case 5: return '🎯 집중합시다!';
+                    case 6: return '😴 혹시 졸았나요?';
+                    default: return '💐 정답!';
+                }
+            }
+        }
+
+        function getCorrectIcon() {
+            if (gameState.geniusTimerActive && gameState.unlockedHints.length === 2) {
+                return '⚡';
+            } else if (gameState.showChosung) {
+                return '😅';
+            } else {
+                return '🎉';
+            }
+        }
+
+        function getCorrectTitle() {
+            if (gameState.geniusTimerActive && gameState.unlockedHints.length === 2) {
+                return '천재셨군요!';
+            } else if (gameState.showChosung) {
+                return '마지막에 맞춰서 다행!';
+            } else {
+                return '정답입니다!';
+            }
         }
 
         function checkAnswer(value) {
@@ -2594,47 +2866,35 @@
             );
             
             if (correctAnswers.includes(normalizedAnswer)) {
-                // 정답
+                // 정답 처리
+                if (gameState.geniusTimerActive && gameState.unlockedHints.length === 2) {
+                    AudioManager.playSound('genius');
+                    gameState.roundKeys++;
+                    gameState.geniusCount++;
+                } else {
+                    AudioManager.playSound('correct');
+                }
+                
                 gameState.isCorrect = true;
-                
-                // 천재 보너스 체크 (타이머가 활성 상태이고 힌트를 2개만 사용한 경우)
-                const isGeniusMode = gameState.geniusTimerActive && gameState.unlockedHints.length === 2;
-                
                 gameState.geniusTimerActive = false;
+                gameState.unlockedHints = [0, 1, 2, 3, 4, 5];
+                gameState.showCharacterCount = true;
+                gameState.showCategory = true;
+                gameState.showChosung = true;
+                gameState.showDescriptions = Array(6).fill(true);
+                gameState.canShowDescriptions = true;
+                
+                // 🆕 키보드 비활성화
+                isInputActive = false;
+                
+                renderGame();
+                saveGame();
                 
                 if ('vibrate' in navigator) {
                     navigator.vibrate([50, 50, 50]);
                 }
-                
-                // 모달 표시
-                if (isGeniusMode) {
-                    AudioManager.playSound('genius');
-                    gameState.roundKeys++;
-                    gameState.geniusCount++;
-                    setTimeout(() => showModal('genius'), 300);
-                } else {
-                    AudioManager.playSound('correct');
-                    
-                    if (gameState.showChosung) {
-                        setTimeout(() => showModal('chosung-correct'), 300);
-                    } else {
-                        const hintCount = gameState.unlockedHints.length;
-                        setTimeout(() => {
-                            switch (hintCount) {
-                                case 3: showModal('sharp'); break;
-                                case 4: showModal('skilled'); break;
-                                case 5: showModal('focus'); break;
-                                case 6: showModal('sleepy'); break;
-                                default: showModal('correct');
-                            }
-                        }, 300);
-                    }
-                }
-                
-                saveGame();
-                
             } else {
-                // 오답
+                // 오답 처리
                 AudioManager.playSound('wrong');
                 
                 const input = document.querySelector('.answer-input');
@@ -2674,10 +2934,15 @@
                 gameState.showChosung = false;
                 gameState.userAnswer = '';
                 gameState.isCorrect = false;
+                gameState.showAllAfterCorrect = false;
                 gameState.helpMode = false;
                 gameState.geniusTimer = 20;
                 gameState.geniusTimerActive = true;
+                gameState.showDescriptions = Array(6).fill(false);
                 gameState.canShowDescriptions = false;
+                
+                // 🆕 키보드 상태 초기화
+                isInputActive = false;
                 
                 renderGame();
                 startTimer();
@@ -2739,10 +3004,7 @@
                 </div>
             `;
             
-            const app = document.getElementById('app');
-            if (app) {
-                app.innerHTML = html;
-            }
+            document.getElementById('app').innerHTML = html;
         }
 
         // 모달 관련 함수들
@@ -2758,210 +3020,6 @@
                         <h3 class="modal-title">라운드 잠김!</h3>
                         <p class="modal-text">이전 라운드를 먼저 완료하세요</p>
                         <button class="modal-button gray modal-primary" onclick="closeModal()">확인</button>
-                    `;
-                    break;
-                    
-                case 'genius':
-                    modalContent = `
-                        <div class="modal-icon" style="animation: bounce 1s infinite">⚡</div>
-                        <h3 class="modal-title" style="color: #f97316">시냅스 폭발!</h3>
-                        <p class="modal-text">와우, 천재셨군요!</p>
-                        <p class="modal-text" style="color: #f97316">🔑 열쇠 +1 보너스!</p>
-                        
-                        <div style="margin: 20px 0; padding: 15px; background: var(--bg-tertiary); border-radius: 12px;">
-                            <div style="font-size: 20px; font-weight: bold; color: var(--primary); margin-bottom: 10px;">
-                                정답: ${problem.answer.join(', ')}
-                            </div>
-                            <div style="display: flex; gap: 10px; justify-content: center;">
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.answer[0].length}글자
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.category}
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.chosung}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <button class="modal-button yellow modal-primary" onclick="closeModalAndNext()">
-                            ${gameState.currentProblem === gameState.problems.length - 1 ? '🏆 라운드 완료' : '다음 문제 →'}
-                        </button>
-                    `;
-                    break;
-                    
-                case 'sharp':
-                    modalContent = `
-                        <div class="modal-icon">🔥</div>
-                        <h3 class="modal-title" style="color: #ef4444">날카로운데요?</h3>
-                        <p class="modal-text">좋은 실력이에요!</p>
-                        
-                        <div style="margin: 20px 0; padding: 15px; background: var(--bg-tertiary); border-radius: 12px;">
-                            <div style="font-size: 20px; font-weight: bold; color: var(--primary); margin-bottom: 10px;">
-                                정답: ${problem.answer.join(', ')}
-                            </div>
-                            <div style="display: flex; gap: 10px; justify-content: center;">
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.answer[0].length}글자
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.category}
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.chosung}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <button class="modal-button modal-primary" style="background: #ef4444; color: white;" onclick="closeModalAndNext()">
-                            ${gameState.currentProblem === gameState.problems.length - 1 ? '🏆 라운드 완료' : '다음 문제 →'}
-                        </button>
-                    `;
-                    break;
-                    
-                case 'skilled':
-                    modalContent = `
-                        <div class="modal-icon">👍</div>
-                        <h3 class="modal-title" style="color: #3b82f6">실력자 인정!</h3>
-                        <p class="modal-text">안정적인 플레이네요!</p>
-                        
-                        <div style="margin: 20px 0; padding: 15px; background: var(--bg-tertiary); border-radius: 12px;">
-                            <div style="font-size: 20px; font-weight: bold; color: var(--primary); margin-bottom: 10px;">
-                                정답: ${problem.answer.join(', ')}
-                            </div>
-                            <div style="display: flex; gap: 10px; justify-content: center;">
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.answer[0].length}글자
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.category}
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.chosung}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <button class="modal-button modal-primary" style="background: #3b82f6; color: white;" onclick="closeModalAndNext()">
-                            ${gameState.currentProblem === gameState.problems.length - 1 ? '🏆 라운드 완료' : '다음 문제 →'}
-                        </button>
-                    `;
-                    break;
-                    
-                case 'focus':
-                    modalContent = `
-                        <div class="modal-icon">🎯</div>
-                        <h3 class="modal-title" style="color: #6366f1">집중합시다!</h3>
-                        <p class="modal-text">조금 더 집중해보세요!</p>
-                        
-                        <div style="margin: 20px 0; padding: 15px; background: var(--bg-tertiary); border-radius: 12px;">
-                            <div style="font-size: 20px; font-weight: bold; color: var(--primary); margin-bottom: 10px;">
-                                정답: ${problem.answer.join(', ')}
-                            </div>
-                            <div style="display: flex; gap: 10px; justify-content: center;">
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.answer[0].length}글자
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.category}
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.chosung}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <button class="modal-button modal-primary" style="background: #6366f1; color: white;" onclick="closeModalAndNext()">
-                            ${gameState.currentProblem === gameState.problems.length - 1 ? '🏆 라운드 완료' : '다음 문제 →'}
-                        </button>
-                    `;
-                    break;
-                    
-                case 'sleepy':
-                    modalContent = `
-                        <div class="modal-icon">😴</div>
-                        <h3 class="modal-title" style="color: #6b7280">혹시... 졸았나요?</h3>
-                        <p class="modal-text">다음엔 더 빨리 맞춰보세요!</p>
-                        
-                        <div style="margin: 20px 0; padding: 15px; background: var(--bg-tertiary); border-radius: 12px;">
-                            <div style="font-size: 20px; font-weight: bold; color: var(--primary); margin-bottom: 10px;">
-                                정답: ${problem.answer.join(', ')}
-                            </div>
-                            <div style="display: flex; gap: 10px; justify-content: center;">
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.answer[0].length}글자
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.category}
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.chosung}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <button class="modal-button gray modal-primary" onclick="closeModalAndNext()">
-                            ${gameState.currentProblem === gameState.problems.length - 1 ? '🏆 라운드 완료' : '다음 문제 →'}
-                        </button>
-                    `;
-                    break;
-                    
-                case 'chosung-correct':
-                    modalContent = `
-                        <div class="modal-icon">😅</div>
-                        <h3 class="modal-title" style="color: #f59e0b">초성이 살렸다.ㅠㅠ</h3>
-                        <p class="modal-text">마지막에 맞춰서 다행이에요!</p>
-                        
-                        <div style="margin: 20px 0; padding: 15px; background: var(--bg-tertiary); border-radius: 12px;">
-                            <div style="font-size: 20px; font-weight: bold; color: var(--primary); margin-bottom: 10px;">
-                                정답: ${problem.answer.join(', ')}
-                            </div>
-                            <div style="display: flex; gap: 10px; justify-content: center;">
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.answer[0].length}글자
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.category}
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.chosung}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <button class="modal-button yellow modal-primary" onclick="closeModalAndNext()">
-                            ${gameState.currentProblem === gameState.problems.length - 1 ? '🏆 라운드 완료' : '다음 문제 →'}
-                        </button>
-                    `;
-                    break;
-                    
-                case 'correct':
-                    modalContent = `
-                        <div class="modal-icon">💐</div>
-                        <h3 class="modal-title">정답!</h3>
-                        <p class="modal-text">잘하셨어요!</p>
-                        
-                        <div style="margin: 20px 0; padding: 15px; background: var(--bg-tertiary); border-radius: 12px;">
-                            <div style="font-size: 20px; font-weight: bold; color: var(--primary); margin-bottom: 10px;">
-                                정답: ${problem.answer.join(', ')}
-                            </div>
-                            <div style="display: flex; gap: 10px; justify-content: center;">
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.answer[0].length}글자
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.category}
-                                </span>
-                                <span style="padding: 5px 10px; background: var(--primary); color: white; border-radius: 20px; font-size: 14px;">
-                                    ${problem.chosung}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <button class="modal-button green modal-primary" onclick="closeModalAndNext()">
-                            ${gameState.currentProblem === gameState.problems.length - 1 ? '🏆 라운드 완료' : '다음 문제 →'}
-                        </button>
                     `;
                     break;
                     
@@ -2996,4 +3054,652 @@
                                 <button class="modal-button yellow" onclick="useKeyAndUnlock('hint-${index}')">
                                     🔑 열쇠 사용
                                 </button>
-                            </div
+                            </div>
+                            <button class="modal-button gray modal-primary" onclick="closeModal()">취소</button>
+                        `;
+                    } else if (type.startsWith('description-')) {
+                        const index = parseInt(type.split('-')[1]);
+                        modalContent = `
+                            <div class="modal-icon">📖</div>
+                            <h3 class="modal-title">설명 해금</h3>
+                            <p class="modal-text">"${problem.hints[index]}"</p>
+                            <p class="modal-text">설명을 확인하시겠습니까?</p>
+                            <div class="modal-buttons">
+                                <button class="modal-button green" onclick="watchAdAndUnlock('description-${index}')">
+                                    📺 광고 보기
+                                </button>
+                                <button class="modal-button yellow" onclick="useKeyAndUnlock('description-${index}')">
+                                    🔑 열쇠 사용
+                                </button>
+                            </div>
+                            <button class="modal-button gray modal-primary" onclick="closeModal()">취소</button>
+                        `;
+                    }
+            }
+            
+            const modalHtml = `
+                <div class="modal" onclick="if(event.target === this) closeModal()">
+                    <div class="modal-content">
+                        ${modalContent}
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            setTimeout(() => {
+                document.addEventListener('keydown', handleModalKeypress);
+                const primaryBtn = document.querySelector('.modal-primary');
+                if (primaryBtn) {
+                    primaryBtn.focus();
+                }
+            }, 100);
+        }
+
+        function closeModal() {
+            const modal = document.querySelector('.modal');
+            if (modal) {
+                modal.remove();
+            }
+            document.removeEventListener('keydown', handleModalKeypress);
+        }
+
+        function handleModalKeypress(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const focusedBtn = document.activeElement;
+                if (focusedBtn && focusedBtn.classList.contains('modal-button')) {
+                    focusedBtn.click();
+                } else {
+                    const primaryBtn = document.querySelector('.modal-primary');
+                    if (primaryBtn) {
+                        primaryBtn.click();
+                    }
+                }
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                closeModal();
+            }
+        }
+
+        function watchAdAndUnlock(type) {
+            closeModal();
+            setTimeout(() => {
+                unlock(type);
+            }, 1000);
+        }
+
+        function useKeyAndUnlock(type) {
+            if (keys > 0) {
+                keys--;
+                closeModal();
+                unlock(type);
+            } else {
+                closeModal();
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function unlock(type) {
+            AudioManager.playSound('hint');
+            
+            if (type === 'chosung') {
+                gameState.showChosung = true;
+            } else if (type.startsWith('hint-')) {
+                const index = parseInt(type.split('-')[1]);
+                gameState.unlockedHints.push(index);
+            } else if (type.startsWith('description-')) {
+                const index = parseInt(type.split('-')[1]);
+                gameState.showDescriptions[index] = true;
+            }
+            renderGame();
+            saveGame();
+        }
+
+        // 키 리스너 관련 함수
+        function addNextProblemKeyListener() {
+            removeNextProblemKeyListener();
+            
+            nextProblemKeyListener = function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    nextProblem();
+                }
+            };
+            
+            document.addEventListener('keydown', nextProblemKeyListener);
+            console.log('⌨️ 다음 문제 엔터키 리스너 추가됨');
+        }
+
+        function removeNextProblemKeyListener() {
+            if (nextProblemKeyListener) {
+                document.removeEventListener('keydown', nextProblemKeyListener);
+                nextProblemKeyListener = null;
+                console.log('⌨️ 다음 문제 엔터키 리스너 제거됨');
+            }
+        }
+
+        // 저장/불러오기 함수
+        function saveGame() {
+            const saveData = {
+                completedRounds: completedRounds,
+                keys: keys,
+                currentGameState: currentScreen === 'gameplay' ? {
+                    currentRound: currentRound,
+                    currentProblem: gameState.currentProblem,
+                    unlockedHints: gameState.unlockedHints,
+                    showCharacterCount: gameState.showCharacterCount,
+                    showCategory: gameState.showCategory,
+                    showChosung: gameState.showChosung,
+                    userAnswer: gameState.userAnswer,
+                    showDescriptions: gameState.showDescriptions,
+                    canShowDescriptions: gameState.canShowDescriptions,
+                    roundKeys: gameState.roundKeys,
+                    geniusCount: gameState.geniusCount,
+                    helpMode: gameState.helpMode,
+                    currentFileNumber: gameState.currentFileNumber,
+                    savedAt: Date.now()
+                } : null
+            };
+            
+            try {
+                localStorage.setItem('연상천재_게임데이터', JSON.stringify(saveData));
+                console.log(`💾 게임 저장됨: 라운드 ${currentRound}, 문제 ${gameState?.currentProblem + 1 || 0}`);
+            } catch (error) {
+                console.error('저장 실패:', error);
+                window.gameData = saveData;
+            }
+        }
+
+        function loadGame() {
+            try {
+                const savedData = localStorage.getItem('연상천재_게임데이터');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    completedRounds = data.completedRounds || [];
+                    keys = data.keys || 15;
+                    
+                    console.log('게임 불러오기 성공:', data);
+                    
+                    if (data.currentGameState) {
+                        console.log('저장된 게임 발견:', data.currentGameState);
+                        return data.currentGameState;
+                    }
+                }
+            } catch (error) {
+                console.error('불러오기 실패:', error);
+                
+                if (window.gameData) {
+                    const data = window.gameData;
+                    completedRounds = data.completedRounds || [];
+                    keys = data.keys || 15;
+                    
+                    if (data.currentGameState) {
+                        return data.currentGameState;
+                    }
+                }
+            }
+            return null;
+        }
+
+        function exportSave() {
+            try {
+                const savedData = localStorage.getItem('연상천재_게임데이터');
+                const gameData = savedData ? JSON.parse(savedData) : {
+                    completedRounds: completedRounds,
+                    keys: keys,
+                    currentGameState: null
+                };
+                
+                const now = new Date();
+                const dateStr = now.toISOString().slice(0, 16).replace(/:/g, '').replace('T', '_');
+                const filename = `연상천재_저장데이터_${dateStr}.json`;
+                
+                const jsonStr = JSON.stringify(gameData, null, 2);
+                
+                const blob = new Blob([jsonStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                AudioManager.showToast(`💾 ${filename} 다운로드 완료!`, 'success');
+                
+            } catch (error) {
+                console.error('저장 실패:', error);
+                AudioManager.showToast('❌ 저장에 실패했습니다', 'error');
+            }
+        }
+
+        function showImportModal() {
+            const modalHtml = `
+                <div class="modal">
+                    <div class="modal-content">
+                        <div class="modal-icon">📂</div>
+                        <h3 class="modal-title">게임 데이터 불러오기</h3>
+                        <p class="modal-text">저장된 JSON 파일을 선택하세요</p>
+                        
+                        <input type="file" id="saveFileInput" accept=".json" style="
+                            margin: 20px 0;
+                            padding: 10px;
+                            border: 2px dashed #6366f1;
+                            border-radius: 12px;
+                            width: 100%;
+                            text-align: center;
+                            cursor: pointer;
+                        " />
+                        
+                        <div class="modal-buttons">
+                            <button class="modal-button green modal-primary" onclick="importSave()">
+                                📂 불러오기
+                            </button>
+                            <button class="modal-button gray" onclick="closeModal()">
+                                취소
+                            </button>
+                        </div>
+                        
+                        <p style="font-size: 14px; color: #666; margin-top: 10px;">
+                            ⚠️ 현재 진행상황이 덮어써집니다!
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            setTimeout(() => {
+                document.addEventListener('keydown', handleModalKeypress);
+                const primaryBtn = document.querySelector('.modal-primary');
+                if (primaryBtn) {
+                    primaryBtn.focus();
+                }
+            }, 100);
+        }
+
+        function importSave() {
+            const fileInput = document.getElementById('saveFileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                AudioManager.showToast('⚠️ 파일을 선택해주세요', 'warning');
+                return;
+            }
+            
+            if (!file.name.endsWith('.json')) {
+                AudioManager.showToast('❌ JSON 파일만 선택 가능합니다', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (!importedData || typeof importedData !== 'object') {
+                        throw new Error('잘못된 파일 형식입니다.');
+                    }
+                    
+                    completedRounds = importedData.completedRounds || [];
+                    keys = importedData.keys || 15;
+                    
+                    localStorage.setItem('연상천재_게임데이터', JSON.stringify(importedData));
+                    
+                    closeModal();
+                    
+                    AudioManager.showToast(
+                        `✅ 게임 데이터 불러오기 완료!\n완료: ${completedRounds.length}라운드, 열쇠: ${keys}개`, 
+                        'success'
+                    );
+                    
+                    setTimeout(() => {
+                        renderRoundMap();
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('불러오기 실패:', error);
+                    AudioManager.showToast('❌ 파일을 읽을 수 없습니다', 'error');
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+
+        function clearSavedGameState() {
+            try {
+                const savedData = localStorage.getItem('연상천재_게임데이터');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    data.currentGameState = null;
+                    localStorage.setItem('연상천재_게임데이터', JSON.stringify(data));
+                    console.log('저장된 게임 상태 클리어됨');
+                }
+            } catch (error) {
+                console.error('상태 클리어 실패:', error);
+                if (window.gameData) {
+                    window.gameData.currentGameState = null;
+                }
+            }
+        }
+
+        // UI 토글 함수들
+        function toggleMusic() {
+            AudioManager.playSound('click');
+            AudioManager.togglePlayPause();
+        }
+
+        function toggleSettingsMenu() {
+            AudioManager.playSound('click');
+            const menu = document.getElementById('settingsMenu');
+            if (menu) {
+                menu.classList.toggle('active');
+            }
+        }
+
+        // 음악 설정 함수
+        function showAudioSettings() {
+            const bgmInfo = AudioManager.getCurrentBGMInfo();
+            
+            const modalHtml = `
+                <div class="modal">
+                    <div class="modal-content" style="max-width: 450px;">
+                        <div class="modal-icon">🎵</div>
+                        <h3 class="modal-title">음악 및 효과음 설정</h3>
+                        
+                        <div style="margin: 20px 0; text-align: left;">
+                            <div style="margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-radius: 12px;">
+                                <h4 style="margin: 0 0 10px 0; color: #333;">🎼 현재 BGM 상태</h4>
+                                <div style="font-size: 14px; color: #666;">
+                                    재생 중: ${bgmInfo.currentFile}<br/>
+                                    상태: ${bgmInfo.isMuted ? '음소거' : bgmInfo.isPlaying ? `BGM ${bgmInfo.currentIndex} 재생 중` : `BGM ${bgmInfo.currentIndex} 준비됨`}
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 20px; padding: 15px; background: var(--bg-tertiary); border-radius: 12px;">
+                                <h4 style="margin: 0 0 15px 0; color: var(--text-primary);">🔊 볼륨 설정</h4>
+                                
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">
+                                        🎼 배경음악: <span id="bgmVolumeText">${Math.round(AudioManager.bgmVolume * 100)}%</span>
+                                    </label>
+                                    <input type="range" id="bgmVolumeSlider" min="0" max="100" 
+                                           value="${AudioManager.bgmVolume * 100}" 
+                                           style="width: 100%; accent-color: var(--primary);" 
+                                           oninput="setBGMVolume(this.value)" />
+                                </div>
+                                
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">
+                                        🔊 효과음: <span id="effectVolumeText">${Math.round(AudioManager.effectVolume * 100)}%</span>
+                                    </label>
+                                    <input type="range" id="effectVolumeSlider" min="0" max="100" 
+                                           value="${AudioManager.effectVolume * 100}" 
+                                           style="width: 100%; accent-color: var(--primary);" 
+                                           oninput="setEffectVolume(this.value)" />
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 12px;">
+                                <h4 style="margin: 0 0 15px 0; color: #333;">🎮 음악 제어</h4>
+                                
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 15px;">
+                                    <button onclick="AudioManager.togglePlayPause()" style="padding: 8px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                                        ${AudioManager.isPlaying ? '⏸️ 일시정지' : '▶️ 재생'}
+                                    </button>
+                                    <button onclick="AudioManager.manualSwitchBGM()" style="padding: 8px; background: var(--secondary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                                        🔄 BGM 전환
+                                    </button>
+                                    <button onclick="AudioManager.toggleMute()" style="padding: 8px; background: var(--warning); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; grid-column: span 2;">
+                                        ${AudioManager.isMuted ? '🔊 음소거 해제' : '🔇 음소거'}
+                                    </button>
+                                </div>
+                                
+                                <h4 style="margin: 15px 0 10px 0; color: #333;">🎮 효과음 테스트</h4>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                                    <button onclick="testSound('correct')" style="padding: 8px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                                        ✅ 정답음
+                                    </button>
+                                    <button onclick="testSound('wrong')" style="padding: 8px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                                        ❌ 오답음
+                                    </button>
+                                    <button onclick="testSound('genius')" style="padding: 8px; background: linear-gradient(135deg, #f59e0b, #f97316); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">
+                                        ⚡ 천재음
+                                    </button>
+                                    <button onclick="testSound('complete')" style="padding: 8px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                                        🎉 완료음
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="modal-button green modal-primary" onclick="closeModal()">완료</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            setTimeout(() => {
+                document.addEventListener('keydown', handleModalKeypress);
+                const primaryBtn = document.querySelector('.modal-primary');
+                if (primaryBtn) {
+                    primaryBtn.focus();
+                }
+            }, 100);
+        }
+
+        function setBGMVolume(value) {
+            const volume = value / 100;
+            AudioManager.setBGMVolume(volume);
+            document.getElementById('bgmVolumeText').textContent = `${Math.round(volume * 100)}%`;
+        }
+
+        function setEffectVolume(value) {
+            const volume = value / 100;
+            AudioManager.setEffectVolume(volume);
+            document.getElementById('effectVolumeText').textContent = `${Math.round(volume * 100)}%`;
+        }
+
+        function testSound(soundType) {
+            AudioManager.playSound(soundType);
+        }
+
+        // 초기화 함수
+        async function initGame() {
+            // 캐시 관리 시스템 초기화
+            CacheManager.init();
+            
+            // 키보드 감지 시스템 초기화
+            KeyboardManager.init();
+            
+            // 오디오 시스템 초기화 (자동재생 포함)
+            await AudioManager.init();
+            
+            const savedGameState = loadGame();
+            
+            // 바로 라운드 맵으로 이동
+            renderRoundMap();
+            
+            // 🆕 페이지 로드 후 자동재생 재시도
+            setTimeout(() => {
+                if (!AudioManager.isPlaying && !AudioManager.isMuted) {
+                    AudioManager.attemptAutoPlay();
+                }
+            }, 1000);
+        }
+
+        // 자동 저장 및 이벤트 리스너
+        setInterval(saveGame, 5000);
+        window.addEventListener('beforeunload', saveGame);
+        
+        window.addEventListener('beforeunload', () => {
+            saveGame();
+            removeNextProblemKeyListener();
+        });
+
+        // PWA Service Worker 등록
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    console.log('✅ Service Worker 등록 성공:', registration.scope);
+                    
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        console.log('🔄 Service Worker 업데이트 발견');
+                        
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                if (confirm('🚀 새 버전이 있습니다! 새로고침하시겠습니까?')) {
+                                    window.location.reload();
+                                }
+                            }
+                        });
+                    });
+                    
+                    setInterval(() => {
+                        registration.update();
+                    }, 3600000);
+                    
+                } catch (error) {
+                    console.warn('❌ Service Worker 등록 실패:', error);
+                }
+            });
+        }
+
+        // PWA 설치 프롬프트
+        let deferredPrompt;
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('📱 PWA 설치 프롬프트 준비됨');
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('🎉 PWA가 성공적으로 설치되었습니다!');
+            AudioManager.showToast('🎉 연상천재가 설치되었습니다!', 'success');
+            localStorage.setItem('앱_설치일', new Date().toISOString());
+        });
+
+        // 모바일 진동 피드백
+        function vibrate(pattern = [50]) {
+            if ('vibrate' in navigator) {
+                navigator.vibrate(pattern);
+            }
+        }
+
+        // 화면 방향 고정
+        if ('orientation' in screen && screen.orientation.lock) {
+            screen.orientation.lock('portrait').catch(err => {
+                console.log('화면 방향 고정 실패:', err);
+            });
+        }
+
+        // 백 버튼 처리
+        window.addEventListener('popstate', (e) => {
+            if (currentScreen === 'gameplay') {
+                e.preventDefault();
+                if (confirm('게임을 종료하고 메인으로 돌아가시겠습니까?')) {
+                    renderRoundMap();
+                } else {
+                    history.pushState(null, null, location.href);
+                }
+            }
+        });
+
+        // 네트워크 상태 확인
+        window.addEventListener('online', () => {
+            AudioManager.showToast('✅ 온라인 상태입니다', 'success');
+        });
+
+        window.addEventListener('offline', () => {
+            AudioManager.showToast('⚠️ 오프라인 상태입니다', 'warning');
+        });
+
+        // 페이지 가시성 변경 감지
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (AudioManager.isPlaying) {
+                    AudioManager.pauseBGM();
+                }
+            } else {
+                if (!AudioManager.isMuted && !AudioManager.isPlaying) {
+                    AudioManager.startBGM();
+                }
+            }
+        });
+
+        // 🆕 첫 사용자 인터랙션 시 오디오 활성화 및 자동재생
+        ['click', 'touchstart', 'keydown'].forEach(eventType => {
+            document.addEventListener(eventType, async () => {
+                if (!AudioManager.isAudioUnlocked || !AudioManager.userHasInteracted) {
+                    await AudioManager.unlockAudio();
+                    if (!AudioManager.isPlaying && !AudioManager.isMuted) {
+                        await AudioManager.startBGM();
+                    }
+                }
+            }, { once: true });
+        });
+
+        // 게임 시작
+        initGame();
+        
+        // 앱 실행 통계
+        const launchCount = parseInt(localStorage.getItem('앱_실행횟수') || '0') + 1;
+        localStorage.setItem('앱_실행횟수', launchCount.toString());
+        console.log(`🚀 앱 실행 횟수: ${launchCount}회`);
+        
+        // 개발자 콘솔 도움말
+        console.log(`
+🎮 연상천재 게임 개발자 도구 (v2.3.0 - 키보드 & 플로우 최적화)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 현재 버전: ${CacheManager.version}
+
+🆕 새로운 기능:
+   - 키보드 버튼을 눌러야만 입력창 활성화
+   - 힌트 클릭 시 키보드 자동 활성화 방지
+   - 정답 후 통합된 UI로 한 번에 다음 문제 진행
+
+🛠️ 개발자 단축키:
+   Ctrl+Shift+D  →  개발자 패널 열기
+
+🔧 캐시 관리:
+   CacheManager.forceClearCache()  →  캐시 클리어
+   CacheManager.forceReload()      →  강제 새로고침
+
+📊 게임 상태:
+   completedRounds  →  완료된 라운드 확인
+   keys             →  보유 열쇠 확인  
+   gameState        →  현재 게임 상태 확인
+   isInputActive    →  키보드 활성화 상태 확인
+
+🎵 오디오 관리:
+   AudioManager     →  음악 시스템 제어
+   AudioManager.togglePlayPause()  →  재생/일시정지
+   AudioManager.toggleMute()       →  음소거 토글
+   AudioManager.attemptAutoPlay()  →  자동재생 재시도
+
+⌨️ 키보드 관리:
+   KeyboardManager  →  키보드 감지 시스템
+   toggleKeyboard() →  키보드 토글
+   isInputActive    →  입력 활성화 상태
+
+🎨 UI 특징:
+   - 키보드 아이콘 클릭 시에만 입력 활성화
+   - 힌트/정보 클릭 시 키보드 간섭 없음
+   - 정답 시 통합 패널로 모든 정보 한 번에 표시
+   - 원클릭으로 다음 문제 진행
+
+💡 팁: 파일 수정 후 캐시 문제가 있으면 설정 메뉴의 '🔄 캐시클리어' 버튼을 누르세요!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        `);
+    </script>
+</body>
+</html>
