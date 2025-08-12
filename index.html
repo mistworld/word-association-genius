@@ -32,7 +32,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="2.3.4">
+    <meta name="version" content="2.3.5">
     
     <link rel="manifest" href="manifest.json">
     
@@ -820,7 +820,6 @@
             color: var(--text-primary);
             transition: all 0.3s;
             box-shadow: var(--shadow-sm);
-            cursor: pointer;
         }
 
         .answer-input.active {
@@ -1250,6 +1249,7 @@
             font-size: 18px;
             color: var(--text-secondary);
             font-weight: 500;
+            margin-top: 20px;
         }
 
         /* ⚠️ 에러 */
@@ -2060,7 +2060,7 @@
 
         // 🔥 캐시 관리 시스템
         const CacheManager = {
-            version: document.querySelector('meta[name="version"]')?.content || '2.3.4',
+            version: document.querySelector('meta[name="version"]')?.content || '2.3.5',
             
             init() {
                 this.checkVersion();
@@ -2270,7 +2270,6 @@
         let gameState = {};
         let isLoading = false;
         const problemsCache = {};
-        let isInputActive = false;
 
         // 문제 데이터 로드 함수들
         async function loadProblems(fileNumber) {
@@ -2584,43 +2583,6 @@
             }
         }
 
-        // 🆕 키보드 토글 함수 - 입력창 직접 클릭 시에도 활성화
-        function toggleKeyboard() {
-            AudioManager.playSound('click');
-            
-            isInputActive = !isInputActive;
-            const input = document.querySelector('.answer-input');
-            const toggleBtn = document.querySelector('.keyboard-toggle-btn');
-            
-            if (isInputActive) {
-                input.classList.add('active');
-                toggleBtn.classList.add('active');
-                toggleBtn.innerHTML = '⌨️';
-                input.focus();
-                console.log('⌨️ 키보드 활성화됨');
-            } else {
-                input.classList.remove('active');
-                input.blur();
-                toggleBtn.classList.remove('active');
-                toggleBtn.innerHTML = '💤';
-                console.log('⌨️ 키보드 비활성화됨');
-            }
-        }
-
-        // 🆕 입력창 클릭 시 활성화
-        function activateInput() {
-            if (!isInputActive) {
-                isInputActive = true;
-                const input = document.querySelector('.answer-input');
-                const toggleBtn = document.querySelector('.keyboard-toggle-btn');
-                
-                input.classList.add('active');
-                toggleBtn.classList.add('active');
-                toggleBtn.innerHTML = '⌨️';
-                console.log('⌨️ 입력창 클릭으로 키보드 활성화됨');
-            }
-        }
-
         function renderGame() {
             const problem = gameState.problems[gameState.currentProblem];
             
@@ -2758,20 +2720,15 @@
                                         
                                         <!-- 🆕 개선된 입력 영역 -->
                                         <div class="input-area">
-                                            <button class="keyboard-toggle-btn ${isInputActive ? 'active' : ''}" onclick="toggleKeyboard()">
-                                                ${isInputActive ? '⌨️' : '💤'}
-                                            </button>
                                             <input 
                                                 type="text" 
-                                                class="answer-input ${isInputActive ? 'active' : ''}" 
+                                                class="answer-input" 
                                                 placeholder="클릭하여 답을 입력하세요"
                                                 value="${gameState.userAnswer}"
                                                 autocomplete="off"
                                                 autocorrect="off"
                                                 autocapitalize="off"
                                                 spellcheck="false"
-                                                onclick="activateInput()"
-                                                onfocus="activateInput()"
                                                 oninput="gameState.userAnswer = this.value; saveGame();"
                                                 onkeydown="if(event.key === 'Enter') checkAnswer(this.value)"
                                             />
@@ -2918,9 +2875,6 @@
                 gameState.showChosung = true;
                 gameState.showDescriptions = Array(6).fill(true);
                 
-                // 🆕 키보드 비활성화
-                isInputActive = false;
-                
                 console.log('✅ 정답! 모든 힌트 설명 표시됨');
                 
                 renderGame();
@@ -2974,9 +2928,6 @@
                 gameState.geniusTimer = 20;
                 gameState.geniusTimerActive = true;
                 gameState.showDescriptions = Array(6).fill(false);
-                
-                // 🆕 키보드 상태 초기화
-                isInputActive = false;
                 
                 renderGame();
                 startTimer();
@@ -3081,6 +3032,23 @@
                             <div class="modal-icon">🔍</div>
                             <h3 class="modal-title">힌트 ${index + 1} 해금</h3>
                             <p class="modal-text">힌트를 확인하시겠습니까?</p>
+                            <div class="modal-buttons">
+                                <button class="modal-button green" onclick="watchAdAndUnlock('hint-${index}')">
+                                    📺 광고 보기
+                                </button>
+                                <button class="modal-button yellow" onclick="useKeyAndUnlock('hint-${index}')">
+                                    🔑 열쇠 사용
+                                </button>
+                            </div>
+                            <button class="modal-button gray modal-primary" onclick="closeModal()">취소</button>
+                        `;
+                    } else if (type.startsWith('description-')) {
+                        const index = parseInt(type.split('-')[1]);
+                        modalContent = `
+                            <div class="modal-icon">📖</div>
+                            <h3 class="modal-title">설명 해금</h3>
+                            <p class="modal-text">"${problem.hints[index]}"</p>
+                            <p class="modal-text">설명을 확인하시겠습니까?</p>
                             <div class="modal-buttons">
                                 <button class="modal-button green" onclick="watchAdAndUnlock('description-${index}')">
                                     📺 광고 보기
@@ -3674,16 +3642,15 @@
         
         // 개발자 콘솔 도움말
         console.log(`
-🎮 연상천재 게임 개발자 도구 (v2.3.4 - 설명해금 버그 수정)
+🎮 연상천재 게임 개발자 도구 (v2.3.5 - 입력 버그 수정)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📋 현재 버전: ${CacheManager.version}
 
 🆕 수정된 기능:
-   - 설명해금 버튼이 힌트 4번 해금 전에는 나타나지 않도록 수정
-   - canShowDescriptions 변수 제거하고 직접 체크하도록 개선
-   - 키보드 나타났을 때 힌트가 가려지지 않도록 수정
-   - 정답 후 힌트 설명이 제대로 표시되도록 수정
+   - HTML 끝부분 잘못된 코드 제거
+   - 입력창 클릭 시 키보드 입력 가능하도록 수정
+   - 키보드 토글 버튼 제거 (이제 입력창만 클릭하면 됨)
 
 🛠️ 개발자 단축키:
    Ctrl+Shift+D  →  개발자 패널 열기
@@ -3696,7 +3663,6 @@
    completedRounds  →  완료된 라운드 확인
    keys             →  보유 열쇠 확인  
    gameState        →  현재 게임 상태 확인
-   isInputActive    →  키보드 활성화 상태 확인
 
 🎵 오디오 관리:
    AudioManager     →  음악 시스템 제어
@@ -3706,30 +3672,10 @@
 
 ⌨️ 키보드 관리:
    KeyboardManager  →  키보드 감지 시스템
-   toggleKeyboard() →  키보드 토글
-   activateInput()  →  입력창 활성화
-   isInputActive    →  입력 활성화 상태
 
 💡 팁: 파일 수정 후 캐시 문제가 있으면 설정 메뉴의 '🔄 캐시클리어' 버튼을 누르세요!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         `);
     </script>
 </body>
-</html>-button green" onclick="watchAdAndUnlock('hint-${index}')">
-                                    📺 광고 보기
-                                </button>
-                                <button class="modal-button yellow" onclick="useKeyAndUnlock('hint-${index}')">
-                                    🔑 열쇠 사용
-                                </button>
-                            </div>
-                            <button class="modal-button gray modal-primary" onclick="closeModal()">취소</button>
-                        `;
-                    } else if (type.startsWith('description-')) {
-                        const index = parseInt(type.split('-')[1]);
-                        modalContent = `
-                            <div class="modal-icon">📖</div>
-                            <h3 class="modal-title">설명 해금</h3>
-                            <p class="modal-text">"${problem.hints[index]}"</p>
-                            <p class="modal-text">설명을 확인하시겠습니까?</p>
-                            <div class="modal-buttons">
-                                <button class="modal
+</html>
