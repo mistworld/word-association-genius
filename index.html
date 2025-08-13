@@ -226,24 +226,89 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        /* 🎧 네온 음악 컨트롤 */
-        .music-controls {
+        /* 🎧 설정 버튼 - 플로팅 스타일 */
+        .settings-button {
             position: fixed;
             bottom: 30px;
             right: 20px;
+            width: 60px;
+            height: 60px;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            padding: 12px;
-            border-radius: 30px;
+            border-radius: 50%;
             box-shadow: 
                 0 10px 40px rgba(255, 110, 199, 0.3),
                 inset 0 1px 0 rgba(255,255,255,0.1);
             z-index: 99;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 28px;
+        }
+
+        .settings-button:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 
+                0 12px 48px rgba(255, 110, 199, 0.4),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .settings-button:active {
+            transform: scale(0.95);
+        }
+
+        /* 🎧 음악 설정 패널 */
+        .music-panel {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: 20px;
+            border-radius: 25px;
+            box-shadow: 
+                0 10px 40px rgba(0,0,0,0.5),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            z-index: 98;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+            min-width: 200px;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .music-panel.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            0% { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .music-panel h3 {
+            font-size: 16px;
+            color: #ff6ec7;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 900;
+        }
+
+        .music-controls {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 10px;
         }
 
         .music-btn-row {
@@ -3099,24 +3164,10 @@
                     AudioManager.playSound('genius'); // 🆕 천재 전용 효과음!
                     gameState.roundKeys++;
                     gameState.geniusCount++;
-                    setTimeout(() => showModal('genius'), 300); // 약간 지연 후 모달 표시
+                    // 모달 표시하지 않음 - 보너스 점수만 추가
                 } else {
                     AudioManager.playSound('correct'); // 일반 정답 효과음
-                    
-                    if (gameState.showChosung) {
-                        setTimeout(() => showModal('chosung-correct'), 300);
-                    } else {
-                        const hintCount = gameState.unlockedHints.length;
-                        setTimeout(() => {
-                            switch (hintCount) {
-                                case 3: showModal('sharp'); break;
-                                case 4: showModal('skilled'); break;
-                                case 5: showModal('focus'); break;
-                                case 6: showModal('sleepy'); break;
-                                default: showModal('correct');
-                            }
-                        }, 300);
-                    }
+                    // 모든 정답 관련 모달 제거
                 }
                 
                 gameState.isCorrect = true;
