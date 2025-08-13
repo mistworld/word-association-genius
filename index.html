@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-visual">
-    <title>연상천재 - IQ 140 연상퀴즈 v2.3.8</title>
+    <title>연상천재 - IQ 140 연상퀴즈 v2.3.9</title>
     
     <!-- 나머지 메타태그는 동일 -->
     <meta name="description" content="당신은 천재인가요? 시냅스가 연결되는 짜릿한 쾌감을 느껴보세요!">
@@ -32,7 +32,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="2.3.8">
+    <meta name="version" content="2.3.9">
     
     <link rel="manifest" href="manifest.json">
     
@@ -862,6 +862,31 @@
             color: var(--text-primary) !important;
             cursor: text !important;
             pointer-events: auto !important;
+        }
+
+        /* 제출 버튼 스타일 */
+        .submit-button {
+            padding: 14px 20px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s;
+            white-space: nowrap;
+            min-width: 70px;
+        }
+        
+        .submit-button:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .submit-button:active {
+            transform: scale(0.98);
         }
 
         /* 🎉 정답 패널 - 통합된 디자인 */
@@ -2085,7 +2110,7 @@
 
         // 🔥 캐시 관리 시스템
         const CacheManager = {
-            version: document.querySelector('meta[name="version"]')?.content || '2.3.8',
+            version: document.querySelector('meta[name="version"]')?.content || '2.3.9',
             
             init() {
                 this.checkVersion();
@@ -2743,7 +2768,7 @@
                                             </div>
                                         </div>
                                         
-                                        <!-- 입력 영역 - 완전히 수정됨 -->
+                                        <!-- 입력 영역 - 제출 버튼 추가 -->
                                         <div class="input-area">
                                             <input 
                                                 type="text" 
@@ -2756,6 +2781,13 @@
                                                 autocapitalize="off"
                                                 spellcheck="false"
                                             />
+                                            <button 
+                                                id="submitBtn"
+                                                class="submit-button"
+                                                onclick="window.checkAnswer(document.getElementById('answerInput').value)"
+                                            >
+                                                확인
+                                            </button>
                                         </div>
                                     </div>
                                 ` : ''}
@@ -2832,11 +2864,16 @@
                     
                     // keydown 이벤트 - 엔터키 처리
                     finalInput.addEventListener('keydown', function(e) {
-                        if (e.key === 'Enter') {
+                        if (e.key === 'Enter' || e.keyCode === 13) {
                             e.preventDefault();
+                            e.stopPropagation();
                             const value = e.target.value;
-                            if (value && value.trim()) {
-                                checkAnswer(value);
+                            console.log('엔터키 눌림, 입력값:', value);
+                            if (value && value.trim() !== '') {
+                                // checkAnswer를 window에서 직접 호출
+                                window.checkAnswer(value);
+                            } else {
+                                AudioManager.showToast('답을 입력해주세요!', 'warning');
                             }
                         }
                     });
@@ -2846,6 +2883,22 @@
                         e.stopPropagation();
                         this.focus();
                     });
+                    
+                    // 제출 버튼 이벤트 추가
+                    const submitBtn = document.getElementById('submitBtn');
+                    if (submitBtn) {
+                        submitBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const inputValue = document.getElementById('answerInput').value;
+                            console.log('제출 버튼 클릭, 입력값:', inputValue);
+                            if (inputValue && inputValue.trim() !== '') {
+                                window.checkAnswer(inputValue);
+                            } else {
+                                AudioManager.showToast('답을 입력해주세요!', 'warning');
+                            }
+                        });
+                    }
                     
                     // 모바일 체크
                     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -2934,9 +2987,15 @@
             }
         }
 
-        function checkAnswer(value) {
+        // 정답 확인 함수 - 전역으로 선언
+        window.checkAnswer = function(value) {
             if (!value || value.trim() === '') {
                 AudioManager.showToast('답을 입력해주세요!', 'warning');
+                return;
+            }
+            
+            if (!gameState || !gameState.problems || !gameState.problems[gameState.currentProblem]) {
+                console.error('게임 상태 오류');
                 return;
             }
             
@@ -2948,10 +3007,12 @@
                 ans.trim().toLowerCase().replace(/\s+/g, '').replace(/[^가-힣a-z0-9]/g, '')
             );
             
-            console.log('입력값:', normalizedAnswer, '정답:', correctAnswers);
+            console.log('정답 체크 - 입력값:', normalizedAnswer, '정답:', correctAnswers);
             
             if (correctAnswers.includes(normalizedAnswer)) {
                 // 정답 처리
+                console.log('✅ 정답입니다!');
+                
                 if (gameState.geniusTimerActive && gameState.unlockedHints.length === 2) {
                     AudioManager.playSound('genius');
                     gameState.roundKeys++;
@@ -2978,6 +3039,7 @@
                 }
             } else {
                 // 오답 처리
+                console.log('❌ 오답입니다!');
                 AudioManager.playSound('wrong');
                 
                 const input = document.getElementById('answerInput');
@@ -2993,6 +3055,11 @@
                     navigator.vibrate(100);
                 }
             }
+        }
+
+        function checkAnswer(value) {
+            // 전역 함수 호출
+            window.checkAnswer(value);
         }
 
         function nextProblem() {
@@ -3708,6 +3775,33 @@
             }, { once: true });
         });
 
+        // 전역 함수 등록
+        window.checkAnswer = checkAnswer;
+        window.nextProblem = nextProblem;
+        window.renderRoundMap = renderRoundMap;
+        window.startRound = startRound;
+        window.showModal = showModal;
+        window.closeModal = closeModal;
+        window.unlock = unlock;
+        window.watchAdAndUnlock = watchAdAndUnlock;
+        window.useKeyAndUnlock = useKeyAndUnlock;
+        window.toggleMusic = toggleMusic;
+        window.toggleSettingsMenu = toggleSettingsMenu;
+        window.showAudioSettings = showAudioSettings;
+        window.exportSave = exportSave;
+        window.showImportModal = showImportModal;
+        window.importSave = importSave;
+        window.setBGMVolume = setBGMVolume;
+        window.setEffectVolume = setEffectVolume;
+        window.testSound = testSound;
+        window.handleModalKeypress = handleModalKeypress;
+        window.CacheManager = CacheManager;
+        window.AudioManager = AudioManager;
+        window.completedRounds = completedRounds;
+        window.keys = keys;
+        window.gameState = gameState;
+        window.problemsCache = problemsCache;
+        
         // 게임 시작
         initGame();
         
@@ -3739,17 +3833,17 @@
         
         // 개발자 콘솔 도움말
         console.log(`
-🎮 연상천재 게임 개발자 도구 (v2.3.8 - 입력창 문제 완전 해결)
+🎮 연상천재 게임 개발자 도구 (v2.3.9 - 정답 확인 버튼 추가)
 ────────────────────────────────────────
 
 📋 현재 버전: ${CacheManager.version}
 
-🆕 완전히 수정된 기능:
-   ✅ 정답 입력창 키보드 입력 문제 완전 해결
-   ✅ CSS pointer-events 및 user-select 최적화
-   ✅ 입력창 이벤트 리스너 강화
-   ✅ 입력창 z-index 최상위 설정
-   ✅ 전역 이벤트 처리로 입력 보장
+🆕 완벽하게 수정된 기능:
+   ✅ 정답 입력창 완전 정상화
+   ✅ 엔터키로 정답 확인 가능
+   ✅ 확인 버튼 추가 (모바일 대응)
+   ✅ 모든 함수 전역 등록
+   ✅ 완벽한 이벤트 처리
 
 🛠️ 개발자 단축키:
    Ctrl+Shift+D  →  개발자 패널 열기
@@ -3768,7 +3862,7 @@
    AudioManager.togglePlayPause()  →  재생/일시정지
    AudioManager.toggleMute()       →  음소거 토글
 
-✨ 입력창이 이제 정상 작동합니다!
+✨ 이제 완벽하게 작동합니다!
 ────────────────────────────────────────
         `);
     </script>
