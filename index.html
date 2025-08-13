@@ -38,7 +38,7 @@
     <meta http-equiv="Expires" content="0">
     <meta name="version" content="1.0.5">
     
-    <!-- 📗 PWA 매니페스트 -->
+    <!-- 🔗 PWA 매니페스트 -->
     <link rel="manifest" href="manifest.json">
     
     <!-- 📱 아이콘들 -->
@@ -1472,12 +1472,6 @@
                 gap: 8px;
             }
 
-            .music-controls {
-                bottom: 15px;
-                right: 15px;
-                transform: scale(0.9);
-            }
-
             .hints-container {
                 max-height: 35vh;
             }
@@ -1505,10 +1499,6 @@
             .round-select h2 {
                 font-size: 24px;
             }
-
-            .music-controls {
-                transform: scale(0.85);
-            }
         }
 
         /* 안전 영역 고려 (아이폰 노치) */
@@ -1518,8 +1508,8 @@
                 padding-bottom: max(0px, env(safe-area-inset-bottom));
             }
 
-            .music-controls {
-                bottom: max(15px, env(safe-area-inset-bottom));
+            .settings-button {
+                bottom: max(30px, env(safe-area-inset-bottom));
             }
         }
     </style>
@@ -1528,7 +1518,7 @@
     <div id="app"></div>
 
     <script>
-        // 🎵 완전한 배경음악 2개 시스템 + 오디오 차단 해결
+        // 🎵 완전한 배경음악 2개 시스템 + 오디오 차단 해결 + 백그라운드 자동정지
         const AudioManager = {
             // 배경음악 2개
             bgm1: null,
@@ -1550,6 +1540,7 @@
             userHasInteracted: false,
             isPlaying: false,
             isMuted: false,
+            wasPlayingBeforePause: false, // 백그라운드 진입 전 재생 상태
             
             // 설정
             bgmVolume: 0.4,
@@ -1707,6 +1698,38 @@
                             });
                         }
                     });
+                    
+                    // 🆕 백그라운드 진입/복귀 감지
+                    document.addEventListener('visibilitychange', () => {
+                        if (document.hidden) {
+                            // 백그라운드 진입 - 음악 정지
+                            console.log('📱 백그라운드 진입 감지 - 음악 일시정지');
+                            this.wasPlayingBeforePause = this.isPlaying;
+                            this.pauseBGM();
+                        } else {
+                            // 포그라운드 복귀 - 이전 상태 복원
+                            console.log('📱 포그라운드 복귀 감지');
+                            if (this.wasPlayingBeforePause && !this.isMuted) {
+                                console.log('🎵 이전 재생 상태 복원');
+                                this.startBGM();
+                            }
+                        }
+                    });
+                    
+                    // 🆕 iOS 특별 처리
+                    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                        window.addEventListener('pagehide', () => {
+                            console.log('📱 iOS pagehide 이벤트 - 음악 정지');
+                            this.stopBGM();
+                        });
+                        
+                        window.addEventListener('pageshow', () => {
+                            console.log('📱 iOS pageshow 이벤트');
+                            if (this.wasPlayingBeforePause && !this.isMuted) {
+                                this.startBGM();
+                            }
+                        });
+                    }
                     
                     console.log('✅ 배경음악 2개 시스템 초기화 완료!');
                     
@@ -2423,12 +2446,12 @@
                 
                 // 답변 섹션의 실제 높이 측정
                 const answerSectionHeight = answerSection.scrollHeight + 20; // 여유분 포함
-                console.log(`🔍 답변 섹션 높이: ${answerSectionHeight}px`);
+                console.log(`📍 답변 섹션 높이: ${answerSectionHeight}px`);
                 
                 const headerHeight = getComputedStyle(document.documentElement).getPropertyValue('--mobile-header-height');
                 const availableHeight = `calc(100vh - ${headerHeight} - ${answerSectionHeight}px)`;
                 
-                console.log(`🔍 사용 가능한 높이: ${availableHeight}`);
+                console.log(`📍 사용 가능한 높이: ${availableHeight}`);
                 
                 if (mainContent) {
                     mainContent.style.paddingBottom = '0px';
@@ -2514,6 +2537,23 @@
             AudioManager.manualSwitchBGM();
         }
 
+        // 🎵 설정 버튼 토글
+        function toggleMusicPanel() {
+            const panel = document.querySelector('.music-panel');
+            const button = document.querySelector('.settings-button');
+            
+            if (panel) {
+                panel.classList.toggle('active');
+                
+                // 버튼 아이콘 변경
+                if (panel.classList.contains('active')) {
+                    button.innerHTML = '✖️';
+                } else {
+                    button.innerHTML = '⚙️';
+                }
+            }
+        }
+
         // 🎵 음악 시작 오버레이 함수들
         async function startWithMusic() {
             hideStartOverlay();
@@ -2540,7 +2580,7 @@
             }
         }
 
-        // 🔍 강화된 디버깅이 적용된 문제 데이터 캐시
+        // 📍 강화된 디버깅이 적용된 문제 데이터 캐시
         const problemsCache = {};
         
         // 게임 상태
@@ -2551,7 +2591,7 @@
         let gameState = {};
         let isLoading = false;
 
-        // 🔍 강화된 디버깅 loadProblems 함수
+        // 📍 강화된 디버깅 loadProblems 함수
         async function loadProblems(fileNumber) {
             if (problemsCache[fileNumber]) {
                 console.log(`📦 캐시에서 problems_${fileNumber}.json 로드됨 (${problemsCache[fileNumber].length}개 문제)`);
@@ -2570,11 +2610,11 @@
                 console.log(`✅ problems_${fileNumber}.json 성공적으로 로드됨 (문제 ${problems.length}개)`);
                 
                 // 첫 몇 개 문제의 답 확인
-                console.log(`🔍 파일 ${fileNumber} 처음 3개 문제:`, 
+                console.log(`📍 파일 ${fileNumber} 처음 3개 문제:`, 
                     problems.slice(0, 3).map((p, i) => `${i}: ${p.answer[0]}`));
                 
                 if (problems.length >= 12) {
-                    console.log(`🔍 파일 ${fileNumber} 6~8번 문제:`, 
+                    console.log(`📍 파일 ${fileNumber} 6~8번 문제:`, 
                         problems.slice(6, 9).map((p, i) => `${i+6}: ${p.answer[0]}`));
                 }
                 
@@ -2598,7 +2638,7 @@
             return fileNumber;
         }
 
-        // 🔍 강화된 디버깅 getProblemsForRound 함수
+        // 📍 강화된 디버깅 getProblemsForRound 함수
         async function getProblemsForRound(roundNumber) {
             console.log(`\n➡️ ===== 라운드 ${roundNumber} 문제 선택 시작 =====`);
             
@@ -2628,7 +2668,7 @@
             let roundProblems = problems.slice(startIndex, endIndex);
             
             // 선택된 문제들 확인
-            console.log(`🔍 라운드 ${roundNumber} 1차 선택된 ${roundProblems.length}개 문제:`);
+            console.log(`📍 라운드 ${roundNumber} 1차 선택된 ${roundProblems.length}개 문제:`);
             roundProblems.forEach((problem, index) => {
                 console.log(`   ${index + 1}. [${startIndex + index}] ${problem.answer[0]} - ${problem.hints[0]}`);
             });
@@ -2636,7 +2676,7 @@
             // 🚨 문제 부족 시 강제로 6개 맞추기
             if (roundProblems.length < problemsPerRound) {
                 console.warn(`⚠️ 문제 부족! 요청: ${problemsPerRound}개, 실제: ${roundProblems.length}개`);
-                console.warn(`🔍 파일에 실제로 ${problems.length}개 문제 존재`);
+                console.warn(`📍 파일에 실제로 ${problems.length}개 문제 존재`);
                 
                 if (problems.length >= problemsPerRound) {
                     // 파일에 6개 이상 문제가 있으면 처음부터 6개 선택
@@ -2775,20 +2815,28 @@
                         </div>
                     </div>
                     
-                    <!-- 🎵 음악 컨트롤 (플로팅) -->
-                    <div class="music-controls">
-                        <div class="music-btn-row">
-                            <button id="musicPlayBtn" class="music-btn play" onclick="toggleBGMPlayPause()">
-                                ▶️ 재생
+                    <!-- 🎵 설정 버튼 (플로팅) -->
+                    <button class="settings-button" onclick="toggleMusicPanel()">
+                        ⚙️
+                    </button>
+                    
+                    <!-- 🎵 음악 설정 패널 -->
+                    <div class="music-panel">
+                        <h3>🎵 음악 설정</h3>
+                        <div class="music-controls">
+                            <div class="music-btn-row">
+                                <button id="musicPlayBtn" class="music-btn play" onclick="toggleBGMPlayPause()">
+                                    ▶️ 재생
+                                </button>
+                                <button id="musicMuteBtn" class="music-btn mute" onclick="toggleMusicMute()">
+                                    🔇 음소거
+                                </button>
+                            </div>
+                            <button id="musicSwitchBtn" class="music-btn switch" onclick="switchBGM()">
+                                🔄 BGM1→2
                             </button>
-                            <button id="musicMuteBtn" class="music-btn mute" onclick="toggleMusicMute()">
-                                🔇 음소거
-                            </button>
+                            <div class="music-status" id="musicStatus">BGM 1 준비됨</div>
                         </div>
-                        <button id="musicSwitchBtn" class="music-btn switch" onclick="switchBGM()">
-                            🔄 BGM1→2
-                        </button>
-                        <div class="music-status" id="musicStatus">BGM 1 준비됨</div>
                     </div>
                 </div>
             `;
@@ -2802,7 +2850,7 @@
             }, 100);
         }
 
-        // 🔍 강화된 디버깅 startRound 함수
+        // 📍 강화된 디버깅 startRound 함수
         async function startRound(roundNumber) {
             if (isLoading) return;
             
@@ -3085,20 +3133,28 @@
                         </div>
                     </div>
                     
-                    <!-- 🎵 음악 컨트롤 (플로팅) -->
-                    <div class="music-controls">
-                        <div class="music-btn-row">
-                            <button id="musicPlayBtn" class="music-btn play" onclick="toggleBGMPlayPause()">
-                                ▶️ 재생
+                    <!-- 🎵 설정 버튼 (플로팅) -->
+                    <button class="settings-button" onclick="toggleMusicPanel()">
+                        ⚙️
+                    </button>
+                    
+                    <!-- 🎵 음악 설정 패널 -->
+                    <div class="music-panel">
+                        <h3>🎵 음악 설정</h3>
+                        <div class="music-controls">
+                            <div class="music-btn-row">
+                                <button id="musicPlayBtn" class="music-btn play" onclick="toggleBGMPlayPause()">
+                                    ▶️ 재생
+                                </button>
+                                <button id="musicMuteBtn" class="music-btn mute" onclick="toggleMusicMute()">
+                                    🔇 음소거
+                                </button>
+                            </div>
+                            <button id="musicSwitchBtn" class="music-btn switch" onclick="switchBGM()">
+                                🔄 BGM1→2
                             </button>
-                            <button id="musicMuteBtn" class="music-btn mute" onclick="toggleMusicMute()">
-                                🔇 음소거
-                            </button>
+                            <div class="music-status" id="musicStatus">BGM 1 준비됨</div>
                         </div>
-                        <button id="musicSwitchBtn" class="music-btn switch" onclick="switchBGM()">
-                            🔄 BGM1→2
-                        </button>
-                        <div class="music-status" id="musicStatus">BGM 1 준비됨</div>
                     </div>
                 </div>
             `;
@@ -3197,7 +3253,7 @@
             }
         }
 
-        // 🔍 강화된 디버깅 nextProblem 함수
+        // 📍 강화된 디버깅 nextProblem 함수
         function nextProblem() {
             AudioManager.playSound('click');
             
@@ -3214,7 +3270,7 @@
             // 🚨 문제 수 체크
             if (totalProblems !== 6) {
                 console.error(`❌ 심각한 오류: 라운드당 6개 문제가 있어야 하는데 ${totalProblems}개만 있습니다!`);
-                console.error(`🔍 gameState.problems 내용:`, gameState.problems.map(p => p.answer[0]));
+                console.error(`📍 gameState.problems 내용:`, gameState.problems.map(p => p.answer[0]));
             }
             
             if (gameState.currentProblem === totalProblems - 1) {
@@ -3227,7 +3283,7 @@
                 currentScreen = 'roundComplete';
                 renderRoundComplete();
             } else {
-                console.log(`🔍 다음 문제로 이동: ${gameState.currentProblem + 1} → ${gameState.currentProblem + 2}`);
+                console.log(`📍 다음 문제로 이동: ${gameState.currentProblem + 1} → ${gameState.currentProblem + 2}`);
                 
                 gameState.currentProblem++;
                 
@@ -3308,20 +3364,28 @@
                         </div>
                     </div>
                     
-                    <!-- 🎵 음악 컨트롤 (플로팅) -->
-                    <div class="music-controls">
-                        <div class="music-btn-row">
-                            <button id="musicPlayBtn" class="music-btn play" onclick="toggleBGMPlayPause()">
-                                ▶️ 재생
+                    <!-- 🎵 설정 버튼 (플로팅) -->
+                    <button class="settings-button" onclick="toggleMusicPanel()">
+                        ⚙️
+                    </button>
+                    
+                    <!-- 🎵 음악 설정 패널 -->
+                    <div class="music-panel">
+                        <h3>🎵 음악 설정</h3>
+                        <div class="music-controls">
+                            <div class="music-btn-row">
+                                <button id="musicPlayBtn" class="music-btn play" onclick="toggleBGMPlayPause()">
+                                    ▶️ 재생
+                                </button>
+                                <button id="musicMuteBtn" class="music-btn mute" onclick="toggleMusicMute()">
+                                    🔇 음소거
+                                </button>
+                            </div>
+                            <button id="musicSwitchBtn" class="music-btn switch" onclick="switchBGM()">
+                                🔄 BGM1→2
                             </button>
-                            <button id="musicMuteBtn" class="music-btn mute" onclick="toggleMusicMute()">
-                                🔇 음소거
-                            </button>
+                            <div class="music-status" id="musicStatus">BGM 1 준비됨</div>
                         </div>
-                        <button id="musicSwitchBtn" class="music-btn switch" onclick="switchBGM()">
-                            🔄 BGM1→2
-                        </button>
-                        <div class="music-status" id="musicStatus">BGM 1 준비됨</div>
                     </div>
                 </div>
             `;
@@ -3350,7 +3414,7 @@
                         <h3 class="modal-title" style="color: #f97316">시냅스 폭발!</h3>
                         <p class="modal-text">와우, 천재셨군요!</p>
                         <p class="modal-text" style="color: #f97316">🔑 열쇠 +1 보너스!</p>
-                        <button class="modal-button yellow modal-primary" onclick="closeModal()">대박! 👏</button>
+                        <button class="modal-button yellow modal-primary" onclick="closeModal()">대박! 👍</button>
                     `;
                     break;
                     
@@ -3365,10 +3429,10 @@
                     
                 case 'skilled':
                     modalContent = `
-                        <div class="modal-icon" style="animation: bounce 1s infinite">👏</div>
+                        <div class="modal-icon" style="animation: bounce 1s infinite">👍</div>
                         <h3 class="modal-title" style="color: #3b82f6">실력자 인정!</h3>
                         <p class="modal-text">안정적인 플레이네요!</p>
-                        <button class="modal-button modal-primary" style="background: #3b82f6" onclick="closeModal()">좋아요! 👏</button>
+                        <button class="modal-button modal-primary" style="background: #3b82f6" onclick="closeModal()">좋아요! 👍</button>
                     `;
                     break;
                     
@@ -3401,7 +3465,7 @@
                     
                 case 'correct':
                     modalContent = `
-                        <div class="modal-icon" style="animation: bounce 1s infinite">👏</div>
+                        <div class="modal-icon" style="animation: bounce 1s infinite">👍</div>
                         <h3 class="modal-title">정답!</h3>
                         <p class="modal-text">잘하셨어요!</p>
                         <button class="modal-button green modal-primary" onclick="closeModal()">좋아요!</button>
@@ -3553,7 +3617,7 @@
             saveGame();
         }
 
-        // 🔍 강화된 디버깅 saveGame 함수
+        // 📍 강화된 디버깅 saveGame 함수
         function saveGame() {
             const saveData = {
                 completedRounds: completedRounds,
@@ -3714,7 +3778,7 @@
         // 🔥 개발자를 위한 콘솔 도움말 출력
         console.log(`
 🎮 연상천재 게임 개발자 도구
-┌─────────────────────────────────┐
+┌─────────────────────────────────
 │ 📋 현재 버전: ${CacheManager.version}     │
 │                                 │
 │ 🛠️ 개발자 단축키:               │
@@ -3731,9 +3795,8 @@
 │                                 │
 │ 🎵 오디오 관리:                 │
 │   AudioManager                  │
-└─────────────────────────────────┘
+└─────────────────────────────────
         `);
     </script>
 </body>
 </html>
-                
