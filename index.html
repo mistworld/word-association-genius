@@ -63,30 +63,50 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: #0a0e27;
             min-height: 100vh;
-            color: #1a1a2e;
+            color: #ffffff;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* 모바일 최적화 배경 애니메이션 */
+        /* 🌌 미래적인 배경 효과 */
         body::before {
             content: '';
             position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: backgroundMove 20s linear infinite;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            animation: backgroundPulse 10s ease-in-out infinite;
             pointer-events: none;
         }
 
-        @keyframes backgroundMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* 🌟 플로팅 파티클 효과 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #ff6ec7, #7873f5);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 15s linear infinite;
         }
 
         .container {
@@ -97,15 +117,18 @@
             flex-direction: column;
         }
 
-        /* 모바일 헤더 - 더 컴팩트하고 모던하게 */
+        /* 🔥 글라스모피즘 헤더 */
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 0 0 30px 30px;
-            padding: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0 0 40px 40px;
+            padding: 20px;
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            margin-bottom: 20px;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -119,36 +142,45 @@
         }
 
         .logo-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 15px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff6ec7, #7873f5);
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            font-size: 28px;
+            box-shadow: 
+                0 8px 24px rgba(255, 110, 199, 0.4),
+                inset 0 2px 0 rgba(255,255,255,0.3);
+            animation: logoGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { box-shadow: 0 8px 24px rgba(255, 110, 199, 0.4), inset 0 2px 0 rgba(255,255,255,0.3); }
+            50% { box-shadow: 0 8px 32px rgba(255, 110, 199, 0.6), inset 0 2px 0 rgba(255,255,255,0.5); }
         }
 
         .logo h1 {
-            font-size: 24px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-size: 28px;
+            background: linear-gradient(135deg, #ff6ec7, #7873f5);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: 800;
+            font-weight: 900;
+            letter-spacing: -0.5px;
         }
 
         .logo p {
-            font-size: 12px;
-            color: #8b5cf6;
-            opacity: 0.8;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
         }
 
         .stats {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
@@ -156,48 +188,62 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            padding: 10px 16px;
-            border-radius: 20px;
-            font-size: 16px;
+            background: linear-gradient(135deg, #ffd93d, #ff6bcb);
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 18px;
             font-weight: bold;
             color: white;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            box-shadow: 
+                0 8px 24px rgba(255, 217, 61, 0.3),
+                inset 0 2px 0 rgba(255,255,255,0.3);
+            animation: keyPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes keyPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .round-info {
             text-align: center;
-            background: rgba(139, 92, 246, 0.1);
-            padding: 8px 16px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .round-info .count {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
-            color: #7c3aed;
+            background: linear-gradient(135deg, #7873f5, #ff6ec7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .round-info .label {
-            font-size: 11px;
-            color: #6d28d9;
-            opacity: 0.8;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
         }
 
-        /* 모바일 음악 컨트롤 - 플로팅 스타일 */
+        /* 🎧 네온 음악 컨트롤 */
         .music-controls {
             position: fixed;
-            bottom: 20px;
+            bottom: 30px;
             right: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 10px;
-            border-radius: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: 12px;
+            border-radius: 30px;
+            box-shadow: 
+                0 10px 40px rgba(255, 110, 199, 0.3),
+                inset 0 1px 0 rgba(255,255,255,0.1);
             z-index: 99;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .music-btn-row {
@@ -206,55 +252,67 @@
         }
 
         .music-btn {
-            padding: 8px 12px;
+            padding: 10px 14px;
             border: none;
-            border-radius: 15px;
-            font-size: 10px;
+            border-radius: 18px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: bold;
-            min-width: 50px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-width: 55px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .music-btn.play {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, #00f5ff, #0099ff);
             color: white;
+            box-shadow: 0 4px 12px rgba(0, 245, 255, 0.3);
         }
 
         .music-btn.pause {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: linear-gradient(135deg, #ffd93d, #ff6bcb);
             color: white;
+            box-shadow: 0 4px 12px rgba(255, 217, 61, 0.3);
         }
 
         .music-btn.mute {
-            background: linear-gradient(135deg, #6b7280, #4b5563);
-            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .music-btn.unmute {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            background: linear-gradient(135deg, #00f5ff, #0099ff);
             color: white;
+            box-shadow: 0 4px 12px rgba(0, 245, 255, 0.3);
         }
 
         .music-btn.switch {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            background: linear-gradient(135deg, #ff6ec7, #7873f5);
             color: white;
             width: 100%;
+            box-shadow: 0 4px 12px rgba(255, 110, 199, 0.3);
         }
 
         .music-btn:active {
             transform: scale(0.95);
         }
 
+        .music-btn:hover {
+            transform: translateY(-2px);
+        }
+
         .music-status {
-            font-size: 9px;
-            color: #64748b;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
             text-align: center;
             line-height: 1.2;
-            padding: 4px;
-            background: rgba(148, 163, 184, 0.1);
-            border-radius: 10px;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* 음악 시작 오버레이 - 모바일 최적화 */
@@ -353,63 +411,67 @@
         }
 
         .main-content {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 30px 30px 0 0;
-            padding: 20px;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 35px 35px 0 0;
+            padding: 25px;
+            box-shadow: 
+                0 -20px 60px rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.1);
             flex: 1;
             margin-top: auto;
         }
 
-        .round-select {
-            text-align: center;
-        }
-
         .round-select h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-size: 32px;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #ff6ec7, #7873f5);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: 800;
+            font-weight: 900;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .round-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
+            gap: 12px;
             max-height: 60vh;
             overflow-y: auto;
-            padding: 10px;
-            scrollbar-width: thin;
-            scrollbar-color: #8b5cf6 transparent;
+            padding: 15px;
+            scrollbar-width: none;
         }
 
         .round-grid::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .round-grid::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .round-grid::-webkit-scrollbar-thumb {
-            background: #8b5cf6;
-            border-radius: 3px;
+            display: none;
         }
 
         .round-button {
             aspect-ratio: 1;
             border: none;
-            border-radius: 20px;
-            font-size: 16px;
-            font-weight: bold;
+            border-radius: 22px;
+            font-size: 18px;
+            font-weight: 900;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .round-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
         .round-button:active {
@@ -417,31 +479,152 @@
         }
 
         .round-button.completed {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, #00f5ff, #0099ff);
             color: white;
+            box-shadow: 
+                0 8px 24px rgba(0, 245, 255, 0.4),
+                inset 0 2px 0 rgba(255,255,255,0.3);
         }
 
         .round-button.playable {
-            background: linear-gradient(135deg, #f59e0b, #f97316);
+            background: linear-gradient(135deg, #ff6ec7, #ffb347);
             color: white;
-            animation: pulse 2s infinite;
+            animation: glow 2s ease-in-out infinite;
+            box-shadow: 
+                0 8px 24px rgba(255, 110, 199, 0.5),
+                inset 0 2px 0 rgba(255,255,255,0.3);
+        }
+
+        @keyframes glow {
+            0%, 100% { 
+                box-shadow: 
+                    0 8px 24px rgba(255, 110, 199, 0.5),
+                    inset 0 2px 0 rgba(255,255,255,0.3);
+            }
+            50% { 
+                box-shadow: 
+                    0 12px 36px rgba(255, 110, 199, 0.7),
+                    inset 0 2px 0 rgba(255,255,255,0.5);
+            }
         }
 
         .round-button.locked {
-            background: linear-gradient(135deg, #e5e7eb, #d1d5db);
-            color: #9ca3af;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.3);
             cursor: not-allowed;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        @keyframes pulse {
-            0%, 100% { 
-                transform: scale(1); 
-                box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-            }
-            50% { 
-                transform: scale(1.05); 
-                box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
-            }
+        /* 답변 입력 영역 */
+        .answer-input {
+            width: 100%;
+            padding: 18px;
+            font-size: 20px;
+            font-weight: 600;
+            border: 2px solid rgba(255, 110, 199, 0.3);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            transition: all 0.3s;
+            box-shadow: 
+                0 4px 16px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .answer-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #ff6ec7;
+            box-shadow: 
+                0 0 0 4px rgba(255, 110, 199, 0.2),
+                0 4px 16px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .correct-answer {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(255, 110, 199, 0.1));
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            border-image: linear-gradient(135deg, #00f5ff, #ff6ec7) 1;
+            border-radius: 25px;
+            padding: 25px;
+            text-align: center;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .correct-icon {
+            font-size: 56px;
+            margin-bottom: 12px;
+            animation: bounce 1s ease-in-out;
+        }
+
+        .correct-title {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00f5ff, #ff6ec7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .correct-text {
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .correct-category {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+
+        .next-button {
+            width: 100%;
+            background: linear-gradient(135deg, #ff6ec7, #7873f5);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 25px;
+            font-size: 20px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 10px 30px rgba(255, 110, 199, 0.4),
+                inset 0 2px 0 rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .next-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .next-button:hover::before {
+            left: 100%;
+        }
+
+        .next-button:active {
+            transform: scale(0.98);
+        }
         }
 
         .icon {
@@ -653,129 +836,103 @@
             gap: 15px;
         }
 
-        /* 힌트 섹션 - 카드 스타일 */
+        /* 힌트 섹션 - 네온 글라스 스타일 */
         .hints-section {
-            background: rgba(139, 92, 246, 0.05);
-            border-radius: 20px;
-            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .hints-section h2 {
-            font-size: 20px;
-            margin-bottom: 12px;
-            color: #7c3aed;
-            font-weight: bold;
-        }
-
-        .hints-container {
-            max-height: 40vh;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #8b5cf6 #f3f4f6;
-        }
-
-        .hints-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .hints-container::-webkit-scrollbar-track {
-            background: #f3f4f6;
-            border-radius: 3px;
-        }
-
-        .hints-container::-webkit-scrollbar-thumb {
-            background: #8b5cf6;
-            border-radius: 3px;
+            font-size: 24px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #00f5ff, #ff6ec7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .hint-item {
-            background: white;
-            border-radius: 15px;
-            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            margin-bottom: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             transition: all 0.3s;
         }
 
-        .hint-item:active {
-            transform: scale(0.98);
+        .hint-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
         }
 
         .hint-content {
-            padding: 12px;
+            padding: 15px;
         }
 
         .hint-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
+            gap: 12px;
+            margin-bottom: 10px;
         }
 
         .hint-number {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            border-radius: 10px;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #ff6ec7, #7873f5);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 16px;
-            font-weight: bold;
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+            font-size: 18px;
+            font-weight: 900;
+            box-shadow: 0 4px 12px rgba(255, 110, 199, 0.3);
         }
 
         .hint-text {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 600;
-            color: #1a1a2e;
+            color: #ffffff;
             flex: 1;
-        }
-
-        .description-button {
-            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 15px;
-            font-size: 14px;
-            color: #1e40af;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-        }
-
-        .description-button:active {
-            transform: scale(0.95);
+            line-height: 1.4;
         }
 
         .description {
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            border: 2px solid #60a5fa;
-            border-radius: 12px;
-            padding: 12px;
-            margin-top: 8px;
-            font-size: 14px;
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            border-radius: 15px;
+            padding: 14px;
+            margin-top: 10px;
+            font-size: 15px;
             line-height: 1.6;
-            color: #1e40af;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .description.after-correct {
-            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-            border: 2px solid #10b981;
-            color: #047857;
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.15), rgba(255, 110, 199, 0.15));
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            border-image: linear-gradient(135deg, #00f5ff, #ff6ec7) 1;
+            color: #ffffff;
             font-weight: 500;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+            animation: highlightGlow 2s ease-in-out;
+        }
+
+        @keyframes highlightGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 245, 255, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(255, 110, 199, 0.5); }
         }
 
         .locked-hint {
-            padding: 20px;
-            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.02);
             text-align: center;
         }
 
@@ -784,105 +941,129 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            font-size: 16px;
-            color: #6b7280;
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.4);
             background: none;
             border: none;
             cursor: pointer;
             width: 100%;
         }
 
-        /* 답변 섹션 - 플로팅 카드 스타일 */
+        /* 답변 섹션 - 플로팅 네온 스타일 */
         .answer-section {
-            background: white;
-            border-radius: 20px;
-            padding: 15px;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 
+                0 -10px 40px rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.1);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
 
         .info-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            gap: 10px;
         }
 
         .info-box {
-            background: linear-gradient(135deg, #fef3c7, #fed7aa);
-            border-radius: 12px;
-            padding: 10px;
+            background: linear-gradient(135deg, rgba(255, 217, 61, 0.1), rgba(255, 107, 203, 0.1));
+            border: 1px solid rgba(255, 217, 61, 0.3);
+            border-radius: 15px;
+            padding: 12px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.2);
+            transition: all 0.3s;
+        }
+
+        .info-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 217, 61, 0.2);
         }
 
         .info-box.category {
-            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(120, 115, 245, 0.1));
+            border-color: rgba(0, 245, 255, 0.3);
         }
 
         .info-box.chosung {
-            background: linear-gradient(135deg, #fed7aa, #fdba74);
+            background: linear-gradient(135deg, rgba(255, 110, 199, 0.1), rgba(120, 115, 245, 0.1));
+            border-color: rgba(255, 110, 199, 0.3);
         }
 
         .info-label {
-            font-size: 11px;
-            color: #92400e;
-            margin-bottom: 3px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 4px;
             font-weight: 600;
-            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .info-value {
-            font-size: 16px;
-            font-weight: bold;
-            color: #78350f;
+            font-size: 18px;
+            font-weight: 900;
+            color: #ffffff;
         }
 
         .chosung-button {
             background: none;
             border: none;
-            color: #1e40af;
+            color: #ff6ec7;
             font-size: 16px;
             cursor: pointer;
-            text-decoration: underline;
+            text-decoration: none;
             font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .chosung-button:hover {
+            text-shadow: 0 0 10px rgba(255, 110, 199, 0.5);
         }
 
         .help-mode {
-            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border: 2px solid #60a5fa;
-            border-radius: 15px;
-            padding: 12px;
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(120, 115, 245, 0.1));
+            border: 2px solid rgba(0, 245, 255, 0.3);
+            border-radius: 18px;
+            padding: 14px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+            gap: 12px;
+            animation: helpPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes helpPulse {
+            0%, 100% { border-color: rgba(0, 245, 255, 0.3); }
+            50% { border-color: rgba(0, 245, 255, 0.6); }
         }
 
         .help-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00f5ff, #0099ff);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0, 245, 255, 0.3);
         }
 
         .help-text {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: bold;
-            color: #1e40af;
+            color: #00f5ff;
         }
 
         .help-sub {
-            font-size: 13px;
-            color: #3b82f6;
-            opacity: 0.8;
+            font-size: 14px;
+            color: rgba(0, 245, 255, 0.7);
         }
 
         .answer-input {
@@ -2764,41 +2945,41 @@
                             </div>
                             
                             <div class="answer-section">
-                                <div class="info-grid">
-                                    <div class="info-box">
-                                        <div class="info-label">글자수</div>
-                                        <div class="info-value">
-                                            ${gameState.showCharacterCount ? `${problem.answer[0].length}글자` : '?글자'}
-                                        </div>
-                                    </div>
-                                    <div class="info-box category">
-                                        <div class="info-label">분류</div>
-                                        <div class="info-value">
-                                            ${gameState.showCategory ? `(${problem.category})` : '(?)'}
-                                        </div>
-                                    </div>
-                                    <div class="info-box chosung">
-                                        <div class="info-label">초성</div>
-                                        <div class="info-value">
-                                            ${gameState.showChosung ? problem.chosung : 
-                                              gameState.unlockedHints.includes(5) ? 
-                                              `<button class="chosung-button" onclick="showModal('chosung')">🎯 해금</button>` : 
-                                              '🔒'}
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                ${gameState.helpMode ? `
-                                    <div class="help-mode">
-                                        <div class="help-icon">?</div>
-                                        <div>
-                                            <div class="help-text">도움 모드 활성화!</div>
-                                            <div class="help-sub">추가 정보가 공개되었습니다</div>
-                                        </div>
-                                    </div>
-                                ` : ''}
-                                
                                 ${!gameState.isCorrect ? `
+                                    <div class="info-grid">
+                                        <div class="info-box">
+                                            <div class="info-label">글자수</div>
+                                            <div class="info-value">
+                                                ${gameState.showCharacterCount ? `${problem.answer[0].length}글자` : '?글자'}
+                                            </div>
+                                        </div>
+                                        <div class="info-box category">
+                                            <div class="info-label">분류</div>
+                                            <div class="info-value">
+                                                ${gameState.showCategory ? `(${problem.category})` : '(?)'}
+                                            </div>
+                                        </div>
+                                        <div class="info-box chosung">
+                                            <div class="info-label">초성</div>
+                                            <div class="info-value">
+                                                ${gameState.showChosung ? problem.chosung : 
+                                                  gameState.unlockedHints.includes(5) ? 
+                                                  `<button class="chosung-button" onclick="showModal('chosung')">🎯 해금</button>` : 
+                                                  '🔒'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    ${gameState.helpMode ? `
+                                        <div class="help-mode">
+                                            <div class="help-icon">?</div>
+                                            <div>
+                                                <div class="help-text">도움 모드 활성화!</div>
+                                                <div class="help-sub">추가 정보가 공개되었습니다</div>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    
                                     <input 
                                         type="text" 
                                         class="answer-input" 
@@ -2825,29 +3006,14 @@
                                     />
                                 ` : `
                                     <div class="correct-answer">
-                                        <div class="correct-icon">👏</div>
-                                        <div class="correct-title">정답!</div>
+                                        <div class="correct-icon">🎊</div>
+                                        <div class="correct-title">Perfect!</div>
                                         <div class="correct-text">${problem.answer.join(', ')}</div>
-                                        <div class="correct-category">(${problem.category})</div>
+                                        <div class="correct-category">${problem.category}</div>
                                     </div>
                                     
-                                    <!-- 🆕 정답 후 설명 읽기 시간 제공 (축소) -->
-                                    <div id="explanationTimer" class="explanation-timer" style="display: block;">
-                                        <div style="background: #fef3c7; border-radius: 12px; padding: 8px; margin-bottom: 10px; text-align: center;">
-                                            <div style="font-size: 14px; font-weight: bold; color: #d97706; margin-bottom: 3px;">
-                                                📖 설명을 확인하세요!
-                                            </div>
-                                            <div style="font-size: 12px; color: #92400e;">
-                                                <span id="explanationCountdown">5</span>초 후 다음 문제로 진행 가능
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <button class="next-button" onclick="nextProblem()" id="nextProblemBtn" disabled style="opacity: 0.5; cursor: not-allowed;">
-                                        ${gameState.currentProblem === totalProblems - 1 ? '🏆 라운드 완료' : '🚀 다음 문제'}
-                                        <div style="font-size: 12px; opacity: 0.8; margin-top: 2px;">
-                                            📖 설명을 읽어보세요...
-                                        </div>
+                                    <button class="next-button" onclick="nextProblem()" id="nextProblemBtn">
+                                        ${gameState.currentProblem === totalProblems - 1 ? '🏆 완료하기' : '➜ 다음 문제'}
                                     </button>
                                 `}
                             </div>
@@ -2874,7 +3040,7 @@
             
             document.getElementById('app').innerHTML = html;
             
-            // 🆕 정답 후 처리 로직 개선
+            // 정답 후 처리
             if (!gameState.isCorrect) {
                 // 정답을 맞추지 않은 상태 - 입력창에 포커스
                 const input = document.querySelector('.answer-input');
@@ -2883,66 +3049,23 @@
                 }
                 removeNextProblemKeyListener();
             } else {
-                // 🆕 정답을 맞춘 상태 - 설명 읽기 시간 제공
-                removeNextProblemKeyListener(); // 즉시 엔터키 리스너 제거
+                // 정답을 맞춘 상태 - 바로 다음 문제 버튼 활성화
+                removeNextProblemKeyListener();
                 
-                // 5초 카운트다운 후 버튼 활성화
-                let countdown = 5;
-                const countdownElement = document.getElementById('explanationCountdown');
-                const nextBtn = document.getElementById('nextProblemBtn');
-                const timerElement = document.getElementById('explanationTimer');
-                
-                const countdownInterval = setInterval(() => {
-                    countdown--;
-                    if (countdownElement) {
-                        countdownElement.textContent = countdown;
-                    }
-                    
-                    if (countdown <= 0) {
-                        clearInterval(countdownInterval);
-                        
-                        // 버튼 활성화
-                        if (nextBtn) {
-                            nextBtn.disabled = false;
-                            nextBtn.style.opacity = '1';
-                            nextBtn.style.cursor = 'pointer';
-                            nextBtn.querySelector('div').textContent = '💡 클릭 또는 Enter키';
-                            nextBtn.focus(); // 이제 포커스 설정
-                        }
-                        
-                        // 타이머 숨기기
-                        if (timerElement) {
-                            timerElement.style.display = 'none';
-                        }
-                        
-                        // 이제 엔터키 리스너 추가
-                        setTimeout(() => {
-                            addNextProblemKeyListener();
-                        }, 100);
-                        
-                        // 자동 스크롤로 설명 영역 강조
-                        const hintsSection = document.querySelector('.hints-section');
-                        if (hintsSection) {
-                            hintsSection.scrollTop = 0; // 맨 위로 스크롤하여 설명들이 보이도록
-                        }
-                    }
-                }, 1000);
-                
-                // 설명이 잘 보이도록 힌트 섹션 약간 강조 (움직임 제거)
+                // 바로 엔터키 리스너 추가
                 setTimeout(() => {
-                    const hintsSection = document.querySelector('.hints-section');
-                    if (hintsSection) {
-                        hintsSection.style.border = '2px solid #3b82f6'; // 🆕 테두리만 적용
-                        hintsSection.style.borderRadius = '16px';
-                        // 🆕 애니메이션 완전 제거
-                        
-                        // 1초 후 강조 효과 제거 (시간 단축)
-                        setTimeout(() => {
-                            hintsSection.style.border = '';
-                            hintsSection.style.borderRadius = '';
-                        }, 1000); // 🆕 3초 → 1초로 단축
+                    addNextProblemKeyListener();
+                    const nextBtn = document.getElementById('nextProblemBtn');
+                    if (nextBtn) {
+                        nextBtn.focus();
                     }
-                }, 200); // 🆕 0.5초 → 0.2초로 단축
+                }, 100);
+                
+                // 힌트 섹션 스크롤을 맨 위로
+                const hintsSection = document.querySelector('.hints-section');
+                if (hintsSection) {
+                    hintsSection.scrollTop = 0;
+                }
             }
             
             if (gameState.unlockedHints.includes(4) && !gameState.canShowDescriptions) {
@@ -3470,32 +3593,26 @@
                 MobileKeyboard.init();
             }
             
-            // 🎵 음악 시작 오버레이 표시
-            const startOverlayHtml = `
-                <div class="music-start-overlay">
-                    <div class="music-start-card">
-                        <div class="music-start-icon">🧠</div>
-                        <h2 class="music-start-title">당신은 천재인가요?</h2>
-                        <p class="music-start-text">
-                            아니면... 그저 평범한가요?<br/>
-                            시냅스가 연결되는<br/>
-                            <strong>짜릿한 쾌감을 느껴보세요</strong>
-                        </p>
-                        <div class="music-start-buttons">
-                            <button class="music-start-btn with-music" onclick="startWithMusic()">
-                                <span style="font-size: 24px;">🎵</span>
-                                <span>음악과 함께</span>
-                            </button>
-                            <button class="music-start-btn without-music" onclick="startWithoutMusic()">
-                                <span style="font-size: 24px;">🔇</span>
-                                <span>조용히 시작</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
+            // 🎵 오디오 초기화하고 바로 게임 시작
+            AudioManager.init().then(() => {
+                AudioManager.unlockAudio();
+                // 음소거 상태로 시작 (사용자가 원할 때 켤 수 있음)
+                AudioManager.isMuted = true;
+            });
             
-            document.body.insertAdjacentHTML('beforeend', startOverlayHtml);
+            // 바로 게임 화면으로 이동
+            renderRoundMap();
+            
+            // 파티클 효과 추가
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    document.body.appendChild(particle);
+                }, i * 200);
+            }
         }
 
         setInterval(saveGame, 5000);
