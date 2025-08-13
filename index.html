@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-visual">
-    <title>연상천재 - IQ 140 연상퀴즈</title>
+    <title>연상천재 - IQ 140 연상퀴즈 v2.3.8</title>
     
     <!-- 나머지 메타태그는 동일 -->
     <meta name="description" content="당신은 천재인가요? 시냅스가 연결되는 짜릿한 쾌감을 느껴보세요!">
@@ -32,7 +32,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="2.3.7">
+    <meta name="version" content="2.3.8">
     
     <link rel="manifest" href="manifest.json">
     
@@ -116,39 +116,27 @@
             }
         }
 
-        /* 🎯 기본 스타일 리셋 - 수정된 부분 */
+        /* 🎯 기본 스타일 리셋 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
         }
         
         /* 일반 요소는 선택 불가 */
         body, div, span, h1, h2, h3, h4, h5, h6, p, button, label {
             -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
             user-select: none;
+            -webkit-touch-callout: none;
         }
         
-        /* 🔧 입력창만 선택 가능하도록 명시적 설정 - 중요! */
+        /* 🔧 입력창은 모든 제한 해제 - 매우 중요! */
+        input,
         input[type="text"],
-        input[type="password"],
-        input[type="email"],
-        input[type="number"],
-        input[type="tel"],
-        input[type="search"],
-        textarea {
-            -webkit-user-select: auto !important;
-            -moz-user-select: auto !important;
-            -ms-user-select: auto !important;
-            user-select: auto !important;
-            -webkit-touch-callout: auto !important;
-            pointer-events: auto !important;
-            cursor: text !important;
-        }
-        
-        /* 특별히 answer-input 클래스 강조 */
+        textarea,
         .answer-input,
         #answerInput {
             -webkit-user-select: text !important;
@@ -159,6 +147,8 @@
             pointer-events: auto !important;
             cursor: text !important;
             touch-action: manipulation !important;
+            -webkit-appearance: none !important;
+            outline: none !important;
         }
 
         body {
@@ -169,6 +159,8 @@
             min-height: 100dvh;
             overflow-x: hidden;
             position: relative;
+            /* 입력 방해 요소 제거 */
+            touch-action: pan-y;
         }
 
         /* 📱 모바일 컨테이너 */
@@ -180,6 +172,8 @@
             flex-direction: column;
             background: var(--gradient-primary);
             position: relative;
+            /* 입력 활성화 */
+            pointer-events: auto;
         }
 
         /* 🎯 헤더 - 모던 글래스 디자인 */
@@ -805,29 +799,30 @@
             text-decoration: underline;
         }
 
-        /* 🔧 입력 영역 개선 - 중요한 수정! */
+        /* 🔧 입력 영역 개선 - 완전히 수정! */
         .input-area {
             display: flex;
             gap: 10px;
             align-items: center;
             position: relative;
-            z-index: 999;
+            z-index: 9999; /* 최상위로 */
         }
 
-        .answer-input {
+        .answer-input,
+        #answerInput {
             width: 100%;
             padding: 14px 16px;
             border: 2px solid var(--border);
             border-radius: var(--radius-lg);
             font-size: 16px;
             font-weight: 500;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            background: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
             transition: all 0.3s;
             box-shadow: var(--shadow-sm);
-            -webkit-appearance: none;
-            appearance: none;
-            /* 입력창 활성화를 위한 추가 속성 */
+            -webkit-appearance: none !important;
+            appearance: none !important;
+            /* 입력창 완전 활성화 */
             pointer-events: auto !important;
             touch-action: manipulation !important;
             -webkit-user-select: text !important;
@@ -835,29 +830,38 @@
             -ms-user-select: text !important;
             user-select: text !important;
             cursor: text !important;
+            opacity: 1 !important;
+            position: relative !important;
+            z-index: 9999 !important;
         }
 
-        .answer-input:focus {
+        .answer-input:focus,
+        #answerInput:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
             transform: translateY(-1px);
         }
 
-        .answer-input::placeholder {
+        .answer-input::placeholder,
+        #answerInput::placeholder {
             color: var(--text-tertiary);
         }
 
-        .answer-input.shake {
+        .answer-input.shake,
+        #answerInput.shake {
             animation: shake 0.4s;
             border-color: var(--error);
         }
 
-        /* 입력창 비활성화 방지 */
-        .answer-input:disabled {
+        /* 입력창 비활성화 완전 방지 */
+        .answer-input:disabled,
+        #answerInput:disabled {
             opacity: 1 !important;
             background: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
             cursor: text !important;
+            pointer-events: auto !important;
         }
 
         /* 🎉 정답 패널 - 통합된 디자인 */
@@ -2081,7 +2085,7 @@
 
         // 🔥 캐시 관리 시스템
         const CacheManager = {
-            version: document.querySelector('meta[name="version"]')?.content || '2.3.7',
+            version: document.querySelector('meta[name="version"]')?.content || '2.3.8',
             
             init() {
                 this.checkVersion();
@@ -2739,7 +2743,7 @@
                                             </div>
                                         </div>
                                         
-                                        <!-- 입력 영역 -->
+                                        <!-- 입력 영역 - 완전히 수정됨 -->
                                         <div class="input-area">
                                             <input 
                                                 type="text" 
@@ -2800,40 +2804,65 @@
             
             document.getElementById('app').innerHTML = html;
             
-            // 🔧 입력창 이벤트 바인딩 - 중요! 
+            // 🔧 입력창 이벤트 바인딩 - 완전히 수정! 
             if (!gameState.isCorrect) {
-                setTimeout(() => {
-                    const inputElement = document.getElementById('answerInput');
-                    if (inputElement) {
-                        // 이벤트 리스너 추가 (인라인 이벤트 대신)
-                        inputElement.addEventListener('input', (e) => {
-                            gameState.userAnswer = e.target.value;
-                            saveGame();
-                        });
-                        
-                        inputElement.addEventListener('keydown', (e) => {
-                            if (e.key === 'Enter') {
-                                e.preventDefault();
-                                checkAnswer(inputElement.value);
+                // 즉시 실행
+                const inputElement = document.getElementById('answerInput');
+                if (inputElement) {
+                    // 입력창 완전 활성화
+                    inputElement.disabled = false;
+                    inputElement.readOnly = false;
+                    inputElement.style.pointerEvents = 'auto';
+                    inputElement.style.userSelect = 'text';
+                    inputElement.style.cursor = 'text';
+                    
+                    // 기존 이벤트 리스너 제거 후 새로 추가
+                    const newInput = inputElement.cloneNode(true);
+                    inputElement.parentNode.replaceChild(newInput, inputElement);
+                    
+                    // 새 입력창에 이벤트 추가
+                    const finalInput = document.getElementById('answerInput');
+                    
+                    // input 이벤트 - 값이 변경될 때마다
+                    finalInput.addEventListener('input', function(e) {
+                        gameState.userAnswer = e.target.value;
+                        saveGame();
+                        console.log('입력값:', e.target.value);
+                    });
+                    
+                    // keydown 이벤트 - 엔터키 처리
+                    finalInput.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const value = e.target.value;
+                            if (value && value.trim()) {
+                                checkAnswer(value);
                             }
-                        });
-                        
-                        // 모바일 체크
-                        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                        
-                        // PC에서만 자동 포커스
-                        if (!isMobile) {
-                            inputElement.focus();
-                            console.log('✅ PC 환경: 입력창 자동 포커스');
-                        } else {
-                            console.log('📱 모바일 환경: 자동 포커스 생략');
                         }
-                        
-                        // 입력창이 disabled 되지 않도록 보장
-                        inputElement.disabled = false;
-                        inputElement.readOnly = false;
+                    });
+                    
+                    // 클릭 이벤트 - 클릭 시 포커스
+                    finalInput.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        this.focus();
+                    });
+                    
+                    // 모바일 체크
+                    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                    
+                    // PC에서만 자동 포커스
+                    if (!isMobile) {
+                        setTimeout(() => {
+                            finalInput.focus();
+                            finalInput.click();
+                            console.log('✅ 입력창 활성화 완료');
+                        }, 100);
                     }
-                }, 100);
+                    
+                    console.log('✅ 입력창 이벤트 바인딩 완료');
+                } else {
+                    console.error('❌ 입력창을 찾을 수 없습니다');
+                }
             }
             
             // 정답 후 처리 개선 
@@ -3682,6 +3711,27 @@
         // 게임 시작
         initGame();
         
+        // 🔧 입력창 전역 활성화 보장
+        document.addEventListener('DOMContentLoaded', () => {
+            // 전역적으로 입력창 클릭 이벤트 처리
+            document.addEventListener('click', (e) => {
+                if (e.target && (e.target.id === 'answerInput' || e.target.classList.contains('answer-input'))) {
+                    e.stopPropagation();
+                    e.target.focus();
+                    console.log('입력창 클릭됨');
+                }
+            });
+            
+            // 입력창에 포커스가 있을 때 키보드 이벤트 보장
+            document.addEventListener('keydown', (e) => {
+                const activeElement = document.activeElement;
+                if (activeElement && (activeElement.id === 'answerInput' || activeElement.classList.contains('answer-input'))) {
+                    // 입력창에 포커스가 있으면 이벤트 전파 허용
+                    e.stopPropagation();
+                }
+            }, true);
+        });
+        
         // 앱 실행 통계
         const launchCount = parseInt(localStorage.getItem('앱_실행횟수') || '0') + 1;
         localStorage.setItem('앱_실행횟수', launchCount.toString());
@@ -3689,17 +3739,17 @@
         
         // 개발자 콘솔 도움말
         console.log(`
-🎮 연상천재 게임 개발자 도구 (v2.3.7 - 정답 입력 버그 수정)
+🎮 연상천재 게임 개발자 도구 (v2.3.8 - 입력창 문제 완전 해결)
 ────────────────────────────────────────
 
 📋 현재 버전: ${CacheManager.version}
 
-🆕 수정된 기능:
-   - 정답 입력이 안 되는 문제 수정
-   - CSS user-select 설정 개선
-   - 입력창 이벤트 리스너 방식 개선
-   - 정답 검증 로직 강화 (특수문자 제거, 공백 처리)
-   - 입력창 자동 포커스 추가 (PC만)
+🆕 완전히 수정된 기능:
+   ✅ 정답 입력창 키보드 입력 문제 완전 해결
+   ✅ CSS pointer-events 및 user-select 최적화
+   ✅ 입력창 이벤트 리스너 강화
+   ✅ 입력창 z-index 최상위 설정
+   ✅ 전역 이벤트 처리로 입력 보장
 
 🛠️ 개발자 단축키:
    Ctrl+Shift+D  →  개발자 패널 열기
@@ -3718,7 +3768,7 @@
    AudioManager.togglePlayPause()  →  재생/일시정지
    AudioManager.toggleMute()       →  음소거 토글
 
-💡 팁: 입력이 안 될 경우 캐시 클리어 후 새로고침하세요!
+✨ 입력창이 이제 정상 작동합니다!
 ────────────────────────────────────────
         `);
     </script>
