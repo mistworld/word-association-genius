@@ -36,7 +36,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="1.0.5">
+    <meta name="version" content="1.0.6">
     
     <!-- 🔗 PWA 매니페스트 -->
     <link rel="manifest" href="manifest.json">
@@ -132,6 +132,38 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        /* 🆕 키보드 활성화 시 헤더 최소화 */
+        body.keyboard-active .header {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 0 0 20px 20px;
+        }
+
+        body.keyboard-active .header .logo {
+            display: none;
+        }
+
+        body.keyboard-active .genius-timer {
+            display: none;
+        }
+
+        body.keyboard-active .game-header {
+            margin-bottom: 5px;
+        }
+
+        body.keyboard-active .round-title {
+            font-size: 16px;
+        }
+
+        body.keyboard-active .problem-number {
+            font-size: 12px;
+        }
+
+        body.keyboard-active .progress-dots {
+            padding: 4px;
         }
 
         .logo {
@@ -250,6 +282,11 @@
             font-size: 28px;
         }
 
+        /* 🆕 키보드 활성화 시 설정 버튼 숨기기 */
+        body.keyboard-active .settings-button {
+            display: none;
+        }
+
         .settings-button:hover {
             transform: scale(1.1) rotate(90deg);
             box-shadow: 
@@ -279,6 +316,11 @@
             display: none;
             min-width: 200px;
             animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 🆕 키보드 활성화 시 음악 패널도 숨기기 */
+        body.keyboard-active .music-panel {
+            display: none !important;
         }
 
         .music-panel.active {
@@ -407,17 +449,6 @@
             animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes slideUp {
-            0% { 
-                transform: translateY(50px) scale(0.9); 
-                opacity: 0; 
-            }
-            100% { 
-                transform: translateY(0) scale(1); 
-                opacity: 1; 
-            }
-        }
-
         .music-start-icon {
             font-size: 60px;
             margin-bottom: 20px;
@@ -487,6 +518,72 @@
                 inset 0 1px 0 rgba(255,255,255,0.1);
             flex: 1;
             margin-top: auto;
+        }
+
+        /* 🆕 키보드 활성화 시 메인 컨텐츠 조정 */
+        body.keyboard-active .main-content {
+            padding: 10px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 60px);
+        }
+
+        body.keyboard-active .game-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 10px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* 🆕 키보드 활성화 시 힌트 영역 스크롤 가능 */
+        body.keyboard-active .hints-section {
+            flex: 1;
+            overflow-y: auto;
+            max-height: calc(100vh - 250px);
+            padding: 10px;
+        }
+
+        body.keyboard-active .hints-section h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px;
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        /* 🆕 키보드 활성화 시 답변 섹션 고정 */
+        body.keyboard-active .answer-section {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 15px;
+            border-top: 2px solid #7e22ce;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+            z-index: 1000;
+            max-height: 40vh;
+            overflow-y: auto;
+        }
+
+        body.keyboard-active .info-grid {
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        body.keyboard-active .info-box {
+            padding: 8px;
+        }
+
+        body.keyboard-active .answer-input {
+            font-size: 16px;
+            padding: 12px;
         }
 
         .round-select h2 {
@@ -689,7 +786,6 @@
 
         .next-button:active {
             transform: scale(0.98);
-        }
         }
 
         .icon {
@@ -2033,7 +2129,7 @@
         // 🔥 캐시 관리 시스템
         const CacheManager = {
             // 🆕 HTML 메타태그에서 버전 자동 읽기
-            version: document.querySelector('meta[name="version"]')?.content || '1.0.5',
+            version: document.querySelector('meta[name="version"]')?.content || '1.0.6',
             
             init() {
                 this.checkVersion();
@@ -2301,97 +2397,70 @@
             }
         }
 
+        // 🆕 개선된 모바일 키보드 핸들러
         const MobileKeyboard = {
             isActive: false,
             originalViewportHeight: window.innerHeight,
             currentViewportHeight: window.innerHeight,
             
             init() {
-                // 정확한 초기 높이 측정
-                this.originalViewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-                this.currentViewportHeight = this.originalViewportHeight;
-                
-                console.log(`📱 초기 뷰포트 높이: ${this.originalViewportHeight}px`);
-                
-                // Visual Viewport API 지원 여부 확인
+                // Visual Viewport API 우선 사용
                 if (window.visualViewport) {
-                    window.visualViewport.addEventListener('resize', this.handleViewportChange.bind(this));
-                    console.log('✅ Visual Viewport API 사용');
+                    this.originalViewportHeight = window.visualViewport.height;
+                    window.visualViewport.addEventListener('resize', this.handleViewportResize.bind(this));
+                    console.log('✅ Visual Viewport API 사용 중');
                 } else {
-                    // 폴백: window resize 이벤트 사용
+                    // 폴백: window resize 사용
                     window.addEventListener('resize', this.handleWindowResize.bind(this));
-                    console.log('📱 Window resize 이벤트 사용 (폴백)');
+                    console.log('📱 Window resize 이벤트 사용 중');
                 }
                 
-                // 입력창 포커스/블러 이벤트
-                document.addEventListener('focusin', this.handleInputFocus.bind(this));
-                document.addEventListener('focusout', this.handleInputBlur.bind(this));
+                // 입력창 포커스 이벤트
+                document.addEventListener('focusin', this.handleFocusIn.bind(this));
+                document.addEventListener('focusout', this.handleFocusOut.bind(this));
                 
-                console.log('🔥 모바일 키보드 대응 시스템 초기화 완료');
+                console.log('📱 모바일 키보드 핸들러 초기화 완료');
             },
             
-            handleViewportChange() {
-                const viewport = window.visualViewport;
-                const heightDiff = this.originalViewportHeight - viewport.height;
+            handleViewportResize() {
+                const newHeight = window.visualViewport.height;
+                const heightDiff = this.originalViewportHeight - newHeight;
                 
-                console.log(`📱 뷰포트 변화: 원본=${this.originalViewportHeight}px, 현재=${viewport.height}px, 차이=${heightDiff}px`);
-                
-                // 키보드가 나타났는지 확인 (높이 차이가 120px 이상)
-                if (heightDiff > 120) {
-                    if (!this.isActive) {
-                        console.log('⌨️ 키보드 감지됨 - 키보드 모드 활성화');
-                        this.activateKeyboardMode();
-                    }
+                // 키보드가 100px 이상 올라왔을 때 활성화
+                if (heightDiff > 100) {
+                    this.activateKeyboardMode();
                 } else {
-                    if (this.isActive) {
-                        console.log('⌨️ 키보드 숨겨짐 - 키보드 모드 비활성화');
-                        this.deactivateKeyboardMode();
-                    }
+                    this.deactivateKeyboardMode();
                 }
             },
             
             handleWindowResize() {
-                const currentHeight = window.innerHeight;
-                const heightDiff = this.originalViewportHeight - currentHeight;
+                const newHeight = window.innerHeight;
+                const heightDiff = this.originalViewportHeight - newHeight;
                 
-                console.log(`📱 윈도우 리사이즈: 원본=${this.originalViewportHeight}px, 현재=${currentHeight}px, 차이=${heightDiff}px`);
-                
-                // 키보드 감지 (높이 차이가 120px 이상)
-                if (heightDiff > 120) {
-                    if (!this.isActive) {
-                        this.activateKeyboardMode();
-                    }
+                if (heightDiff > 100) {
+                    this.activateKeyboardMode();
                 } else {
-                    if (this.isActive) {
-                        this.deactivateKeyboardMode();
-                    }
+                    this.deactivateKeyboardMode();
                 }
             },
             
-            handleInputFocus(event) {
+            handleFocusIn(event) {
                 if (event.target.classList.contains('answer-input')) {
-                    console.log('📱 답변 입력창 포커스');
-                    
-                    // 즉시 키보드 모드 활성화
+                    console.log('📱 답변 입력창 포커스 감지');
                     this.activateKeyboardMode();
                     
-                    // 추가 조정
+                    // 입력창이 키보드에 가려지지 않도록 스크롤
                     setTimeout(() => {
-                        this.adjustLayoutForKeyboard();
-                        this.scrollToInput(event.target);
-                    }, 50);
-                    
-                    // 키보드 애니메이션 완료 후 최종 조정
-                    setTimeout(() => {
-                        this.adjustLayoutForKeyboard();
-                    }, 200);
+                        event.target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 300);
                 }
             },
             
-            handleInputBlur(event) {
+            handleFocusOut(event) {
                 if (event.target.classList.contains('answer-input')) {
-                    console.log('📱 답변 입력창 블러');
-                    // 짧은 지연 후 키보드 모드 비활성화
+                    console.log('📱 답변 입력창 포커스 해제');
+                    // 약간의 지연 후 키보드 모드 해제
                     setTimeout(() => {
                         if (!document.querySelector('.answer-input:focus')) {
                             this.deactivateKeyboardMode();
@@ -2400,127 +2469,30 @@
                 }
             },
             
-            // 🆕 강제 레이아웃 업데이트
-            forceLayoutUpdate() {
-                const mainContent = document.querySelector('.main-content');
-                const hintsSection = document.querySelector('.hints-section');
-                const answerSection = document.querySelector('.answer-section');
-                
-                if (mainContent) {
-                    mainContent.style.display = 'none';
-                    mainContent.offsetHeight; // 리플로우 강제 실행
-                    mainContent.style.display = 'flex';
-                }
-                
-                if (hintsSection) {
-                    hintsSection.scrollTop = hintsSection.scrollTop; // 스크롤 위치 갱신
-                }
-            },
-            
             activateKeyboardMode() {
+                if (this.isActive) return;
+                
                 this.isActive = true;
+                document.body.classList.add('keyboard-active');
                 console.log('⌨️ 키보드 모드 활성화');
                 
-                // CSS 클래스 추가
-                document.body.classList.add('keyboard-active');
-                
-                // 약간의 지연 후 정확한 높이 계산
-                setTimeout(() => {
-                    this.adjustLayoutForKeyboard();
-                }, 100);
-                
-                // 추가 지연으로 확실하게 적용
-                setTimeout(() => {
-                    this.adjustLayoutForKeyboard();
-                }, 300);
-            },
-            
-            // 🆕 키보드 모드 레이아웃 조정
-            adjustLayoutForKeyboard() {
-                const mainContent = document.querySelector('.main-content');
-                const gameContent = document.querySelector('.game-content');
-                const hintsSection = document.querySelector('.hints-section');
-                const answerSection = document.querySelector('.answer-section');
-                
-                if (!answerSection) return;
-                
-                // 답변 섹션의 실제 높이 측정
-                const answerSectionHeight = answerSection.scrollHeight + 20; // 여유분 포함
-                console.log(`📍 답변 섹션 높이: ${answerSectionHeight}px`);
-                
-                const headerHeight = getComputedStyle(document.documentElement).getPropertyValue('--mobile-header-height');
-                const availableHeight = `calc(100vh - ${headerHeight} - ${answerSectionHeight}px)`;
-                
-                console.log(`📍 사용 가능한 높이: ${availableHeight}`);
-                
-                if (mainContent) {
-                    mainContent.style.paddingBottom = '0px';
-                    mainContent.style.height = `calc(100vh - ${headerHeight})`;
-                }
-                
-                if (gameContent) {
-                    gameContent.style.height = availableHeight;
-                    gameContent.style.maxHeight = availableHeight;
-                }
-                
-                if (hintsSection) {
-                    hintsSection.style.flex = '1';
-                    hintsSection.style.maxHeight = 'none';
-                    hintsSection.style.height = 'auto';
-                    hintsSection.style.minHeight = '0';
-                }
-                
-                if (answerSection) {
-                    answerSection.style.position = 'fixed';
-                    answerSection.style.bottom = '0';
-                    answerSection.style.left = '0';
-                    answerSection.style.right = '0';
-                    answerSection.style.zIndex = '1000';
-                    answerSection.style.background = 'white';
-                    answerSection.style.borderTop = '2px solid #7e22ce';
-                    answerSection.style.boxShadow = '0 -4px 12px rgba(0,0,0,0.2)';
-                    answerSection.style.maxHeight = '130px';
-                    answerSection.style.overflowY = 'auto';
-                }
+                // 설정 버튼과 음악 패널 숨기기
+                const settingsBtn = document.querySelector('.settings-button');
+                const musicPanel = document.querySelector('.music-panel');
+                if (settingsBtn) settingsBtn.style.display = 'none';
+                if (musicPanel) musicPanel.classList.remove('active');
             },
             
             deactivateKeyboardMode() {
+                if (!this.isActive) return;
+                
                 this.isActive = false;
+                document.body.classList.remove('keyboard-active');
                 console.log('⌨️ 키보드 모드 비활성화');
                 
-                // CSS 클래스 제거
-                document.body.classList.remove('keyboard-active');
-                
-                // 모든 인라인 스타일 복원
-                const elements = [
-                    '.main-content',
-                    '.game-content', 
-                    '.hints-section',
-                    '.answer-section'
-                ];
-                
-                elements.forEach(selector => {
-                    const element = document.querySelector(selector);
-                    if (element) {
-                        // 모든 인라인 스타일 제거
-                        element.removeAttribute('style');
-                    }
-                });
-            },
-            
-            scrollToInput(inputElement) {
-                if (inputElement && this.isActive) {
-                    // 키보드 모드에서는 입력창이 하단에 고정되므로 별도 스크롤 불필요
-                    console.log('📱 입력창이 하단에 고정됨 - 스크롤 조정 생략');
-                    
-                    // 대신 힌트 영역의 스크롤을 맨 아래로 조정하여 최신 힌트가 보이도록
-                    const hintsSection = document.querySelector('.hints-section');
-                    if (hintsSection) {
-                        setTimeout(() => {
-                            hintsSection.scrollTop = hintsSection.scrollHeight;
-                        }, 200);
-                    }
-                }
+                // 설정 버튼 다시 표시
+                const settingsBtn = document.querySelector('.settings-button');
+                if (settingsBtn) settingsBtn.style.display = '';
             }
         };
 
@@ -3704,9 +3676,7 @@
             const savedGameState = loadGame();
             
             // 🔥 모바일 키보드 대응 시스템 초기화
-            if (window.innerWidth <= 768) {
-                MobileKeyboard.init();
-            }
+            MobileKeyboard.init();
             
             // 🎵 오디오 초기화하고 바로 게임 시작
             AudioManager.init().then(() => {
