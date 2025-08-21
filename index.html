@@ -36,9 +36,9 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="1.0.6">
+    <meta name="version" content="1.0.7">
     
-    <!-- 🔗 PWA 매니페스트 -->
+    <!-- 📗 PWA 매니페스트 -->
     <link rel="manifest" href="manifest.json">
     
     <!-- 📱 아이콘들 -->
@@ -997,14 +997,38 @@
             gap: 15px;
         }
 
-        /* 힌트 섹션 - 네온 글라스 스타일 */
+        /* 🔥 힌트 섹션 - 개선된 구분 */
         .hints-section {
-            background: rgba(255, 255, 255, 0.03);
+            background: linear-gradient(135deg, rgba(120, 119, 198, 0.08), rgba(255, 119, 198, 0.08));
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 25px;
             padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                inset 0 2px 0 rgba(255,255,255,0.1);
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .hints-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #00f5ff, #ff6ec7);
+            border-radius: 25px;
+            opacity: 0.3;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.5; }
         }
 
         .hints-section h2 {
@@ -1016,6 +1040,10 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
+            text-align: center;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
         }
 
         .hint-item {
@@ -1110,20 +1138,40 @@
             width: 100%;
         }
 
-        /* 답변 섹션 - 플로팅 네온 스타일 */
+        /* 🔥 답변 섹션 - 강화된 구분 */
         .answer-section {
-            background: rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, rgba(126, 34, 206, 0.12), rgba(255, 110, 199, 0.12));
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 25px;
             padding: 20px;
             box-shadow: 
-                0 -10px 40px rgba(0,0,0,0.3),
-                inset 0 1px 0 rgba(255,255,255,0.1);
+                0 -10px 40px rgba(126, 34, 206, 0.3),
+                inset 0 2px 0 rgba(255,255,255,0.15);
             display: flex;
             flex-direction: column;
             gap: 15px;
+            position: relative;
+        }
+
+        .answer-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #7e22ce, #ff6ec7);
+            border-radius: 25px;
+            opacity: 0.4;
+            z-index: -1;
+            animation: answerGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes answerGlow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.6; }
         }
 
         .info-grid {
@@ -1227,6 +1275,29 @@
             color: rgba(0, 245, 255, 0.7);
         }
 
+        /* 🔥 시각적 구분선 추가 */
+        .divider-line {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(255, 110, 199, 0.5), transparent);
+            margin: 20px -20px;
+            position: relative;
+        }
+
+        .divider-line::before {
+            content: '⬇ 정답 입력';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #0a0e27;
+            padding: 0 15px;
+            color: rgba(255, 110, 199, 0.8);
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
         .answer-input {
             width: 100%;
             padding: 15px;
@@ -1235,6 +1306,7 @@
             border: 2px solid #e5e7eb;
             border-radius: 15px;
             background: white;
+            color: #0a0e27;
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
@@ -2129,7 +2201,7 @@
         // 🔥 캐시 관리 시스템
         const CacheManager = {
             // 🆕 HTML 메타태그에서 버전 자동 읽기
-            version: document.querySelector('meta[name="version"]')?.content || '1.0.6',
+            version: document.querySelector('meta[name="version"]')?.content || '1.0.7',
             
             init() {
                 this.checkVersion();
@@ -2448,7 +2520,8 @@
             handleFocusIn(event) {
                 if (event.target.classList.contains('answer-input')) {
                     console.log('📱 답변 입력창 포커스 감지');
-                    this.activateKeyboardMode();
+                    // 🔥 자동 키보드 활성화 제거 - 사용자가 클릭했을 때만 키보드가 나옴
+                    // this.activateKeyboardMode(); 제거됨
                     
                     // 입력창이 키보드에 가려지지 않도록 스크롤
                     setTimeout(() => {
@@ -2552,7 +2625,7 @@
             }
         }
 
-        // 📍 강화된 디버깅이 적용된 문제 데이터 캐시
+        // 🔍 강화된 디버깅이 적용된 문제 데이터 캐시
         const problemsCache = {};
         
         // 게임 상태
@@ -2563,7 +2636,7 @@
         let gameState = {};
         let isLoading = false;
 
-        // 📍 강화된 디버깅 loadProblems 함수
+        // 🔍 강화된 디버깅 loadProblems 함수
         async function loadProblems(fileNumber) {
             if (problemsCache[fileNumber]) {
                 console.log(`📦 캐시에서 problems_${fileNumber}.json 로드됨 (${problemsCache[fileNumber].length}개 문제)`);
@@ -2582,11 +2655,11 @@
                 console.log(`✅ problems_${fileNumber}.json 성공적으로 로드됨 (문제 ${problems.length}개)`);
                 
                 // 첫 몇 개 문제의 답 확인
-                console.log(`📍 파일 ${fileNumber} 처음 3개 문제:`, 
+                console.log(`🔍 파일 ${fileNumber} 처음 3개 문제:`, 
                     problems.slice(0, 3).map((p, i) => `${i}: ${p.answer[0]}`));
                 
                 if (problems.length >= 12) {
-                    console.log(`📍 파일 ${fileNumber} 6~8번 문제:`, 
+                    console.log(`🔍 파일 ${fileNumber} 6~8번 문제:`, 
                         problems.slice(6, 9).map((p, i) => `${i+6}: ${p.answer[0]}`));
                 }
                 
@@ -2610,7 +2683,7 @@
             return fileNumber;
         }
 
-        // 📍 강화된 디버깅 getProblemsForRound 함수
+        // 🔍 강화된 디버깅 getProblemsForRound 함수
         async function getProblemsForRound(roundNumber) {
             console.log(`\n➡️ ===== 라운드 ${roundNumber} 문제 선택 시작 =====`);
             
@@ -2640,7 +2713,7 @@
             let roundProblems = problems.slice(startIndex, endIndex);
             
             // 선택된 문제들 확인
-            console.log(`📍 라운드 ${roundNumber} 1차 선택된 ${roundProblems.length}개 문제:`);
+            console.log(`🔍 라운드 ${roundNumber} 1차 선택된 ${roundProblems.length}개 문제:`);
             roundProblems.forEach((problem, index) => {
                 console.log(`   ${index + 1}. [${startIndex + index}] ${problem.answer[0]} - ${problem.hints[0]}`);
             });
@@ -2648,7 +2721,7 @@
             // 🚨 문제 부족 시 강제로 6개 맞추기
             if (roundProblems.length < problemsPerRound) {
                 console.warn(`⚠️ 문제 부족! 요청: ${problemsPerRound}개, 실제: ${roundProblems.length}개`);
-                console.warn(`📍 파일에 실제로 ${problems.length}개 문제 존재`);
+                console.warn(`🔍 파일에 실제로 ${problems.length}개 문제 존재`);
                 
                 if (problems.length >= problemsPerRound) {
                     // 파일에 6개 이상 문제가 있으면 처음부터 6개 선택
@@ -2776,7 +2849,7 @@
                                             onclick="${isLocked ? `showModal('locked-round')` : `startRound(${roundNumber})`}"
                                             title="라운드 ${roundNumber}"
                                         >
-                                            ${isCompleted ? '<div class="icon">✔</div>' : ''}
+                                            ${isCompleted ? '<div class="icon">✓</div>' : ''}
                                             ${isPlayable ? '<div class="icon">⭐</div>' : ''}
                                             ${isLocked ? '<div class="icon">🔒</div>' : ''}
                                             ${roundNumber}
@@ -2822,7 +2895,7 @@
             }, 100);
         }
 
-        // 📍 강화된 디버깅 startRound 함수
+        // 🔍 강화된 디버깅 startRound 함수
         async function startRound(roundNumber) {
             if (isLoading) return;
             
@@ -2859,7 +2932,8 @@
                     canShowDescriptions: false,
                     roundKeys: 0,
                     geniusCount: 0,
-                    currentFileNumber: fileNumber
+                    currentFileNumber: fileNumber,
+                    savedAt: Date.now()
                 };
                 
                 console.log(`🎮 라운드 ${roundNumber} 게임 상태 초기화 완료:`);
@@ -3029,6 +3103,9 @@
                                 </div> <!-- 🆕 힌트 컨테이너 닫기 -->
                             </div>
                             
+                            <!-- 🔥 시각적 구분선 추가 -->
+                            <div class="divider-line"></div>
+                            
                             <div class="answer-section">
                                 ${!gameState.isCorrect ? `
                                     <div class="info-grid">
@@ -3135,11 +3212,11 @@
             
             // 정답 후 처리
             if (!gameState.isCorrect) {
-                // 정답을 맞추지 않은 상태 - 입력창에 포커스
-                const input = document.querySelector('.answer-input');
-                if (input) {
-                    input.focus();
-                }
+                // 🔥 정답을 맞추지 않은 상태 - 입력창 포커스 제거 (자동 키보드 방지)
+                // const input = document.querySelector('.answer-input');
+                // if (input) {
+                //     input.focus(); // 이 부분 제거 - 사용자가 클릭할 때만 키보드 나오도록
+                // }
                 removeNextProblemKeyListener();
             } else {
                 // 정답을 맞춘 상태 - 바로 다음 문제 버튼 활성화
@@ -3225,7 +3302,7 @@
             }
         }
 
-        // 📍 강화된 디버깅 nextProblem 함수
+        // 🔍 강화된 디버깅 nextProblem 함수
         function nextProblem() {
             AudioManager.playSound('click');
             
@@ -3242,7 +3319,7 @@
             // 🚨 문제 수 체크
             if (totalProblems !== 6) {
                 console.error(`❌ 심각한 오류: 라운드당 6개 문제가 있어야 하는데 ${totalProblems}개만 있습니다!`);
-                console.error(`📍 gameState.problems 내용:`, gameState.problems.map(p => p.answer[0]));
+                console.error(`🔍 gameState.problems 내용:`, gameState.problems.map(p => p.answer[0]));
             }
             
             if (gameState.currentProblem === totalProblems - 1) {
@@ -3255,7 +3332,7 @@
                 currentScreen = 'roundComplete';
                 renderRoundComplete();
             } else {
-                console.log(`📍 다음 문제로 이동: ${gameState.currentProblem + 1} → ${gameState.currentProblem + 2}`);
+                console.log(`🔍 다음 문제로 이동: ${gameState.currentProblem + 1} → ${gameState.currentProblem + 2}`);
                 
                 gameState.currentProblem++;
                 
@@ -3589,7 +3666,7 @@
             saveGame();
         }
 
-        // 📍 강화된 디버깅 saveGame 함수
+        // 🔍 강화된 디버깅 saveGame 함수
         function saveGame() {
             const saveData = {
                 completedRounds: completedRounds,
@@ -3749,7 +3826,7 @@
         console.log(`
 🎮 연상천재 게임 개발자 도구
 ┌─────────────────────────────────
-│ 📋 현재 버전: ${CacheManager.version}     │
+│ 🔋 현재 버전: ${CacheManager.version}     │
 │                                 │
 │ 🛠️ 개발자 단축키:               │
 │   Ctrl+Shift+D  →  개발자 패널 │
