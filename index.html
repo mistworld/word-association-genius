@@ -233,6 +233,32 @@
             display: block;
         }
 
+        .music-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mute-button {
+            padding: 10px;
+            background: linear-gradient(135deg, #ff6ec7, #7873f5);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mute-button.muted {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+
+        .mute-button:active {
+            transform: scale(0.95);
+        }
+
         .main-content {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px) saturate(180%);
@@ -729,11 +755,11 @@
         }
 
         .hint-text {
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 600;
             color: #ffffff;
             flex: 1;
-            line-height: 1.4;
+            line-height: 1.3;
         }
 
         .description {
@@ -1172,7 +1198,7 @@
     <div id="app"></div>
 
     <script>
-        // 음악 관리자 (기본 구조 유지, 용량 최적화)
+        // 음악 관리자 - 음소거 기능만 활성화
         const AudioManager = {
             bgm1: null,
             bgm2: null,
@@ -1188,7 +1214,7 @@
             audioContext: null,
             userHasInteracted: false,
             isPlaying: false,
-            isMuted: true,
+            isMuted: false,  // 초기값 false로 변경 (음소거 해제 상태)
             wasPlayingBeforePause: false,
             bgmVolume: 0.4,
             effectVolume: 0.7,
@@ -1196,8 +1222,10 @@
             fadeDuration: 3000,
 
             async init() {
-                // 기본 음악 초기화만 수행
-                this.isMuted = true;
+                // 게임 시작시 바로 활성화
+                this.isAudioUnlocked = true;
+                this.userHasInteracted = true;
+                this.isMuted = false;
             },
 
             async unlockAudio() {
@@ -1207,29 +1235,81 @@
             },
 
             async startBGM() {
-                return false;
+                if (!this.isMuted) {
+                    // 음악 재생 로직 (실제 구현시 필요)
+                    this.isPlaying = true;
+                }
+                return this.isPlaying;
             },
 
-            pauseBGM() {},
-            stopBGM() {},
-            switchToNextBGM() {},
-            manualSwitchBGM() {},
+            pauseBGM() {
+                this.isPlaying = false;
+            },
+            
+            stopBGM() {
+                this.isPlaying = false;
+            },
+            
             toggleMute() {
                 this.isMuted = !this.isMuted;
+                this.updateMusicControls();
                 return this.isMuted;
             },
-            togglePlayPause() {},
-            updateMusicControls() {},
-            showMusicNotification() {},
-            async playSound(soundType) {},
-            setBGMVolume(volume) {},
-            setEffectVolume(volume) {},
+            
+            togglePlayPause() {
+                if (this.isPlaying) {
+                    this.pauseBGM();
+                } else {
+                    this.startBGM();
+                }
+            },
+            
+            updateMusicControls() {
+                const statusElement = document.getElementById('musicStatus');
+                if (statusElement) {
+                    statusElement.innerHTML = this.isMuted ? 
+                        '🔇 음소거 상태' : 
+                        '🔊 소리 켜짐';
+                }
+                
+                const muteButton = document.querySelector('.mute-button');
+                if (muteButton) {
+                    muteButton.textContent = this.isMuted ? '🔊 소리 켜기' : '🔇 음소거';
+                    muteButton.className = this.isMuted ? 'mute-button muted' : 'mute-button';
+                }
+            },
+            
+            showMusicNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = `music-notification ${type}`;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            },
+            
+            async playSound(soundType) {
+                if (!this.isMuted) {
+                    // 효과음 재생 로직 (실제 구현시 필요)
+                }
+            },
+            
+            setBGMVolume(volume) {
+                this.bgmVolume = volume;
+            },
+            
+            setEffectVolume(volume) {
+                this.effectVolume = volume;
+            },
+            
             getCurrentBGMInfo() {
                 return {
                     currentIndex: 1,
                     total: 2,
-                    isPlaying: false,
-                    isMuted: true,
+                    isPlaying: this.isPlaying,
+                    isMuted: this.isMuted,
                     switchMode: 'alternate',
                     currentFile: 'bgm1.mp3'
                 };
@@ -1392,9 +1472,26 @@
                 
                 if (panel.classList.contains('active')) {
                     button.innerHTML = '✖️';
+                    // 음소거 버튼 추가
+                    updateMusicPanel();
                 } else {
                     button.innerHTML = '⚙️';
                 }
+            }
+        }
+
+        function updateMusicPanel() {
+            const panel = document.querySelector('.music-panel');
+            if (panel) {
+                panel.innerHTML = `
+                    <h3>🎵 음악 설정</h3>
+                    <div class="music-controls">
+                        <div class="music-status" id="musicStatus">${AudioManager.isMuted ? '🔇 음소거 상태' : '🔊 소리 켜짐'}</div>
+                        <button class="mute-button ${AudioManager.isMuted ? 'muted' : ''}" onclick="toggleMusicMute()">
+                            ${AudioManager.isMuted ? '🔊 소리 켜기' : '🔇 음소거'}
+                        </button>
+                    </div>
+                `;
             }
         }
 
@@ -1404,6 +1501,9 @@
 
         function toggleMusicMute() {
             AudioManager.toggleMute();
+            AudioManager.showMusicNotification(
+                AudioManager.isMuted ? '음소거 되었습니다' : '소리가 켜졌습니다'
+            );
         }
 
         function switchBGM() {
@@ -1578,7 +1678,10 @@
                     <div class="music-panel">
                         <h3>🎵 음악 설정</h3>
                         <div class="music-controls">
-                            <div class="music-status" id="musicStatus">음소거 상태</div>
+                            <div class="music-status" id="musicStatus">${AudioManager.isMuted ? '🔇 음소거 상태' : '🔊 소리 켜짐'}</div>
+                            <button class="mute-button ${AudioManager.isMuted ? 'muted' : ''}" onclick="toggleMusicMute()">
+                                ${AudioManager.isMuted ? '🔊 소리 켜기' : '🔇 음소거'}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1749,13 +1852,17 @@
                                 
                                 <div class="hints-container" style="${gameState.isCorrect && gameState.showAllAfterCorrect ? 'max-height: 60vh; overflow-y: auto; padding-right: 8px;' : ''}">
                                 
-                                ${problem.hints.map((hint, index) => `
+                                ${problem.hints.map((hint, index) => {
+                                    // 힌트 텍스트 간소화
+                                    const simplifiedHint = hint.length > 20 ? hint.substring(0, 20) + '...' : hint;
+                                    
+                                    return `
                                     <div class="hint-item">
                                         ${gameState.unlockedHints.includes(index) || gameState.isCorrect ? `
                                             <div class="hint-content">
                                                 <div class="hint-header">
                                                     <div class="hint-number">${index + 1}</div>
-                                                    <div class="hint-text">💭 ${hint}</div>
+                                                    <div class="hint-text">💭 ${simplifiedHint}</div>
                                                 </div>
                                                 ${gameState.canShowDescriptions && !gameState.showDescriptions[index] && !gameState.showAllAfterCorrect && !gameState.isCorrect ? `
                                                     <button class="description-button" onclick="showModal('description-${index}')">
@@ -1783,7 +1890,7 @@
                                             </div>
                                         `}
                                     </div>
-                                `).join('')}
+                                `;}).join('')}
                                 
                                 </div>
                             </div>
@@ -1873,7 +1980,10 @@
                     <div class="music-panel">
                         <h3>🎵 음악 설정</h3>
                         <div class="music-controls">
-                            <div class="music-status" id="musicStatus">음소거 상태</div>
+                            <div class="music-status" id="musicStatus">${AudioManager.isMuted ? '🔇 음소거 상태' : '🔊 소리 켜짐'}</div>
+                            <button class="mute-button ${AudioManager.isMuted ? 'muted' : ''}" onclick="toggleMusicMute()">
+                                ${AudioManager.isMuted ? '🔊 소리 켜기' : '🔇 음소거'}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -2053,7 +2163,10 @@
                     <div class="music-panel">
                         <h3>🎵 음악 설정</h3>
                         <div class="music-controls">
-                            <div class="music-status" id="musicStatus">음소거 상태</div>
+                            <div class="music-status" id="musicStatus">${AudioManager.isMuted ? '🔇 음소거 상태' : '🔊 소리 켜짐'}</div>
+                            <button class="mute-button ${AudioManager.isMuted ? 'muted' : ''}" onclick="toggleMusicMute()">
+                                ${AudioManager.isMuted ? '🔊 소리 켜기' : '🔇 음소거'}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -2113,10 +2226,13 @@
                         `;
                     } else if (type.startsWith('description-')) {
                         const index = parseInt(type.split('-')[1]);
+                        const simplifiedHint = problem.hints[index].length > 20 ? 
+                            problem.hints[index].substring(0, 20) + '...' : 
+                            problem.hints[index];
                         modalContent = `
                             <div class="modal-icon">📖</div>
                             <h3 class="modal-title">설명 해금</h3>
-                            <p class="modal-text">"${problem.hints[index]}"</p>
+                            <p class="modal-text">"${simplifiedHint}"</p>
                             <p class="modal-text">설명을 확인하시겠습니까?</p>
                             <div class="modal-buttons">
                                 <button class="modal-button green" onclick="watchAdAndUnlock('description-${index}')">
@@ -2297,9 +2413,11 @@
             
             MobileKeyboard.init();
             
+            // 게임 시작시 바로 오디오 활성화
             AudioManager.init().then(() => {
                 AudioManager.unlockAudio();
-                AudioManager.isMuted = true;
+                AudioManager.isMuted = false;  // 음소거 해제 상태로 시작
+                AudioManager.startBGM();
             });
             
             renderRoundMap();
