@@ -21,7 +21,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="1.0.8">
+    <meta name="version" content="1.0.9">
     
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -1198,7 +1198,7 @@
     <div id="app"></div>
 
     <script>
-        // 음악 관리자 - 음소거 기능만 활성화
+        // 음악 관리자 - 실제 오디오 재생 기능 구현
         const AudioManager = {
             bgm1: null,
             bgm2: null,
@@ -1214,44 +1214,165 @@
             audioContext: null,
             userHasInteracted: false,
             isPlaying: false,
-            isMuted: false,  // 초기값 false로 변경 (음소거 해제 상태)
+            isMuted: false,
             wasPlayingBeforePause: false,
-            bgmVolume: 0.4,
-            effectVolume: 0.7,
+            bgmVolume: 0.3,  // 배경음악 볼륨 낮춤
+            effectVolume: 0.5,  // 효과음 볼륨 낮춤
             bgmSwitchMode: 'alternate',
             fadeDuration: 3000,
 
             async init() {
-                // 게임 시작시 바로 활성화
-                this.isAudioUnlocked = true;
-                this.userHasInteracted = true;
-                this.isMuted = false;
+                try {
+                    // 배경음악 로드
+                    this.bgm1 = new Audio('bgm1.mp3');
+                    this.bgm2 = new Audio('bgm2.mp3');
+                    
+                    // 효과음 로드
+                    this.correctSound = new Audio('correct.mp3');
+                    this.wrongSound = new Audio('wrong.mp3');
+                    this.hintSound = new Audio('hint.mp3');
+                    this.completeSound = new Audio('complete.mp3');
+                    this.geniusSound = new Audio('genius.mp3');
+                    
+                    // 배경음악 설정
+                    [this.bgm1, this.bgm2].forEach(bgm => {
+                        bgm.loop = true;
+                        bgm.volume = this.bgmVolume;
+                        bgm.preload = 'auto';
+                    });
+                    
+                    // 효과음 설정
+                    [this.correctSound, this.wrongSound, this.hintSound, 
+                     this.completeSound, this.geniusSound].forEach(sound => {
+                        sound.volume = this.effectVolume;
+                        sound.preload = 'auto';
+                    });
+                    
+                    // 현재 BGM 설정
+                    this.currentBGM = this.bgm1;
+                    
+                    // 음소거 상태 로드
+                    const savedMuteState = localStorage.getItem('음악_음소거');
+                    if (savedMuteState !== null) {
+                        this.isMuted = savedMuteState === 'true';
+                    }
+                    
+                    this.isAudioUnlocked = true;
+                    this.userHasInteracted = true;
+                    
+                    // 자동 시작 시도
+                    if (!this.isMuted) {
+                        this.startBGM();
+                    }
+                    
+                } catch (error) {
+                    console.error('오디오 초기화 실패:', error);
+                }
             },
 
             async unlockAudio() {
-                this.isAudioUnlocked = true;
-                this.userHasInteracted = true;
-                return true;
+                if (this.isAudioUnlocked) return true;
+                
+                try {
+                    // 사용자 상호작용 시 오디오 언락
+                    if (this.currentBGM) {
+                        await this.currentBGM.play();
+                        this.currentBGM.pause();
+                        this.currentBGM.currentTime = 0;
+                    }
+                    
+                    this.isAudioUnlocked = true;
+                    this.userHasInteracted = true;
+                    
+                    if (!this.isMuted) {
+                        this.startBGM();
+                    }
+                    
+                    return true;
+                } catch (error) {
+                    console.error('오디오 언락 실패:', error);
+                    return false;
+                }
             },
 
             async startBGM() {
-                if (!this.isMuted) {
-                    // 음악 재생 로직 (실제 구현시 필요)
+                if (!this.currentBGM || this.isMuted) return false;
+                
+                try {
+                    this.currentBGM.volume = this.bgmVolume;
+                    await this.currentBGM.play();
                     this.isPlaying = true;
+                    return true;
+                } catch (error) {
+                    console.error('BGM 재생 실패:', error);
+                    // 자동 재생 실패 시 사용자 상호작용 필요
+                    this.isPlaying = false;
+                    return false;
                 }
-                return this.isPlaying;
             },
 
             pauseBGM() {
-                this.isPlaying = false;
+                if (this.currentBGM) {
+                    this.currentBGM.pause();
+                    this.isPlaying = false;
+                }
             },
             
             stopBGM() {
-                this.isPlaying = false;
+                if (this.currentBGM) {
+                    this.currentBGM.pause();
+                    this.currentBGM.currentTime = 0;
+                    this.isPlaying = false;
+                }
+            },
+            
+            async switchBGM() {
+                const oldBGM = this.currentBGM;
+                const newBGM = this.currentBGM === this.bgm1 ? this.bgm2 : this.bgm1;
+                
+                if (!this.isMuted && this.isPlaying) {
+                    // 페이드 아웃
+                    const fadeOutInterval = setInterval(() => {
+                        if (oldBGM.volume > 0.01) {
+                            oldBGM.volume = Math.max(0, oldBGM.volume - 0.01);
+                        } else {
+                            clearInterval(fadeOutInterval);
+                            oldBGM.pause();
+                            oldBGM.currentTime = 0;
+                            oldBGM.volume = this.bgmVolume;
+                        }
+                    }, 30);
+                    
+                    // 새 BGM 시작
+                    newBGM.volume = 0;
+                    await newBGM.play();
+                    
+                    // 페이드 인
+                    const fadeInInterval = setInterval(() => {
+                        if (newBGM.volume < this.bgmVolume) {
+                            newBGM.volume = Math.min(this.bgmVolume, newBGM.volume + 0.01);
+                        } else {
+                            clearInterval(fadeInInterval);
+                        }
+                    }, 30);
+                }
+                
+                this.currentBGM = newBGM;
+                this.bgmIndex = this.bgmIndex === 0 ? 1 : 0;
             },
             
             toggleMute() {
                 this.isMuted = !this.isMuted;
+                
+                // 음소거 상태 저장
+                localStorage.setItem('음악_음소거', this.isMuted.toString());
+                
+                if (this.isMuted) {
+                    this.pauseBGM();
+                } else {
+                    this.startBGM();
+                }
+                
                 this.updateMusicControls();
                 return this.isMuted;
             },
@@ -1291,34 +1412,98 @@
             },
             
             async playSound(soundType) {
-                if (!this.isMuted) {
-                    // 효과음 재생 로직 (실제 구현시 필요)
+                if (this.isMuted) return;
+                
+                let sound = null;
+                
+                switch(soundType) {
+                    case 'correct':
+                        sound = this.correctSound;
+                        break;
+                    case 'wrong':
+                        sound = this.wrongSound;
+                        break;
+                    case 'hint':
+                        sound = this.hintSound;
+                        break;
+                    case 'complete':
+                        sound = this.completeSound;
+                        // 라운드 완료 시 BGM 전환
+                        setTimeout(() => this.switchBGM(), 1000);
+                        break;
+                    case 'genius':
+                        sound = this.geniusSound;
+                        break;
+                    case 'click':
+                        // 클릭음은 힌트음으로 대체
+                        sound = this.hintSound;
+                        break;
+                }
+                
+                if (sound) {
+                    try {
+                        sound.currentTime = 0;
+                        sound.volume = this.effectVolume;
+                        await sound.play();
+                    } catch (error) {
+                        console.error(`효과음 재생 실패 (${soundType}):`, error);
+                    }
                 }
             },
             
             setBGMVolume(volume) {
-                this.bgmVolume = volume;
+                this.bgmVolume = Math.max(0, Math.min(1, volume));
+                if (this.currentBGM) {
+                    this.currentBGM.volume = this.bgmVolume;
+                }
             },
             
             setEffectVolume(volume) {
-                this.effectVolume = volume;
+                this.effectVolume = Math.max(0, Math.min(1, volume));
             },
             
             getCurrentBGMInfo() {
                 return {
-                    currentIndex: 1,
+                    currentIndex: this.bgmIndex + 1,
                     total: 2,
                     isPlaying: this.isPlaying,
                     isMuted: this.isMuted,
-                    switchMode: 'alternate',
-                    currentFile: 'bgm1.mp3'
+                    switchMode: this.bgmSwitchMode,
+                    currentFile: this.bgmIndex === 0 ? 'bgm1.mp3' : 'bgm2.mp3'
                 };
+            },
+            
+            // 페이지 가시성 변경 시 처리
+            handleVisibilityChange() {
+                if (document.hidden) {
+                    if (this.isPlaying && !this.isMuted) {
+                        this.wasPlayingBeforePause = true;
+                        this.pauseBGM();
+                    }
+                } else {
+                    if (this.wasPlayingBeforePause && !this.isMuted) {
+                        this.wasPlayingBeforePause = false;
+                        this.startBGM();
+                    }
+                }
             }
         };
 
+        // 페이지 가시성 변경 이벤트 리스너
+        document.addEventListener('visibilitychange', () => {
+            AudioManager.handleVisibilityChange();
+        });
+
+        // 사용자 상호작용 시 오디오 언락
+        document.addEventListener('click', () => {
+            if (!AudioManager.isAudioUnlocked) {
+                AudioManager.unlockAudio();
+            }
+        }, { once: true });
+
         // 캐시 관리자 (기본 구조 유지)
         const CacheManager = {
-            version: '1.0.8',
+            version: '1.0.9',
             init() {
                 this.checkVersion();
                 console.log(`캐시 관리 시스템 초기화 완료 (버전: ${this.version})`);
@@ -1507,7 +1692,7 @@
         }
 
         function switchBGM() {
-            AudioManager.manualSwitchBGM();
+            AudioManager.switchBGM();
         }
 
         // 문제 로드 함수들
@@ -2413,12 +2598,8 @@
             
             MobileKeyboard.init();
             
-            // 게임 시작시 바로 오디오 활성화
-            AudioManager.init().then(() => {
-                AudioManager.unlockAudio();
-                AudioManager.isMuted = false;  // 음소거 해제 상태로 시작
-                AudioManager.startBGM();
-            });
+            // 게임 시작시 오디오 초기화
+            AudioManager.init();
             
             renderRoundMap();
         }
