@@ -906,7 +906,7 @@
                 return this.isMuted;
             },
 
-            updateMusicControls() {
+           updateMusicControls() {
                 const statusElement = document.getElementById('musicStatus');
                 if (statusElement) {
                     statusElement.innerHTML = this.isMuted ? 
@@ -916,4 +916,7 @@
                 
                 const muteButton = document.querySelector('.mute-button');
                 if (muteButton) {
-                    muteButton.textContent = this.isMuted ? '🔊 소리 켜기' : '🔇 음소
+                    muteButton.textContent = this.isMuted ? '🔊 소리 켜기' : '🔇 음소거';
+                    muteButton.className = this.isMuted ? 'mute-button muted' : 'mute-button';
+                }
+            }
