@@ -806,7 +806,7 @@
 
             async init() {
                 try {
-                    // 배경음악 로드 - 오류 처리 강화
+                    // 배경음악 로드
                     this.bgm1 = new Audio('bgm1.mp3');
                     this.bgm2 = new Audio('bgm2.mp3');
                     
@@ -847,7 +847,7 @@
                     }
                     
                 } catch (error) {
-                    console.error('오디오 초기화 실패:', error);
+                    console.log('오디오 초기화 실패 - 게임은 정상 진행');
                 }
             },
 
@@ -860,7 +860,7 @@
                     this.isPlaying = true;
                     return true;
                 } catch (error) {
-                    console.error('BGM 재생 실패:', error);
+                    console.log('BGM 재생 실패');
                     this.isPlaying = false;
                     return false;
                 }
@@ -885,7 +885,7 @@
                         sound.currentTime = 0;
                         await sound.play();
                     } catch (error) {
-                        console.error(`효과음 재생 실패:`, error);
+                        // 효과음 재생 실패해도 게임 진행
                     }
                 }
             },
@@ -906,7 +906,7 @@
                 return this.isMuted;
             },
 
-           updateMusicControls() {
+            updateMusicControls() {
                 const statusElement = document.getElementById('musicStatus');
                 if (statusElement) {
                     statusElement.innerHTML = this.isMuted ? 
@@ -920,3 +920,872 @@
                     muteButton.className = this.isMuted ? 'mute-button muted' : 'mute-button';
                 }
             }
+        };
+
+        // 캐시 관리자
+        const CacheManager = {
+            version: '1.0.9',
+            init() {
+                this.checkVersion();
+            },
+            checkVersion() {
+                const savedVersion = localStorage.getItem('게임_버전');
+                const currentVersion = this.version;
+                if (savedVersion && savedVersion !== currentVersion) {
+                    this.clearAllCache();
+                    localStorage.setItem('게임_버전', currentVersion);
+                }
+                if (!savedVersion) {
+                    localStorage.setItem('게임_버전', currentVersion);
+                }
+            },
+            clearAllCache() {
+                if ('caches' in window) {
+                    caches.keys().then(cacheNames => {
+                        cacheNames.forEach(cacheName => {
+                            caches.delete(cacheName);
+                        });
+                    });
+                }
+            }
+        };
+
+        // 모바일 키보드 핸들러
+        const MobileKeyboard = {
+            isActive: false,
+            
+            init() {
+                if (window.visualViewport) {
+                    window.visualViewport.addEventListener('resize', this.handleViewportResize.bind(this));
+                } else {
+                    window.addEventListener('resize', this.handleWindowResize.bind(this));
+                }
+                
+                document.addEventListener('focusin', this.handleFocusIn.bind(this));
+                document.addEventListener('focusout', this.handleFocusOut.bind(this));
+            },
+            
+            handleViewportResize() {
+                const newHeight = window.visualViewport.height;
+                const heightDiff = window.innerHeight - newHeight;
+                
+                if (heightDiff > 100) {
+                    this.activateKeyboardMode();
+                } else {
+                    this.deactivateKeyboardMode();
+                }
+            },
+            
+            handleWindowResize() {
+                const newHeight = window.innerHeight;
+                const heightDiff = window.screen.height - newHeight;
+                
+                if (heightDiff > 100) {
+                    this.activateKeyboardMode();
+                } else {
+                    this.deactivateKeyboardMode();
+                }
+            },
+            
+            handleFocusIn(event) {
+                if (event.target.classList.contains('answer-input')) {
+                    setTimeout(() => {
+                        event.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                }
+            },
+            
+            handleFocusOut(event) {
+                if (event.target.classList.contains('answer-input')) {
+                    setTimeout(() => {
+                        if (!document.querySelector('.answer-input:focus')) {
+                            this.deactivateKeyboardMode();
+                        }
+                    }, 100);
+                }
+            },
+            
+            activateKeyboardMode() {
+                if (this.isActive) return;
+                this.isActive = true;
+                document.body.classList.add('keyboard-active');
+            },
+            
+            deactivateKeyboardMode() {
+                if (!this.isActive) return;
+                this.isActive = false;
+                document.body.classList.remove('keyboard-active');
+            }
+        };
+
+        // 게임 전역 변수
+        let nextProblemKeyListener = null;
+        const problemsCache = {};
+        let currentScreen = 'roundMap';
+        let completedRounds = [];
+        let currentRound = 1;
+        let keys = 15;
+        let gameState = {};
+        let isLoading = false;
+
+        // 유틸리티 함수들
+        function addNextProblemKeyListener() {
+            removeNextProblemKeyListener();
+            nextProblemKeyListener = function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    nextProblem();
+                }
+            };
+            document.addEventListener('keydown', nextProblemKeyListener);
+        }
+
+        function removeNextProblemKeyListener() {
+            if (nextProblemKeyListener) {
+                document.removeEventListener('keydown', nextProblemKeyListener);
+                nextProblemKeyListener = null;
+            }
+        }
+
+        function toggleMusicPanel() {
+            const panel = document.querySelector('.music-panel');
+            const button = document.querySelector('.settings-button');
+            if (panel) {
+                panel.classList.toggle('active');
+                button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
+                updateMusicPanel();
+            }
+        }
+
+        function updateMusicPanel() {
+            const panel = document.querySelector('.music-panel');
+            if (panel) {
+                panel.innerHTML = `
+                    <h3>🎵 음악 설정</h3>
+                    <div class="music-controls">
+                        <div class="music-status" id="musicStatus">${AudioManager.isMuted ? '🔇 음소거 상태' : '🔊 소리 켜짐'}</div>
+                        <button class="mute-button ${AudioManager.isMuted ? 'muted' : ''}" onclick="toggleMusicMute()">
+                            ${AudioManager.isMuted ? '🔊 소리 켜기' : '🔇 음소거'}
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleMusicMute() {
+            AudioManager.toggleMute();
+        }
+
+        // 축하 메시지 표시 함수
+        function showCongratulationPopup(hintsUsed, usedChosung) {
+            let popupData = {};
+            
+            if (usedChosung) {
+                popupData = {
+                    title: "초성이 살렸다.ㅠㅠ",
+                    message: "다음엔 초성 없이 도전!",
+                    type: "chosung",
+                    icon: "🔤",
+                    reward: 0
+                };
+            } else {
+                switch(hintsUsed) {
+                    case 2:
+                        popupData = {
+                            title: "시냅스 폭발!",
+                            message: "와우, 천재셨군요!",
+                            type: "genius",
+                            icon: "🧠",
+                            reward: 1 // 천재 보너스 +1 열쇠
+                        };
+                        break;
+                    case 3:
+                        popupData = {
+                            title: "날카로운데요?",
+                            message: "뛰어난 추리력이에요!",
+                            type: "sharp",
+                            icon: "🔥",
+                            reward: 0
+                        };
+                        break;
+                    case 4:
+                        popupData = {
+                            title: "실력자 인정!",
+                            message: "잘 하셨어요!",
+                            type: "skilled",
+                            icon: "👍",
+                            reward: 0
+                        };
+                        break;
+                    case 5:
+                        popupData = {
+                            title: "집중합시다!",
+                            message: "조금만 더 집중해보세요!",
+                            type: "focus",
+                            icon: "💪",
+                            reward: 0
+                        };
+                        break;
+                    default: // 6개 이상
+                        popupData = {
+                            title: "혹시... 졸았나요?",
+                            message: "다음 문제는 화이팅!",
+                            type: "sleepy",
+                            icon: "😴",
+                            reward: 0
+                        };
+                }
+            }
+            
+            const popupHtml = `
+                <div class="congratulation-popup ${popupData.type}">
+                    <div class="popup-icon">${popupData.icon}</div>
+                    <div class="popup-title">${popupData.title}</div>
+                    <div class="popup-message">${popupData.message}</div>
+                    ${popupData.reward > 0 ? `
+                        <div class="popup-reward">🔑 +${popupData.reward} 열쇠 획득!</div>
+                    ` : ''}
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', popupHtml);
+            
+            // 2초 후 팝업 제거
+            setTimeout(() => {
+                const popup = document.querySelector('.congratulation-popup');
+                if (popup) {
+                    popup.remove();
+                }
+            }, 2000);
+            
+            return popupData.reward;
+        }
+
+        // 문제 로드 함수들
+        async function loadProblems(fileNumber) {
+            if (problemsCache[fileNumber]) {
+                return problemsCache[fileNumber];
+            }
+
+            try {
+                const response = await fetch(`problems_${fileNumber}.json?t=${Date.now()}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const problems = await response.json();
+                if (!Array.isArray(problems) || problems.length === 0) {
+                    throw new Error('문제 데이터가 올바르지 않습니다.');
+                }
+                
+                problemsCache[fileNumber] = problems;
+                return problems;
+                
+            } catch (error) {
+                console.error(`problems_${fileNumber}.json 로드 실패:`, error);
+                // 임시 문제 데이터 반환
+                return generateFallbackProblems();
+            }
+        }
+
+        function generateFallbackProblems() {
+            // 임시 문제 데이터
+            return [
+                {
+                    hints: ["알파벳", "한석규", "용비어천가", "집현전", "측우기", "만원"],
+                    answer: ["세종대왕"],
+                    category: "역사인물",
+                    chosung: "ㅅㅈㄷㅇ",
+                    descriptions: [
+                        "백성들이 쉽게 배울 수 있는 우리만의 문자를 만든 업적",
+                        "'뿌리깊은나무'에서 이 왕을 연기한 배우", 
+                        "이 왕의 아버지 태종을 칭송한 최초의 한글 서사시",
+                        "학자들을 모아 연구하게 한 조선시대 씽크탱크",
+                        "날씨 관측을 위해 발명한 과학 기기",
+                        "현재 이 인물의 얼굴이 그려진 대한민국 화폐"
+                    ]
+                }
+            ];
+        }
+
+        function getFileNumber(roundNumber) {
+            return Math.ceil(roundNumber / 10);
+        }
+
+        async function getProblemsForRound(roundNumber) {
+            const fileNumber = getFileNumber(roundNumber);
+            const problems = await loadProblems(fileNumber);
+            
+            const problemsPerRound = 6;
+            const startIndex = ((roundNumber - 1) % 10) * problemsPerRound;
+            const endIndex = startIndex + problemsPerRound;
+            
+            let roundProblems = problems.slice(startIndex, endIndex);
+            
+            if (roundProblems.length < problemsPerRound) {
+                roundProblems = problems.slice(0, problemsPerRound);
+            }
+            
+            if (roundProblems.length === 0) {
+                throw new Error(`라운드 ${roundNumber}에 해당하는 문제가 없습니다.`);
+            }
+            
+            return roundProblems;
+        }
+
+        function showLoading(message = '문제를 불러오는 중...') {
+            const html = `
+                <div class="container">
+                    <div class="main-content">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">${message}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app').innerHTML = html;
+        }
+
+        // 라운드 맵 렌더링
+        function renderRoundMap() {
+            if (isLoading) return;
+            
+            removeNextProblemKeyListener();
+            clearSavedGameState();
+            
+            const nextPlayableRound = Math.max(...completedRounds, 0) + 1;
+            
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="logo">
+                            <div class="logo-icon">🧠</div>
+                            <div>
+                                <h1>연상천재</h1>
+                                <p>IQ 140 연상퀴즈</p>
+                            </div>
+                        </div>
+                        <div class="stats">
+                            <div class="key-count">🔑 ${keys}</div>
+                            <div class="round-info">
+                                <div class="count">${completedRounds.length}/100</div>
+                                <div class="label">라운드 완료</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="round-select">
+                            <h2>라운드 선택</h2>
+                            <div class="round-grid">
+                                ${Array.from({ length: 100 }, (_, i) => {
+                                    const roundNumber = i + 1;
+                                    const isCompleted = completedRounds.includes(roundNumber);
+                                    const isPlayable = roundNumber === nextPlayableRound;
+                                    const isLocked = roundNumber > nextPlayableRound;
+                                    
+                                    return `
+                                        <button 
+                                            class="round-button ${isCompleted ? 'completed' : isPlayable ? 'playable' : 'locked'}"
+                                            onclick="${isLocked ? `showModal('locked-round')` : `startRound(${roundNumber})`}"
+                                            title="라운드 ${roundNumber}"
+                                        >
+                                            ${isCompleted ? '<div class="icon">✔</div>' : ''}
+                                            ${isPlayable ? '<div class="icon">⭐</div>' : ''}
+                                            ${isLocked ? '<div class="icon">🔒</div>' : ''}
+                                            ${roundNumber}
+                                        </button>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="settings-button" onclick="toggleMusicPanel()">⚙️</button>
+                    <div class="music-panel"></div>
+                </div>
+            `;
+            
+            document.getElementById('app').innerHTML = html;
+            currentScreen = 'roundMap';
+            updateMusicPanel();
+        }
+
+        // 라운드 시작
+        async function startRound(roundNumber) {
+            if (isLoading) return;
+            
+            isLoading = true;
+            const fileNumber = getFileNumber(roundNumber);
+            showLoading(`라운드 ${roundNumber} 로딩 중...`);
+            
+            try {
+                const problems = await getProblemsForRound(roundNumber);
+                
+                currentRound = roundNumber;
+                currentScreen = 'gameplay';
+                gameState = {
+                    currentProblem: 0,
+                    problems: problems,
+                    unlockedHints: [0, 1], // 힌트 1,2는 무료
+                    showCharacterCount: false,
+                    showCategory: false,
+                    showChosung: false,
+                    userAnswer: '',
+                    isCorrect: null,
+                    showAllAfterCorrect: false,
+                    helpMode: false,
+                    geniusTimer: 20,
+                    geniusTimerActive: true,
+                    showDescriptions: Array(problems.length).fill(false),
+                    canShowDescriptions: false,
+                    roundKeys: 0,
+                    geniusCount: 0,
+                    currentFileNumber: fileNumber,
+                    savedAt: Date.now()
+                };
+                
+                renderGame();
+                startTimer();
+                saveGame();
+                
+            } catch (error) {
+                console.error('라운드 시작 실패:', error);
+                alert(`라운드 ${roundNumber}을 시작할 수 없습니다.\n${error.message}`);
+                renderRoundMap();
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // 타이머 시작
+        function startTimer() {
+            const interval = setInterval(() => {
+                if (!gameState.geniusTimerActive || gameState.isCorrect || currentScreen !== 'gameplay') {
+                    clearInterval(interval);
+                    return;
+                }
+                
+                gameState.geniusTimer--;
+                
+                if (gameState.geniusTimer <= 0) {
+                    gameState.geniusTimerActive = false;
+                    if (!gameState.unlockedHints.includes(2)) {
+                        gameState.unlockedHints.push(2); // 힌트 3 해금
+                    }
+                    gameState.showCharacterCount = true; // 글자수 표시
+                    renderGame();
+                    clearInterval(interval);
+                } else {
+                    updateTimer();
+                }
+            }, 1000);
+        }
+
+        function updateTimer() {
+            const timerElement = document.querySelector('.genius-timer-count');
+            if (timerElement) {
+                timerElement.textContent = `${gameState.geniusTimer}초`;
+            }
+            
+            const progressElement = document.querySelector('.timer-progress');
+            if (progressElement) {
+                progressElement.style.width = `${(gameState.geniusTimer / 20) * 100}%`;
+            }
+        }
+
+        // 게임 화면 렌더링
+        function renderGame() {
+            const problem = gameState.problems[gameState.currentProblem];
+            const totalProblems = gameState.problems.length;
+            
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="compact-header">
+                            <div class="header-left">
+                                <button class="home-button" onclick="AudioManager.playSound('click'); renderRoundMap()">🏠</button>
+                                <div class="round-info-compact">
+                                    <div class="round-title">라운드 ${currentRound}</div>
+                                    <div class="problem-number">문제 ${gameState.currentProblem + 1}/${totalProblems}</div>
+                                </div>
+                            </div>
+                            <div class="header-right">
+                                <div class="key-count">🔑 ${keys}</div>
+                                <div class="progress-dots">
+                                    ${Array.from({ length: Math.min(totalProblems, 6) }, (_, i) => `
+                                        <div class="dot ${i < gameState.currentProblem ? 'completed' : i === gameState.currentProblem ? 'current' : ''}"></div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${gameState.geniusTimerActive && !gameState.isCorrect ? `
+                            <div class="genius-timer">
+                                <div class="genius-timer-header">
+                                    <div class="genius-timer-text">⚡ 천재 보너스 시간</div>
+                                    <div class="genius-timer-count">${gameState.geniusTimer}초</div>
+                                </div>
+                                <div class="timer-bar">
+                                    <div class="timer-progress" style="width: ${(gameState.geniusTimer / 20) * 100}%"></div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="game-content">
+                            <div class="hints-section ${gameState.isCorrect ? 'correct-mode' : ''}">
+                                <div class="hints-container">
+                                    ${problem.hints.map((hint, index) => `
+                                        <div class="hint-item">
+                                            <div class="hint-content">
+                                                <div class="hint-header">
+                                                    <div class="hint-number">${index + 1}</div>
+                                                    <div class="hint-text">${hint}</div>
+                                                </div>
+                                                ${(gameState.showDescriptions[index] || gameState.isCorrect) && problem.descriptions && problem.descriptions[index] ? `
+                                                    <div class="description ${gameState.isCorrect ? 'after-correct' : ''}">
+                                                        <div class="description-label">📖 설명</div>
+                                                        ${problem.descriptions[index]}
+                                                    </div>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                    
+                                    ${gameState.isCorrect ? `
+                                        <div class="answer-info-compact">
+                                            <div class="info-grid-compact">
+                                                <div class="info-item">
+                                                    <div class="info-label">분류</div>
+                                                    <div class="info-value">${problem.category}</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-label">초성</div>
+                                                    <div class="info-value">${problem.chosung}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="answer-section">
+                                ${!gameState.isCorrect ? `
+                                    <div class="info-grid">
+                                        <div class="info-box">
+                                            <div class="info-label">글자수</div>
+                                            <div class="info-value">
+                                                ${gameState.showCharacterCount ? `${problem.answer[0].length}글자` : '?글자'}
+                                            </div>
+                                        </div>
+                                        <div class="info-box category">
+                                            <div class="info-label">분류</div>
+                                            <div class="info-value">
+                                                ${gameState.showCategory ? `(${problem.category})` : '(?)'}
+                                            </div>
+                                        </div>
+                                        <div class="info-box chosung">
+                                            <div class="info-label">초성</div>
+                                            <div class="info-value">
+                                                ${gameState.showChosung ? problem.chosung : 
+                                                  gameState.unlockedHints.includes(5) ? 
+                                                  `<button class="chosung-button" onclick="showModal('chosung')">🎯 해금</button>` : 
+                                                  '🔒'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    ${gameState.helpMode ? `
+                                        <div class="help-mode">
+                                            <div class="help-icon">?</div>
+                                            <div>
+                                                <div class="help-text">도움 모드 활성화!</div>
+                                                <div class="help-sub">추가 정보가 공개되었습니다</div>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    <input 
+                                        type="text" 
+                                        class="answer-input" 
+                                        placeholder="정답을 입력하세요 (Enter로 확인)"
+                                        value="${gameState.userAnswer}"
+                                        autocomplete="off"
+                                        autocorrect="off"
+                                        autocapitalize="off"
+                                        spellcheck="false"
+                                        inputmode="text"
+                                        oninput="gameState.userAnswer = this.value; saveGame();"
+                                        onkeydown="if(event.key === 'Enter') checkAnswer(this.value); else if(event.key === 'Escape') { this.value = ''; gameState.userAnswer = ''; saveGame(); }"
+                                    />
+                                ` : `
+                                    <div class="correct-answer">
+                                        <div class="correct-icon">🎯</div>
+                                        <div class="correct-text">${problem.answer.join(', ')}</div>
+                                        <div class="correct-category">${problem.category}</div>
+                                    </div>
+                                    
+                                    <button class="next-button" onclick="nextProblem()" id="nextProblemBtn">
+                                        ${gameState.currentProblem === totalProblems - 1 ? '🏆 완료하기' : '➜ 다음 문제'}
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="settings-button" onclick="toggleMusicPanel()">⚙️</button>
+                    <div class="music-panel"></div>
+                </div>
+            `;
+            
+            document.getElementById('app').innerHTML = html;
+            
+            if (!gameState.isCorrect) {
+                removeNextProblemKeyListener();
+            } else {
+                setTimeout(() => {
+                    addNextProblemKeyListener();
+                    const nextBtn = document.getElementById('nextProblemBtn');
+                    if (nextBtn) nextBtn.focus();
+                }, 100);
+            }
+            
+            updateMusicPanel();
+        }
+
+        // 정답 확인
+        function checkAnswer(value) {
+            const problem = gameState.problems[gameState.currentProblem];
+            
+            const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
+            const correctAnswers = problem.answer.map(ans => 
+                ans.toLowerCase().replace(/\s+/g, '')
+            );
+            
+            if (correctAnswers.includes(normalizedAnswer)) {
+                // 사용한 힌트 개수 계산
+                const usedHints = gameState.unlockedHints.length;
+                const usedChosung = gameState.showChosung;
+                
+                // 축하 메시지 표시 및 열쇠 보상 계산
+                const keyReward = showCongratulationPopup(usedHints, usedChosung);
+                
+                // 천재 보너스 열쇠 지급
+                if (keyReward > 0) {
+                    gameState.roundKeys += keyReward;
+                    keys += keyReward;
+                    gameState.geniusCount++;
+                }
+                
+                AudioManager.playSound('correct');
+                gameState.isCorrect = true;
+                gameState.showAllAfterCorrect = true;
+                gameState.geniusTimerActive = false;
+                
+                // 정답 시 모든 힌트와 설명 공개
+                gameState.unlockedHints = [0, 1, 2, 3, 4, 5];
+                gameState.showCharacterCount = true;
+                gameState.showCategory = true;
+                gameState.showChosung = true;
+                gameState.showDescriptions = Array(6).fill(true);
+                gameState.canShowDescriptions = true;
+                
+                renderGame();
+                saveGame();
+            } else {
+                AudioManager.playSound('wrong');
+                const input = document.querySelector('.answer-input');
+                if (input) {
+                    input.style.animation = 'shake 0.2s';
+                    setTimeout(() => {
+                        input.style.animation = '';
+                        input.select();
+                    }, 200);
+                }
+            }
+        }
+
+        // 다음 문제
+        function nextProblem() {
+            AudioManager.playSound('click');
+            removeNextProblemKeyListener();
+            
+            const totalProblems = gameState.problems.length;
+            
+            if (gameState.currentProblem === totalProblems - 1) {
+                clearSavedGameState();
+                completedRounds.push(currentRound);
+                keys += gameState.roundKeys + 1; // 라운드 완료 보상 +1
+                currentScreen = 'roundComplete';
+                renderRoundComplete();
+            } else {
+                gameState.currentProblem++;
+                const nextProblem = gameState.problems[gameState.currentProblem];
+                
+                // 다음 문제 상태 초기화
+                gameState.unlockedHints = [0, 1];
+                gameState.showCharacterCount = false;
+                gameState.showCategory = false;
+                gameState.showChosung = false;
+                gameState.userAnswer = '';
+                gameState.isCorrect = false;
+                gameState.showAllAfterCorrect = false;
+                gameState.helpMode = false;
+                gameState.geniusTimer = 20;
+                gameState.geniusTimerActive = true;
+                gameState.showDescriptions = Array(6).fill(false);
+                gameState.canShowDescriptions = false;
+                
+                renderGame();
+                startTimer();
+                saveGame();
+            }
+        }
+
+        // 라운드 완료 화면
+        function renderRoundComplete() {
+            AudioManager.playSound('complete');
+            removeNextProblemKeyListener();
+            
+            const totalRoundKeys = gameState.roundKeys + 1;
+            const nextRoundAvailable = currentRound < 100;
+            
+            const html = `
+                <div class="container">
+                    <div class="main-content round-complete">
+                        <div class="complete-icon">🎉</div>
+                        <h2 class="complete-title">라운드 ${currentRound} 완료!</h2>
+                        
+                        <div class="reward-box">
+                            <div class="reward-icon">🔑</div>
+                            <div class="reward-text">+${totalRoundKeys} 열쇠 획득!</div>
+                            <div class="reward-detail">
+                                천재 보너스: ${gameState.geniusCount}개 + 라운드 완료: 1개
+                            </div>
+                        </div>
+                        
+                        ${nextRoundAvailable ? `
+                            <div class="unlock-box">
+                                <div class="unlock-icon">🔓</div>
+                                <div class="unlock-text">라운드 ${currentRound + 1} 해제!</div>
+                            </div>
+                        ` : `
+                            <div class="unlock-box" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">
+                                <div class="unlock-icon">👑</div>
+                                <div class="unlock-text">모든 라운드 완료!</div>
+                            </div>
+                        `}
+                        
+                        <div class="action-buttons">
+                            ${nextRoundAvailable ? `
+                                <button class="action-button purple" onclick="startRound(${currentRound + 1})">
+                                    ▶️ 다음 라운드
+                                </button>
+                            ` : ''}
+                            <button class="action-button gray" onclick="renderRoundMap()">
+                                🏠 메인으로
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="settings-button" onclick="toggleMusicPanel()">⚙️</button>
+                    <div class="music-panel"></div>
+                </div>
+            `;
+            
+            document.getElementById('app').innerHTML = html;
+            updateMusicPanel();
+        }
+
+        // 저장/불러오기 함수들
+        function saveGame() {
+            const saveData = {
+                completedRounds: completedRounds,
+                keys: keys,
+                currentGameState: currentScreen === 'gameplay' ? {
+                    currentRound: currentRound,
+                    currentProblem: gameState.currentProblem,
+                    unlockedHints: gameState.unlockedHints,
+                    showCharacterCount: gameState.showCharacterCount,
+                    showCategory: gameState.showCategory,
+                    showChosung: gameState.showChosung,
+                    userAnswer: gameState.userAnswer,
+                    showDescriptions: gameState.showDescriptions,
+                    canShowDescriptions: gameState.canShowDescriptions,
+                    roundKeys: gameState.roundKeys,
+                    geniusCount: gameState.geniusCount,
+                    helpMode: gameState.helpMode,
+                    currentFileNumber: gameState.currentFileNumber,
+                    savedAt: Date.now()
+                } : null
+            };
+            
+            try {
+                localStorage.setItem('연상천재_게임데이터', JSON.stringify(saveData));
+            } catch (error) {
+                console.error('저장 실패:', error);
+            }
+        }
+
+        function loadGame() {
+            try {
+                const savedData = localStorage.getItem('연상천재_게임데이터');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    completedRounds = data.completedRounds || [];
+                    keys = data.keys || 15;
+                    
+                    if (data.currentGameState) {
+                        return data.currentGameState;
+                    }
+                }
+            } catch (error) {
+                console.error('불러오기 실패:', error);
+            }
+            return null;
+        }
+
+        function clearSavedGameState() {
+            try {
+                const savedData = localStorage.getItem('연상천재_게임데이터');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    data.currentGameState = null;
+                    localStorage.setItem('연상천재_게임데이터', JSON.stringify(data));
+                }
+            } catch (error) {
+                console.error('상태 클리어 실패:', error);
+            }
+        }
+
+        // 게임 초기화
+        function initGame() {
+            CacheManager.init();
+            MobileKeyboard.init();
+            AudioManager.init();
+            
+            const savedGameState = loadGame();
+            renderRoundMap();
+        }
+
+        // 자동 저장
+        setInterval(saveGame, 5000);
+        window.addEventListener('beforeunload', saveGame);
+        
+        // 서비스 워커 등록 (에러 처리)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    await navigator.serviceWorker.register('/sw.js');
+                } catch (error) {
+                    console.log('서비스 워커 없음 - 정상 진행');
+                }
+            });
+        }
+
+        // 게임 시작
+        initGame();
+    </script>
+</body>
+</html>
