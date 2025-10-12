@@ -21,7 +21,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="1.0.10">
+    <meta name="version" content="1.0.11">
     
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -54,8 +54,7 @@
             background: 
                 radial-gradient(circle at 20% 30%, rgba(106, 13, 173, 0.4) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(168, 216, 234, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(255, 105, 180, 0.3) 0%, transparent 50%),
-                url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 20 Q60 15 70 20 Q80 25 75 35 Q85 40 80 50 Q85 60 75 65 Q80 75 70 80 Q60 85 50 80 Q40 85 30 80 Q20 75 25 65 Q15 60 20 50 Q15 40 25 35 Q20 25 30 20 Q40 15 50 20' fill='none' stroke='%239C27B0' stroke-width='1' opacity='0.2'/%3E%3C/svg%3E");
+                radial-gradient(circle at 40% 80%, rgba(255, 105, 180, 0.3) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
             animation: synapse 3s ease-in-out infinite;
@@ -196,23 +195,6 @@
             animation: pulse 2s ease-in-out infinite;
             position: relative;
             overflow: hidden;
-        }
-
-        .start-button::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .start-button:active {
@@ -396,12 +378,6 @@
             background: #2d1b69;
             transition: width 1s linear;
             border-radius: 2px;
-            animation: timerShrink 20s linear forwards;
-        }
-
-        @keyframes timerShrink {
-            from { width: 100%; }
-            to { width: 0%; }
         }
 
         /* 메인 콘텐츠 */
@@ -880,6 +856,21 @@
         .round-button:active:not(.locked) {
             transform: scale(0.95);
         }
+
+        /* 로딩 스피너 */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #E040FB;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -958,7 +949,7 @@
                     }
                     
                 } catch (error) {
-                    console.log('오디오 초기화 실패');
+                    console.log('오디오 초기화 실패:', error);
                 }
             },
 
@@ -975,7 +966,7 @@
                     };
                     
                 } catch (error) {
-                    console.log('BGM 재생 실패');
+                    console.log('BGM 재생 실패:', error);
                 }
             },
 
@@ -1177,19 +1168,34 @@
             updateMusicPanel();
         }
 
-        // 라운드 시작
+        // 라운드 시작 - JSON 파일 로드 문제 해결
         async function startRound(roundNumber) {
             AudioManager.playSound('click');
             
             try {
                 const fileNumber = Math.ceil(roundNumber / 10);
+                console.log(`파일 로드 시도: problems_${fileNumber}.json`);
+                
+                // JSON 파일 로드 시도
                 const response = await fetch(`problems_${fileNumber}.json`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const allProblems = await response.json();
+                console.log('로드된 문제 수:', allProblems.length);
                 
                 // 해당 라운드의 문제들 선택 (한 라운드에 6문제)
                 const problemsPerRound = 6;
                 const startIndex = ((roundNumber - 1) % 10) * problemsPerRound;
                 const roundProblems = allProblems.slice(startIndex, startIndex + problemsPerRound);
+                
+                console.log(`라운드 ${roundNumber} 문제:`, roundProblems);
+                
+                if (roundProblems.length === 0) {
+                    throw new Error('해당 라운드에 문제가 없습니다.');
+                }
                 
                 gameState.currentRound = roundNumber;
                 gameState.currentProblem = 0;
@@ -1216,7 +1222,7 @@
                 
             } catch (error) {
                 console.error('라운드 시작 실패:', error);
-                alert('문제를 불러오는데 실패했습니다.');
+                alert('문제를 불러오는데 실패했습니다.\\n\\n로컬 서버에서 실행해보세요.\\n(파이썬이 있다면: python -m http.server 8000)');
                 showRoundMap();
             }
         }
@@ -1393,8 +1399,390 @@
             updateMusicPanel();
         }
 
-        // 나머지 게임 기능들 (startGeniusTimer, unlockHint, checkAnswer 등)은 
-        // 기존 로직을 유지하되, saveGameState() 호출 추가
+        // 천재 타이머 시작
+        function startGeniusTimer() {
+            const state = gameState.currentProblemState;
+            if (state.timerInterval) clearInterval(state.timerInterval);
+            
+            state.timerInterval = setInterval(() => {
+                if (!state.geniusTimerActive || state.isCorrect) {
+                    clearInterval(state.timerInterval);
+                    return;
+                }
+                
+                state.geniusTimer--;
+                
+                // 타이머 업데이트
+                const timerProgress = document.querySelector('.timer-progress');
+                if (timerProgress) {
+                    timerProgress.style.width = `${(state.geniusTimer / 20) * 100}%`;
+                }
+                
+                const timerCount = document.querySelector('.genius-timer-count');
+                if (timerCount) {
+                    timerCount.textContent = `${state.geniusTimer}초`;
+                }
+                
+                if (state.geniusTimer <= 0) {
+                    state.geniusTimerActive = false;
+                    if (!state.unlockedHints.includes(2)) {
+                        state.unlockedHints.push(2);
+                    }
+                    state.showCharacterCount = true;
+                    
+                    // 힌트 6 해금 시 분류와 초성도 자동 해금
+                    if (state.unlockedHints.includes(5)) {
+                        state.showCategory = true;
+                        state.showChosung = true;
+                    }
+                    
+                    renderGame();
+                    clearInterval(state.timerInterval);
+                }
+            }, 1000);
+        }
+
+        // 힌트 해금
+        function unlockHint(hintIndex) {
+            const state = gameState.currentProblemState;
+            if (state.unlockedHints.includes(hintIndex)) return;
+            
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.unlockedHints.push(hintIndex);
+                AudioManager.playSound('hint');
+                
+                if (hintIndex === 3 && !state.canShowDescriptions) {
+                    state.canShowDescriptions = true;
+                }
+                
+                // 힌트 6 해금 시 분류와 초성 자동 해금
+                if (hintIndex === 5) {
+                    state.showCategory = true;
+                    state.showChosung = true;
+                }
+                
+                renderGame();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function watchAdForHint(hintIndex) {
+            const state = gameState.currentProblemState;
+            if (state.unlockedHints.includes(hintIndex)) return;
+            
+            if (confirm('광고를 시청하시겠습니까?')) {
+                state.unlockedHints.push(hintIndex);
+                AudioManager.playSound('hint');
+                
+                if (hintIndex === 3 && !state.canShowDescriptions) {
+                    state.canShowDescriptions = true;
+                }
+                
+                // 힌트 6 해금 시 분류와 초성 자동 해금
+                if (hintIndex === 5) {
+                    state.showCategory = true;
+                    state.showChosung = true;
+                }
+                
+                renderGame();
+                saveGameState();
+            }
+        }
+
+        function unlockDescription(descriptionIndex) {
+            const state = gameState.currentProblemState;
+            if (state.showDescriptions[descriptionIndex]) return;
+            
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showDescriptions[descriptionIndex] = true;
+                renderGame();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function watchAdForDescription(descriptionIndex) {
+            const state = gameState.currentProblemState;
+            if (state.showDescriptions[descriptionIndex]) return;
+            
+            if (confirm('광고를 시청하시겠습니까?')) {
+                state.showDescriptions[descriptionIndex] = true;
+                renderGame();
+                saveGameState();
+            }
+        }
+
+        function unlockCategory() {
+            const state = gameState.currentProblemState;
+            if (state.showCategory) return;
+            
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showCategory = true;
+                renderGame();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function unlockChosung() {
+            const state = gameState.currentProblemState;
+            if (state.showChosung) return;
+            
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showChosung = true;
+                renderGame();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function showAnswer() {
+            if (gameState.keys >= 3) {
+                gameState.keys -= 3;
+                showAnswerConfirm();
+            } else {
+                if (confirm('열쇠가 부족합니다. 광고를 시청하시겠습니까?')) {
+                    showAnswerConfirm();
+                }
+            }
+        }
+
+        function showAnswerConfirm() {
+            const state = gameState.currentProblemState;
+            const problem = gameState.problems[gameState.currentProblem];
+            
+            showCongratulationPopup(6, false);
+            state.isCorrect = true;
+            state.unlockedHints = [0,1,2,3,4,5];
+            state.showDescriptions = [true,true,true,true,true,true];
+            state.showCharacterCount = true;
+            state.showCategory = true;
+            state.showChosung = true;
+            state.geniusTimerActive = false;
+            
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+            
+            renderGame();
+            saveGameState();
+        }
+
+        function updateUserAnswer(value) {
+            gameState.currentProblemState.userAnswer = value;
+        }
+
+        function checkAnswer(value) {
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            
+            const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
+            const correctAnswers = problem.answer.map(ans => 
+                ans.toLowerCase().replace(/\s+/g, '')
+            );
+            
+            if (correctAnswers.includes(normalizedAnswer)) {
+                const usedHints = state.unlockedHints.length;
+                let soundType = 'correct';
+                
+                if (usedHints <= 2) {
+                    soundType = 'genius';
+                }
+                
+                const keyReward = showCongratulationPopup(usedHints, false);
+                
+                if (keyReward > 0) {
+                    gameState.keys += keyReward;
+                }
+                
+                AudioManager.playSound(soundType);
+                state.isCorrect = true;
+                state.unlockedHints = [0,1,2,3,4,5];
+                state.showDescriptions = [true,true,true,true,true,true];
+                state.showCharacterCount = true;
+                state.showCategory = true;
+                state.showChosung = true;
+                state.geniusTimerActive = false;
+                
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                }
+                
+                renderGame();
+                saveGameState();
+            } else {
+                AudioManager.playSound('wrong');
+                const input = document.querySelector('.answer-input');
+                if (input) {
+                    input.style.animation = 'shake 0.3s';
+                    setTimeout(() => {
+                        input.style.animation = '';
+                        input.select();
+                    }, 300);
+                }
+            }
+        }
+
+        function nextProblem() {
+            AudioManager.playSound('click');
+            
+            if (gameState.currentProblem < 5) {
+                gameState.currentProblem++;
+                gameState.currentProblemState = {
+                    unlockedHints: [0, 1],
+                    showDescriptions: [false, false, false, false, false, false],
+                    canShowDescriptions: false,
+                    showCharacterCount: false,
+                    showCategory: false,
+                    showChosung: false,
+                    userAnswer: '',
+                    isCorrect: false,
+                    geniusTimer: 20,
+                    geniusTimerActive: true,
+                    timerInterval: null
+                };
+                startGeniusTimer();
+                renderGame();
+                saveGameState();
+            } else {
+                gameState.completedRounds.push(gameState.currentRound);
+                gameState.keys += 1;
+                AudioManager.playSound('complete');
+                showRoundComplete();
+                saveGameState();
+            }
+        }
+
+        function showRoundComplete() {
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="compact-header">
+                            <div class="header-left">
+                                <button class="home-button" onclick="showRoundMap()">🏠</button>
+                                <div class="round-info-compact">
+                                    <div class="round-title">라운드 완료!</div>
+                                    <div class="problem-number">축하합니다!</div>
+                                </div>
+                            </div>
+                            <div class="header-right">
+                                <div class="key-count">🔑 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="correct-answer">
+                            <div class="correct-icon">🎉</div>
+                            <div class="correct-title">라운드 ${gameState.currentRound} 완료!</div>
+                            <div class="correct-text">+1 열쇠를 획득했습니다!</div>
+                            <div class="correct-category">다음 라운드에 도전해보세요</div>
+                        </div>
+                        
+                        <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px;">
+                            🚀 다음 라운드
+                        </button>
+                        <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #888, #666);">
+                            🗺️ 메인으로
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app').innerHTML = html;
+        }
+
+        function showCongratulationPopup(hintsUsed, usedChosung) {
+            let popupData = {};
+            
+            if (usedChosung) {
+                popupData = {
+                    title: "초성이 살렸다.ㅠㅠ",
+                    message: "다음엔 초성 없이 도전!",
+                    type: "chosung",
+                    icon: "🔤",
+                    reward: 0
+                };
+            } else {
+                switch(hintsUsed) {
+                    case 2:
+                        popupData = {
+                            title: "시냅스 폭발!",
+                            message: "와우, 천재셨군요!",
+                            type: "genius",
+                            icon: "🧠",
+                            reward: 1
+                        };
+                        break;
+                    case 3:
+                        popupData = {
+                            title: "날카로운데요?",
+                            message: "뛰어난 추리력이에요!",
+                            type: "sharp",
+                            icon: "🔥",
+                            reward: 0
+                        };
+                        break;
+                    case 4:
+                        popupData = {
+                            title: "실력자 인정!",
+                            message: "잘 하셨어요!",
+                            type: "skilled",
+                            icon: "👍",
+                            reward: 0
+                        };
+                        break;
+                    case 5:
+                        popupData = {
+                            title: "집중합시다!",
+                            message: "조금만 더 집중해보세요!",
+                            type: "focus",
+                            icon: "💪",
+                            reward: 0
+                        };
+                        break;
+                    default:
+                        popupData = {
+                            title: "혹시... 졸았나요?",
+                            message: "다음 문제는 화이팅!",
+                            type: "sleepy",
+                            icon: "😴",
+                            reward: 0
+                        };
+                }
+            }
+            
+            const popupHtml = `
+                <div class="congratulation-popup ${popupData.type}">
+                    <div class="popup-icon">${popupData.icon}</div>
+                    <div class="popup-title">${popupData.title}</div>
+                    <div class="popup-message">${popupData.message}</div>
+                    ${popupData.reward > 0 ? `
+                        <div class="popup-reward">🔑 +${popupData.reward} 열쇠 획득!</div>
+                    ` : ''}
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', popupHtml);
+            
+            setTimeout(() => {
+                const popup = document.querySelector('.congratulation-popup');
+                if (popup) {
+                    popup.remove();
+                }
+            }, 2000);
+            
+            return popupData.reward;
+        }
 
         // 음악 패널 - 세분화된 설정
         function toggleMusicPanel() {
@@ -1445,9 +1833,6 @@
 
         // 앱 시작
         initApp();
-
-        // 기존 함수들 (unlockHint, checkAnswer, nextProblem 등)은 
-        // 필요시 saveGameState() 호출 추가해서 진행도 저장되도록 수정
     </script>
 </body>
 </html>
