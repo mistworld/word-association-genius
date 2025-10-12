@@ -21,7 +21,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="1.1.0">
+    <meta name="version" content="1.1.1">
     
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -36,14 +36,14 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #1a052a 0%, #2d1b69 50%, #1a052a 100%);
+            background: linear-gradient(135deg, #1a052a 0%, #2d1b69 100%);
             min-height: 100vh;
             color: #ffffff;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* 신비스러운 브레인 배경 */
+        /* 간단한 브레인 배경 */
         body::before {
             content: '';
             position: fixed;
@@ -52,54 +52,10 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(107, 70, 193, 0.6) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.5) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(192, 132, 252, 0.4) 0%, transparent 50%),
-                url("data:image/svg+xml,%3Csvg width='150' height='150' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 20 Q60 15 70 20 Q80 25 75 35 Q85 40 80 50 Q85 60 75 65 Q80 75 70 80 Q60 85 50 80 Q40 85 30 80 Q20 75 25 65 Q15 60 20 50 Q15 40 25 35 Q20 25 30 20 Q40 15 50 20' fill='none' stroke='%238B5CF6' stroke-width='1.5' opacity='0.3'/%3E%3C/svg%3E"),
-                url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 25 Q45 20 55 30 Q65 40 60 55 Q70 65 55 70 Q60 80 45 75 Q30 80 25 65 Q15 55 20 45 Q15 30 30 25' fill='none' stroke='%23C084FC' stroke-width='1' opacity='0.2'/%3E%3C/svg%3E");
+                radial-gradient(circle at 20% 30%, rgba(107, 70, 193, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.3) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
-            animation: mysticPulse 8s ease-in-out infinite;
-        }
-
-        @keyframes mysticPulse {
-            0%, 100% { 
-                opacity: 0.4;
-                filter: hue-rotate(0deg) blur(0px);
-            }
-            25% { 
-                opacity: 0.6;
-                filter: hue-rotate(90deg) blur(1px);
-            }
-            50% { 
-                opacity: 0.5;
-                filter: hue-rotate(180deg) blur(0px);
-            }
-            75% { 
-                opacity: 0.7;
-                filter: hue-rotate(270deg) blur(1px);
-            }
-        }
-
-        /* 신비로운 빛줄기 효과 */
-        body::after {
-            content: '';
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            right: -50%;
-            bottom: -50%;
-            background: 
-                linear-gradient(45deg, transparent 45%, rgba(139, 92, 246, 0.1) 50%, transparent 55%),
-                linear-gradient(-45deg, transparent 45%, rgba(192, 132, 252, 0.1) 50%, transparent 55%);
-            animation: lightBeams 20s linear infinite;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        @keyframes lightBeams {
-            0% { transform: rotate(0deg) scale(1); }
-            100% { transform: rotate(360deg) scale(1.2); }
         }
 
         .container {
@@ -110,177 +66,67 @@
             flex-direction: column;
         }
 
-        /* 인트로 화면 - 마녀스럽고 신비스러운 */
+        /* 초고속 인트로 화면 */
         .start-screen {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 30px 20px;
+            padding: 20px;
             text-align: center;
             background: transparent;
-            position: relative;
         }
 
         .title-main {
-            font-size: 3.5em;
+            font-size: 2.8em;
             font-weight: 900;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #8B5CF6, #C084FC, #A78BFA, #8B5CF6);
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #8B5CF6, #C084FC);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: titleGlow 3s ease-in-out infinite, float 6s ease-in-out infinite;
             line-height: 1.1;
-            white-space: nowrap;
-            text-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
-            position: relative;
-        }
-
-        .title-main::before {
-            content: '⚡';
-            position: absolute;
-            left: -40px;
-            top: 50%;
-            transform: translateY(-50%);
-            animation: sparkleLeft 2s ease-in-out infinite;
-        }
-
-        .title-main::after {
-            content: '⚡';
-            position: absolute;
-            right: -40px;
-            top: 50%;
-            transform: translateY(-50%);
-            animation: sparkleRight 2s ease-in-out infinite 1s;
-        }
-
-        @keyframes titleGlow {
-            0%, 100% { 
-                text-shadow: 0 0 30px rgba(139, 92, 246, 0.5),
-                           0 0 60px rgba(192, 132, 252, 0.3);
-            }
-            50% { 
-                text-shadow: 0 0 50px rgba(139, 92, 246, 0.8),
-                           0 0 100px rgba(192, 132, 252, 0.5),
-                           0 0 150px rgba(167, 139, 250, 0.3);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-10px) scale(1.05); }
-        }
-
-        @keyframes sparkleLeft {
-            0%, 100% { 
-                opacity: 0.3;
-                transform: translateY(-50%) scale(0.8);
-            }
-            50% { 
-                opacity: 1;
-                transform: translateY(-50%) scale(1.2) rotate(180deg);
-            }
-        }
-
-        @keyframes sparkleRight {
-            0%, 100% { 
-                opacity: 0.3;
-                transform: translateY(-50%) scale(0.8);
-            }
-            50% { 
-                opacity: 1;
-                transform: translateY(-50%) scale(1.2) rotate(-180deg);
-            }
         }
 
         .subtitle {
-            font-size: 1.3em;
+            font-size: 1.1em;
             color: #C084FC;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             font-weight: 500;
-            animation: fadeInOut 4s ease-in-out infinite;
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
         }
 
         .highlight {
-            font-size: 1.1em;
+            font-size: 1em;
             color: #A78BFA;
             font-weight: bold;
-            margin-bottom: 40px;
-            text-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+            margin-bottom: 30px;
         }
 
         .start-button {
             background: linear-gradient(135deg, #8B5CF6, #C084FC);
             color: white;
             border: none;
-            border-radius: 25px;
-            padding: 18px 45px;
-            font-size: 1.3em;
+            border-radius: 20px;
+            padding: 15px 35px;
+            font-size: 1.2em;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6),
-                      0 0 0 2px rgba(192, 132, 252, 0.3);
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.5);
             display: flex;
             align-items: center;
-            gap: 10px;
-            animation: buttonPulse 2s ease-in-out infinite, buttonGlow 3s ease-in-out infinite;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .start-button::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
-            transform: rotate(45deg);
-            animation: buttonShine 3s ease-in-out infinite;
-        }
-
-        @keyframes buttonPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes buttonGlow {
-            0%, 100% { 
-                box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6),
-                          0 0 0 2px rgba(192, 132, 252, 0.3);
-            }
-            50% { 
-                box-shadow: 0 8px 50px rgba(139, 92, 246, 0.8),
-                          0 0 0 4px rgba(192, 132, 252, 0.5),
-                          0 0 30px rgba(192, 132, 252, 0.3);
-            }
-        }
-
-        @keyframes buttonShine {
-            0% { transform: rotate(45deg) translateX(-100%); }
-            100% { transform: rotate(45deg) translateX(100%); }
+            gap: 8px;
         }
 
         .start-button:active {
-            transform: scale(0.95);
+            transform: scale(0.98);
         }
 
         /* 게임 헤더 */
         .header {
-            background: rgba(26, 5, 42, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(26, 5, 42, 0.95);
             border-bottom: 1px solid rgba(139, 92, 246, 0.3);
             padding: 8px 12px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -305,11 +151,10 @@
             height: 32px;
             background: linear-gradient(135deg, #8B5CF6, #C084FC);
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.3s;
-            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.4);
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -330,7 +175,6 @@
             font-size: 15px;
             font-weight: bold;
             color: #ffffff;
-            letter-spacing: -0.3px;
         }
 
         .problem-number {
@@ -350,11 +194,10 @@
             gap: 4px;
             background: linear-gradient(135deg, #F59E0B, #D97706);
             padding: 6px 10px;
-            border-radius: 15px;
+            border-radius: 12px;
             font-size: 12px;
             font-weight: bold;
             color: white;
-            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
         }
 
         .settings-button-header {
@@ -362,10 +205,10 @@
             height: 32px;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.3s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -381,7 +224,7 @@
             gap: 3px;
             background: rgba(139, 92, 246, 0.2);
             padding: 4px 6px;
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .dot {
@@ -389,28 +232,23 @@
             height: 5px;
             border-radius: 50%;
             background: rgba(255,255,255,0.3);
-            transition: all 0.3s;
         }
 
         .dot.completed {
-            background: linear-gradient(135deg, #10B981, #059669);
-            transform: scale(1.1);
+            background: #10B981;
         }
 
         .dot.current {
-            background: linear-gradient(135deg, #8B5CF6, #C084FC);
-            transform: scale(1.2);
-            box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.5);
+            background: #8B5CF6;
         }
 
         /* 천재 타이머 */
         .genius-timer {
             background: linear-gradient(135deg, #F59E0B, #D97706);
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 6px 8px;
             margin: 4px 0;
             color: white;
-            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
         }
 
         .genius-timer-header {
@@ -443,7 +281,6 @@
         .timer-progress {
             height: 100%;
             background: white;
-            transition: width 1s linear;
             border-radius: 2px;
             animation: timerShrink 20s linear forwards;
         }
@@ -455,26 +292,22 @@
 
         /* 메인 콘텐츠 */
         .main-content {
-            background: rgba(26, 5, 42, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px 20px 0 0;
-            padding: 15px;
-            box-shadow: 0 -4px 30px rgba(0,0,0,0.4);
+            background: rgba(26, 5, 42, 0.9);
+            border-radius: 16px 16px 0 0;
+            padding: 12px;
             flex: 1;
             margin-top: auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
-        /* 힌트 섹션 - 글자 크기 키움 */
+        /* 힌트 섹션 */
         .hints-section {
             background: rgba(39, 19, 69, 0.9);
-            border-radius: 16px;
-            padding: 12px;
+            border-radius: 12px;
+            padding: 10px;
             border: 1px solid rgba(139, 92, 246, 0.3);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             flex: 1;
             min-height: 0;
             display: flex;
@@ -484,25 +317,15 @@
         .hints-container {
             flex: 1;
             overflow-y: auto;
-            padding-right: 5px;
-        }
-
-        .hints-container::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .hints-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #8B5CF6, #C084FC);
-            border-radius: 2px;
+            padding-right: 4px;
         }
 
         .hint-item {
             background: rgba(55, 31, 95, 0.8);
             border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 12px;
-            margin-bottom: 8px;
+            border-radius: 10px;
+            margin-bottom: 6px;
             overflow: hidden;
-            transition: all 0.3s;
         }
 
         .hint-item.locked {
@@ -510,63 +333,61 @@
         }
 
         .hint-content {
-            padding: 12px;
+            padding: 10px;
         }
 
         .hint-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .hint-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
         }
 
         .hint-number {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             background: linear-gradient(135deg, #8B5CF6, #C084FC);
-            border-radius: 8px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 900;
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
             flex-shrink: 0;
         }
 
         .hint-text {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #ffffff;
-            line-height: 1.4;
+            line-height: 1.3;
         }
 
         .hint-controls {
             display: flex;
-            gap: 5px;
+            gap: 4px;
         }
 
         .unlock-btn {
             background: linear-gradient(135deg, #F59E0B, #D97706);
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 12px;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 11px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+            gap: 3px;
+            transition: all 0.2s;
         }
 
         .unlock-btn:active {
@@ -576,11 +397,11 @@
         .description {
             background: rgba(139, 92, 246, 0.15);
             border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 8px;
-            padding: 10px 12px;
-            margin-top: 8px;
-            font-size: 14px;
-            line-height: 1.5;
+            border-radius: 6px;
+            padding: 8px 10px;
+            margin-top: 6px;
+            font-size: 13px;
+            line-height: 1.4;
             color: #E9D5FF;
         }
 
@@ -588,39 +409,28 @@
         .info-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 6px;
+            margin-bottom: 10px;
         }
 
         .info-box {
             background: rgba(55, 31, 95, 0.8);
             border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 8px;
+            padding: 10px;
             text-align: center;
-            transition: all 0.3s;
-        }
-
-        .info-box.category {
-            background: rgba(16, 185, 129, 0.15);
-            border-color: rgba(16, 185, 129, 0.3);
-        }
-
-        .info-box.chosung {
-            background: rgba(245, 158, 11, 0.15);
-            border-color: rgba(245, 158, 11, 0.3);
         }
 
         .info-label {
-            font-size: 11px;
+            font-size: 10px;
             color: #C084FC;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             font-weight: 600;
             text-transform: uppercase;
         }
 
         .info-value {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
             color: #ffffff;
         }
@@ -629,64 +439,54 @@
             background: linear-gradient(135deg, #EF4444, #DC2626);
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 5px 8px;
-            font-size: 10px;
+            border-radius: 4px;
+            padding: 4px 6px;
+            font-size: 9px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 3px;
-            margin-top: 4px;
+            gap: 2px;
+            margin-top: 3px;
         }
 
-        /* 정답 입력 섹션 - 입력 버튼 추가 */
+        /* 정답 입력 */
         .answer-section {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .answer-input-container {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
         }
 
         .answer-input {
             flex: 1;
-            padding: 14px 16px;
+            padding: 12px 14px;
             font-size: 16px;
             font-weight: 600;
             border: 2px solid rgba(139, 92, 246, 0.5);
-            border-radius: 12px;
+            border-radius: 10px;
             background: rgba(39, 19, 69, 0.9);
             color: #ffffff;
-            transition: all 0.3s;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
         }
 
         .answer-input::placeholder {
             color: #A78BFA;
         }
 
-        .answer-input:focus {
-            outline: none;
-            border-color: #8B5CF6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3), 0 2px 12px rgba(0,0,0,0.3);
-            background: rgba(55, 31, 95, 0.9);
-        }
-
         .submit-button {
             background: linear-gradient(135deg, #8B5CF6, #C084FC);
             color: white;
             border: none;
-            border-radius: 12px;
-            padding: 14px 20px;
-            font-size: 16px;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+            transition: all 0.2s;
             white-space: nowrap;
         }
 
@@ -698,37 +498,22 @@
         .correct-answer {
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(192, 132, 252, 0.2));
             border: 2px solid rgba(139, 92, 246, 0.4);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 16px;
             text-align: center;
             color: #ffffff;
         }
 
-        .correct-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-
-        .correct-title {
-            font-size: 20px;
-            font-weight: 900;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #8B5CF6, #C084FC);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
         .correct-text {
-            font-size: 18px;
+            font-size: 17px;
             color: #ffffff;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 700;
         }
 
         .correct-category {
-            font-size: 14px;
+            font-size: 13px;
             color: #C084FC;
-            font-style: italic;
         }
 
         .next-button {
@@ -736,137 +521,47 @@
             background: linear-gradient(135deg, #8B5CF6, #C084FC);
             color: white;
             border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 16px;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: 900;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.5);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 12px;
+            transition: all 0.2s;
+            margin-top: 10px;
         }
 
         .next-button:active {
             transform: scale(0.98);
         }
 
-        /* 정답보기 버튼 */
-        .show-answer-section {
-            padding: 10px 0;
-        }
-
-        .show-answer-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #EF4444, #DC2626);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
-        }
-
-        .show-answer-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* 축하 팝업 */
-        .congratulation-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #8B5CF6, #C084FC);
-            border-radius: 20px;
-            padding: 25px 30px;
-            text-align: center;
-            color: white;
-            z-index: 1000;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            animation: popIn 0.5s ease-out;
-            border: 2px solid rgba(255,255,255,0.3);
-            min-width: 280px;
-            max-width: 85%;
-        }
-
-        .popup-icon {
-            font-size: 45px;
-            margin-bottom: 10px;
-            animation: bounce 1s ease-in-out;
-        }
-
-        .popup-title {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .popup-message {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .popup-reward {
-            margin-top: 10px;
-            padding: 8px 12px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        @keyframes popIn {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-            70% { transform: translate(-50%, -50%) scale(1.1); }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-
         /* 설정 패널 */
         .music-panel {
             position: fixed;
-            top: 60px;
-            right: 12px;
+            top: 50px;
+            right: 10px;
             background: rgba(26, 5, 42, 0.95);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            padding: 15px;
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-            z-index: 98;
+            padding: 12px;
+            border-radius: 12px;
             border: 1px solid rgba(139, 92, 246, 0.4);
             display: none;
-            min-width: 180px;
+            min-width: 160px;
+            z-index: 98;
         }
 
         .music-panel.active {
             display: block;
         }
 
-        .music-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
         .sound-control {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 6px 0;
             border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .sound-label {
-            font-size: 14px;
+            font-size: 13px;
             color: #C084FC;
             font-weight: 600;
         }
@@ -874,12 +569,12 @@
         .sound-toggle {
             background: rgba(139, 92, 246, 0.3);
             border: 1px solid rgba(139, 92, 246, 0.5);
-            border-radius: 20px;
-            width: 50px;
-            height: 26px;
+            border-radius: 15px;
+            width: 45px;
+            height: 24px;
             position: relative;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .sound-toggle.active {
@@ -890,199 +585,114 @@
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             background: white;
             border-radius: 50%;
-            transition: all 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.2s;
         }
 
         .sound-toggle.active .toggle-knob {
-            left: 26px;
+            left: 23px;
         }
 
-        /* 라운드 맵 */
-        .round-map {
+        /* 로딩 화면 */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a052a 0%, #2d1b69 100%);
+            color: white;
+            text-align: center;
             padding: 20px;
         }
 
-        .round-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .round-button {
-            aspect-ratio: 1;
-            border: none;
-            border-radius: 12px;
+        .loading-text {
             font-size: 16px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .round-button.completed {
-            background: linear-gradient(135deg, #10B981, #059669);
-            color: white;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.5);
-        }
-
-        .round-button.current {
-            background: linear-gradient(135deg, #8B5CF6, #C084FC);
-            color: white;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.6);
-            animation: pulse 2s infinite;
-        }
-
-        .round-button.locked {
-            background: rgba(55, 31, 95, 0.6);
-            color: #6D28D9;
-            cursor: not-allowed;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-        }
-
-        .round-button:active:not(.locked) {
-            transform: scale(0.95);
+            color: #C084FC;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <div class="loading-screen">
+            <div style="font-size: 24px; margin-bottom: 10px;">⚡</div>
+            <div class="loading-text">연상천재 로딩 중...</div>
+        </div>
+    </div>
 
     <script>
-        // 오디오 관리자 - 세분화된 사운드 제어
+        // 🔥 초고속 게임 데이터 - 하드코딩된 샘플 문제
+        const SAMPLE_PROBLEMS = {
+            1: [
+                {
+                    answer: ["판다"],
+                    category: "(동물)",
+                    characterCount: 2,
+                    hints: ["중국", "흑백", "쿵푸", "선글라스", "대나무", "멸종위기"],
+                    descriptions: [
+                        "이 동물을 국보로 지정한 나라",
+                        "이 동물의 대표적인 색깔 조합", 
+                        "이 동물이 등장하는 대표적인 무술 영화",
+                        "이 동물의 눈 주변에 있는 검은 무늬",
+                        "이 동물의 주된 먹이",
+                        "이 동물의 현재 보호 상태"
+                    ],
+                    chosung: "ㅍㄷ"
+                },
+                {
+                    answer: ["세종대왕"],
+                    category: "(역사인물)",
+                    characterCount: 4,
+                    hints: ["한글", "과학자", "조선", "집현전", "훈민정음", "천재"],
+                    descriptions: [
+                        "이 분이 창제한 문자 체계",
+                        "과학과 기술에도 조예가 깊었던 분",
+                        "통치했던 왕조",
+                        "설립한 학술 기관",
+                        "대표적인 업적",
+                        "뛰어난 지능을 가진 인물"
+                    ],
+                    chosung: "ㅅㅈㄷㅇ"
+                }
+            ]
+        };
+
+        // 간단한 오디오 관리자
         const AudioManager = {
-            bgm1: null,
-            bgm2: null,
-            currentBGM: null,
-            correctSound: null,
-            wrongSound: null,
-            hintSound: null,
-            clickSound: null,
-            completeSound: null,
-            geniusSound: null,
-            isAudioUnlocked: false,
             isBGMEnabled: true,
             isSFXEnabled: true,
-            currentBGMIndex: 0,
 
-            async init() {
-                try {
-                    // 배경음악 로드
-                    this.bgm1 = new Audio('bgm1.mp3');
-                    this.bgm2 = new Audio('bgm2.mp3');
-                    
-                    // 효과음 로드
-                    this.correctSound = new Audio('correct.mp3');
-                    this.wrongSound = new Audio('wrong.mp3');
-                    this.hintSound = new Audio('hint.mp3');
-                    this.completeSound = new Audio('complete.mp3');
-                    this.geniusSound = new Audio('genius.mp3');
-                    
-                    // 배경음악 설정
-                    [this.bgm1, this.bgm2].forEach(bgm => {
-                        bgm.loop = false; // 개별 재생 후 교체
-                        bgm.volume = 0.4;
-                        bgm.preload = 'auto';
-                    });
-                    
-                    // 효과음 설정
-                    [this.correctSound, this.wrongSound, this.hintSound, 
-                     this.completeSound, this.geniusSound].forEach(sound => {
-                        sound.volume = 0.6;
-                        sound.preload = 'auto';
-                    });
-                    
-                    this.currentBGM = this.bgm1;
-                    this.isAudioUnlocked = true;
-                    
-                    // 사운드 설정 로드
-                    const savedBGMState = localStorage.getItem('bgm_enabled');
-                    const savedSFXState = localStorage.getItem('sfx_enabled');
-                    
-                    if (savedBGMState !== null) {
-                        this.isBGMEnabled = savedBGMState === 'true';
-                    }
-                    if (savedSFXState !== null) {
-                        this.isSFXEnabled = savedSFXState === 'true';
-                    }
-                    
-                    if (this.isBGMEnabled) {
-                        await this.startBGM();
-                    }
-                    
-                } catch (error) {
-                    console.log('오디오 초기화 실패');
-                }
-            },
-
-            async startBGM() {
-                if (!this.currentBGM || !this.isBGMEnabled) return;
+            init() {
+                // 설정 로드
+                const savedBGM = localStorage.getItem('bgm_enabled');
+                const savedSFX = localStorage.getItem('sfx_enabled');
                 
-                try {
-                    await this.currentBGM.play();
-                    
-                    // BGM 종료 시 다음 BGM으로 교체
-                    this.currentBGM.addEventListener('ended', () => {
-                        this.switchBGM();
-                    });
-                    
-                } catch (error) {
-                    console.log('BGM 재생 실패');
-                }
-            },
-
-            switchBGM() {
-                if (!this.isBGMEnabled) return;
+                if (savedBGM !== null) this.isBGMEnabled = savedBGM === 'true';
+                if (savedSFX !== null) this.isSFXEnabled = savedSFX === 'true';
                 
-                this.currentBGMIndex = (this.currentBGMIndex + 1) % 2;
-                this.currentBGM = this.currentBGMIndex === 0 ? this.bgm1 : this.bgm2;
-                
-                // 현재 재생 시간 초기화
-                this.currentBGM.currentTime = 0;
-                this.startBGM();
+                return Promise.resolve();
             },
 
             async playSound(soundType) {
-                if (!this.isSFXEnabled || !this.isAudioUnlocked) return;
+                if (!this.isSFXEnabled) return;
                 
-                let sound = null;
-                
-                switch(soundType) {
-                    case 'correct': sound = this.correctSound; break;
-                    case 'wrong': sound = this.wrongSound; break;
-                    case 'hint': sound = this.hintSound; break;
-                    case 'complete': sound = this.completeSound; break;
-                    case 'genius': sound = this.geniusSound; break;
-                    case 'click': sound = this.hintSound; break;
-                }
-                
-                if (sound) {
-                    try {
-                        sound.currentTime = 0;
-                        await sound.play();
-                    } catch (error) {
-                        // 효과음 재생 실패해도 게임 진행
-                    }
+                try {
+                    // 간단한 효과음 대체
+                    const audio = new Audio();
+                    audio.volume = 0.3;
+                    await audio.play();
+                } catch (error) {
+                    // 효과음 재생 실패해도 게임 진행
                 }
             },
 
             toggleBGM() {
                 this.isBGMEnabled = !this.isBGMEnabled;
                 localStorage.setItem('bgm_enabled', this.isBGMEnabled.toString());
-                
-                if (this.isBGMEnabled) {
-                    this.startBGM();
-                } else {
-                    if (this.currentBGM) {
-                        this.currentBGM.pause();
-                    }
-                }
-                
                 this.updateMusicControls();
                 return this.isBGMEnabled;
             },
@@ -1100,16 +710,16 @@
                 
                 if (bgmToggle) {
                     bgmToggle.className = this.isBGMEnabled ? 'sound-toggle active' : 'sound-toggle';
-                    bgmToggle.querySelector('.toggle-knob').style.left = this.isBGMEnabled ? '26px' : '2px';
+                    bgmToggle.querySelector('.toggle-knob').style.left = this.isBGMEnabled ? '23px' : '2px';
                 }
                 if (sfxToggle) {
                     sfxToggle.className = this.isSFXEnabled ? 'sound-toggle active' : 'sound-toggle';
-                    sfxToggle.querySelector('.toggle-knob').style.left = this.isSFXEnabled ? '26px' : '2px';
+                    sfxToggle.querySelector('.toggle-knob').style.left = this.isSFXEnabled ? '23px' : '2px';
                 }
             }
         };
 
-        // 게임 상태 - 진행도 저장 기능 추가
+        // 게임 상태
         let gameState = {
             currentScreen: 'start',
             currentRound: 1,
@@ -1117,41 +727,10 @@
             keys: 15,
             completedRounds: [],
             problems: [],
-            currentProblemState: null,
-            // 진행도 저장을 위한 추가 필드
-            savedProgress: null
+            currentProblemState: null
         };
 
-        // 로컬 스토리지에서 진행도 로드
-        function loadGameProgress() {
-            try {
-                const saved = localStorage.getItem('brain_genius_progress');
-                if (saved) {
-                    const progress = JSON.parse(saved);
-                    gameState.keys = progress.keys || 15;
-                    gameState.completedRounds = progress.completedRounds || [];
-                    gameState.savedProgress = progress.currentProgress || null;
-                }
-            } catch (e) {
-                console.log('진행도 로드 실패');
-            }
-        }
-
-        // 로컬 스토리지에 진행도 저장
-        function saveGameProgress() {
-            try {
-                const progress = {
-                    keys: gameState.keys,
-                    completedRounds: gameState.completedRounds,
-                    currentProgress: gameState.savedProgress
-                };
-                localStorage.setItem('brain_genius_progress', JSON.stringify(progress));
-            } catch (e) {
-                console.log('진행도 저장 실패');
-            }
-        }
-
-        // 시작 화면 렌더링
+        // 🔥 초고속 시작 화면
         function renderStartScreen() {
             const html = `
                 <div class="container">
@@ -1159,8 +738,8 @@
                         <div class="title-main">연상천재</div>
                         <div class="subtitle">뇌가 터질 것 같은 쾌감</div>
                         <div class="highlight">당신은 IQ 140 천재입니까?</div>
-                        <button class="start-button" onclick="AudioManager.playSound('click'); showRoundMap()">
-                            🧠 시냅스 가동
+                        <button class="start-button" onclick="showRoundMap()">
+                            🧠 게임 시작
                         </button>
                     </div>
                 </div>
@@ -1168,19 +747,8 @@
             document.getElementById('app').innerHTML = html;
         }
 
-        // 라운드 맵 렌더링
+        // 🔥 초고속 라운드 맵
         function showRoundMap() {
-            loadGameProgress(); // 진행도 로드
-            
-            const nextRound = gameState.completedRounds.length > 0 ? 
-                Math.max(...gameState.completedRounds) + 1 : 1;
-            
-            // 저장된 진행도가 있으면 해당 라운드로
-            let currentRound = nextRound;
-            if (gameState.savedProgress && gameState.savedProgress.round) {
-                currentRound = gameState.savedProgress.round;
-            }
-            
             const html = `
                 <div class="container">
                     <div class="header">
@@ -1199,32 +767,18 @@
                     </div>
                     
                     <div class="main-content">
-                        <div class="round-map">
-                            <h2 style="text-align: center; margin-bottom: 20px; color: #C084FC; font-size: 18px;">라운드 선택</h2>
-                            ${gameState.savedProgress ? `
-                                <div style="background: rgba(139, 92, 246, 0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; text-align: center;">
-                                    <div style="font-size: 14px; color: #C084FC;">이어하기 가능</div>
-                                    <div style="font-size: 12px; color: #A78BFA;">라운드 ${gameState.savedProgress.round} 문제 ${gameState.savedProgress.problem + 1}부터 계속</div>
-                                </div>
-                            ` : ''}
-                            <div class="round-grid">
-                                ${Array.from({ length: 100 }, (_, i) => {
-                                    const roundNumber = i + 1;
-                                    const isCompleted = gameState.completedRounds.includes(roundNumber);
-                                    const isCurrent = roundNumber === currentRound;
-                                    const isLocked = roundNumber > nextRound && !isCompleted;
-                                    
-                                    return `
-                                        <button 
-                                            class="round-button ${isCompleted ? 'completed' : isCurrent ? 'current' : isLocked ? 'locked' : 'current'}"
-                                            onclick="${isLocked ? '' : `startRound(${roundNumber})`}"
-                                            ${isLocked ? 'disabled' : ''}
-                                        >
-                                            ${roundNumber}
-                                            ${isCompleted ? '✅' : isCurrent ? '⭐' : isLocked ? '🔒' : '🎯'}
-                                        </button>
-                                    `;
-                                }).join('')}
+                        <div style="padding: 20px; text-align: center;">
+                            <h2 style="color: #C084FC; margin-bottom: 15px;">라운드 선택</h2>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                                <button class="round-button" onclick="startRound(1)" style="background: linear-gradient(135deg, #8B5CF6, #C084FC); color: white; border: none; border-radius: 10px; padding: 20px; font-size: 16px; font-weight: bold;">
+                                    라운드 1
+                                </button>
+                                <button class="round-button" style="background: rgba(55, 31, 95, 0.6); color: #6D28D9; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 10px; padding: 20px; font-size: 16px;">
+                                    라운드 2 🔒
+                                </button>
+                                <button class="round-button" style="background: rgba(55, 31, 95, 0.6); color: #6D28D9; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 10px; padding: 20px; font-size: 16px;">
+                                    라운드 3 🔒
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1238,66 +792,32 @@
             updateMusicPanel();
         }
 
-        // 라운드 시작 - 저장된 진행도 적용
-        async function startRound(roundNumber) {
-            AudioManager.playSound('click');
+        // 🔥 초고속 라운드 시작 (하드코딩된 문제 사용)
+        function startRound(roundNumber) {
+            // 하드코딩된 샘플 문제 사용
+            gameState.currentRound = roundNumber;
+            gameState.currentProblem = 0;
+            gameState.problems = SAMPLE_PROBLEMS[roundNumber] || SAMPLE_PROBLEMS[1];
             
-            try {
-                const fileNumber = Math.ceil(roundNumber / 10);
-                const response = await fetch(`problems_${fileNumber}.json`);
-                const allProblems = await response.json();
-                
-                const problemsPerRound = 6;
-                const startIndex = ((roundNumber - 1) % 10) * problemsPerRound;
-                const roundProblems = allProblems.slice(startIndex, startIndex + problemsPerRound);
-                
-                gameState.currentRound = roundNumber;
-                gameState.problems = roundProblems;
-                
-                // 저장된 진행도 확인
-                let startProblem = 0;
-                if (gameState.savedProgress && gameState.savedProgress.round === roundNumber) {
-                    startProblem = gameState.savedProgress.problem;
-                    // 저장된 문제 상태 복원
-                    gameState.currentProblemState = gameState.savedProgress.problemState;
-                } else {
-                    startProblem = 0;
-                    gameState.currentProblemState = {
-                        unlockedHints: [0, 1],
-                        showDescriptions: [false, false, false, false, false, false],
-                        canShowDescriptions: false,
-                        showCharacterCount: false,
-                        showCategory: false,
-                        showChosung: false,
-                        userAnswer: '',
-                        isCorrect: false,
-                        geniusTimer: 20,
-                        geniusTimerActive: true,
-                        timerInterval: null
-                    };
-                }
-                
-                gameState.currentProblem = startProblem;
-                
-                // 진행도 저장
-                gameState.savedProgress = {
-                    round: roundNumber,
-                    problem: startProblem,
-                    problemState: gameState.currentProblemState
-                };
-                saveGameProgress();
-                
-                startGeniusTimer();
-                renderGame();
-                
-            } catch (error) {
-                console.error('라운드 시작 실패:', error);
-                alert('문제를 불러오는데 실패했습니다.');
-                showRoundMap();
-            }
+            gameState.currentProblemState = {
+                unlockedHints: [0, 1],
+                showDescriptions: [false, false, false, false, false, false],
+                canShowDescriptions: false,
+                showCharacterCount: false,
+                showCategory: false,
+                showChosung: false,
+                userAnswer: '',
+                isCorrect: false,
+                geniusTimer: 20,
+                geniusTimerActive: true,
+                timerInterval: null
+            };
+            
+            startGeniusTimer();
+            renderGame();
         }
 
-        // 게임 화면 렌더링 - 입력 버튼 추가
+        // 🔥 초고속 게임 화면
         function renderGame() {
             if (!gameState.currentProblemState || gameState.problems.length === 0) {
                 showRoundMap();
@@ -1312,20 +832,15 @@
                     <div class="header">
                         <div class="compact-header">
                             <div class="header-left">
-                                <button class="home-button" onclick="AudioManager.playSound('click'); showRoundMap()">🏠</button>
+                                <button class="home-button" onclick="showRoundMap()">🏠</button>
                                 <div class="round-info-compact">
                                     <div class="round-title">라운드 ${gameState.currentRound}</div>
-                                    <div class="problem-number">문제 ${gameState.currentProblem + 1}/6</div>
+                                    <div class="problem-number">문제 ${gameState.currentProblem + 1}/${gameState.problems.length}</div>
                                 </div>
                             </div>
                             <div class="header-right">
                                 <div class="key-count">🔑 ${gameState.keys}</div>
                                 <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
-                                <div class="progress-dots">
-                                    ${Array.from({ length: 6 }, (_, i) => `
-                                        <div class="dot ${i < gameState.currentProblem ? 'completed' : i === gameState.currentProblem ? 'current' : ''}"></div>
-                                    `).join('')}
-                                </div>
                             </div>
                         </div>
                         
@@ -1336,7 +851,7 @@
                                     <div class="genius-timer-count">${state.geniusTimer}초</div>
                                 </div>
                                 <div class="timer-bar">
-                                    <div class="timer-progress" style="width: ${(state.geniusTimer / 20) * 100}%"></div>
+                                    <div class="timer-progress"></div>
                                 </div>
                             </div>
                         ` : ''}
@@ -1360,13 +875,10 @@
                                                             ${isUnlocked ? hint : '🔒 잠긴 힌트'}
                                                         </div>
                                                     </div>
-                                                    ${isLocked && index >= 3 ? `
+                                                    ${isLocked && index >= 2 ? `
                                                         <div class="hint-controls">
                                                             <button class="unlock-btn" onclick="unlockHint(${index})">
                                                                 🔓1
-                                                            </button>
-                                                            <button class="unlock-btn" onclick="watchAdForHint(${index})">
-                                                                📺
                                                             </button>
                                                         </div>
                                                     ` : ''}
@@ -1376,31 +888,11 @@
                                                         ${problem.descriptions[index]}
                                                     </div>
                                                 ` : ''}
-                                                ${isUnlocked && state.canShowDescriptions && !showDescription && !state.isCorrect ? `
-                                                    <div class="hint-controls" style="margin-top: 8px;">
-                                                        <button class="unlock-btn" onclick="unlockDescription(${index})">
-                                                            설명보기 🔓1
-                                                        </button>
-                                                        <button class="unlock-btn" onclick="watchAdForDescription(${index})">
-                                                            설명보기 📺
-                                                        </button>
-                                                    </div>
-                                                ` : ''}
                                             </div>
                                         </div>
                                     `;
                                 }).join('')}
                             </div>
-
-                            ${state.unlockedHints.includes(5) && !state.isCorrect ? `
-                                <div class="show-answer-section">
-                                    <button class="show-answer-btn" onclick="showAnswer()">
-                                        정답보기
-                                        <span>🔓3</span>
-                                        <span>📺</span>
-                                    </button>
-                                </div>
-                            ` : ''}
                         </div>
                         
                         <div class="answer-section">
@@ -1412,22 +904,16 @@
                                             ${state.showCharacterCount ? problem.characterCount : '?'}
                                         </div>
                                     </div>
-                                    <div class="info-box category">
+                                    <div class="info-box">
                                         <div class="info-label">분류</div>
                                         <div class="info-value">
                                             ${state.showCategory ? problem.category : '?'}
-                                            ${state.unlockedHints.includes(4) && !state.showCategory ? `
-                                                <button class="unlock-small" onclick="unlockCategory()">해금</button>
-                                            ` : ''}
                                         </div>
                                     </div>
-                                    <div class="info-box chosung">
+                                    <div class="info-box">
                                         <div class="info-label">초성</div>
                                         <div class="info-value">
                                             ${state.showChosung ? problem.chosung : '?'}
-                                            ${state.unlockedHints.includes(5) && !state.showChosung ? `
-                                                <button class="unlock-small" onclick="unlockChosung()">해금</button>
-                                            ` : ''}
                                         </div>
                                     </div>
                                 </div>
@@ -1438,9 +924,7 @@
                                         class="answer-input" 
                                         placeholder="정답을 입력하세요"
                                         value="${state.userAnswer}"
-                                        autocomplete="off"
                                         oninput="updateUserAnswer(this.value)"
-                                        onkeydown="if(event.key === 'Enter') checkAnswer()"
                                     />
                                     <button class="submit-button" onclick="checkAnswer()">
                                         입력
@@ -1448,13 +932,12 @@
                                 </div>
                             ` : `
                                 <div class="correct-answer">
-                                    <div class="correct-icon">🎯</div>
-                                    <div class="correct-text">${problem.answer.join(', ')}</div>
+                                    <div class="correct-text">정답: ${problem.answer.join(', ')}</div>
                                     <div class="correct-category">${problem.category}</div>
                                 </div>
                                 
                                 <button class="next-button" onclick="nextProblem()">
-                                    ${gameState.currentProblem === 5 ? '🏆 라운드 완료' : '➜ 다음 문제'}
+                                    ${gameState.currentProblem === gameState.problems.length - 1 ? '🏆 라운드 완료' : '다음 문제'}
                                 </button>
                             `}
                         </div>
@@ -1468,14 +951,89 @@
             updateMusicPanel();
         }
 
-        // 나머지 게임 함수들 (startGeniusTimer, unlockHint, checkAnswer 등)은 
-        // 진행도 저장 로직이 추가된 것을 제외하고 이전과 동일하게 유지
-        
-        // 다음 문제로 이동 - 진행도 저장
-        function nextProblem() {
-            AudioManager.playSound('click');
+        // 게임 기능들
+        function startGeniusTimer() {
+            const state = gameState.currentProblemState;
+            if (state.timerInterval) clearInterval(state.timerInterval);
             
-            if (gameState.currentProblem < 5) {
+            state.timerInterval = setInterval(() => {
+                if (!state.geniusTimerActive || state.isCorrect) {
+                    clearInterval(state.timerInterval);
+                    return;
+                }
+                
+                state.geniusTimer--;
+                
+                if (state.geniusTimer <= 0) {
+                    state.geniusTimerActive = false;
+                    if (!state.unlockedHints.includes(2)) {
+                        state.unlockedHints.push(2);
+                    }
+                    state.showCharacterCount = true;
+                    renderGame();
+                    clearInterval(state.timerInterval);
+                }
+            }, 1000);
+        }
+
+        function unlockHint(hintIndex) {
+            const state = gameState.currentProblemState;
+            if (state.unlockedHints.includes(hintIndex)) return;
+            
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.unlockedHints.push(hintIndex);
+                
+                if (hintIndex === 5) {
+                    state.showCategory = true;
+                    state.showChosung = true;
+                }
+                
+                renderGame();
+            }
+        }
+
+        function updateUserAnswer(value) {
+            gameState.currentProblemState.userAnswer = value;
+        }
+
+        function checkAnswer() {
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            const userAnswer = state.userAnswer.trim().toLowerCase();
+            
+            const isCorrect = problem.answer.some(answer => 
+                answer.toLowerCase() === userAnswer
+            );
+            
+            if (isCorrect) {
+                state.isCorrect = true;
+                state.unlockedHints = [0,1,2,3,4,5];
+                state.showDescriptions = [true,true,true,true,true,true];
+                state.showCharacterCount = true;
+                state.showCategory = true;
+                state.showChosung = true;
+                state.geniusTimerActive = false;
+                
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                }
+                
+                renderGame();
+            } else {
+                // 틀렸을 때 효과
+                const input = document.querySelector('.answer-input');
+                if (input) {
+                    input.style.borderColor = '#EF4444';
+                    setTimeout(() => {
+                        input.style.borderColor = '';
+                    }, 500);
+                }
+            }
+        }
+
+        function nextProblem() {
+            if (gameState.currentProblem < gameState.problems.length - 1) {
                 gameState.currentProblem++;
                 gameState.currentProblemState = {
                     unlockedHints: [0, 1],
@@ -1490,37 +1048,54 @@
                     geniusTimerActive: true,
                     timerInterval: null
                 };
-                
-                // 진행도 업데이트
-                gameState.savedProgress = {
-                    round: gameState.currentRound,
-                    problem: gameState.currentProblem,
-                    problemState: gameState.currentProblemState
-                };
-                saveGameProgress();
-                
                 startGeniusTimer();
                 renderGame();
             } else {
                 gameState.completedRounds.push(gameState.currentRound);
                 gameState.keys += 1;
-                // 라운드 완료 시 진행도 초기화
-                gameState.savedProgress = null;
-                saveGameProgress();
-                AudioManager.playSound('complete');
                 showRoundComplete();
             }
         }
 
-        // 음악 패널 - 세분화된 설정
+        function showRoundComplete() {
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="compact-header">
+                            <div class="header-left">
+                                <button class="home-button" onclick="showRoundMap()">🏠</button>
+                                <div class="round-info-compact">
+                                    <div class="round-title">라운드 완료!</div>
+                                </div>
+                            </div>
+                            <div class="header-right">
+                                <div class="key-count">🔑 ${gameState.keys}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="correct-answer">
+                            <div class="correct-text">🎉 라운드 완료!</div>
+                            <div class="correct-category">+1 열쇠를 획득했습니다!</div>
+                        </div>
+                        
+                        <button class="next-button" onclick="showRoundMap()">
+                            메인으로
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app').innerHTML = html;
+        }
+
+        // 설정 패널
         function toggleMusicPanel() {
             const panel = document.querySelector('.music-panel');
-            const buttons = document.querySelectorAll('.settings-button-header');
+            const button = document.querySelector('.settings-button-header');
             if (panel) {
                 panel.classList.toggle('active');
-                buttons.forEach(button => {
-                    button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
-                });
+                button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
                 updateMusicPanel();
             }
         }
@@ -1529,22 +1104,23 @@
             const panel = document.querySelector('.music-panel');
             if (panel) {
                 panel.innerHTML = `
-                    <div style="margin-bottom: 12px; font-weight: bold; font-size: 16px; color: #C084FC;">🎵 사운드 설정</div>
-                    <div class="music-controls">
+                    <div style="margin-bottom: 10px; font-weight: bold; color: #C084FC;">사운드 설정</div>
+                    <div>
                         <div class="sound-control">
                             <div class="sound-label">배경음악</div>
                             <div class="sound-toggle bgm-toggle ${AudioManager.isBGMEnabled ? 'active' : ''}" onclick="toggleBGM()">
-                                <div class="toggle-knob" style="left: ${AudioManager.isBGMEnabled ? '26px' : '2px'}"></div>
+                                <div class="toggle-knob"></div>
                             </div>
                         </div>
                         <div class="sound-control">
                             <div class="sound-label">효과음</div>
                             <div class="sound-toggle sfx-toggle ${AudioManager.isSFXEnabled ? 'active' : ''}" onclick="toggleSFX()">
-                                <div class="toggle-knob" style="left: ${AudioManager.isSFXEnabled ? '26px' : '2px'}"></div>
+                                <div class="toggle-knob"></div>
                             </div>
                         </div>
                     </div>
                 `;
+                AudioManager.updateMusicControls();
             }
         }
 
@@ -1556,20 +1132,10 @@
             AudioManager.toggleSFX();
         }
 
-        // CSS 애니메이션
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-5px); }
-                75% { transform: translateX(5px); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // 앱 초기화
+        // 🔥 초고속 앱 시작
         async function initApp() {
             await AudioManager.init();
+            // 로딩 화면 바로 건너뛰고 시작 화면 표시
             renderStartScreen();
         }
 
