@@ -21,7 +21,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="1.0.9">
+    <meta name="version" content="1.0.10">
     
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -43,7 +43,7 @@
             position: relative;
         }
 
-        /* 브레인 배경 */
+        /* 브레인 배경 - 더 선명하게 */
         body::before {
             content: '';
             position: fixed;
@@ -52,12 +52,18 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(168, 216, 234, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(170, 236, 215, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(255, 154, 162, 0.2) 0%, transparent 50%),
-                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 20 Q60 15 70 20 Q80 25 75 35 Q85 40 80 50 Q85 60 75 65 Q80 75 70 80 Q60 85 50 80 Q40 85 30 80 Q20 75 25 65 Q15 60 20 50 Q15 40 25 35 Q20 25 30 20 Q40 15 50 20' fill='none' stroke='%23A8D8EA' stroke-width='0.5' opacity='0.15'/%3E%3C/svg%3E");
+                radial-gradient(circle at 20% 30%, rgba(168, 216, 234, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(170, 236, 215, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 154, 162, 0.3) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 20 Q60 15 70 20 Q80 25 75 35 Q85 40 80 50 Q85 60 75 65 Q80 75 70 80 Q60 85 50 80 Q40 85 30 80 Q20 75 25 65 Q15 60 20 50 Q15 40 25 35 Q20 25 30 20 Q40 15 50 20' fill='none' stroke='%23A8D8EA' stroke-width='1' opacity='0.2'/%3E%3C/svg%3E");
             pointer-events: none;
             z-index: -1;
+            animation: synapse 4s ease-in-out infinite;
+        }
+
+        @keyframes synapse {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.25; transform: scale(1.02); }
         }
 
         .container {
@@ -68,56 +74,58 @@
             flex-direction: column;
         }
 
-        /* 시작 화면 */
+        /* 시작 화면 - 타이틀 수정 */
         .start-screen {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 30px 20px;
             text-align: center;
             background: transparent;
         }
 
         .title-main {
-            font-size: 3.5em;
+            font-size: 2.8em;
             font-weight: 900;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             background: linear-gradient(135deg, #A8D8EA, #FF9AA2, #FFD93D);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: pulse 2s ease-in-out infinite;
+            line-height: 1.1;
+            white-space: nowrap;
         }
 
         .subtitle {
-            font-size: 1.2em;
+            font-size: 1.1em;
             color: #666;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             font-weight: 500;
         }
 
         .highlight {
-            font-size: 1.1em;
+            font-size: 1em;
             color: #A8D8EA;
             font-weight: bold;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .start-button {
             background: linear-gradient(135deg, #A8D8EA, #AAECD7);
             color: white;
             border: none;
-            border-radius: 25px;
-            padding: 18px 40px;
-            font-size: 1.3em;
+            border-radius: 20px;
+            padding: 16px 35px;
+            font-size: 1.2em;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 8px 25px rgba(168, 216, 234, 0.4);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             animation: bounce 2s ease-in-out infinite;
         }
 
@@ -127,21 +135,21 @@
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.03); }
         }
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-4px); }
         }
 
-        /* 게임 헤더 */
+        /* 게임 헤더 - 설정 버튼 추가 */
         .header {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(168, 216, 234, 0.3);
-            padding: 8px 12px;
+            padding: 6px 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
@@ -152,24 +160,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex: 1;
         }
 
         .home-button {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             background: linear-gradient(135deg, #A8D8EA, #AAECD7);
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             transition: all 0.3s;
             box-shadow: 0 2px 6px rgba(168, 216, 234, 0.3);
             display: flex;
@@ -189,14 +197,14 @@
         }
 
         .round-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             color: #555555;
             letter-spacing: -0.3px;
         }
 
         .problem-number {
-            font-size: 11px;
+            font-size: 10px;
             color: #888888;
         }
 
@@ -209,27 +217,46 @@
         .key-count {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             background: linear-gradient(135deg, #FFD93D, #FF9AA2);
-            padding: 6px 10px;
-            border-radius: 15px;
-            font-size: 12px;
+            padding: 5px 8px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: bold;
             color: white;
             box-shadow: 0 2px 6px rgba(255, 154, 162, 0.3);
+        }
+
+        .settings-button-header {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(168, 216, 234, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .settings-button-header:active {
+            transform: scale(0.95);
         }
 
         .progress-dots {
             display: flex;
             gap: 2px;
             background: rgba(168, 216, 234, 0.2);
-            padding: 4px 6px;
-            border-radius: 10px;
+            padding: 3px 5px;
+            border-radius: 8px;
         }
 
         .dot {
-            width: 5px;
-            height: 5px;
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
             background: #DDDDDD;
             transition: all 0.3s;
@@ -246,12 +273,12 @@
             box-shadow: 0 0 0 1px rgba(168, 216, 234, 0.3);
         }
 
-        /* 천재 타이머 */
+        /* 천재 타이머 - 더 시각적으로 */
         .genius-timer {
             background: linear-gradient(135deg, #FFD93D, #FFB347);
-            border-radius: 8px;
-            padding: 6px 8px;
-            margin: 4px 0;
+            border-radius: 6px;
+            padding: 5px 6px;
+            margin: 3px 0;
             color: white;
             box-shadow: 0 2px 6px rgba(255, 179, 71, 0.3);
         }
@@ -260,24 +287,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .genius-timer-text {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 11px;
+            gap: 3px;
+            font-size: 10px;
             font-weight: bold;
         }
 
         .genius-timer-count {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
         }
 
         .timer-bar {
-            height: 4px;
+            height: 3px;
             background: rgba(255,255,255,0.3);
             border-radius: 2px;
             overflow: hidden;
@@ -288,30 +315,36 @@
             background: white;
             transition: width 1s linear;
             border-radius: 2px;
+            animation: timerShrink 20s linear forwards;
         }
 
-        /* 메인 콘텐츠 */
+        @keyframes timerShrink {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* 메인 콘텐츠 - 여백 줄이고 글자 크게 */
         .main-content {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-radius: 20px 20px 0 0;
-            padding: 15px;
+            border-radius: 16px 16px 0 0;
+            padding: 12px;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
             flex: 1;
             margin-top: auto;
             display: flex;
             flex-direction: column;
+            gap: 8px;
         }
 
-        /* 힌트 섹션 */
+        /* 힌트 섹션 - 더 조밀하게 */
         .hints-section {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 16px;
-            padding: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 10px;
             border: 1px solid rgba(168, 216, 234, 0.3);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            margin-bottom: 12px;
             flex: 1;
             min-height: 0;
             display: flex;
@@ -321,23 +354,23 @@
         .hints-container {
             flex: 1;
             overflow-y: auto;
-            padding-right: 4px;
+            padding-right: 3px;
         }
 
         .hints-container::-webkit-scrollbar {
-            width: 3px;
+            width: 2px;
         }
 
         .hints-container::-webkit-scrollbar-thumb {
             background: rgba(168, 216, 234, 0.5);
-            border-radius: 2px;
+            border-radius: 1px;
         }
 
         .hint-item {
-            background: rgba(248, 249, 250, 0.8);
+            background: rgba(248, 249, 250, 0.9);
             border: 1px solid rgba(168, 216, 234, 0.2);
-            border-radius: 10px;
-            margin-bottom: 6px;
+            border-radius: 8px;
+            margin-bottom: 5px;
             overflow: hidden;
             transition: all 0.3s;
         }
@@ -347,40 +380,40 @@
         }
 
         .hint-content {
-            padding: 10px 12px;
+            padding: 8px 10px;
         }
 
         .hint-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .hint-left {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex: 1;
         }
 
         .hint-number {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             background: linear-gradient(135deg, #A8D8EA, #85C1E0);
-            border-radius: 6px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 900;
             box-shadow: 0 2px 4px rgba(168, 216, 234, 0.3);
             flex-shrink: 0;
         }
 
         .hint-text {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #444444;
             line-height: 1.3;
@@ -388,20 +421,20 @@
 
         .hint-controls {
             display: flex;
-            gap: 4px;
+            gap: 3px;
         }
 
         .unlock-btn {
             background: linear-gradient(135deg, #ed8936, #dd6b20);
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 6px 10px;
-            font-size: 11px;
+            border-radius: 5px;
+            padding: 5px 8px;
+            font-size: 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             transition: all 0.3s;
         }
 
@@ -412,27 +445,27 @@
         .description {
             background: rgba(170, 236, 215, 0.15);
             border: 1px solid rgba(170, 236, 215, 0.3);
-            border-radius: 6px;
-            padding: 8px 10px;
-            margin-top: 6px;
-            font-size: 12px;
-            line-height: 1.4;
+            border-radius: 5px;
+            padding: 6px 8px;
+            margin-top: 5px;
+            font-size: 11px;
+            line-height: 1.3;
             color: #555555;
         }
 
-        /* 정보 그리드 */
+        /* 정보 그리드 - 더 컴팩트하게 */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 6px;
+            margin-bottom: 8px;
         }
 
         .info-box {
-            background: rgba(248, 249, 250, 0.8);
+            background: rgba(248, 249, 250, 0.9);
             border: 1px solid rgba(168, 216, 234, 0.2);
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: 8px;
+            padding: 8px;
             text-align: center;
             transition: all 0.3s;
         }
@@ -448,15 +481,15 @@
         }
 
         .info-label {
-            font-size: 10px;
+            font-size: 9px;
             color: #888888;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             font-weight: 600;
             text-transform: uppercase;
         }
 
         .info-value {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 900;
             color: #444444;
         }
@@ -465,24 +498,24 @@
             background: linear-gradient(135deg, #FF9AA2, #FF6B81);
             color: white;
             border: none;
-            border-radius: 5px;
-            padding: 4px 8px;
-            font-size: 10px;
+            border-radius: 4px;
+            padding: 3px 6px;
+            font-size: 9px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 2px;
         }
 
-        /* 정답 입력 */
+        /* 정답 입력 - 더 크게 */
         .answer-input {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             font-size: 16px;
             font-weight: 600;
             border: 2px solid rgba(168, 216, 234, 0.5);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.95);
             color: #333333;
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -503,35 +536,35 @@
         .correct-answer {
             background: linear-gradient(135deg, rgba(168, 216, 234, 0.15), rgba(170, 236, 215, 0.15));
             border: 2px solid rgba(168, 216, 234, 0.3);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 15px;
             text-align: center;
             color: #444444;
         }
 
         .correct-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
+            font-size: 35px;
+            margin-bottom: 8px;
         }
 
         .correct-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 900;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             background: linear-gradient(135deg, #A8D8EA, #AAECD7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .correct-text {
-            font-size: 18px;
+            font-size: 16px;
             color: #444444;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 700;
         }
 
         .correct-category {
-            font-size: 14px;
+            font-size: 12px;
             color: #888888;
             font-style: italic;
         }
@@ -541,16 +574,16 @@
             background: linear-gradient(135deg, #A8D8EA, #AAECD7);
             color: white;
             border: none;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: 900;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 4px 12px rgba(168, 216, 234, 0.4);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-top: 12px;
+            margin-top: 8px;
         }
 
         .next-button:active {
@@ -559,7 +592,7 @@
 
         /* 정답보기 버튼 */
         .show-answer-section {
-            padding: 10px 0;
+            padding: 8px 0;
         }
 
         .show-answer-btn {
@@ -567,15 +600,15 @@
             background: linear-gradient(135deg, #e53e3e, #c53030);
             color: white;
             border: none;
-            border-radius: 10px;
-            padding: 12px;
-            font-size: 14px;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.3s;
         }
 
@@ -590,41 +623,41 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: linear-gradient(135deg, #A8D8EA, #AAECD7);
-            border-radius: 16px;
-            padding: 20px 25px;
+            border-radius: 14px;
+            padding: 18px 22px;
             text-align: center;
             color: white;
             z-index: 1000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             animation: popIn 0.5s ease-out;
             border: 2px solid rgba(255,255,255,0.3);
-            min-width: 250px;
+            min-width: 230px;
             max-width: 80%;
         }
 
         .popup-icon {
-            font-size: 40px;
-            margin-bottom: 8px;
+            font-size: 35px;
+            margin-bottom: 6px;
             animation: bounce 1s ease-in-out;
         }
 
         .popup-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .popup-message {
-            font-size: 14px;
+            font-size: 13px;
             opacity: 0.9;
         }
 
         .popup-reward {
-            margin-top: 8px;
-            padding: 6px 10px;
+            margin-top: 6px;
+            padding: 5px 8px;
             background: rgba(255,255,255,0.2);
-            border-radius: 8px;
-            font-size: 12px;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: bold;
         }
 
@@ -634,41 +667,21 @@
             100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
-        /* 설정 버튼 */
-        .settings-button {
-            position: fixed;
-            bottom: 20px;
-            right: 12px;
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(168, 216, 234, 0.4);
-            z-index: 99;
-            border: 1px solid rgba(168, 216, 234, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 20px;
-        }
-
+        /* 음악 패널 - 하단 고정 제거 */
         .music-panel {
             position: fixed;
-            bottom: 75px;
+            top: 50px;
             right: 12px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 12px;
-            border-radius: 16px;
+            padding: 10px;
+            border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.15);
             z-index: 98;
             border: 1px solid rgba(168, 216, 234, 0.3);
             display: none;
-            min-width: 160px;
+            min-width: 140px;
         }
 
         .music-panel.active {
@@ -678,16 +691,16 @@
         .music-controls {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .mute-button {
-            padding: 8px;
+            padding: 6px;
             background: linear-gradient(135deg, #A8D8EA, #AAECD7);
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 12px;
+            border-radius: 8px;
+            font-size: 11px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
@@ -703,21 +716,21 @@
 
         /* 라운드 맵 */
         .round-map {
-            padding: 20px;
+            padding: 15px;
         }
 
         .round-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-top: 20px;
+            gap: 8px;
+            margin-top: 15px;
         }
 
         .round-button {
             aspect-ratio: 1;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 14px;
             font-weight: 900;
             cursor: pointer;
             transition: all 0.3s;
@@ -753,7 +766,7 @@
     <div id="app"></div>
 
     <script>
-        // 오디오 관리자
+        // 오디오 관리자 - 실제 파일명으로 업데이트
         const AudioManager = {
             bgm1: null,
             bgm2: null,
@@ -767,14 +780,15 @@
             isAudioUnlocked: false,
             isPlaying: false,
             isMuted: false,
+            currentBGMIndex: 0,
 
             async init() {
                 try {
-                    // 배경음악 로드
+                    // 배경음악 로드 - 실제 파일명
                     this.bgm1 = new Audio('bgm1.mp3');
                     this.bgm2 = new Audio('bgm2.mp3');
                     
-                    // 효과음 로드
+                    // 효과음 로드 - 실제 파일명
                     this.correctSound = new Audio('correct.mp3');
                     this.wrongSound = new Audio('wrong.mp3');
                     this.hintSound = new Audio('hint.mp3');
@@ -819,9 +833,21 @@
                 try {
                     await this.currentBGM.play();
                     this.isPlaying = true;
+                    
+                    // BGM 교체 로직
+                    this.currentBGM.addEventListener('ended', () => {
+                        this.switchBGM();
+                    });
+                    
                 } catch (error) {
                     console.log('BGM 재생 실패');
                 }
+            },
+
+            switchBGM() {
+                this.currentBGMIndex = (this.currentBGMIndex + 1) % 2;
+                this.currentBGM = this.currentBGMIndex === 0 ? this.bgm1 : this.bgm2;
+                this.startBGM();
             },
 
             async playSound(soundType) {
@@ -889,7 +915,7 @@
             const html = `
                 <div class="container">
                     <div class="start-screen">
-                        <div class="title-main">⚡ 연상천재 ⚡</div>
+                        <div class="title-main">⚡연상천재⚡</div>
                         <div class="subtitle">뇌가 터질 것 같은 쾌감</div>
                         <div class="highlight">당신은 IQ 140 천재입니까?</div>
                         <button class="start-button" onclick="AudioManager.playSound('click'); showRoundMap()">
@@ -918,13 +944,14 @@
                             </div>
                             <div class="header-right">
                                 <div class="key-count">🔑 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
                             </div>
                         </div>
                     </div>
                     
                     <div class="main-content">
                         <div class="round-map">
-                            <h2 style="text-align: center; margin-bottom: 20px; color: #555;">라운드 선택</h2>
+                            <h2 style="text-align: center; margin-bottom: 15px; color: #555; font-size: 16px;">라운드 선택</h2>
                             <div class="round-grid">
                                 ${Array.from({ length: 100 }, (_, i) => {
                                     const roundNumber = i + 1;
@@ -947,7 +974,6 @@
                         </div>
                     </div>
                     
-                    <button class="settings-button" onclick="toggleMusicPanel()">⚙️</button>
                     <div class="music-panel"></div>
                 </div>
             `;
@@ -1023,6 +1049,7 @@
                             </div>
                             <div class="header-right">
                                 <div class="key-count">🔑 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
                                 <div class="progress-dots">
                                     ${Array.from({ length: 6 }, (_, i) => `
                                         <div class="dot ${i < gameState.currentProblem ? 'completed' : i === gameState.currentProblem ? 'current' : ''}"></div>
@@ -1079,7 +1106,7 @@
                                                     </div>
                                                 ` : ''}
                                                 ${isUnlocked && state.canShowDescriptions && !showDescription && !state.isCorrect ? `
-                                                    <div class="hint-controls" style="margin-top: 6px;">
+                                                    <div class="hint-controls" style="margin-top: 4px;">
                                                         <button class="unlock-btn" onclick="unlockDescription(${index})">
                                                             설명보기 🔓1
                                                         </button>
@@ -1099,7 +1126,7 @@
                                     <button class="show-answer-btn" onclick="showAnswer()">
                                         정답보기
                                         <span>🔓3</span>
-                                        <span>📺2분</span>
+                                        <span>📺</span>
                                     </button>
                                 </div>
                             ` : ''}
@@ -1142,6 +1169,7 @@
                                     autocomplete="off"
                                     oninput="updateUserAnswer(this.value)"
                                     onkeydown="if(event.key === 'Enter') checkAnswer(this.value)"
+                                    autofocus
                                 />
                             ` : `
                                 <div class="correct-answer">
@@ -1157,13 +1185,18 @@
                         </div>
                     </div>
                     
-                    <button class="settings-button" onclick="toggleMusicPanel()">⚙️</button>
                     <div class="music-panel"></div>
                 </div>
             `;
             
             document.getElementById('app').innerHTML = html;
             updateMusicPanel();
+            
+            // 입력창에 포커스
+            const input = document.querySelector('.answer-input');
+            if (input) {
+                input.focus();
+            }
         }
 
         // 게임 기능들
@@ -1185,6 +1218,13 @@
                         state.unlockedHints.push(2);
                     }
                     state.showCharacterCount = true;
+                    
+                    // 힌트 6 해금 시 분류와 초성도 자동 해금
+                    if (state.unlockedHints.includes(5)) {
+                        state.showCategory = true;
+                        state.showChosung = true;
+                    }
+                    
                     renderGame();
                     clearInterval(state.timerInterval);
                 }
@@ -1204,6 +1244,12 @@
                     state.canShowDescriptions = true;
                 }
                 
+                // 힌트 6 해금 시 분류와 초성 자동 해금
+                if (hintIndex === 5) {
+                    state.showCategory = true;
+                    state.showChosung = true;
+                }
+                
                 renderGame();
             } else {
                 alert('열쇠가 부족합니다!');
@@ -1214,12 +1260,18 @@
             const state = gameState.currentProblemState;
             if (state.unlockedHints.includes(hintIndex)) return;
             
-            if (confirm('30초 광고를 시청하시겠습니까?')) {
+            if (confirm('광고를 시청하시겠습니까?')) {
                 state.unlockedHints.push(hintIndex);
                 AudioManager.playSound('hint');
                 
                 if (hintIndex === 3 && !state.canShowDescriptions) {
                     state.canShowDescriptions = true;
+                }
+                
+                // 힌트 6 해금 시 분류와 초성 자동 해금
+                if (hintIndex === 5) {
+                    state.showCategory = true;
+                    state.showChosung = true;
                 }
                 
                 renderGame();
@@ -1243,7 +1295,7 @@
             const state = gameState.currentProblemState;
             if (state.showDescriptions[descriptionIndex]) return;
             
-            if (confirm('30초 광고를 시청하시겠습니까?')) {
+            if (confirm('광고를 시청하시겠습니까?')) {
                 state.showDescriptions[descriptionIndex] = true;
                 renderGame();
             }
@@ -1280,7 +1332,7 @@
                 gameState.keys -= 3;
                 showAnswerConfirm();
             } else {
-                if (confirm('열쇠가 부족합니다. 2분 광고를 시청하시겠습니까?')) {
+                if (confirm('열쇠가 부족합니다. 광고를 시청하시겠습니까?')) {
                     showAnswerConfirm();
                 }
             }
@@ -1321,13 +1373,19 @@
             
             if (correctAnswers.includes(normalizedAnswer)) {
                 const usedHints = state.unlockedHints.length;
+                let soundType = 'correct';
+                
+                if (usedHints <= 2) {
+                    soundType = 'genius';
+                }
+                
                 const keyReward = showCongratulationPopup(usedHints, false);
                 
                 if (keyReward > 0) {
                     gameState.keys += keyReward;
                 }
                 
-                AudioManager.playSound('correct');
+                AudioManager.playSound(soundType);
                 state.isCorrect = true;
                 state.unlockedHints = [0,1,2,3,4,5];
                 state.showDescriptions = [true,true,true,true,true,true];
@@ -1396,6 +1454,7 @@
                             </div>
                             <div class="header-right">
                                 <div class="key-count">🔑 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
                             </div>
                         </div>
                     </div>
@@ -1408,7 +1467,7 @@
                             <div class="correct-category">다음 라운드에 도전해보세요</div>
                         </div>
                         
-                        <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 10px;">
+                        <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px;">
                             🚀 다음 라운드
                         </button>
                         <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #888, #666);">
@@ -1506,10 +1565,12 @@
         // 음악 패널
         function toggleMusicPanel() {
             const panel = document.querySelector('.music-panel');
-            const button = document.querySelector('.settings-button');
+            const buttons = document.querySelectorAll('.settings-button-header');
             if (panel) {
                 panel.classList.toggle('active');
-                button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
+                buttons.forEach(button => {
+                    button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
+                });
                 updateMusicPanel();
             }
         }
@@ -1518,7 +1579,7 @@
             const panel = document.querySelector('.music-panel');
             if (panel) {
                 panel.innerHTML = `
-                    <div style="margin-bottom: 8px; font-weight: bold;">🎵 음악 설정</div>
+                    <div style="margin-bottom: 6px; font-weight: bold; font-size: 12px;">🎵 음악 설정</div>
                     <div class="music-controls">
                         <button class="mute-button ${AudioManager.isMuted ? 'muted' : ''}" onclick="toggleMusicMute()">
                             ${AudioManager.isMuted ? '🔊 소리 켜기' : '🔇 음소거'}
