@@ -1698,35 +1698,43 @@
             }
         }
 
-        function nextProblem() {
-            AudioManager.playSound('click');
-            
-            if (gameState.currentProblem < 5) {
-                gameState.currentProblem++;
-                gameState.currentProblemState = {
-                    unlockedHints: [0, 1], // 처음 2개 힌트만 해금
-                    showDescriptions: [false, false, false, false, false, false],
-                    canShowDescriptions: false,
-                    showCharacterCount: false,
-                    showCategory: false,
-                    showChosung: false,
-                    userAnswer: '',
-                    isCorrect: false,
-                    geniusTimer: 20,
-                    geniusTimerActive: true,
-                    timerInterval: null
-                };
-                startGeniusTimer();
-                renderGame();
-                saveGameState();
-            } else {
-                gameState.completedRounds.push(gameState.currentRound);
-                gameState.keys += 1;
-                AudioManager.playSound('complete');
-                showRoundComplete();
-                saveGameState();
+function nextProblem() {
+    AudioManager.playSound('click');
+    
+    if (gameState.currentProblem < 5) {
+        gameState.currentProblem++;
+        gameState.currentProblemState = {
+            unlockedHints: [0, 1], // 처음 2개 힌트만 해금
+            showDescriptions: [false, false, false, false, false, false],
+            canShowDescriptions: false,
+            showCharacterCount: false,
+            showCategory: false,
+            showChosung: false,
+            userAnswer: '',
+            isCorrect: false,
+            geniusTimer: 13,
+            geniusTimerActive: true,
+            timerInterval: null
+        };
+        startGeniusTimer();
+        renderGame();
+        saveGameState();
+        
+        // 🔥 스크롤 맨 위로 올리기 추가
+        setTimeout(() => {
+            const hintsContainer = document.querySelector('.hints-container');
+            if (hintsContainer) {
+                hintsContainer.scrollTop = 0;
             }
-        }
+        }, 100);
+    } else {
+        gameState.completedRounds.push(gameState.currentRound);
+        gameState.keys += 1;
+        AudioManager.playSound('complete');
+        showRoundComplete();
+        saveGameState();
+    }
+}
 
         function showRoundComplete() {
             const html = `
