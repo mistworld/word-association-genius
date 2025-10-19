@@ -1214,8 +1214,14 @@
                 
                 // 해당 라운드의 문제들 선택 (한 라운드에 6문제)
                 const problemsPerRound = 6;
-                const startIndex = ((roundNumber - 1) % 10) * problemsPerRound;
-                const roundProblems = allProblems.slice(startIndex, startIndex + problemsPerRound);
+               const startIndex = (roundNumber - 1) * problemsPerRound;
+const roundProblems = allProblems.slice(startIndex, startIndex + problemsPerRound);
+
+// 문제가 부족할 경우 처리
+if (startIndex >= allProblems.length) {
+    showAllRoundsCompleted();
+    return;
+}
                 
                 console.log(`라운드 ${roundNumber} 문제:`, roundProblems);
                 
