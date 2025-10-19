@@ -376,7 +376,7 @@
         .timer-progress {
             height: 100%;
             background: #2d1b69;
-            transition: width 1s linear;
+            transition: width 0.65s linear;
             border-radius: 2px;
         }
 
@@ -1237,7 +1237,7 @@
                     showChosung: false,
                     userAnswer: '',
                     isCorrect: false,
-                    geniusTimer: 20,
+                    geniusTimer: 13,
                     geniusTimerActive: true,
                     timerInterval: null
                 };
@@ -1295,7 +1295,7 @@
                                     <div class="genius-timer-count">${state.geniusTimer}초</div>
                                 </div>
                                 <div class="timer-bar">
-                                    <div class="timer-progress" style="width: ${(state.geniusTimer / 20) * 100}%"></div>
+                                    <div class="timer-progress" style="width: ${(state.geniusTimer / 13) * 100}%"></div>
                                 </div>
                             </div>
                         ` : ''}
