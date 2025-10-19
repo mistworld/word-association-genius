@@ -1453,7 +1453,7 @@
                 // 타이머 업데이트
                 const timerProgress = document.querySelector('.timer-progress');
                 if (timerProgress) {
-                    timerProgress.style.width = `${(state.geniusTimer / 20) * 100}%`;
+                    timerProgress.style.width = `${(state.geniusTimer / 13) * 100}%`;
                 }
                 
                 const timerCount = document.querySelector('.genius-timer-count');
@@ -1767,87 +1767,71 @@
             document.getElementById('app').innerHTML = html;
         }
 
-        function showCongratulationPopup(hintsUsed, usedChosung) {
-            let popupData = {};
-            
-            if (usedChosung) {
-                popupData = {
-                    title: "초성이 살렸다.ㅠㅠ",
-                    message: "다음엔 초성 없이 도전!",
-                    type: "chosung",
-                    icon: "🔤",
-                    reward: 0
-                };
-            } else {
-                switch(hintsUsed) {
-                    case 2:
-                        popupData = {
-                            title: "시냅스 폭발!",
-                            message: "와우, 천재셨군요!",
-                            type: "genius",
-                            icon: "🧠",
-                            reward: 1
-                        };
-                        break;
-                    case 3:
-                        popupData = {
-                            title: "날카로운데요?",
-                            message: "뛰어난 추리력이에요!",
-                            type: "sharp",
-                            icon: "🔥",
-                            reward: 0
-                        };
-                        break;
-                    case 4:
-                        popupData = {
-                            title: "실력자 인정!",
-                            message: "잘 하셨어요!",
-                            type: "skilled",
-                            icon: "👍",
-                            reward: 0
-                        };
-                        break;
-                    case 5:
-                        popupData = {
-                            title: "집중합시다!",
-                            message: "조금만 더 집중해보세요!",
-                            type: "focus",
-                            icon: "💪",
-                            reward: 0
-                        };
-                        break;
-                    default:
-                        popupData = {
-                            title: "혹시... 졸았나요?",
-                            message: "다음 문제는 화이팅!",
-                            type: "sleepy",
-                            icon: "😴",
-                            reward: 0
-                        };
-                }
-            }
-            
-            const popupHtml = `
-                <div class="congratulation-popup ${popupData.type}">
-                    <div class="popup-icon">${popupData.icon}</div>
-                    <div class="popup-title">${popupData.title}</div>
-                    <div class="popup-message">${popupData.message}</div>
-                    ${popupData.reward > 0 ? `
-                        <div class="popup-reward">🔑 +${popupData.reward} 열쇠 획득!</div>
-                    ` : ''}
-                </div>
-            `;
-            
-            document.body.insertAdjacentHTML('beforeend', popupHtml);
-            
-            setTimeout(() => {
-                const popup = document.querySelector('.congratulation-popup');
-                if (popup) {
-                    popup.remove();
-                }
-            }, 2000);
-            
-            return popupData.reward;
+function showCongratulationPopup(hintsUsed, usedChosung) {
+    let popupData = {};
+    
+    switch(hintsUsed) {
+        case 2:
+            popupData = {
+                title: "와우! 천재셨군요!",
+                type: "genius", 
+                icon: "💡",
+                reward: 1
+            };
+            break;
+        case 3:
+            popupData = {
+                title: "제법인데요?",
+                type: "sharp",
+                icon: "😏", 
+                reward: 0
+            };
+            break;
+        case 4:
+            popupData = {
+                title: "쏘쏘~?",
+                type: "focus",
+                icon: "🤪",
+                reward: 0
+            };
+            break;
+        case 5:
+            popupData = {
+                title: "피곤하신가봐요",
+                type: "sleepy", 
+                icon: "😴",
+                reward: 0
+            };
+            break;
+        default:
+            popupData = {
+                title: "할많하않",
+                type: "chosung",
+                icon: "💨",
+                reward: 0
+            };
+    } 
+    
+    const popupHtml = `
+        <div class="congratulation-popup ${popupData.type}">
+            <div class="popup-icon">${popupData.icon}</div>
+            <div class="popup-title">${popupData.title}</div>
+            ${popupData.reward > 0 ? `
+                <div class="popup-reward">🔑 +${popupData.reward} 열쇠 획득!</div>
+            ` : ''}
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', popupHtml);
+    
+    setTimeout(() => {
+        const popup = document.querySelector('.congratulation-popup');
+        if (popup) {
+            popup.remove();
+        }
+    }, 2000);
+    
+    return popupData.reward;
         }
 
         // 음악 패널 - UX 개선
