@@ -1461,8 +1461,15 @@ function renderGame() {
             if (musicPanel && musicPanel.classList.contains('active')) {
                 AudioManager.updateMusicControls();
             }
+            
+            // 🔥 스크롤 맨 위로 올리기 추가
+            setTimeout(() => {
+                const hintsContainer = document.querySelector('.hints-container');
+                if (hintsContainer) {
+                    hintsContainer.scrollTop = 0;
+                }
+            }, 100);
         }
-
         // 천재 타이머 시작
         function startGeniusTimer() {
             const state = gameState.currentProblemState;
