@@ -909,6 +909,37 @@
             }
         }
 
+        // 스크롤 위치 관리자
+        const ScrollManager = {
+            lastScrollPosition: 0,
+            shouldRestoreScroll: false,
+            
+            saveScrollPosition() {
+                const hintsContainer = document.querySelector('.hints-container');
+                if (hintsContainer) {
+                    this.lastScrollPosition = hintsContainer.scrollTop;
+                    this.shouldRestoreScroll = true;
+                }
+            },
+            
+            restoreScrollPosition() {
+                if (this.shouldRestoreScroll) {
+                    const hintsContainer = document.querySelector('.hints-container');
+                    if (hintsContainer) {
+                        setTimeout(() => {
+                            hintsContainer.scrollTop = this.lastScrollPosition;
+                            this.shouldRestoreScroll = false;
+                        }, 50);
+                    }
+                }
+            },
+            
+            reset() {
+                this.lastScrollPosition = 0;
+                this.shouldRestoreScroll = false;
+            }
+        };
+
         // 오디오 관리자 - BGM 교차 재생 수정
         const AudioManager = {
             bgm1: null,
@@ -1251,7 +1282,7 @@ async function startRound(roundNumber) {
         };
         
         startGeniusTimer();
-        renderGame();
+        renderGame(true); // 새 문제 시작 시 스크롤 리셋
         saveGameState();
         
     } catch (error) {
@@ -1280,10 +1311,15 @@ function showAllRoundsCompleted() {
 }
 
 // 게임 화면 렌더링 - 입력 버튼 추가
-function renderGame() {
+function renderGame(shouldResetScroll = false) {
     if (!gameState.currentProblemState || gameState.problems.length === 0) {
         showRoundMap();
         return;
+    }
+
+    // 스크롤 위치 저장 (스크롤 유지해야 하는 경우)
+    if (!shouldResetScroll) {
+        ScrollManager.saveScrollPosition();
     }
 
             const problem = gameState.problems[gameState.currentProblem];
@@ -1462,20 +1498,20 @@ function renderGame() {
                 AudioManager.updateMusicControls();
             }
             
-            // 🔥 모바일 전용 스크롤 올리기
+            // 스크롤 복원 또는 초기화
             setTimeout(() => {
                 const hintsContainer = document.querySelector('.hints-container');
                 if (hintsContainer) {
-                    // 여러 방법 동시에 사용
-                    hintsContainer.scrollTop = 0;
-                    hintsContainer.scrollTo(0, 0);
-                    
-                    // 모바일 뷰포트 강제 갱신
-                    hintsContainer.style.display = 'none';
-                    hintsContainer.offsetHeight; // 리플로우 강제
-                    hintsContainer.style.display = 'block';
+                    if (shouldResetScroll) {
+                        // 새 문제 시작 시 맨 위로 스크롤
+                        hintsContainer.scrollTop = 0;
+                        ScrollManager.reset();
+                    } else {
+                        // 기존 스크롤 위치 복원
+                        ScrollManager.restoreScrollPosition();
+                    }
                 }
-            }, 300);
+            }, 100);
         }
         // 천재 타이머 시작
         function startGeniusTimer() {
@@ -1555,7 +1591,7 @@ function renderGame() {
                     state.showChosung = true;
                 }
                 
-                renderGame();
+                renderGame(); // 스크롤 유지
                 saveGameState();
             } else {
                 alert('열쇠가 부족합니다!');
@@ -1593,7 +1629,7 @@ function renderGame() {
                     state.showChosung = true;
                 }
                 
-                renderGame();
+                renderGame(); // 스크롤 유지
                 saveGameState();
             }
         }
@@ -1605,7 +1641,7 @@ function renderGame() {
             if (gameState.keys > 0) {
                 gameState.keys--;
                 state.showDescriptions[descriptionIndex] = true;
-                renderGame();
+                renderGame(); // 스크롤 유지
                 saveGameState();
             } else {
                 alert('열쇠가 부족합니다!');
@@ -1618,7 +1654,7 @@ function renderGame() {
             
             if (confirm('광고를 시청하시겠습니까?')) {
                 state.showDescriptions[descriptionIndex] = true;
-                renderGame();
+                renderGame(); // 스크롤 유지
                 saveGameState();
             }
         }
@@ -1630,7 +1666,7 @@ function renderGame() {
             if (gameState.keys > 0) {
                 gameState.keys--;
                 state.showCategory = true;
-                renderGame();
+                renderGame(); // 스크롤 유지
                 saveGameState();
             } else {
                 alert('열쇠가 부족합니다!');
@@ -1644,7 +1680,7 @@ function renderGame() {
             if (gameState.keys > 0) {
                 gameState.keys--;
                 state.showChosung = true;
-                renderGame();
+                renderGame(); // 스크롤 유지
                 saveGameState();
             } else {
                 alert('열쇠가 부족합니다!');
@@ -1679,7 +1715,7 @@ function renderGame() {
                 clearInterval(state.timerInterval);
             }
             
-            renderGame();
+            renderGame(); // 스크롤 유지
             saveGameState();
         }
 
@@ -1723,7 +1759,7 @@ function renderGame() {
                     clearInterval(state.timerInterval);
                 }
                 
-                renderGame();
+                renderGame(); // 스크롤 유지
                 saveGameState();
             } else {
                 AudioManager.playSound('wrong');
@@ -1744,7 +1780,7 @@ function nextProblem() {
     if (gameState.currentProblem < 5) {
         gameState.currentProblem++;
         gameState.currentProblemState = {
-            unlockedHints: [0, 1], // 처음 2개 힌트만 해금
+            unlockedHints: [0, 1],
             showDescriptions: [false, false, false, false, false, false],
             canShowDescriptions: false,
             showCharacterCount: false,
@@ -1757,16 +1793,8 @@ function nextProblem() {
             timerInterval: null
         };
         startGeniusTimer();
-        renderGame();
+        renderGame(true); // 새 문제 시작 시 스크롤 리셋
         saveGameState();
-        
-        // 🔥 스크롤 맨 위로 올리기 추가
-        setTimeout(() => {
-            const hintsContainer = document.querySelector('.hints-container');
-            if (hintsContainer) {
-                hintsContainer.scrollTop = 0;
-            }
-        }, 100);
     } else {
         gameState.completedRounds.push(gameState.currentRound);
         gameState.keys += 1;
