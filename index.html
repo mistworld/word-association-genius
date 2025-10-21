@@ -1164,23 +1164,24 @@
                                 ${hasSave ? '이어하기 가능!' : '라운드 선택'}
                             </h2>
                             <div class="round-grid">
-                                ${Array.from({ length: 100 }, (_, i) => {
-                                    const roundNumber = i + 1;
-                                    const isCompleted = gameState.completedRounds.includes(roundNumber);
-                                    const isCurrent = roundNumber === nextRound;
-                                    const isLocked = roundNumber > nextRound;
-                                    
-                                    return `
-                                        <button 
-                                            class="round-button ${isCompleted ? 'completed' : isCurrent ? 'current' : isLocked ? 'locked' : 'current'}"
-                                            onclick="${isLocked ? '' : `startRound(${roundNumber})`}"
-                                            ${isLocked ? 'disabled' : ''}
-                                        >
-                                            ${roundNumber}
-                                            ${isCompleted ? '✅' : isCurrent ? '⭐' : isLocked ? '🔒' : '🎯'}
-                                        </button>
-                                    `;
-                                }).join('')}
+                               ${Array.from({ length: 100 }, (_, i) => {
+    const roundNumber = i + 1;
+    const isCompleted = gameState.completedRounds.includes(roundNumber);
+    const maxCompleted = gameState.completedRounds.length > 0 ? Math.max(...gameState.completedRounds) : 0;
+    const isCurrent = roundNumber === maxCompleted + 1;
+    const isLocked = roundNumber > maxCompleted + 1 && !isCompleted;
+    
+    return `
+        <button 
+            class="round-button ${isCompleted ? 'completed' : isCurrent ? 'current' : isLocked ? 'locked' : 'current'}"
+            onclick="${isLocked ? '' : `startRound(${roundNumber})`}"
+            ${isLocked ? 'disabled' : ''}
+        >
+            ${roundNumber}
+            ${isCompleted ? '✅' : isCurrent ? '⭐' : isLocked ? '🔒' : '🎯'}
+        </button>
+    `;
+}).join('')}
                             </div>
                         </div>
                     </div>
@@ -1197,6 +1198,69 @@
 // 라운드 시작 - JSON 파일 로드 문제 해결
 async function startRound(roundNumber) {
     AudioManager.playSound('click');
+    
+    try {
+        const fileNumber = Math.ceil(roundNumber / 10);
+        console.log(`파일 로드 시도: problems_${fileNumber}.json, 라운드: ${roundNumber}`);
+        
+        // JSON 파일 로드 시도
+        const response = await fetch(`problems_${fileNumber}.json`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const allProblems = await response.json();
+        console.log('로드된 문제 수:', allProblems.length);
+        
+        // 해당 라운드의 문제들 선택 (한 라운드에 6문제)
+        const problemsPerRound = 6;
+        const startIndex = (roundNumber - 1) * problemsPerRound;
+        
+        // 파일 내에서의 실제 인덱스 계산
+        const fileStartIndex = startIndex - ((fileNumber - 1) * 60);
+        const roundProblems = allProblems.slice(fileStartIndex, fileStartIndex + problemsPerRound);
+
+        console.log(`계산: 전체시작=${startIndex}, 파일내시작=${fileStartIndex}, 문제수=${roundProblems.length}`);
+        
+        // 문제가 부족할 경우 처리
+        if (roundProblems.length === 0) {
+            showAllRoundsCompleted();
+            return;
+        }
+        
+        console.log(`라운드 ${roundNumber} 문제:`, roundProblems);
+        
+        gameState.currentRound = roundNumber;
+        gameState.currentProblem = 0;
+        gameState.problems = roundProblems;
+        
+        // 새 문제 상태 초기화
+        gameState.currentProblemState = {
+            unlockedHints: [0, 1], // 처음 2개 힌트만 해금
+            showDescriptions: [false, false, false, false, false, false],
+            canShowDescriptions: false,
+            showCharacterCount: false,
+            showCategory: false,
+            showChosung: false,
+            userAnswer: '',
+            isCorrect: false,
+            geniusTimer: 13,
+            geniusTimerActive: true,
+            timerInterval: null
+        };
+        
+        startGeniusTimer();
+        renderGame();
+        saveGameState();
+        
+    } catch (error) {
+        console.error('라운드 시작 실패:', error);
+        alert('문제를 불러오는데 실패했습니다.\n\n에러: ' + error.message);
+        showRoundMap();
+    }
+}
+
 // 모든 라운드 완료 시 표시할 함수 추가
 function showAllRoundsCompleted() {
     const html = `
@@ -1214,14 +1278,13 @@ function showAllRoundsCompleted() {
     `;
     document.getElementById('app').innerHTML = html;
 }
- 
 
-        // 게임 화면 렌더링 - 입력 버튼 추가
-        function renderGame() {
-            if (!gameState.currentProblemState || gameState.problems.length === 0) {
-                showRoundMap();
-                return;
-            }
+// 게임 화면 렌더링 - 입력 버튼 추가
+function renderGame() {
+    if (!gameState.currentProblemState || gameState.problems.length === 0) {
+        showRoundMap();
+        return;
+    }
 
             const problem = gameState.problems[gameState.currentProblem];
             const state = gameState.currentProblemState;
