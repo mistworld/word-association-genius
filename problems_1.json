@@ -1,4 +1,4 @@
-window.problems_1 = [
+[
     {
         "answer": ["팬더", "팬더곰", "판다"],
         "category": "동물",
