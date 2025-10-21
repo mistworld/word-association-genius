@@ -1462,13 +1462,20 @@ function renderGame() {
                 AudioManager.updateMusicControls();
             }
             
-            // 🔥 스크롤 맨 위로 올리기 추가
+            // 🔥 모바일 전용 스크롤 올리기
             setTimeout(() => {
                 const hintsContainer = document.querySelector('.hints-container');
                 if (hintsContainer) {
+                    // 여러 방법 동시에 사용
                     hintsContainer.scrollTop = 0;
+                    hintsContainer.scrollTo(0, 0);
+                    
+                    // 모바일 뷰포트 강제 갱신
+                    hintsContainer.style.display = 'none';
+                    hintsContainer.offsetHeight; // 리플로우 강제
+                    hintsContainer.style.display = 'block';
                 }
-            }, 100);
+            }, 300);
         }
         // 천재 타이머 시작
         function startGeniusTimer() {
