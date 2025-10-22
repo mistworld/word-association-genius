@@ -1234,7 +1234,6 @@ async function startRound(roundNumber) {
         const fileNumber = Math.ceil(roundNumber / 10);
         console.log(`파일 로드 시도: problems_${fileNumber}.json, 라운드: ${roundNumber}`);
         
-        // JSON 파일 로드 시도
         const response = await fetch(`problems_${fileNumber}.json`);
         
         if (!response.ok) {
@@ -1244,17 +1243,13 @@ async function startRound(roundNumber) {
         const allProblems = await response.json();
         console.log('로드된 문제 수:', allProblems.length);
         
-        // 해당 라운드의 문제들 선택 (한 라운드에 6문제)
         const problemsPerRound = 6;
         const startIndex = (roundNumber - 1) * problemsPerRound;
-        
-        // 파일 내에서의 실제 인덱스 계산
         const fileStartIndex = startIndex - ((fileNumber - 1) * 60);
         const roundProblems = allProblems.slice(fileStartIndex, fileStartIndex + problemsPerRound);
 
         console.log(`계산: 전체시작=${startIndex}, 파일내시작=${fileStartIndex}, 문제수=${roundProblems.length}`);
         
-        // 문제가 부족할 경우 처리
         if (roundProblems.length === 0) {
             showAllRoundsCompleted();
             return;
@@ -1266,9 +1261,8 @@ async function startRound(roundNumber) {
         gameState.currentProblem = 0;
         gameState.problems = roundProblems;
         
-        // 새 문제 상태 초기화
         gameState.currentProblemState = {
-            unlockedHints: [0, 1], // 처음 2개 힌트만 해금
+            unlockedHints: [0, 1],
             showDescriptions: [false, false, false, false, false, false],
             canShowDescriptions: false,
             showCharacterCount: false,
@@ -1282,7 +1276,18 @@ async function startRound(roundNumber) {
         };
         
         startGeniusTimer();
-        renderGame(true); // 새 문제 시작 시 스크롤 리셋
+        
+        // 🔥 수정된 부분: renderGame 함수 호출 후 스크롤 리셋
+        renderGame(true);
+        
+        // 🔥 추가: 스크롤 강제 리셋
+        setTimeout(() => {
+            const hintsContainer = document.querySelector('.hints-container');
+            if (hintsContainer) {
+                hintsContainer.scrollTop = 0;
+            }
+        }, 100);
+        
         saveGameState();
         
     } catch (error) {
@@ -1793,7 +1798,18 @@ function nextProblem() {
             timerInterval: null
         };
         startGeniusTimer();
-        renderGame(true);  // ✅ true로 수정!
+        
+        // 🔥 수정된 부분: renderGame 함수 호출 후 스크롤 리셋
+        renderGame(true);
+        
+        // 🔥 추가: 스크롤 강제 리셋
+        setTimeout(() => {
+            const hintsContainer = document.querySelector('.hints-container');
+            if (hintsContainer) {
+                hintsContainer.scrollTop = 0;
+            }
+        }, 100);
+        
         saveGameState();
     } else {
         gameState.completedRounds.push(gameState.currentRound);
@@ -1803,7 +1819,6 @@ function nextProblem() {
         saveGameState();
     }
 }
-
         function showRoundComplete() {
             const html = `
                 <div class="container">
