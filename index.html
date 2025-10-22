@@ -909,7 +909,7 @@
             }
         }
 
-        // 스크롤 위치 관리자
+        // 스크롤 관리자 - 강력한 버전
         const ScrollManager = {
             lastScrollPosition: 0,
             shouldRestoreScroll: false,
@@ -926,12 +926,25 @@
                 if (this.shouldRestoreScroll) {
                     const hintsContainer = document.querySelector('.hints-container');
                     if (hintsContainer) {
-                        setTimeout(() => {
-                            hintsContainer.scrollTop = this.lastScrollPosition;
-                            this.shouldRestoreScroll = false;
-                        }, 50);
+                        hintsContainer.scrollTop = this.lastScrollPosition;
+                        this.shouldRestoreScroll = false;
                     }
                 }
+            },
+            
+            resetToTop() {
+                const hintsContainer = document.querySelector('.hints-container');
+                if (hintsContainer) {
+                    hintsContainer.scrollTop = 0;
+                    // 여러번 시도해서 확실히 맨 위로
+                    setTimeout(() => {
+                        hintsContainer.scrollTop = 0;
+                        requestAnimationFrame(() => {
+                            hintsContainer.scrollTop = 0;
+                        });
+                    }, 50);
+                }
+                this.shouldRestoreScroll = false;
             },
             
             reset() {
@@ -940,7 +953,7 @@
             }
         };
 
-        // 오디오 관리자 - BGM 교차 재생 수정
+        // 오디오 관리자
         const AudioManager = {
             bgm1: null,
             bgm2: null,
@@ -959,25 +972,21 @@
 
             async init() {
                 try {
-                    // 배경음악 로드
                     this.bgm1 = new Audio('bgm1.mp3');
                     this.bgm2 = new Audio('bgm2.mp3');
                     
-                    // 효과음 로드
                     this.correctSound = new Audio('correct.mp3');
                     this.wrongSound = new Audio('wrong.mp3');
                     this.hintSound = new Audio('hint.mp3');
                     this.completeSound = new Audio('complete.mp3');
                     this.geniusSound = new Audio('genius.mp3');
                     
-                    // 배경음악 설정
                     [this.bgm1, this.bgm2].forEach(bgm => {
-                        bgm.loop = false; // 교차 재생을 위해 loop false
+                        bgm.loop = false;
                         bgm.volume = 0.4;
                         bgm.preload = 'auto';
                     });
                     
-                    // 효과음 설정
                     [this.correctSound, this.wrongSound, this.hintSound, 
                      this.completeSound, this.geniusSound].forEach(sound => {
                         sound.volume = 0.6;
@@ -987,7 +996,6 @@
                     this.currentBGM = this.bgm1;
                     this.isAudioUnlocked = true;
                     
-                    // 설정 로드
                     this.loadSettings();
                     
                     if (this.bgmEnabled) {
@@ -1006,7 +1014,6 @@
                     await this.currentBGM.play();
                     this.isPlaying = true;
                     
-                    // BGM 종료 시 다음 BGM으로 전환
                     this.currentBGM.onended = () => {
                         this.switchBGM();
                     };
@@ -1040,9 +1047,7 @@
                     try {
                         sound.currentTime = 0;
                         await sound.play();
-                    } catch (error) {
-                        // 효과음 재생 실패해도 게임 진행
-                    }
+                    } catch (error) {}
                 }
             },
 
@@ -1058,7 +1063,6 @@
                 }
                 this.saveSettings();
                 this.updateMusicControls();
-                // 효과음으로 피드백
                 if (this.sfxEnabled) {
                     this.hintSound.currentTime = 0;
                     this.hintSound.play().catch(() => {});
@@ -1069,7 +1073,6 @@
                 this.sfxEnabled = !this.sfxEnabled;
                 this.saveSettings();
                 this.updateMusicControls();
-                // 효과음으로 피드백 (단, 꺼질 때는 재생 안함)
                 if (this.sfxEnabled) {
                     this.hintSound.currentTime = 0;
                     this.hintSound.play().catch(() => {});
@@ -1109,7 +1112,7 @@
             }
         };
 
-        // 게임 상태 관리 - 진행도 저장 추가
+        // 게임 상태 관리
         let gameState = {
             currentScreen: 'start',
             currentRound: 1,
@@ -1162,15 +1165,12 @@
             `;
             document.getElementById('app').innerHTML = html;
             
-            // 별똥별 지속 생성
             setInterval(createShootingStars, 5000);
         }
 
         // 라운드 맵 렌더링
         function showRoundMap() {
             const hasSave = loadGameState();
-            const nextRound = gameState.completedRounds.length > 0 ? 
-                Math.max(...gameState.completedRounds) + 1 : 1;
             
             const html = `
                 <div class="container">
@@ -1226,111 +1226,88 @@
             updateMusicPanel();
         }
 
-// 라운드 시작 - JSON 파일 로드 문제 해결
-async function startRound(roundNumber) {
-    AudioManager.playSound('click');
-    
-    try {
-        const fileNumber = Math.ceil(roundNumber / 10);
-        console.log(`파일 로드 시도: problems_${fileNumber}.json, 라운드: ${roundNumber}`);
-        
-        const response = await fetch(`problems_${fileNumber}.json`);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const allProblems = await response.json();
-        console.log('로드된 문제 수:', allProblems.length);
-        
-        const problemsPerRound = 6;
-        const startIndex = (roundNumber - 1) * problemsPerRound;
-        const fileStartIndex = startIndex - ((fileNumber - 1) * 60);
-        const roundProblems = allProblems.slice(fileStartIndex, fileStartIndex + problemsPerRound);
+        // 라운드 시작
+        async function startRound(roundNumber) {
+            AudioManager.playSound('click');
+            
+            try {
+                const fileNumber = Math.ceil(roundNumber / 10);
+                const response = await fetch(`problems_${fileNumber}.json`);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const allProblems = await response.json();
+                const problemsPerRound = 6;
+                const startIndex = (roundNumber - 1) * problemsPerRound;
+                const fileStartIndex = startIndex - ((fileNumber - 1) * 60);
+                const roundProblems = allProblems.slice(fileStartIndex, fileStartIndex + problemsPerRound);
 
-        console.log(`계산: 전체시작=${startIndex}, 파일내시작=${fileStartIndex}, 문제수=${roundProblems.length}`);
-        
-        if (roundProblems.length === 0) {
-            showAllRoundsCompleted();
-            return;
-        }
-        
-        console.log(`라운드 ${roundNumber} 문제:`, roundProblems);
-        
-        gameState.currentRound = roundNumber;
-        gameState.currentProblem = 0;
-        gameState.problems = roundProblems;
-        
-        gameState.currentProblemState = {
-            unlockedHints: [0, 1],
-            showDescriptions: [false, false, false, false, false, false],
-            canShowDescriptions: false,
-            showCharacterCount: false,
-            showCategory: false,
-            showChosung: false,
-            userAnswer: '',
-            isCorrect: false,
-            geniusTimer: 13,
-            geniusTimerActive: true,
-            timerInterval: null
-        };
-        
-        startGeniusTimer();
-        
-        // 🔥 수정된 부분: renderGame 함수 호출 후 스크롤 리셋
-        renderGame(true);
-        
-        // 🔥 추가: 스크롤 강제 리셋
-        setTimeout(() => {
-            const hintsContainer = document.querySelector('.hints-container');
-            if (hintsContainer) {
-                hintsContainer.scrollTop = 0;
+                if (roundProblems.length === 0) {
+                    showAllRoundsCompleted();
+                    return;
+                }
+                
+                gameState.currentRound = roundNumber;
+                gameState.currentProblem = 0;
+                gameState.problems = roundProblems;
+                
+                gameState.currentProblemState = {
+                    unlockedHints: [0, 1],
+                    showDescriptions: [false, false, false, false, false, false],
+                    canShowDescriptions: false,
+                    showCharacterCount: false,
+                    showCategory: false,
+                    showChosung: false,
+                    userAnswer: '',
+                    isCorrect: false,
+                    geniusTimer: 13,
+                    geniusTimerActive: true,
+                    timerInterval: null
+                };
+                
+                startGeniusTimer();
+                renderGameScreen(true); // 새 문제 시작 - 스크롤 리셋
+                saveGameState();
+                
+            } catch (error) {
+                console.error('라운드 시작 실패:', error);
+                alert('문제를 불러오는데 실패했습니다.\n\n에러: ' + error.message);
+                showRoundMap();
             }
-        }, 100);
-        
-        saveGameState();
-        
-    } catch (error) {
-        console.error('라운드 시작 실패:', error);
-        alert('문제를 불러오는데 실패했습니다.\n\n에러: ' + error.message);
-        showRoundMap();
-    }
-}
+        }
 
-// 모든 라운드 완료 시 표시할 함수 추가
-function showAllRoundsCompleted() {
-    const html = `
-        <div class="container">
-            <div class="start-screen">
-                <div class="magic-orb"></div>
-                <div class="title-main">🎉 모든 라운드 완료!</div>
-                <div class="subtitle">당신은 진정한 연상천재입니다!</div>
-                <div class="highlight">더 많은 라운드가 업데이트 될 예정입니다</div>
-                <button class="start-button" onclick="showRoundMap()">
-                    🏠 메인으로
-                </button>
-            </div>
-        </div>
-    `;
-    document.getElementById('app').innerHTML = html;
-}
+        // 모든 라운드 완료
+        function showAllRoundsCompleted() {
+            const html = `
+                <div class="container">
+                    <div class="start-screen">
+                        <div class="magic-orb"></div>
+                        <div class="title-main">🎉 모든 라운드 완료!</div>
+                        <div class="subtitle">당신은 진정한 연상천재입니다!</div>
+                        <div class="highlight">더 많은 라운드가 업데이트 될 예정입니다</div>
+                        <button class="start-button" onclick="showRoundMap()">
+                            🏠 메인으로
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app').innerHTML = html;
+        }
 
-// 게임 화면 렌더링 - 입력 버튼 추가
-function renderGame(shouldResetScroll = false) {
-    if (!gameState.currentProblemState || gameState.problems.length === 0) {
-        showRoundMap();
-        return;
-    }
+        // 게임 화면 렌더링 - 스크롤 문제 해결
+        function renderGameScreen(shouldResetScroll = false) {
+            if (!gameState.currentProblemState || gameState.problems.length === 0) {
+                showRoundMap();
+                return;
+            }
 
-    // 스크롤 위치 저장 (스크롤 유지해야 하는 경우)
-    if (!shouldResetScroll) {
-        ScrollManager.saveScrollPosition();
-    }
+            // 스크롤 위치 저장 (게임 중에는 유지)
+            if (!shouldResetScroll) {
+                ScrollManager.saveScrollPosition();
+            }
 
             const problem = gameState.problems[gameState.currentProblem];
             const state = gameState.currentProblemState;
-
-            // 글자수 undefined 문제 해결
             const characterCount = problem.characterCount || (problem.answer && problem.answer[0] ? problem.answer[0].length : '?');
 
             const html = `
@@ -1375,8 +1352,6 @@ function renderGame(shouldResetScroll = false) {
                                     const isUnlocked = state.unlockedHints.includes(index);
                                     const showDescription = state.showDescriptions[index] || state.isCorrect;
                                     const isLocked = !isUnlocked;
-                                    
-                                    // 순차적 해금: 이전 힌트가 해금되어야만 다음 힌트 해금 가능
                                     const canUnlock = index <= 2 || (index > 2 && state.unlockedHints.includes(index - 1));
                                     
                                     return `
@@ -1497,27 +1472,21 @@ function renderGame(shouldResetScroll = false) {
             document.getElementById('app').innerHTML = html;
             updateMusicPanel();
             
-            // 음악 패널이 활성화된 상태면 즉시 업데이트
-            const musicPanel = document.querySelector('.music-panel');
-            if (musicPanel && musicPanel.classList.contains('active')) {
-                AudioManager.updateMusicControls();
-            }
-            
-            // 스크롤 복원 또는 초기화
+            // 스크롤 처리 - 핵심 부분
             setTimeout(() => {
                 const hintsContainer = document.querySelector('.hints-container');
                 if (hintsContainer) {
                     if (shouldResetScroll) {
-                        // 새 문제 시작 시 맨 위로 스크롤
-                        hintsContainer.scrollTop = 0;
-                        ScrollManager.reset();
+                        // 새 문제 시작 또는 다음 문제 - 무조건 맨 위로
+                        ScrollManager.resetToTop();
                     } else {
-                        // 기존 스크롤 위치 복원
+                        // 게임 중 - 기존 위치 유지
                         ScrollManager.restoreScrollPosition();
                     }
                 }
             }, 100);
         }
+
         // 천재 타이머 시작
         function startGeniusTimer() {
             const state = gameState.currentProblemState;
@@ -1531,7 +1500,6 @@ function renderGame(shouldResetScroll = false) {
                 
                 state.geniusTimer--;
                 
-                // 타이머 업데이트
                 const timerProgress = document.querySelector('.timer-progress');
                 if (timerProgress) {
                     timerProgress.style.width = `${(state.geniusTimer / 13) * 100}%`;
@@ -1549,25 +1517,23 @@ function renderGame(shouldResetScroll = false) {
                     }
                     state.showCharacterCount = true;
                     
-                    // 힌트 6 해금 시 분류와 초성도 자동 해금
                     if (state.unlockedHints.includes(5)) {
                         state.showCategory = true;
                         state.showChosung = true;
                     }
                     
-                    renderGame();
+                    renderGameScreen();
                     clearInterval(state.timerInterval);
                 }
             }, 1000);
         }
 
-        // 힌트 해금 - 순차적 해금 적용
+        // 힌트 해금
         function unlockHint(hintIndex) {
             const state = gameState.currentProblemState;
             if (state.unlockedHints.includes(hintIndex)) return;
             
-            // 순차적 해금 검사: 이전 힌트가 해금되어야만 다음 힌트 해금 가능
-            if (hintIndex > 2) { // 3번째 힌트부터
+            if (hintIndex > 2) {
                 const prevHintUnlocked = state.unlockedHints.includes(hintIndex - 1);
                 if (!prevHintUnlocked) {
                     alert('이전 힌트를 먼저 해금해주세요!');
@@ -1580,23 +1546,21 @@ function renderGame(shouldResetScroll = false) {
                 state.unlockedHints.push(hintIndex);
                 AudioManager.playSound('hint');
                 
-                // 설명 보기 기능은 3번째 힌트부터 가능
                 if (hintIndex === 3 && !state.canShowDescriptions) {
                     state.canShowDescriptions = true;
                 }
                 
-                // 특별 기능들은 해당 힌트에서만 해금
-                if (hintIndex === 3) { // 4번째 힌트: 글자수
+                if (hintIndex === 3) {
                     state.showCharacterCount = true;
                 }
-                if (hintIndex === 4) { // 5번째 힌트: 분류
+                if (hintIndex === 4) {
                     state.showCategory = true;
                 }
-                if (hintIndex === 5) { // 6번째 힌트: 초성 (가장 마지막)
+                if (hintIndex === 5) {
                     state.showChosung = true;
                 }
                 
-                renderGame(); // 스크롤 유지
+                renderGameScreen(); // 스크롤 유지
                 saveGameState();
             } else {
                 alert('열쇠가 부족합니다!');
@@ -1607,7 +1571,6 @@ function renderGame(shouldResetScroll = false) {
             const state = gameState.currentProblemState;
             if (state.unlockedHints.includes(hintIndex)) return;
             
-            // 순차적 해금 검사
             if (hintIndex > 2) {
                 const prevHintUnlocked = state.unlockedHints.includes(hintIndex - 1);
                 if (!prevHintUnlocked) {
@@ -1634,7 +1597,7 @@ function renderGame(shouldResetScroll = false) {
                     state.showChosung = true;
                 }
                 
-                renderGame(); // 스크롤 유지
+                renderGameScreen(); // 스크롤 유지
                 saveGameState();
             }
         }
@@ -1646,7 +1609,7 @@ function renderGame(shouldResetScroll = false) {
             if (gameState.keys > 0) {
                 gameState.keys--;
                 state.showDescriptions[descriptionIndex] = true;
-                renderGame(); // 스크롤 유지
+                renderGameScreen(); // 스크롤 유지
                 saveGameState();
             } else {
                 alert('열쇠가 부족합니다!');
@@ -1659,7 +1622,7 @@ function renderGame(shouldResetScroll = false) {
             
             if (confirm('광고를 시청하시겠습니까?')) {
                 state.showDescriptions[descriptionIndex] = true;
-                renderGame(); // 스크롤 유지
+                renderGameScreen(); // 스크롤 유지
                 saveGameState();
             }
         }
@@ -1671,7 +1634,7 @@ function renderGame(shouldResetScroll = false) {
             if (gameState.keys > 0) {
                 gameState.keys--;
                 state.showCategory = true;
-                renderGame(); // 스크롤 유지
+                renderGameScreen(); // 스크롤 유지
                 saveGameState();
             } else {
                 alert('열쇠가 부족합니다!');
@@ -1685,7 +1648,7 @@ function renderGame(shouldResetScroll = false) {
             if (gameState.keys > 0) {
                 gameState.keys--;
                 state.showChosung = true;
-                renderGame(); // 스크롤 유지
+                renderGameScreen(); // 스크롤 유지
                 saveGameState();
             } else {
                 alert('열쇠가 부족합니다!');
@@ -1705,8 +1668,6 @@ function renderGame(shouldResetScroll = false) {
 
         function showAnswerConfirm() {
             const state = gameState.currentProblemState;
-            const problem = gameState.problems[gameState.currentProblem];
-            
             showCongratulationPopup(6, false);
             state.isCorrect = true;
             state.unlockedHints = [0,1,2,3,4,5];
@@ -1720,7 +1681,7 @@ function renderGame(shouldResetScroll = false) {
                 clearInterval(state.timerInterval);
             }
             
-            renderGame(); // 스크롤 유지
+            renderGameScreen(); // 스크롤 유지
             saveGameState();
         }
 
@@ -1764,7 +1725,7 @@ function renderGame(shouldResetScroll = false) {
                     clearInterval(state.timerInterval);
                 }
                 
-                renderGame(); // 스크롤 유지
+                renderGameScreen(); // 정답 맞췄을 때는 스크롤 유지
                 saveGameState();
             } else {
                 AudioManager.playSound('wrong');
@@ -1779,46 +1740,37 @@ function renderGame(shouldResetScroll = false) {
             }
         }
 
-function nextProblem() {
-    AudioManager.playSound('click');
-    
-    if (gameState.currentProblem < 5) {
-        gameState.currentProblem++;
-        gameState.currentProblemState = {
-            unlockedHints: [0, 1],
-            showDescriptions: [false, false, false, false, false, false],
-            canShowDescriptions: false,
-            showCharacterCount: false,
-            showCategory: false,
-            showChosung: false,
-            userAnswer: '',
-            isCorrect: false,
-            geniusTimer: 13,
-            geniusTimerActive: true,
-            timerInterval: null
-        };
-        startGeniusTimer();
-        
-        // 🔥 수정된 부분: renderGame 함수 호출 후 스크롤 리셋
-        renderGame(true);
-        
-        // 🔥 추가: 스크롤 강제 리셋
-        setTimeout(() => {
-            const hintsContainer = document.querySelector('.hints-container');
-            if (hintsContainer) {
-                hintsContainer.scrollTop = 0;
+        // 다음 문제 - 스크롤 문제 해결
+        function nextProblem() {
+            AudioManager.playSound('click');
+            
+            if (gameState.currentProblem < 5) {
+                gameState.currentProblem++;
+                gameState.currentProblemState = {
+                    unlockedHints: [0, 1],
+                    showDescriptions: [false, false, false, false, false, false],
+                    canShowDescriptions: false,
+                    showCharacterCount: false,
+                    showCategory: false,
+                    showChosung: false,
+                    userAnswer: '',
+                    isCorrect: false,
+                    geniusTimer: 13,
+                    geniusTimerActive: true,
+                    timerInterval: null
+                };
+                startGeniusTimer();
+                renderGameScreen(true); // 다음 문제 - 스크롤 리셋
+                saveGameState();
+            } else {
+                gameState.completedRounds.push(gameState.currentRound);
+                gameState.keys += 1;
+                AudioManager.playSound('complete');
+                showRoundComplete();
+                saveGameState();
             }
-        }, 100);
-        
-        saveGameState();
-    } else {
-        gameState.completedRounds.push(gameState.currentRound);
-        gameState.keys += 1;
-        AudioManager.playSound('complete');
-        showRoundComplete();
-        saveGameState();
-    }
-}
+        }
+
         function showRoundComplete() {
             const html = `
                 <div class="container">
@@ -1858,74 +1810,74 @@ function nextProblem() {
             document.getElementById('app').innerHTML = html;
         }
 
-function showCongratulationPopup(hintsUsed, usedChosung) {
-    let popupData = {};
-    
-    switch(hintsUsed) {
-        case 2:
-            popupData = {
-                title: "와우! 천재셨군요!",
-                type: "genius", 
-                icon: "💡",
-                reward: 1
-            };
-            break;
-        case 3:
-            popupData = {
-                title: "제법인데요?",
-                type: "sharp",
-                icon: "😏", 
-                reward: 0
-            };
-            break;
-        case 4:
-            popupData = {
-                title: "쏘쏘~?",
-                type: "focus",
-                icon: "🤪",
-                reward: 0
-            };
-            break;
-        case 5:
-            popupData = {
-                title: "피곤하신가봐요",
-                type: "sleepy", 
-                icon: "😴",
-                reward: 0
-            };
-            break;
-        default:
-            popupData = {
-                title: "할많하않",
-                type: "chosung",
-                icon: "💨",
-                reward: 0
-            };
-    } 
-    
-    const popupHtml = `
-        <div class="congratulation-popup ${popupData.type}">
-            <div class="popup-icon">${popupData.icon}</div>
-            <div class="popup-title">${popupData.title}</div>
-            ${popupData.reward > 0 ? `
-                <div class="popup-reward">🔑 +${popupData.reward} 열쇠 획득!</div>
-            ` : ''}
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', popupHtml);
-    
-    setTimeout(() => {
-        const popup = document.querySelector('.congratulation-popup');
-        if (popup) {
-            popup.remove();
-        }
-    }, 2000);
-    
-    return popupData.reward;
+        function showCongratulationPopup(hintsUsed, usedChosung) {
+            let popupData = {};
+            
+            switch(hintsUsed) {
+                case 2:
+                    popupData = {
+                        title: "와우! 천재셨군요!",
+                        type: "genius",
+                        icon: "💡",
+                        reward: 1
+                    };
+                    break;
+                case 3:
+                    popupData = {
+                        title: "제법인데요?",
+                        type: "sharp",
+                        icon: "😏",
+                        reward: 0
+                    };
+                    break;
+                case 4:
+                    popupData = {
+                        title: "쏘쏘~?",
+                        type: "focus",
+                        icon: "🤪",
+                        reward: 0
+                    };
+                    break;
+                case 5:
+                    popupData = {
+                        title: "피곤하신가봐요",
+                        type: "sleepy",
+                        icon: "😴",
+                        reward: 0
+                    };
+                    break;
+                default:
+                    popupData = {
+                        title: "할많하않",
+                        type: "chosung",
+                        icon: "💨",
+                        reward: 0
+                    };
+            }
+            
+            const popupHtml = `
+                <div class="congratulation-popup ${popupData.type}">
+                    <div class="popup-icon">${popupData.icon}</div>
+                    <div class="popup-title">${popupData.title}</div>
+                    ${popupData.reward > 0 ? `
+                        <div class="popup-reward">🔑 +${popupData.reward} 열쇠 획득!</div>
+                    ` : ''}
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', popupHtml);
+            
+            setTimeout(() => {
+                const popup = document.querySelector('.congratulation-popup');
+                if (popup) {
+                    popup.remove();
+                }
+            }, 2000);
+            
+            return popupData.reward;
         }
 
-        // 음악 패널 - UX 개선
+        // 음악 패널
         function toggleMusicPanel() {
             const panel = document.querySelector('.music-panel');
             const buttons = document.querySelectorAll('.settings-button-header');
@@ -1934,7 +1886,6 @@ function showCongratulationPopup(hintsUsed, usedChosung) {
                 buttons.forEach(button => {
                     button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
                 });
-                // 패널이 활성화될 때만 업데이트
                 if (panel.classList.contains('active')) {
                     updateMusicPanel();
                 }
