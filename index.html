@@ -1787,8 +1787,6 @@ function watchAdForHint(hintIndex) {
         }
 
 function showRoundComplete() {
-    const banner = getRandomBanner();
-    
     const html = `
         <div class="container">
             <div class="header">
@@ -1821,37 +1819,6 @@ function showRoundComplete() {
                 <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #888, #666);">
                     🗺️ 메인으로
                 </button>
-                
-                <!-- ✅ 젬팜 배너 추가 -->
-                <div class="jewelry-banner" onclick="openJewelrySite()" style="
-                    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-                    border: 2px solid #6A0DAD;
-                    border-radius: 15px;
-                    padding: 15px;
-                    margin-top: 15px;
-                    text-align: center;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                ">
-                    <img src="${banner.image}" alt="젬팜 원석팔찌" style="
-                        width: 100%;
-                        max-width: 300px;
-                        border-radius: 10px;
-                        margin-bottom: 10px;
-                        border: 1px solid #ddd;
-                    ">
-                    <div style="
-                        background: linear-gradient(135deg, #6A0DAD, #9C27B0);
-                        color: white;
-                        padding: 10px 20px;
-                        border-radius: 8px;
-                        font-weight: bold;
-                        font-size: 14px;
-                        display: inline-block;
-                    ">
-                        스마트스토어 방문하기
-                    </div>
-                </div>
             </div>
         </div>
     `;
