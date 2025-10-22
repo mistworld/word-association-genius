@@ -1973,6 +1973,24 @@ function showRoundComplete() {
             renderStartScreen();
         }
 
+        // ✅✅✅ 젬팜 배너 코드 추가 ✅✅✅
+        const gemfarmBanners = [
+            { image: "banner1.jpg" },
+            { image: "banner2.jpg" },
+            { image: "banner3.jpg" },
+            { image: "banner4.jpg" },
+            { image: "banner5.jpg" }
+        ];
+
+        function getRandomBanner() {
+            return gemfarmBanners[Math.floor(Math.random() * gemfarmBanners.length)];
+        }
+
+        function openJewelrySite() {
+            window.open('https://smartstore.naver.com/gemfarm/', '_blank');
+        }
+        // ✅✅✅ 젬팜 코드 끝 ✅✅✅
+
         // 앱 시작
         initApp();
     </script>
