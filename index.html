@@ -1476,11 +1476,35 @@
             } else {
                 gameState.completedRounds.push(gameState.currentRound);
                 gameState.keys += 1;
-                AudioManager.playSound('complete');
-                showRoundComplete();
-                saveGameState();
-            }
-        }
+        AudioManager.playSound('complete');
+        showRoundComplete();
+        saveGameState();
+    }
+}   // ← 여기까지가 nextProblem() 함수 끝나는 곳
+
+// ✅✅✅ 바로 이 아래에 젬팜 코드 추가!! ✅✅✅
+// 젬팜 배너 데이터 - 파일명 간단하게
+const gemfarmBanners = [
+    { image: "banner1.jpg" },
+    { image: "banner2.jpg" },
+    { image: "banner3.jpg" },
+    { image: "banner4.jpg" },
+    { image: "banner5.jpg" }
+];
+
+// 랜덤 배너 선택
+function getRandomBanner() {
+    return gemfarmBanners[Math.floor(Math.random() * gemfarmBanners.length)];
+}
+
+// 젬팜 스마트스토어 열기
+function openJewelrySite() {
+    window.open('https://smartstore.naver.com/gemfarm/', '_blank');
+}
+// ✅✅✅ 젬팜 코드 끝 ✅✅✅
+
+// 나머지 함수들 (watchAdForHint, unlockDescription 등...)
+function watchAdForHint(hintIndex) {
 
         // 힌트 해금
         function unlockHint(hintIndex) {
