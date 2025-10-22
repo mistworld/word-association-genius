@@ -395,7 +395,7 @@
             gap: 12px;
         }
 
-        /* 힌트 섹션 - 스크롤 문제 해결을 위한 CSS */
+        /* 힌트 섹션 */
         .hints-section {
             background: linear-gradient(135deg, rgba(232, 248, 245, 0.95), rgba(254, 249, 231, 0.95));
             border-radius: 15px;
@@ -412,7 +412,7 @@
             flex: 1;
             overflow-y: auto;
             padding-right: 5px;
-            scroll-behavior: auto; /* ✅ smooth 대신 auto로 즉시 이동 */
+            scroll-behavior: auto;
         }
 
         .hints-container::-webkit-scrollbar {
@@ -910,41 +910,34 @@
             }
         }
 
-        // ✅ 스크롤 관리자 - 클로드 분석 반영
+        // ✅ 스크롤 관리자 - 정답 맞추면 힌트 맨 위로 스크롤
         const ScrollManager = {
             // 새 문제 시작 시 무조건 맨 위로
             forceScrollToTop() {
-                // 전체 페이지 스크롤 리셋
                 window.scrollTo(0, 0);
                 
-                // 힌트 컨테이너 스크롤 리셋
                 const hintsContainer = document.querySelector('.hints-container');
                 if (hintsContainer) {
                     hintsContainer.scrollTop = 0;
                     
-                    // 여러번 시도해서 확실히 맨 위로
                     setTimeout(() => {
                         hintsContainer.scrollTop = 0;
-                        hintsContainer.scrollTo(0, 0);
                     }, 50);
-                    
-                    setTimeout(() => {
-                        hintsContainer.scrollTop = 0;
-                    }, 100);
                 }
             },
             
-            // 힌트 해금 시 조건부 스크롤 (보이지 않을 때만)
-            scrollToHintIfNeeded(hintElement) {
-                const rect = hintElement.getBoundingClientRect();
-                const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
-                
-                if (!isVisible) {
-                    hintElement.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'start' // ✅ nearest 대신 start로 변경
-                    });
+            // 정답 맞췄을 때 힌트 컨테이너 맨 위로 스크롤
+            scrollToHintsTop() {
+                const hintsContainer = document.querySelector('.hints-container');
+                if (hintsContainer) {
+                    hintsContainer.scrollTop = 0;
                 }
+                window.scrollTo(0, 0);
+            },
+            
+            // 힌트 해금 시: 스크롤 이동 없이 현재 위치 유지
+            scrollToHintIfNeeded(hintElement) {
+                return;
             }
         };
 
@@ -1220,7 +1213,7 @@
             updateMusicPanel();
         }
 
-        // ✅ 라운드 시작 - 스크롤 문제 해결
+        // 라운드 시작
         async function startRound(roundNumber) {
             AudioManager.playSound('click');
             
@@ -1260,7 +1253,7 @@
                 };
                 
                 startGeniusTimer();
-                renderGameScreen(true); // ✅ true = 새 문제 (스크롤 맨 위로)
+                renderGameScreen(true);
                 saveGameState();
                 
             } catch (error) {
@@ -1270,7 +1263,7 @@
             }
         }
 
-        // ✅ 게임 화면 렌더링 - 스크롤 문제 완전 해결
+        // 게임 화면 렌더링
         function renderGameScreen(isNewProblem = false) {
             if (!gameState.currentProblemState || gameState.problems.length === 0) {
                 showRoundMap();
@@ -1443,16 +1436,22 @@
             document.getElementById('app').innerHTML = html;
             updateMusicPanel();
             
-            // ✅ 핵심: 스크롤 처리 - 클로드 분석 반영
+            // ✅ 새 문제 시작 시 무조건 맨 위로
             if (isNewProblem) {
-                // 새 문제 시작 시 무조건 맨 위로
                 setTimeout(() => {
                     ScrollManager.forceScrollToTop();
                 }, 100);
             }
+            
+            // ✅ 정답 맞춘 경우 힌트 컨테이너 맨 위로 스크롤
+            if (state.isCorrect) {
+                setTimeout(() => {
+                    ScrollManager.scrollToHintsTop();
+                }, 150);
+            }
         }
 
-        // ✅ 다음 문제 - 스크롤 문제 해결
+        // 다음 문제
         function nextProblem() {
             AudioManager.playSound('click');
             
@@ -1472,7 +1471,7 @@
                     timerInterval: null
                 };
                 startGeniusTimer();
-                renderGameScreen(true); // ✅ true = 새 문제 (스크롤 맨 위로)
+                renderGameScreen(true);
                 saveGameState();
             } else {
                 gameState.completedRounds.push(gameState.currentRound);
@@ -1483,7 +1482,7 @@
             }
         }
 
-        // ✅ 힌트 해금 - 조건부 스크롤 적용
+        // 힌트 해금
         function unlockHint(hintIndex) {
             const state = gameState.currentProblemState;
             if (state.unlockedHints.includes(hintIndex)) return;
@@ -1515,19 +1514,68 @@
                     state.showChosung = true;
                 }
                 
-                renderGameScreen(); // 게임 중에는 스크롤 유지
-                
-                // ✅ 조건부 스크롤: 보이지 않을 때만 스크롤
-                setTimeout(() => {
-                    const hintElement = document.getElementById(`hint-${hintIndex}`);
-                    if (hintElement) {
-                        ScrollManager.scrollToHintIfNeeded(hintElement);
-                    }
-                }, 50);
-                
+                renderGameScreen();
                 saveGameState();
             } else {
                 alert('열쇠가 부족합니다!');
+            }
+        }
+
+        // 정답 확인 함수 - ✅ 핵심: 정답 맞추면 힌트 맨 위로 스크롤
+        function checkAnswer(value) {
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            
+            const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
+            const correctAnswers = problem.answer.map(ans => 
+                ans.toLowerCase().replace(/\s+/g, '')
+            );
+            
+            if (correctAnswers.includes(normalizedAnswer)) {
+                const usedHints = state.unlockedHints.length;
+                let soundType = 'correct';
+                
+                if (usedHints <= 2) {
+                    soundType = 'genius';
+                }
+                
+                const keyReward = showCongratulationPopup(usedHints, false);
+                
+                if (keyReward > 0) {
+                    gameState.keys += keyReward;
+                }
+                
+                AudioManager.playSound(soundType);
+                state.isCorrect = true;
+                state.unlockedHints = [0,1,2,3,4,5];
+                state.showDescriptions = [true,true,true,true,true,true];
+                state.showCharacterCount = true;
+                state.showCategory = true;
+                state.showChosung = true;
+                state.geniusTimerActive = false;
+                
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                }
+                
+                renderGameScreen();
+                
+                // ✅ ✅ ✅ 핵심: 정답 맞추면 힌트 컨테이너 맨 위로 스크롤
+                setTimeout(() => {
+                    ScrollManager.scrollToHintsTop();
+                }, 200);
+                
+                saveGameState();
+            } else {
+                AudioManager.playSound('wrong');
+                const input = document.querySelector('.answer-input');
+                if (input) {
+                    input.style.animation = 'shake 0.3s';
+                    setTimeout(() => {
+                        input.style.animation = '';
+                        input.select();
+                    }, 300);
+                }
             }
         }
 
@@ -1590,86 +1638,128 @@
         }
 
         function watchAdForHint(hintIndex) {
-            // ... (기존 코드)
+            // 광고 시뮬레이션
+            alert('광고를 시청했습니다! 힌트가 해금되었습니다.');
+            unlockHint(hintIndex);
         }
 
         function unlockDescription(descriptionIndex) {
-            // ... (기존 코드)
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showDescriptions[descriptionIndex] = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
         }
 
         function watchAdForDescription(descriptionIndex) {
-            // ... (기존 코드)
+            // 광고 시뮬레이션
+            alert('광고를 시청했습니다! 설명이 해금되었습니다.');
+            const state = gameState.currentProblemState;
+            state.showDescriptions[descriptionIndex] = true;
+            renderGameScreen();
+            saveGameState();
         }
 
         function unlockCategory() {
-            // ... (기존 코드)
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showCategory = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
         }
 
         function unlockChosung() {
-            // ... (기존 코드)
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showChosung = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
         }
 
         function showAnswer() {
-            // ... (기존 코드)
+            if (gameState.keys >= 3) {
+                showAnswerConfirm();
+            } else {
+                watchAdForAnswer();
+            }
         }
 
         function showAnswerConfirm() {
-            // ... (기존 코드)
+            if (confirm('정답을 보시겠습니까? (열쇠 3개 사용)')) {
+                if (gameState.keys >= 3) {
+                    gameState.keys -= 3;
+                    const problem = gameState.problems[gameState.currentProblem];
+                    const state = gameState.currentProblemState;
+                    
+                    state.isCorrect = true;
+                    state.unlockedHints = [0,1,2,3,4,5];
+                    state.showDescriptions = [true,true,true,true,true,true];
+                    state.showCharacterCount = true;
+                    state.showCategory = true;
+                    state.showChosung = true;
+                    state.geniusTimerActive = false;
+                    
+                    if (state.timerInterval) {
+                        clearInterval(state.timerInterval);
+                    }
+                    
+                    renderGameScreen();
+                    
+                    // ✅ 정답 보기로 넘어갈 때도 힌트 맨 위로 스크롤
+                    setTimeout(() => {
+                        ScrollManager.scrollToHintsTop();
+                    }, 200);
+                    
+                    saveGameState();
+                }
+            }
+        }
+
+        function watchAdForAnswer() {
+            // 광고 시뮬레이션
+            alert('광고를 시청했습니다! 정답을 확인합니다.');
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            
+            state.isCorrect = true;
+            state.unlockedHints = [0,1,2,3,4,5];
+            state.showDescriptions = [true,true,true,true,true,true];
+            state.showCharacterCount = true;
+            state.showCategory = true;
+            state.showChosung = true;
+            state.geniusTimerActive = false;
+            
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+            
+            renderGameScreen();
+            
+            // ✅ 광고 보고 정답 확인할 때도 힌트 맨 위로 스크롤
+            setTimeout(() => {
+                ScrollManager.scrollToHintsTop();
+            }, 200);
+            
+            saveGameState();
         }
 
         function updateUserAnswer(value) {
             gameState.currentProblemState.userAnswer = value;
-        }
-
-        function checkAnswer(value) {
-            const problem = gameState.problems[gameState.currentProblem];
-            const state = gameState.currentProblemState;
-            
-            const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
-            const correctAnswers = problem.answer.map(ans => 
-                ans.toLowerCase().replace(/\s+/g, '')
-            );
-            
-            if (correctAnswers.includes(normalizedAnswer)) {
-                const usedHints = state.unlockedHints.length;
-                let soundType = 'correct';
-                
-                if (usedHints <= 2) {
-                    soundType = 'genius';
-                }
-                
-                const keyReward = showCongratulationPopup(usedHints, false);
-                
-                if (keyReward > 0) {
-                    gameState.keys += keyReward;
-                }
-                
-                AudioManager.playSound(soundType);
-                state.isCorrect = true;
-                state.unlockedHints = [0,1,2,3,4,5];
-                state.showDescriptions = [true,true,true,true,true,true];
-                state.showCharacterCount = true;
-                state.showCategory = true;
-                state.showChosung = true;
-                state.geniusTimerActive = false;
-                
-                if (state.timerInterval) {
-                    clearInterval(state.timerInterval);
-                }
-                
-                renderGameScreen(); // 정답 맞췄을 때는 스크롤 유지
-                saveGameState();
-            } else {
-                AudioManager.playSound('wrong');
-                const input = document.querySelector('.answer-input');
-                if (input) {
-                    input.style.animation = 'shake 0.3s';
-                    setTimeout(() => {
-                        input.style.animation = '';
-                        input.select();
-                    }, 300);
-                }
-            }
         }
 
         function showRoundComplete() {
