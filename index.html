@@ -1786,44 +1786,77 @@ function watchAdForHint(hintIndex) {
             gameState.currentProblemState.userAnswer = value;
         }
 
-        function showRoundComplete() {
-            const html = `
-                <div class="container">
-                    <div class="header">
-                        <div class="compact-header">
-                            <div class="header-left">
-                                <button class="home-button" onclick="showRoundMap()">🏠</button>
-                                <div class="round-info-compact">
-                                    <div class="round-title">라운드 완료!</div>
-                                    <div class="problem-number">축하합니다!</div>
-                                </div>
-                            </div>
-                            <div class="header-right">
-                                <div class="key-count">🔑 ${gameState.keys}</div>
-                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
-                            </div>
+function showRoundComplete() {
+    const banner = getRandomBanner();
+    
+    const html = `
+        <div class="container">
+            <div class="header">
+                <div class="compact-header">
+                    <div class="header-left">
+                        <button class="home-button" onclick="showRoundMap()">🏠</button>
+                        <div class="round-info-compact">
+                            <div class="round-title">라운드 완료!</div>
+                            <div class="problem-number">축하합니다!</div>
                         </div>
                     </div>
-                    
-                    <div class="main-content">
-                        <div class="correct-answer">
-                            <div class="correct-icon">🎉</div>
-                            <div class="correct-title">라운드 ${gameState.currentRound} 완료!</div>
-                            <div class="correct-text">+1 열쇠를 획득했습니다!</div>
-                            <div class="correct-category">다음 라운드에 도전해보세요</div>
-                        </div>
-                        
-                        <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px;">
-                            🚀 다음 라운드
-                        </button>
-                        <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #888, #666);">
-                            🗺️ 메인으로
-                        </button>
+                    <div class="header-right">
+                        <div class="key-count">🔑 ${gameState.keys}</div>
+                        <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
                     </div>
                 </div>
-            `;
-            document.getElementById('app').innerHTML = html;
-        }
+            </div>
+            
+            <div class="main-content">
+                <div class="correct-answer">
+                    <div class="correct-icon">🎉</div>
+                    <div class="correct-title">라운드 ${gameState.currentRound} 완료!</div>
+                    <div class="correct-text">+1 열쇠를 획득했습니다!</div>
+                    <div class="correct-category">다음 라운드에 도전해보세요</div>
+                </div>
+                
+                <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px;">
+                    🚀 다음 라운드
+                </button>
+                <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #888, #666);">
+                    🗺️ 메인으로
+                </button>
+                
+                <!-- ✅ 젬팜 배너 추가 -->
+                <div class="jewelry-banner" onclick="openJewelrySite()" style="
+                    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                    border: 2px solid #6A0DAD;
+                    border-radius: 15px;
+                    padding: 15px;
+                    margin-top: 15px;
+                    text-align: center;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                ">
+                    <img src="${banner.image}" alt="젬팜 원석팔찌" style="
+                        width: 100%;
+                        max-width: 300px;
+                        border-radius: 10px;
+                        margin-bottom: 10px;
+                        border: 1px solid #ddd;
+                    ">
+                    <div style="
+                        background: linear-gradient(135deg, #6A0DAD, #9C27B0);
+                        color: white;
+                        padding: 10px 20px;
+                        border-radius: 8px;
+                        font-weight: bold;
+                        font-size: 14px;
+                        display: inline-block;
+                    ">
+                        스마트스토어 방문하기
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.getElementById('app').innerHTML = html;
+}
 
         function showCongratulationPopup(hintsUsed, usedChosung) {
             let popupData = {};
