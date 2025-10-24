@@ -184,13 +184,17 @@
             overflow: hidden;
         }
 
+        .start-button:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+
         .start-button:active {
             transform: scale(0.95);
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 255, 255, 0.3); }
-            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 255, 255, 0.5); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         /* 게임 헤더 */
@@ -234,6 +238,10 @@
             align-items: center;
             justify-content: center;
             color: #ff00ff;
+        }
+
+        .home-button:hover {
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.5);
         }
 
         .home-button:active {
@@ -281,6 +289,10 @@
             text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
         }
 
+        .key-count:hover {
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.5);
+        }
+
         .settings-button-header {
             width: 35px;
             height: 35px;
@@ -295,6 +307,10 @@
             justify-content: center;
             color: #00ffff;
             box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .settings-button-header:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
         }
 
         .settings-button-header:active {
@@ -338,6 +354,10 @@
             margin: 5px 0;
             color: #ffff00;
             box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
+        }
+
+        .genius-timer:hover {
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.5);
         }
 
         .genius-timer-header {
@@ -463,6 +483,7 @@
             flex-shrink: 0;
             border: 2px solid;
             background: rgba(20, 15, 30, 0.8);
+            transition: all 0.3s;
         }
 
         .hint-text {
@@ -478,17 +499,21 @@
             gap: 4px;
         }
 
-        /* 힌트 아이템별 색상 */
+        /* 힌트 아이템별 색상 - 네온 효과 추가 */
         .hint-item:nth-child(1) {
             background: rgba(20, 15, 30, 0.9);
             border: 2px solid rgba(255, 0, 127, 0.5);
             box-shadow: 0 0 20px rgba(255, 0, 127, 0.2);
+        }
+        .hint-item:nth-child(1):hover {
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.4);
         }
         .hint-item:nth-child(1) .hint-number { 
             background: rgba(255, 0, 127, 0.2); 
             border-color: rgba(255, 0, 127, 0.6); 
             color: #ff007f; 
             text-shadow: 0 0 10px rgba(255, 0, 127, 0.8); 
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
         }
 
         .hint-item:nth-child(2) {
@@ -496,11 +521,15 @@
             border: 2px solid rgba(255, 100, 0, 0.5);
             box-shadow: 0 0 20px rgba(255, 100, 0, 0.2);
         }
+        .hint-item:nth-child(2):hover {
+            box-shadow: 0 0 30px rgba(255, 100, 0, 0.4);
+        }
         .hint-item:nth-child(2) .hint-number { 
             background: rgba(255, 100, 0, 0.2); 
             border-color: rgba(255, 100, 0, 0.6); 
             color: #ff6400; 
             text-shadow: 0 0 10px rgba(255, 100, 0, 0.8); 
+            box-shadow: 0 0 15px rgba(255, 100, 0, 0.3);
         }
 
         .hint-item:nth-child(3) {
@@ -508,11 +537,15 @@
             border: 2px solid rgba(0, 255, 127, 0.5);
             box-shadow: 0 0 20px rgba(0, 255, 127, 0.2);
         }
+        .hint-item:nth-child(3):hover {
+            box-shadow: 0 0 30px rgba(0, 255, 127, 0.4);
+        }
         .hint-item:nth-child(3) .hint-number { 
             background: rgba(0, 255, 127, 0.2); 
             border-color: rgba(0, 255, 127, 0.6); 
             color: #00ff7f; 
             text-shadow: 0 0 10px rgba(0, 255, 127, 0.8); 
+            box-shadow: 0 0 15px rgba(0, 255, 127, 0.3);
         }
 
         .hint-item:nth-child(4) {
@@ -520,11 +553,15 @@
             border: 2px solid rgba(0, 200, 255, 0.5);
             box-shadow: 0 0 20px rgba(0, 200, 255, 0.2);
         }
+        .hint-item:nth-child(4):hover {
+            box-shadow: 0 0 30px rgba(0, 200, 255, 0.4);
+        }
         .hint-item:nth-child(4) .hint-number { 
             background: rgba(0, 200, 255, 0.2); 
             border-color: rgba(0, 200, 255, 0.6); 
             color: #00c8ff; 
             text-shadow: 0 0 10px rgba(0, 200, 255, 0.8); 
+            box-shadow: 0 0 15px rgba(0, 200, 255, 0.3);
         }
 
         .hint-item:nth-child(5) {
@@ -532,11 +569,15 @@
             border: 2px solid rgba(200, 100, 255, 0.5);
             box-shadow: 0 0 20px rgba(200, 100, 255, 0.2);
         }
+        .hint-item:nth-child(5):hover {
+            box-shadow: 0 0 30px rgba(200, 100, 255, 0.4);
+        }
         .hint-item:nth-child(5) .hint-number { 
             background: rgba(200, 100, 255, 0.2); 
             border-color: rgba(200, 100, 255, 0.6); 
             color: #c864ff; 
             text-shadow: 0 0 10px rgba(200, 100, 255, 0.8); 
+            box-shadow: 0 0 15px rgba(200, 100, 255, 0.3);
         }
 
         .hint-item:nth-child(6) {
@@ -544,11 +585,15 @@
             border: 2px solid rgba(255, 220, 0, 0.5);
             box-shadow: 0 0 20px rgba(255, 220, 0, 0.2);
         }
+        .hint-item:nth-child(6):hover {
+            box-shadow: 0 0 30px rgba(255, 220, 0, 0.4);
+        }
         .hint-item:nth-child(6) .hint-number { 
             background: rgba(255, 220, 0, 0.2); 
             border-color: rgba(255, 220, 0, 0.6); 
             color: #ffdc00; 
             text-shadow: 0 0 10px rgba(255, 220, 0, 0.8); 
+            box-shadow: 0 0 15px rgba(255, 220, 0, 0.3);
         }
 
         /* 잠긴 힌트 버튼 */
@@ -566,6 +611,10 @@
             gap: 4px;
             transition: all 0.3s;
             box-shadow: 0 0 10px rgba(255, 100, 0, 0.3);
+        }
+
+        .unlock-btn:hover {
+            box-shadow: 0 0 20px rgba(255, 100, 0, 0.5);
         }
 
         .unlock-btn:active {
@@ -598,16 +647,29 @@
             padding: 12px;
             text-align: center;
             transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .info-box:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
         }
 
         .info-box.category {
             background: rgba(20, 15, 30, 0.9);
             border-color: rgba(255, 0, 255, 0.4);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+        }
+        .info-box.category:hover {
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.4);
         }
 
         .info-box.chosung {
             background: rgba(20, 15, 30, 0.9);
             border-color: rgba(255, 255, 0, 0.4);
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.2);
+        }
+        .info-box.chosung:hover {
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.4);
         }
 
         .info-label {
@@ -639,6 +701,10 @@
             gap: 3px;
             margin-top: 4px;
             box-shadow: 0 0 8px rgba(255, 100, 0, 0.3);
+        }
+
+        .unlock-small:hover {
+            box-shadow: 0 0 15px rgba(255, 100, 0, 0.5);
         }
 
         /* 정답 입력 섹션 */
@@ -687,6 +753,10 @@
             white-space: nowrap;
         }
 
+        .submit-button:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+        }
+
         .submit-button:active {
             transform: scale(0.95);
         }
@@ -700,6 +770,10 @@
             text-align: center;
             color: #ffffff;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+
+        .correct-answer:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
         }
 
         .correct-icon {
@@ -747,6 +821,10 @@
             margin-top: 10px;
         }
 
+        .next-button:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+
         .next-button:active {
             transform: scale(0.98);
         }
@@ -772,6 +850,10 @@
             gap: 8px;
             transition: all 0.3s;
             box-shadow: 0 0 15px rgba(255, 100, 0, 0.3);
+        }
+
+        .show-answer-btn:hover {
+            box-shadow: 0 0 25px rgba(255, 100, 0, 0.5);
         }
 
         .show-answer-btn:active {
@@ -879,6 +961,11 @@
             align-items: center;
             gap: 6px;
             justify-content: center;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .sound-control:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         }
 
         .sound-control.active {
@@ -919,11 +1006,18 @@
             box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
         }
 
+        .round-button:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+        }
+
         .round-button.completed {
             background: rgba(0, 255, 255, 0.2);
             border-color: rgba(0, 255, 255, 0.8);
             color: #00ffff;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+        }
+        .round-button.completed:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
         }
 
         .round-button.current {
@@ -932,6 +1026,9 @@
             color: #ff00ff;
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
             animation: pulse 2s infinite;
+        }
+        .round-button.current:hover {
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.7);
         }
 
         .round-button.locked {
@@ -1208,7 +1305,13 @@
             const saved = localStorage.getItem('game_save');
             if (saved) {
                 const saveData = JSON.parse(saved);
-                Object.assign(gameState, saveData);
+                // ✅ 저장된 진행도 유지 (항상 1번 문제부터 시작하는 문제 수정)
+                gameState.currentRound = saveData.currentRound;
+                gameState.currentProblem = saveData.currentProblem; // ✅ 저장된 문제 번호 사용
+                gameState.keys = saveData.keys;
+                gameState.completedRounds = saveData.completedRounds;
+                gameState.problems = saveData.problems;
+                gameState.currentProblemState = saveData.currentProblemState;
                 return true;
             }
             return false;
@@ -1258,7 +1361,7 @@
                     <div class="main-content">
                         <div class="round-map">
                             <h2 style="text-align: center; margin-bottom: 20px; color: #00ffff; font-size: 18px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">
-                                ${hasSave ? '이어하기 가능!' : '라운드 선택'}
+                                라운드 선택
                             </h2>
                             <div class="round-grid">
                                 ${Array.from({ length: 100 }, (_, i) => {
@@ -1313,23 +1416,28 @@
                     return;
                 }
                 
+                // ✅ 진행도 유지: 저장된 currentProblem이 있으면 사용, 없으면 0부터 시작
+                const savedCurrentProblem = gameState.currentProblem;
                 gameState.currentRound = roundNumber;
-                gameState.currentProblem = 0;
+                gameState.currentProblem = savedCurrentProblem || 0;
                 gameState.problems = roundProblems;
                 
-                gameState.currentProblemState = {
-                    unlockedHints: [0, 1],
-                    showDescriptions: [false, false, false, false, false, false],
-                    canShowDescriptions: false,
-                    showCharacterCount: false,
-                    showCategory: false,
-                    showChosung: false,
-                    userAnswer: '',
-                    isCorrect: false,
-                    geniusTimer: 13,
-                    geniusTimerActive: true,
-                    timerInterval: null
-                };
+                // ✅ 현재 문제 상태도 저장된 거 사용하거나 새로 생성
+                if (!gameState.currentProblemState) {
+                    gameState.currentProblemState = {
+                        unlockedHints: [0, 1],
+                        showDescriptions: [false, false, false, false, false, false],
+                        canShowDescriptions: false,
+                        showCharacterCount: false,
+                        showCategory: false,
+                        showChosung: false,
+                        userAnswer: '',
+                        isCorrect: false,
+                        geniusTimer: 13,
+                        geniusTimerActive: true,
+                        timerInterval: null
+                    };
+                }
                 
                 startGeniusTimer();
                 renderGameScreen(true);
