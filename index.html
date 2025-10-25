@@ -35,8 +35,8 @@
         }
 
         body {
-            font-family: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1729 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a2a 100%);
             min-height: 100vh;
             color: #ffffff;
             overflow-x: hidden;
@@ -52,9 +52,8 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,20 Q40,10 60,20 T100,20 M20,50 Q40,40 60,50 T100,50 M20,80 Q40,70 60,80 T100,80" stroke="rgba(0,255,255,0.05)" fill="none" stroke-width="2"/></svg>');
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.15) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
         }
@@ -65,9 +64,9 @@
             top: 0;
             width: 2px;
             height: 2px;
-            background: white;
+            background: #00ffff;
             border-radius: 50%;
-            box-shadow: 0 0 10px 2px white;
+            box-shadow: 0 0 10px 2px #00ffff;
             animation: shoot 3s linear infinite;
             opacity: 0;
             z-index: -1;
@@ -107,13 +106,13 @@
         .magic-orb {
             width: 120px;
             height: 120px;
-            background: radial-gradient(circle at 30% 30%, #ff00ff, #00ffff);
+            background: radial-gradient(circle at 30% 30%, #ff00ff, #00ffff, #00ff00);
             border-radius: 50%;
             margin-bottom: 30px;
             animation: float 3s ease-in-out infinite;
             box-shadow: 
-                0 0 50px rgba(255, 0, 255, 0.6),
-                inset 0 0 20px rgba(255, 255, 255, 0.3);
+                0 0 60px rgba(255, 0, 255, 0.8),
+                inset 0 0 20px rgba(255, 255, 255, 0.4);
             position: relative;
         }
 
@@ -135,14 +134,12 @@
             font-size: 3em;
             font-weight: 900;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #ff00ff, #00ffff, #ffff00);
+            background: linear-gradient(135deg, #ff00ff, #00ffff, #00ff00, #ffff00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: glow 2s ease-in-out infinite alternate;
             line-height: 1.1;
             text-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
         }
 
         @keyframes glow {
@@ -155,9 +152,7 @@
             color: #00ffff;
             margin-bottom: 10px;
             font-weight: 500;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            font-family: 'Rajdhani', sans-serif;
-            letter-spacing: 0.5px;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
         }
 
         .highlight {
@@ -165,11 +160,11 @@
             color: #ffff00;
             font-weight: bold;
             margin-bottom: 40px;
-            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            text-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
         }
 
         .start-button {
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(10, 10, 30, 0.9);
             color: #00ffff;
             border: 2px solid #00ffff;
             border-radius: 25px;
@@ -179,20 +174,18 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.3),
-                inset 0 0 20px rgba(0, 255, 255, 0.1);
+                0 0 25px rgba(0, 255, 255, 0.4),
+                inset 0 0 20px rgba(0, 255, 255, 0.2);
             display: flex;
             align-items: center;
             gap: 10px;
             animation: pulse 2s ease-in-out infinite;
             position: relative;
             overflow: hidden;
-            font-family: 'Rajdhani', sans-serif;
-            letter-spacing: 1px;
         }
 
         .start-button:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 35px rgba(0, 255, 255, 0.6);
         }
 
         .start-button:active {
@@ -206,10 +199,10 @@
 
         /* 게임 헤더 */
         .header {
-            background: rgba(10, 14, 39, 0.95);
+            background: rgba(10, 10, 30, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
             padding: 8px 15px;
             box-shadow: 0 2px 20px rgba(0,0,0,0.3);
             position: sticky;
@@ -234,13 +227,13 @@
         .home-button {
             width: 35px;
             height: 35px;
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(10, 10, 30, 0.9);
             border: 2px solid #ff00ff;
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -248,7 +241,7 @@
         }
 
         .home-button:hover {
-            box-shadow: 0 0 25px rgba(255, 0, 255, 0.5);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
         }
 
         .home-button:active {
@@ -266,14 +259,13 @@
             font-weight: bold;
             color: #00ffff;
             letter-spacing: -0.3px;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
         }
 
         .problem-number {
             font-size: 12px;
             color: #ff00ff;
-            text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
         }
 
         .header-right {
@@ -286,25 +278,25 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(10, 10, 30, 0.9);
             border: 2px solid #ffff00;
             padding: 6px 10px;
             border-radius: 15px;
             font-size: 12px;
             font-weight: bold;
             color: #ffff00;
-            box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
-            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.7);
         }
 
         .key-count:hover {
-            box-shadow: 0 0 25px rgba(255, 255, 0, 0.5);
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.6);
         }
 
         .settings-button-header {
             width: 35px;
             height: 35px;
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(10, 10, 30, 0.9);
             border: 2px solid #00ffff;
             border-radius: 10px;
             cursor: pointer;
@@ -314,11 +306,11 @@
             align-items: center;
             justify-content: center;
             color: #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
         }
 
         .settings-button-header:hover {
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
         }
 
         .settings-button-header:active {
@@ -328,7 +320,7 @@
         .progress-dots {
             display: flex;
             gap: 3px;
-            background: rgba(0, 255, 255, 0.1);
+            background: rgba(0, 255, 255, 0.15);
             padding: 4px 6px;
             border-radius: 10px;
         }
@@ -344,28 +336,28 @@
         .dot.completed {
             background: #00ffff;
             transform: scale(1.2);
-            box-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.9);
         }
 
         .dot.current {
             background: #ff00ff;
             transform: scale(1.4);
-            box-shadow: 0 0 0 2px rgba(255, 0, 255, 0.3);
+            box-shadow: 0 0 0 2px rgba(255, 0, 255, 0.4);
         }
 
         /* 천재 타이머 */
         .genius-timer {
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(10, 10, 30, 0.9);
             border: 2px solid #ffff00;
             border-radius: 8px;
             padding: 6px 8px;
             margin: 5px 0;
             color: #ffff00;
-            box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
         }
 
         .genius-timer:hover {
-            box-shadow: 0 0 25px rgba(255, 255, 0, 0.5);
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.6);
         }
 
         .genius-timer-header {
@@ -381,18 +373,18 @@
             gap: 4px;
             font-size: 11px;
             font-weight: bold;
-            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+            text-shadow: 0 0 8px rgba(255, 255, 0, 0.7);
         }
 
         .genius-timer-count {
             font-size: 12px;
             font-weight: bold;
-            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+            text-shadow: 0 0 8px rgba(255, 255, 0, 0.7);
         }
 
         .timer-bar {
             height: 4px;
-            background: rgba(255, 255, 0, 0.3);
+            background: rgba(255, 255, 0, 0.4);
             border-radius: 2px;
             overflow: hidden;
         }
@@ -402,12 +394,12 @@
             background: #ffff00;
             transition: width 0.65s linear;
             border-radius: 2px;
-            box-shadow: 0 0 5px rgba(255, 255, 0, 0.8);
+            box-shadow: 0 0 8px rgba(255, 255, 0, 0.9);
         }
 
         /* 메인 콘텐츠 */
         .main-content {
-            background: rgba(10, 14, 39, 0.95);
+            background: rgba(10, 10, 30, 0.95);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-radius: 20px 20px 0 0;
@@ -422,11 +414,11 @@
 
         /* 힌트 섹션 */
         .hints-section {
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(15, 15, 35, 0.9);
             border-radius: 15px;
             padding: 12px;
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            box-shadow: 0 6px 20px rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 6px 25px rgba(0, 255, 255, 0.2);
             flex: 1;
             min-height: 0;
             display: flex;
@@ -445,7 +437,7 @@
         }
 
         .hints-container::-webkit-scrollbar-thumb {
-            background: rgba(0, 255, 255, 0.5);
+            background: rgba(0, 255, 255, 0.6);
             border-radius: 2px;
         }
 
@@ -458,7 +450,7 @@
 
         .hint-item.locked {
             opacity: 0.7;
-            background: rgba(30, 25, 45, 0.7);
+            background: rgba(25, 20, 40, 0.7);
         }
 
         .hint-content {
@@ -490,7 +482,7 @@
             font-weight: 900;
             flex-shrink: 0;
             border: 2px solid;
-            background: rgba(20, 15, 30, 0.8);
+            background: rgba(10, 10, 30, 0.8);
             transition: all 0.3s;
             color: white;
         }
@@ -508,106 +500,106 @@
             gap: 4px;
         }
 
-        /* 힌트 아이템별 색상 - 네온 효과 추가 */
+        /* 힌트 아이템별 색상 - 네온 효과 강화 */
         .hint-item:nth-child(1) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(255, 0, 127, 0.5);
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.2);
+            background: rgba(15, 15, 35, 0.9);
+            border: 2px solid rgba(255, 0, 127, 0.6);
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.3);
         }
         .hint-item:nth-child(1):hover {
-            box-shadow: 0 0 30px rgba(255, 0, 127, 0.4);
+            box-shadow: 0 0 35px rgba(255, 0, 127, 0.5);
         }
         .hint-item:nth-child(1) .hint-number { 
-            background: rgba(255, 0, 127, 0.2) !important; 
-            border-color: rgba(255, 0, 127, 0.6) !important; 
+            background: rgba(255, 0, 127, 0.3) !important; 
+            border-color: rgba(255, 0, 127, 0.8) !important; 
             color: #ff007f !important; 
-            text-shadow: 0 0 10px rgba(255, 0, 127, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3) !important;
+            text-shadow: 0 0 15px rgba(255, 0, 127, 0.9) !important; 
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4) !important;
         }
 
         .hint-item:nth-child(2) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(255, 100, 0, 0.5);
-            box-shadow: 0 0 20px rgba(255, 100, 0, 0.2);
+            background: rgba(15, 15, 35, 0.9);
+            border: 2px solid rgba(255, 100, 0, 0.6);
+            box-shadow: 0 0 25px rgba(255, 100, 0, 0.3);
         }
         .hint-item:nth-child(2):hover {
-            box-shadow: 0 0 30px rgba(255, 100, 0, 0.4);
+            box-shadow: 0 0 35px rgba(255, 100, 0, 0.5);
         }
         .hint-item:nth-child(2) .hint-number { 
-            background: rgba(255, 100, 0, 0.2) !important; 
-            border-color: rgba(255, 100, 0, 0.6) !important; 
+            background: rgba(255, 100, 0, 0.3) !important; 
+            border-color: rgba(255, 100, 0, 0.8) !important; 
             color: #ff6400 !important; 
-            text-shadow: 0 0 10px rgba(255, 100, 0, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(255, 100, 0, 0.3) !important;
+            text-shadow: 0 0 15px rgba(255, 100, 0, 0.9) !important; 
+            box-shadow: 0 0 20px rgba(255, 100, 0, 0.4) !important;
         }
 
         .hint-item:nth-child(3) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(0, 255, 127, 0.5);
-            box-shadow: 0 0 20px rgba(0, 255, 127, 0.2);
+            background: rgba(15, 15, 35, 0.9);
+            border: 2px solid rgba(0, 255, 127, 0.6);
+            box-shadow: 0 0 25px rgba(0, 255, 127, 0.3);
         }
         .hint-item:nth-child(3):hover {
-            box-shadow: 0 0 30px rgba(0, 255, 127, 0.4);
+            box-shadow: 0 0 35px rgba(0, 255, 127, 0.5);
         }
         .hint-item:nth-child(3) .hint-number { 
-            background: rgba(0, 255, 127, 0.2) !important; 
-            border-color: rgba(0, 255, 127, 0.6) !important; 
+            background: rgba(0, 255, 127, 0.3) !important; 
+            border-color: rgba(0, 255, 127, 0.8) !important; 
             color: #00ff7f !important; 
-            text-shadow: 0 0 10px rgba(0, 255, 127, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(0, 255, 127, 0.3) !important;
+            text-shadow: 0 0 15px rgba(0, 255, 127, 0.9) !important; 
+            box-shadow: 0 0 20px rgba(0, 255, 127, 0.4) !important;
         }
 
         .hint-item:nth-child(4) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(0, 200, 255, 0.5);
-            box-shadow: 0 0 20px rgba(0, 200, 255, 0.2);
+            background: rgba(15, 15, 35, 0.9);
+            border: 2px solid rgba(0, 200, 255, 0.6);
+            box-shadow: 0 0 25px rgba(0, 200, 255, 0.3);
         }
         .hint-item:nth-child(4):hover {
-            box-shadow: 0 0 30px rgba(0, 200, 255, 0.4);
+            box-shadow: 0 0 35px rgba(0, 200, 255, 0.5);
         }
         .hint-item:nth-child(4) .hint-number { 
-            background: rgba(0, 200, 255, 0.2) !important; 
-            border-color: rgba(0, 200, 255, 0.6) !important; 
+            background: rgba(0, 200, 255, 0.3) !important; 
+            border-color: rgba(0, 200, 255, 0.8) !important; 
             color: #00c8ff !important; 
-            text-shadow: 0 0 10px rgba(0, 200, 255, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(0, 200, 255, 0.3) !important;
+            text-shadow: 0 0 15px rgba(0, 200, 255, 0.9) !important; 
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.4) !important;
         }
 
         .hint-item:nth-child(5) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(200, 100, 255, 0.5);
-            box-shadow: 0 0 20px rgba(200, 100, 255, 0.2);
+            background: rgba(15, 15, 35, 0.9);
+            border: 2px solid rgba(200, 100, 255, 0.6);
+            box-shadow: 0 0 25px rgba(200, 100, 255, 0.3);
         }
         .hint-item:nth-child(5):hover {
-            box-shadow: 0 0 30px rgba(200, 100, 255, 0.4);
+            box-shadow: 0 0 35px rgba(200, 100, 255, 0.5);
         }
         .hint-item:nth-child(5) .hint-number { 
-            background: rgba(200, 100, 255, 0.2) !important; 
-            border-color: rgba(200, 100, 255, 0.6) !important; 
+            background: rgba(200, 100, 255, 0.3) !important; 
+            border-color: rgba(200, 100, 255, 0.8) !important; 
             color: #c864ff !important; 
-            text-shadow: 0 0 10px rgba(200, 100, 255, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(200, 100, 255, 0.3) !important;
+            text-shadow: 0 0 15px rgba(200, 100, 255, 0.9) !important; 
+            box-shadow: 0 0 20px rgba(200, 100, 255, 0.4) !important;
         }
 
         .hint-item:nth-child(6) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(255, 220, 0, 0.5);
-            box-shadow: 0 0 20px rgba(255, 220, 0, 0.2);
+            background: rgba(15, 15, 35, 0.9);
+            border: 2px solid rgba(255, 220, 0, 0.6);
+            box-shadow: 0 0 25px rgba(255, 220, 0, 0.3);
         }
         .hint-item:nth-child(6):hover {
-            box-shadow: 0 0 30px rgba(255, 220, 0, 0.4);
+            box-shadow: 0 0 35px rgba(255, 220, 0, 0.5);
         }
         .hint-item:nth-child(6) .hint-number { 
-            background: rgba(255, 220, 0, 0.2) !important; 
-            border-color: rgba(255, 220, 0, 0.6) !important; 
+            background: rgba(255, 220, 0, 0.3) !important; 
+            border-color: rgba(255, 220, 0, 0.8) !important; 
             color: #ffdc00 !important; 
-            text-shadow: 0 0 10px rgba(255, 220, 0, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(255, 220, 0, 0.3) !important;
+            text-shadow: 0 0 15px rgba(255, 220, 0, 0.9) !important; 
+            box-shadow: 0 0 20px rgba(255, 220, 0, 0.4) !important;
         }
 
-        /* 잠긴 힌트 버튼 */
+        /* 광고보기 버튼들 - 디자인 개선 */
         .unlock-btn {
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(10, 10, 30, 0.9);
             color: #ff6400;
             border: 2px solid #ff6400;
             border-radius: 8px;
@@ -619,20 +611,45 @@
             align-items: center;
             gap: 4px;
             transition: all 0.3s;
-            box-shadow: 0 0 10px rgba(255, 100, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 100, 0, 0.4);
         }
 
         .unlock-btn:hover {
-            box-shadow: 0 0 20px rgba(255, 100, 0, 0.5);
+            box-shadow: 0 0 25px rgba(255, 100, 0, 0.6);
         }
 
         .unlock-btn:active {
             transform: scale(0.95);
         }
 
+        /* 광고보기 버튼 전용 스타일 */
+        .ad-unlock-btn {
+            background: rgba(10, 10, 30, 0.9);
+            color: #00ff7f;
+            border: 2px solid #00ff7f;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(0, 255, 127, 0.4);
+        }
+
+        .ad-unlock-btn:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 127, 0.6);
+        }
+
+        .ad-unlock-btn:active {
+            transform: scale(0.95);
+        }
+
         .description {
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            background: rgba(0, 255, 255, 0.15);
+            border: 1px solid rgba(0, 255, 255, 0.4);
             border-radius: 8px;
             padding: 10px;
             margin-top: 8px;
@@ -650,35 +667,35 @@
         }
 
         .info-box {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(0, 255, 255, 0.3);
+            background: rgba(15, 15, 35, 0.9);
+            border: 2px solid rgba(0, 255, 255, 0.4);
             border-radius: 12px;
             padding: 12px;
             text-align: center;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
         }
 
         .info-box:hover {
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
         }
 
         .info-box.category {
-            background: rgba(20, 15, 30, 0.9);
-            border-color: rgba(255, 0, 255, 0.4);
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+            background: rgba(15, 15, 35, 0.9);
+            border-color: rgba(255, 0, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
         }
         .info-box.category:hover {
-            box-shadow: 0 0 25px rgba(255, 0, 255, 0.4);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
         }
 
         .info-box.chosung {
-            background: rgba(20, 15, 30, 0.9);
-            border-color: rgba(255, 255, 0, 0.4);
-            box-shadow: 0 0 15px rgba(255, 255, 0, 0.2);
+            background: rgba(15, 15, 35, 0.9);
+            border-color: rgba(255, 255, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
         }
         .info-box.chosung:hover {
-            box-shadow: 0 0 25px rgba(255, 255, 0, 0.4);
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.5);
         }
 
         .info-label {
@@ -687,7 +704,7 @@
             margin-bottom: 4px;
             font-weight: 600;
             text-transform: uppercase;
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
         }
 
         .info-value {
@@ -697,7 +714,7 @@
         }
 
         .unlock-small {
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(10, 10, 30, 0.9);
             color: #ff6400;
             border: 2px solid #ff6400;
             border-radius: 6px;
@@ -709,11 +726,11 @@
             align-items: center;
             gap: 3px;
             margin-top: 4px;
-            box-shadow: 0 0 8px rgba(255, 100, 0, 0.3);
+            box-shadow: 0 0 12px rgba(255, 100, 0, 0.4);
         }
 
         .unlock-small:hover {
-            box-shadow: 0 0 15px rgba(255, 100, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 100, 0, 0.6);
         }
 
         /* 정답 입력 섹션 */
@@ -729,12 +746,12 @@
             padding: 15px;
             font-size: 16px;
             font-weight: 600;
-            border: 2px solid rgba(0, 255, 255, 0.5);
+            border: 2px solid rgba(0, 255, 255, 0.6);
             border-radius: 12px;
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(15, 15, 35, 0.9);
             color: #ffffff;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
         }
 
         .answer-input::placeholder {
@@ -744,12 +761,12 @@
         .answer-input:focus {
             outline: none;
             border-color: #ff00ff;
-            box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.2), 0 0 20px rgba(255, 0, 255, 0.3);
-            background: rgba(20, 15, 30, 1);
+            box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.3), 0 0 25px rgba(255, 0, 255, 0.4);
+            background: rgba(15, 15, 35, 1);
         }
 
         .submit-button {
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(15, 15, 35, 0.9);
             color: #00ffff;
             border: 2px solid #00ffff;
             border-radius: 12px;
@@ -758,12 +775,12 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
             white-space: nowrap;
         }
 
         .submit-button:hover {
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
         }
 
         .submit-button:active {
@@ -772,17 +789,17 @@
 
         /* 정답 맞췄을 때 */
         .correct-answer {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(0, 255, 255, 0.3);
+            background: rgba(15, 15, 35, 0.9);
+            border: 2px solid rgba(0, 255, 255, 0.4);
             border-radius: 15px;
             padding: 20px;
             text-align: center;
             color: #ffffff;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
         }
 
         .correct-answer:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 35px rgba(0, 255, 255, 0.6);
         }
 
         .correct-icon {
@@ -810,12 +827,12 @@
             font-size: 14px;
             color: #00ffff;
             font-style: italic;
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
         }
 
         .next-button {
             width: 100%;
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(15, 15, 35, 0.9);
             color: #00ffff;
             border: 2px solid #00ffff;
             padding: 15px;
@@ -824,14 +841,14 @@
             font-weight: 900;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-top: 10px;
         }
 
         .next-button:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 35px rgba(0, 255, 255, 0.6);
         }
 
         .next-button:active {
@@ -845,7 +862,7 @@
 
         .show-answer-btn {
             width: 100%;
-            background: rgba(20, 15, 30, 0.9);
+            background: rgba(15, 15, 35, 0.9);
             color: #ff6400;
             border: 2px solid #ff6400;
             border-radius: 10px;
@@ -858,15 +875,36 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(255, 100, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 100, 0, 0.4);
         }
 
         .show-answer-btn:hover {
-            box-shadow: 0 0 25px rgba(255, 100, 0, 0.5);
+            box-shadow: 0 0 30px rgba(255, 100, 0, 0.6);
         }
 
         .show-answer-btn:active {
             transform: scale(0.98);
+        }
+
+        /* 배너 광고 스타일 */
+        .banner-ad {
+            margin: 20px 0;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .banner-ad img {
+            width: 300px;
+            height: 200px;
+            border-radius: 12px;
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+            transition: all 0.3s;
+        }
+
+        .banner-ad img:hover {
+            box-shadow: 0 0 35px rgba(0, 255, 255, 0.5);
+            transform: scale(1.02);
         }
 
         /* 축하 팝업 */
@@ -875,903 +913,1254 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(20, 15, 30, 0.95);
+            background: rgba(15, 15, 35, 0.95);
             border: 2px solid #00ffff;
             border-radius: 20px;
             padding: 25px;
             text-align: center;
             color: white;
             z-index: 1000;
-            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.4);
+            animation: popIn 0.5s ease-out;
+            min-width: 280px;
+            max-width: 85%;
+        }
+
+        .popup-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+            animation: bounce 1s ease-in-out;
+        }
+
+        .popup-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .popup-message {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .popup-reward {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            70% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* 음악 패널 */
+        .music-panel {
+            position: fixed;
+            top: 60px;
+            right: 15px;
+            background: rgba(15, 15, 35, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            max-width: 90%;
-            width: 350px;
-            animation: popup-appear 0.5s ease-out;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 255, 255, 0.4);
+            z-index: 98;
+            border: 2px solid rgba(0, 255, 255, 0.6);
+            display: none;
+            min-width: 160px;
         }
 
-        @keyframes popup-appear {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        .music-panel.active {
+            display: block;
         }
 
-        .congratulation-popup h2 {
-            font-size: 24px;
-            font-weight: 900;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #ff00ff, #00ffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
-        }
-
-        .congratulation-popup p {
-            font-size: 16px;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .congratulation-popup .key-reward {
-            font-size: 18px;
-            font-weight: 900;
-            color: #ffff00;
-            margin: 15px 0;
-            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-        }
-
-        /* 배너 광고 섹션 */
-        .banner-ad {
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .banner-ad img {
-            width: 300px;
-            height: 200px;
-            border-radius: 12px;
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-            transition: all 0.3s;
-        }
-
-        .banner-ad img:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
-            transform: scale(1.02);
-        }
-
-        /* 팝업 버튼 */
-        .popup-buttons {
+        .music-controls {
             display: flex;
             flex-direction: column;
+            gap: 8px;
+        }
+
+        .music-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #00ffff;
+            margin-bottom: 8px;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+        }
+
+        .sound-control {
+            padding: 10px 12px;
+            background: rgba(15, 15, 35, 0.9);
+            color: #00ffff;
+            border: 2px solid rgba(0, 255, 255, 0.6);
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+        }
+
+        .sound-control:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+        }
+
+        .sound-control.active {
+            background: rgba(0, 255, 255, 0.2);
+            color: #00ffff;
+            border-color: rgba(0, 255, 255, 0.9);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        .sound-control:active {
+            transform: scale(0.95);
+        }
+
+        /* 라운드 맵 */
+        .round-map {
+            padding: 20px;
+        }
+
+        .round-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             gap: 10px;
             margin-top: 20px;
         }
 
-        .popup-button {
-            padding: 15px;
-            border-radius: 12px;
+        .round-button {
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 15px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 900;
             cursor: pointer;
             transition: all 0.3s;
-            border: 2px solid;
-            background: rgba(20, 15, 30, 0.9);
-            color: white;
-        }
-
-        .popup-button.next-round {
-            border-color: #00ffff;
+            position: relative;
+            background: rgba(15, 15, 35, 0.9);
+            border: 2px solid rgba(0, 255, 255, 0.4);
             color: #00ffff;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
         }
 
-        .popup-button.next-round:hover {
+        .round-button:hover {
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
         }
 
-        .popup-button.main-menu {
-            border-color: #ff00ff;
-            color: #ff00ff;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
-        }
-
-        .popup-button.main-menu:hover {
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
-        }
-
-        .popup-button:active {
-            transform: scale(0.98);
-        }
-
-        /* 설정 모달 */
-        .settings-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .settings-content {
-            background: rgba(20, 15, 30, 0.95);
-            border: 2px solid #00ffff;
-            border-radius: 20px;
-            padding: 25px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.3);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-
-        .settings-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .settings-title {
-            font-size: 20px;
-            font-weight: 900;
-            color: #00ffff;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-        }
-
-        .close-settings {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: #ff00ff;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .close-settings:hover {
-            transform: scale(1.2);
-        }
-
-        .settings-option {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .option-label {
-            font-size: 16px;
-            color: #ffffff;
-        }
-
-        .toggle-switch {
-            position: relative;
-            width: 50px;
-            height: 26px;
-        }
-
-        .toggle-checkbox {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid #00ffff;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 2px;
-            bottom: 2px;
-            background: #00ffff;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        .toggle-checkbox:checked + .toggle-slider {
+        .round-button.completed {
             background: rgba(0, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.9);
+            color: #00ffff;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+        }
+        .round-button.completed:hover {
+            box-shadow: 0 0 35px rgba(0, 255, 255, 0.7);
         }
 
-        .toggle-checkbox:checked + .toggle-slider:before {
-            transform: translateX(24px);
+        .round-button.current {
+            background: rgba(255, 0, 255, 0.2);
+            border-color: rgba(255, 0, 255, 0.9);
+            color: #ff00ff;
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.6);
+            animation: pulse 2s infinite;
+        }
+        .round-button.current:hover {
+            box-shadow: 0 0 35px rgba(255, 0, 255, 0.8);
         }
 
-        .reset-button {
-            width: 100%;
-            background: rgba(20, 15, 30, 0.9);
-            color: #ff6400;
-            border: 2px solid #ff6400;
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(255, 100, 0, 0.3);
-            margin-top: 10px;
+        .round-button.locked {
+            background: rgba(30, 25, 45, 0.8);
+            color: #666;
+            cursor: not-allowed;
+            border: 2px solid rgba(102, 102, 102, 0.5);
+            box-shadow: none;
         }
 
-        .reset-button:hover {
-            box-shadow: 0 0 25px rgba(255, 100, 0, 0.5);
+        .round-button:active:not(.locked) {
+            transform: scale(0.95);
         }
 
-        .reset-button:active {
-            transform: scale(0.98);
+        /* 로딩 스피너 */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #00ffff;
+            animation: spin 1s ease-in-out infinite;
         }
 
-        /* 반응형 디자인 */
-        @media (max-width: 480px) {
-            .title-main {
-                font-size: 2.5em;
-            }
-            
-            .subtitle {
-                font-size: 1.1em;
-            }
-            
-            .start-button {
-                padding: 15px 30px;
-                font-size: 1.2em;
-            }
-            
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .hint-text {
-                font-size: 14px;
-            }
-            
-            .answer-input, .submit-button {
-                padding: 12px;
-                font-size: 14px;
-            }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        @media (max-width: 360px) {
-            .title-main {
-                font-size: 2em;
-            }
-            
-            .subtitle {
-                font-size: 1em;
-            }
-            
-            .start-button {
-                padding: 12px 25px;
-                font-size: 1.1em;
-            }
-            
-            .hint-text {
-                font-size: 13px;
-            }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
     </style>
-    
-    <!-- 폰트 -->
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- 별똥별 효과 -->
-    <div class="shooting-star" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
-    <div class="shooting-star" style="top: 40%; left: 20%; animation-delay: 1s;"></div>
-    <div class="shooting-star" style="top: 60%; left: 30%; animation-delay: 2s;"></div>
-    
-    <div class="container">
-        <!-- 시작 화면 -->
-        <div class="start-screen" id="startScreen">
-            <div class="magic-orb"></div>
-            <h1 class="title-main">연상천재</h1>
-            <p class="subtitle">IQ 140 연상퀴즈</p>
-            <p class="highlight">시냅스가 연결되는 짜릿한 쾌감을 느껴보세요!</p>
-            <button class="start-button" id="startButton">
-                <span>게임 시작</span>
-            </button>
-        </div>
-        
-        <!-- 게임 화면 -->
-        <div class="game-screen" id="gameScreen" style="display: none;">
-            <!-- 헤더 -->
-            <div class="header">
-                <div class="compact-header">
-                    <div class="header-left">
-                        <button class="home-button" id="homeButton">🏠</button>
-                        <div class="round-info-compact">
-                            <div class="round-title" id="roundTitle">라운드 1</div>
-                            <div class="problem-number" id="problemNumber">문제 1/10</div>
-                        </div>
-                    </div>
-                    <div class="header-right">
-                        <div class="key-count" id="keyCount">
-                            <span>🔑</span>
-                            <span id="keyCountValue">0</span>
-                        </div>
-                        <button class="settings-button-header" id="settingsButton">⚙️</button>
-                    </div>
-                </div>
+    <div id="app"></div>
+
+    <script>
+        // 별똥별 생성
+        function createShootingStars() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const star = document.createElement('div');
+                    star.className = 'shooting-star';
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.animationDelay = Math.random() * 5 + 's';
+                    document.body.appendChild(star);
+                    
+                    setTimeout(() => {
+                        star.remove();
+                    }, 3000);
+                }, i * 1000);
+            }
+        }
+
+        // ✅ 스크롤 관리자 - 정답 맞추면 힌트 맨 위로 스크롤
+        const ScrollManager = {
+            // 새 문제 시작 시 무조건 맨 위로
+            forceScrollToTop() {
+                window.scrollTo(0, 0);
                 
-                <!-- 천재 타이머 -->
-                <div class="genius-timer" id="geniusTimer" style="display: none;">
-                    <div class="genius-timer-header">
-                        <div class="genius-timer-text">
-                            <span>천재 타이머</span>
-                        </div>
-                        <div class="genius-timer-count" id="geniusTimerCount">10초</div>
-                    </div>
-                    <div class="timer-bar">
-                        <div class="timer-progress" id="timerProgress" style="width: 100%"></div>
-                    </div>
-                </div>
-                
-                <!-- 진행률 -->
-                <div class="progress-dots" id="progressDots"></div>
-            </div>
+                const hintsContainer = document.querySelector('.hints-container');
+                if (hintsContainer) {
+                    hintsContainer.scrollTop = 0;
+                    
+                    setTimeout(() => {
+                        hintsContainer.scrollTop = 0;
+                    }, 50);
+                }
+            },
             
-            <!-- 메인 콘텐츠 -->
-            <div class="main-content">
-                <!-- 힌트 섹션 -->
-                <div class="hints-section">
-                    <div class="hints-container" id="hintsContainer"></div>
-                </div>
+            // 정답 맞췄을 때 힌트 컨테이너 맨 위로 스크롤
+            scrollToHintsTop() {
+                const hintsContainer = document.querySelector('.hints-container');
+                if (hintsContainer) {
+                    hintsContainer.scrollTop = 0;
+                }
+                window.scrollTo(0, 0);
+            },
+            
+            // 힌트 해금 시: 스크롤 이동 없이 현재 위치 유지
+            scrollToHintIfNeeded(hintElement) {
+                return;
+            }
+        };
+
+        // 오디오 관리자
+        const AudioManager = {
+            bgm1: null,
+            bgm2: null,
+            currentBGM: null,
+            correctSound: null,
+            wrongSound: null,
+            hintSound: null,
+            clickSound: null,
+            completeSound: null,
+            geniusSound: null,
+            isAudioUnlocked: false,
+            isPlaying: false,
+            bgmEnabled: true,
+            sfxEnabled: true,
+            currentBGMIndex: 0,
+
+            async init() {
+                try {
+                    this.bgm1 = new Audio('bgm1.mp3');
+                    this.bgm2 = new Audio('bgm2.mp3');
+                    
+                    this.correctSound = new Audio('correct.mp3');
+                    this.wrongSound = new Audio('wrong.mp3');
+                    this.hintSound = new Audio('hint.mp3');
+                    this.completeSound = new Audio('complete.mp3');
+                    this.geniusSound = new Audio('genius.mp3');
+                    
+                    [this.bgm1, this.bgm2].forEach(bgm => {
+                        bgm.loop = false;
+                        bgm.volume = 0.4;
+                        bgm.preload = 'auto';
+                    });
+                    
+                    [this.correctSound, this.wrongSound, this.hintSound, 
+                     this.completeSound, this.geniusSound].forEach(sound => {
+                        sound.volume = 0.6;
+                        sound.preload = 'auto';
+                    });
+                    
+                    this.currentBGM = this.bgm1;
+                    this.isAudioUnlocked = true;
+                    
+                    this.loadSettings();
+                    
+                    if (this.bgmEnabled) {
+                        await this.startBGM();
+                    }
+                    
+                } catch (error) {
+                    console.log('오디오 초기화 실패:', error);
+                }
+            },
+
+            async startBGM() {
+                if (!this.currentBGM || !this.bgmEnabled) return;
                 
-                <!-- 정보 그리드 -->
-                <div class="info-grid">
-                    <div class="info-box category">
-                        <div class="info-label">카테고리</div>
-                        <div class="info-value" id="categoryValue">-</div>
-                    </div>
-                    <div class="info-box chosung">
-                        <div class="info-label">초성</div>
-                        <div class="info-value" id="chosungValue">-</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="info-label">힌트</div>
-                        <div class="info-value" id="hintCount">0/6</div>
-                        <button class="unlock-small" id="unlockAllHints">
-                            <span>전체 해제</span>
+                try {
+                    await this.currentBGM.play();
+                    this.isPlaying = true;
+                    
+                    this.currentBGM.onended = () => {
+                        this.switchBGM();
+                    };
+                    
+                } catch (error) {
+                    console.log('BGM 재생 실패:', error);
+                }
+            },
+
+            switchBGM() {
+                this.currentBGMIndex = (this.currentBGMIndex + 1) % 2;
+                this.currentBGM = this.currentBGMIndex === 0 ? this.bgm1 : this.bgm2;
+                this.startBGM();
+            },
+
+            async playSound(soundType) {
+                if (!this.sfxEnabled || !this.isAudioUnlocked) return;
+                
+                let sound = null;
+                
+                switch(soundType) {
+                    case 'correct': sound = this.correctSound; break;
+                    case 'wrong': sound = this.wrongSound; break;
+                    case 'hint': sound = this.hintSound; break;
+                    case 'complete': sound = this.completeSound; break;
+                    case 'genius': sound = this.geniusSound; break;
+                    case 'click': sound = this.hintSound; break;
+                }
+                
+                if (sound) {
+                    try {
+                        sound.currentTime = 0;
+                        await sound.play();
+                    } catch (error) {}
+                }
+            },
+
+            toggleBGM() {
+                this.bgmEnabled = !this.bgmEnabled;
+                if (this.bgmEnabled) {
+                    this.startBGM();
+                } else {
+                    if (this.currentBGM) {
+                        this.currentBGM.pause();
+                        this.currentBGM.currentTime = 0;
+                    }
+                }
+                this.saveSettings();
+                this.updateMusicControls();
+                if (this.sfxEnabled) {
+                    this.hintSound.currentTime = 0;
+                    this.hintSound.play().catch(() => {});
+                }
+            },
+
+            toggleSFX() {
+                this.sfxEnabled = !this.sfxEnabled;
+                this.saveSettings();
+                this.updateMusicControls();
+                if (this.sfxEnabled) {
+                    this.hintSound.currentTime = 0;
+                    this.hintSound.play().catch(() => {});
+                }
+            },
+
+            saveSettings() {
+                const settings = {
+                    bgmEnabled: this.bgmEnabled,
+                    sfxEnabled: this.sfxEnabled
+                };
+                localStorage.setItem('audio_settings', JSON.stringify(settings));
+            },
+
+            loadSettings() {
+                const saved = localStorage.getItem('audio_settings');
+                if (saved) {
+                    const settings = JSON.parse(saved);
+                    this.bgmEnabled = settings.bgmEnabled !== false;
+                    this.sfxEnabled = settings.sfxEnabled !== false;
+                }
+            },
+
+            updateMusicControls() {
+                const bgmButton = document.querySelector('.bgm-control');
+                const sfxButton = document.querySelector('.sfx-control');
+                
+                if (bgmButton) {
+                    bgmButton.textContent = this.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF';
+                    bgmButton.className = this.bgmEnabled ? 'sound-control active' : 'sound-control';
+                }
+                
+                if (sfxButton) {
+                    sfxButton.textContent = this.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF';
+                    sfxButton.className = this.sfxEnabled ? 'sound-control active' : 'sound-control';
+                }
+            }
+        };
+
+        // 게임 상태 관리
+        let gameState = {
+            currentScreen: 'start',
+            currentRound: 1,
+            currentProblem: 0,
+            keys: 15,
+            completedRounds: [],
+            problems: [],
+            currentProblemState: null
+        };
+
+        // 진행도 저장
+        function saveGameState() {
+            const saveData = {
+                currentRound: gameState.currentRound,
+                currentProblem: gameState.currentProblem,
+                keys: gameState.keys,
+                completedRounds: gameState.completedRounds,
+                problems: gameState.problems,
+                currentProblemState: gameState.currentProblemState
+            };
+            localStorage.setItem('game_save', JSON.stringify(saveData));
+        }
+
+        // 진행도 불러오기
+        function loadGameState() {
+            const saved = localStorage.getItem('game_save');
+            if (saved) {
+                const saveData = JSON.parse(saved);
+                // ✅ 저장된 진행도 유지 (항상 1번 문제부터 시작하는 문제 수정)
+                gameState.currentRound = saveData.currentRound;
+                gameState.currentProblem = saveData.currentProblem; // ✅ 저장된 문제 번호 사용
+                gameState.keys = saveData.keys;
+                gameState.completedRounds = saveData.completedRounds;
+                gameState.problems = saveData.problems;
+                gameState.currentProblemState = saveData.currentProblemState;
+                return true;
+            }
+            return false;
+        }
+
+        // 시작 화면 렌더링
+        function renderStartScreen() {
+            createShootingStars();
+            const html = `
+                <div class="container">
+                    <div class="start-screen">
+                        <div class="magic-orb"></div>
+                        <div class="title-main">⚡연상천재⚡</div>
+                        <div class="subtitle">뇌가 터질 것 같은 쾌감</div>
+                        <div class="highlight">당신은 IQ 140 천재입니까?</div>
+                        <button class="start-button" onclick="AudioManager.playSound('click'); showRoundMap()">
+                            🧠 시냅스 가동
                         </button>
                     </div>
                 </div>
-                
-                <!-- 정답 입력 섹션 -->
-                <div class="answer-input-section">
-                    <input type="text" class="answer-input" id="answerInput" placeholder="정답을 입력하세요">
-                    <button class="submit-button" id="submitButton">확인</button>
-                </div>
-                
-                <!-- 정답보기 버튼 -->
-                <div class="show-answer-section">
-                    <button class="show-answer-btn" id="showAnswerBtn">
-                        <span>정답보기</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 설정 모달 -->
-    <div class="settings-modal" id="settingsModal" style="display: none;">
-        <div class="settings-content">
-            <div class="settings-header">
-                <h2 class="settings-title">설정</h2>
-                <button class="close-settings" id="closeSettings">✕</button>
-            </div>
-            <div class="settings-option">
-                <span class="option-label">사운드</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" class="toggle-checkbox" id="soundToggle" checked>
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-            <div class="settings-option">
-                <span class="option-label">진동</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" class="toggle-checkbox" id="vibrationToggle" checked>
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-            <button class="reset-button" id="resetButton">게임 초기화</button>
-        </div>
-    </div>
-    
-    <script>
-        // 게임 상태 관리
-        const gameState = {
-            currentRound: 1,
-            currentProblemIndex: 0,
-            keys: 0,
-            problems: [],
-            unlockedHints: [],
-            isGeniusTimerActive: false,
-            isSoundOn: true,
-            isVibrationOn: true
-        };
-
-        // DOM 요소
-        const startScreen = document.getElementById('startScreen');
-        const gameScreen = document.getElementById('gameScreen');
-        const startButton = document.getElementById('startButton');
-        const homeButton = document.getElementById('homeButton');
-        const settingsButton = document.getElementById('settingsButton');
-        const closeSettings = document.getElementById('closeSettings');
-        const settingsModal = document.getElementById('settingsModal');
-        const soundToggle = document.getElementById('soundToggle');
-        const vibrationToggle = document.getElementById('vibrationToggle');
-        const resetButton = document.getElementById('resetButton');
-        const roundTitle = document.getElementById('roundTitle');
-        const problemNumber = document.getElementById('problemNumber');
-        const keyCountValue = document.getElementById('keyCountValue');
-        const hintsContainer = document.getElementById('hintsContainer');
-        const categoryValue = document.getElementById('categoryValue');
-        const chosungValue = document.getElementById('chosungValue');
-        const hintCount = document.getElementById('hintCount');
-        const answerInput = document.getElementById('answerInput');
-        const submitButton = document.getElementById('submitButton');
-        const showAnswerBtn = document.getElementById('showAnswerBtn');
-        const unlockAllHints = document.getElementById('unlockAllHints');
-        const geniusTimer = document.getElementById('geniusTimer');
-        const geniusTimerCount = document.getElementById('geniusTimerCount');
-        const timerProgress = document.getElementById('timerProgress');
-        const progressDots = document.getElementById('progressDots');
-
-        // 게임 시작
-        startButton.addEventListener('click', startGame);
-        homeButton.addEventListener('click', goHome);
-        settingsButton.addEventListener('click', showSettings);
-        closeSettings.addEventListener('click', hideSettings);
-        resetButton.addEventListener('click', resetGame);
-        submitButton.addEventListener('click', checkAnswer);
-        showAnswerBtn.addEventListener('click', showAnswer);
-        unlockAllHints.addEventListener('click', unlockAllHintsHandler);
-
-        // 엔터 키로 정답 제출
-        answerInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkAnswer();
-            }
-        });
-
-        // 설정 토글
-        soundToggle.addEventListener('change', function() {
-            gameState.isSoundOn = this.checked;
-            saveGameState();
-        });
-
-        vibrationToggle.addEventListener('change', function() {
-            gameState.isVibrationOn = this.checked;
-            saveGameState();
-        });
-
-        // 게임 시작 함수
-        function startGame() {
-            startScreen.style.display = 'none';
-            gameScreen.style.display = 'flex';
-            
-            // 게임 상태 로드
-            loadGameState();
-            
-            // 문제 로드
-            loadProblems();
-            
-            // 현재 문제 표시
-            showCurrentProblem();
+            `;
+            document.getElementById('app').innerHTML = html;
+            setInterval(createShootingStars, 5000);
         }
 
-        // 홈으로 돌아가기
-        function goHome() {
-            gameScreen.style.display = 'none';
-            startScreen.style.display = 'flex';
-        }
-
-        // 설정 표시
-        function showSettings() {
-            settingsModal.style.display = 'flex';
-        }
-
-        // 설정 숨기기
-        function hideSettings() {
-            settingsModal.style.display = 'none';
-        }
-
-        // 게임 초기화
-        function resetGame() {
-            if (confirm('정말로 게임을 초기화하시겠습니까? 모든 진행 상황이 삭제됩니다.')) {
-                localStorage.removeItem('brainGameState');
-                gameState.currentRound = 1;
-                gameState.currentProblemIndex = 0;
-                gameState.keys = 0;
-                gameState.unlockedHints = [];
-                
-                hideSettings();
-                showCurrentProblem();
-                updateUI();
-            }
-        }
-
-        // 문제 로드
-        function loadProblems() {
-            // 실제로는 서버에서 문제를 가져오지만, 여기서는 예시 데이터 사용
-            gameState.problems = [
-                {
-                    category: "동물",
-                    chosung: "ㅅㅇㅅ",
-                    hints: [
-                        "이 동물은 아프리카에 삽니다.",
-                        "목이 매우 깁니다.",
-                        "반추 동물입니다.",
-                        "얼룩말과 함께 서식하는 경우가 많습니다.",
-                        "초식 동물입니다.",
-                        "가장 키가 큰 육상 동물입니다."
-                    ],
-                    answer: "기린"
-                },
-                {
-                    category: "과일",
-                    chosung: "ㅂㅅ",
-                    hints: [
-                        "붉은색을 띠는 과일입니다.",
-                        "씨가 여러 개 들어있습니다.",
-                        "수박과 함께 여름 대표 과일입니다.",
-                        "비타민 C가 풍부합니다.",
-                        "껍질을 벗겨서 먹습니다.",
-                        "딸기와 같은 과일입니다."
-                    ],
-                    answer: "복숭아"
-                }
-                // 더 많은 문제 추가 가능
-            ];
-        }
-
-        // 현재 문제 표시
-        function showCurrentProblem() {
-            if (gameState.currentProblemIndex >= gameState.problems.length) {
-                // 라운드 완료
-                showRoundCompletePopup();
-                return;
-            }
+        // 라운드 맵 렌더링
+        function showRoundMap() {
+            const hasSave = loadGameState();
             
-            const problem = gameState.problems[gameState.currentProblemIndex];
-            
-            // UI 업데이트
-            roundTitle.textContent = `라운드 ${gameState.currentRound}`;
-            problemNumber.textContent = `문제 ${gameState.currentProblemIndex + 1}/${gameState.problems.length}`;
-            categoryValue.textContent = problem.category;
-            chosungValue.textContent = problem.chosung;
-            
-            // 힌트 표시
-            displayHints(problem.hints);
-            
-            // 진행률 업데이트
-            updateProgressDots();
-            
-            // 입력 필드 초기화
-            answerInput.value = '';
-            answerInput.focus();
-            
-            // 천재 타이머 시작
-            startGeniusTimer();
-        }
-
-        // 힌트 표시
-        function displayHints(hints) {
-            hintsContainer.innerHTML = '';
-            
-            hints.forEach((hint, index) => {
-                const isUnlocked = gameState.unlockedHints.includes(index);
-                
-                const hintItem = document.createElement('div');
-                hintItem.className = `hint-item ${isUnlocked ? '' : 'locked'}`;
-                
-                hintItem.innerHTML = `
-                    <div class="hint-content">
-                        <div class="hint-header">
-                            <div class="hint-left">
-                                <div class="hint-number">${index + 1}</div>
-                                <div class="hint-text">${isUnlocked ? hint : '??????????'}</div>
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="compact-header">
+                            <div class="header-left">
+                                <div class="round-info-compact">
+                                    <div class="round-title">연상천재</div>
+                                    <div class="problem-number">라운드를 선택하세요</div>
+                                </div>
                             </div>
-                            <div class="hint-controls">
-                                ${!isUnlocked ? `
-                                    <button class="unlock-btn" data-index="${index}">
-                                        <span>해제</span>
-                                    </button>
-                                ` : ''}
+                            <div class="header-right">
+                                <div class="key-count">🔑 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
                             </div>
                         </div>
                     </div>
-                `;
-                
-                hintsContainer.appendChild(hintItem);
-                
-                // 잠긴 힌트 해제 버튼 이벤트 추가
-                if (!isUnlocked) {
-                    const unlockBtn = hintItem.querySelector('.unlock-btn');
-                    unlockBtn.addEventListener('click', function() {
-                        unlockHint(index);
-                    });
-                }
-            });
+                    
+                    <div class="main-content">
+                        <div class="round-map">
+                            <h2 style="text-align: center; margin-bottom: 20px; color: #00ffff; font-size: 18px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">
+                                라운드 선택
+                            </h2>
+                            <div class="round-grid">
+                                ${Array.from({ length: 100 }, (_, i) => {
+                                    const roundNumber = i + 1;
+                                    const isCompleted = gameState.completedRounds.includes(roundNumber);
+                                    const maxCompleted = gameState.completedRounds.length > 0 ? Math.max(...gameState.completedRounds) : 0;
+                                    const isCurrent = roundNumber === maxCompleted + 1;
+                                    const isLocked = roundNumber > maxCompleted + 1 && !isCompleted;
+                                    
+                                    return `
+                                        <button 
+                                            class="round-button ${isCompleted ? 'completed' : isCurrent ? 'current' : isLocked ? 'locked' : 'current'}"
+                                            onclick="${isLocked ? '' : `startRound(${roundNumber})`}"
+                                            ${isLocked ? 'disabled' : ''}
+                                        >
+                                            ${roundNumber}
+                                            ${isCompleted ? '✅' : isCurrent ? '⭐' : isLocked ? '🔒' : '🎯'}
+                                        </button>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="music-panel"></div>
+                </div>
+            `;
             
-            // 힌트 카운트 업데이트
-            updateHintCount();
+            document.getElementById('app').innerHTML = html;
+            gameState.currentScreen = 'roundMap';
+            updateMusicPanel();
         }
 
-        // 힌트 해제
-        function unlockHint(index) {
-            if (!gameState.unlockedHints.includes(index)) {
-                gameState.unlockedHints.push(index);
-                gameState.unlockedHints.sort((a, b) => a - b);
+        // 라운드 시작
+        async function startRound(roundNumber) {
+            AudioManager.playSound('click');
+            
+            try {
+                const fileNumber = Math.ceil(roundNumber / 10);
+                const response = await fetch(`problems_${fileNumber}.json`);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const allProblems = await response.json();
+                const problemsPerRound = 6;
+                const startIndex = (roundNumber - 1) * problemsPerRound;
+                const fileStartIndex = startIndex - ((fileNumber - 1) * 60);
+                const roundProblems = allProblems.slice(fileStartIndex, fileStartIndex + problemsPerRound);
+
+                if (roundProblems.length === 0) {
+                    showAllRoundsCompleted();
+                    return;
+                }
+                
+                // ✅ 진행도 유지: 저장된 currentProblem이 있으면 사용, 없으면 0부터 시작
+                const savedCurrentProblem = gameState.currentProblem;
+                gameState.currentRound = roundNumber;
+                gameState.currentProblem = savedCurrentProblem || 0;
+                gameState.problems = roundProblems;
+                
+                // ✅ 현재 문제 상태도 저장된 거 사용하거나 새로 생성
+                if (!gameState.currentProblemState) {
+                    gameState.currentProblemState = {
+                        unlockedHints: [0, 1],
+                        showDescriptions: [false, false, false, false, false, false],
+                        canShowDescriptions: false,
+                        showCharacterCount: false,
+                        showCategory: false,
+                        showChosung: false,
+                        userAnswer: '',
+                        isCorrect: false,
+                        geniusTimer: 13,
+                        geniusTimerActive: true,
+                        timerInterval: null
+                    };
+                }
+                
+                startGeniusTimer();
+                renderGameScreen(true);
                 saveGameState();
-                showCurrentProblem();
-            }
-        }
-
-        // 전체 힌트 해제
-        function unlockAllHintsHandler() {
-            const problem = gameState.problems[gameState.currentProblemIndex];
-            for (let i = 0; i < problem.hints.length; i++) {
-                if (!gameState.unlockedHints.includes(i)) {
-                    gameState.unlockedHints.push(i);
-                }
-            }
-            gameState.unlockedHints.sort((a, b) => a - b);
-            saveGameState();
-            showCurrentProblem();
-        }
-
-        // 힌트 카운트 업데이트
-        function updateHintCount() {
-            const problem = gameState.problems[gameState.currentProblemIndex];
-            const unlockedCount = gameState.unlockedHints.length;
-            hintCount.textContent = `${unlockedCount}/${problem.hints.length}`;
-        }
-
-        // 천재 타이머 시작
-        function startGeniusTimer() {
-            // 기존 타이머 초기화
-            clearGeniusTimer();
-            
-            // 천재 타이머 표시
-            geniusTimer.style.display = 'block';
-            
-            let timeLeft = 10;
-            updateTimerDisplay(timeLeft);
-            
-            gameState.timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay(timeLeft);
                 
-                if (timeLeft <= 0) {
-                    clearGeniusTimer();
-                    geniusTimer.style.display = 'none';
-                }
-            }, 1000);
-        }
-
-        // 타이머 표시 업데이트
-        function updateTimerDisplay(timeLeft) {
-            geniusTimerCount.textContent = `${timeLeft}초`;
-            const progressWidth = (timeLeft / 10) * 100;
-            timerProgress.style.width = `${progressWidth}%`;
-            
-            // 색상 변경 (10초 -> 3초: 파란색, 2초 -> 0초: 빨간색)
-            if (timeLeft <= 2) {
-                timerProgress.style.background = '#ff0000';
-                timerProgress.style.boxShadow = '0 0 5px rgba(255, 0, 0, 0.8)';
-            } else {
-                timerProgress.style.background = '#ffff00';
-                timerProgress.style.boxShadow = '0 0 5px rgba(255, 255, 0, 0.8)';
+            } catch (error) {
+                console.error('라운드 시작 실패:', error);
+                alert('문제를 불러오는데 실패했습니다.\n\n에러: ' + error.message);
+                showRoundMap();
             }
         }
 
-        // 타이머 초기화
-        function clearGeniusTimer() {
-            if (gameState.timerInterval) {
-                clearInterval(gameState.timerInterval);
-                gameState.timerInterval = null;
-            }
-        }
-
-        // 진행률 점 업데이트
-        function updateProgressDots() {
-            progressDots.innerHTML = '';
-            
-            for (let i = 0; i < gameState.problems.length; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'dot';
-                
-                if (i < gameState.currentProblemIndex) {
-                    dot.classList.add('completed');
-                } else if (i === gameState.currentProblemIndex) {
-                    dot.classList.add('current');
-                }
-                
-                progressDots.appendChild(dot);
-            }
-        }
-
-        // 정답 확인
-        function checkAnswer() {
-            const userAnswer = answerInput.value.trim();
-            const problem = gameState.problems[gameState.currentProblemIndex];
-            
-            if (userAnswer === '') {
-                alert('정답을 입력해주세요.');
+        // 게임 화면 렌더링
+        function renderGameScreen(isNewProblem = false) {
+            if (!gameState.currentProblemState || gameState.problems.length === 0) {
+                showRoundMap();
                 return;
             }
+
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            const characterCount = problem.characterCount || (problem.answer && problem.answer[0] ? problem.answer[0].length : '?');
+
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="compact-header">
+                            <div class="header-left">
+                                <button class="home-button" onclick="AudioManager.playSound('click'); showRoundMap()">🏠</button>
+                                <div class="round-info-compact">
+                                    <div class="round-title">라운드 ${gameState.currentRound}</div>
+                                    <div class="problem-number">문제 ${gameState.currentProblem + 1}/6</div>
+                                </div>
+                            </div>
+                            <div class="header-right">
+                                <div class="key-count">🔑 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
+                                <div class="progress-dots">
+                                    ${Array.from({ length: 6 }, (_, i) => `
+                                        <div class="dot ${i < gameState.currentProblem ? 'completed' : i === gameState.currentProblem ? 'current' : ''}"></div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${state.geniusTimerActive && !state.isCorrect ? `
+                            <div class="genius-timer">
+                                <div class="genius-timer-header">
+                                    <div class="genius-timer-text">⚡ 천재 보너스 시간</div>
+                                    <div class="genius-timer-count">${state.geniusTimer}초</div>
+                                </div>
+                                <div class="timer-bar">
+                                    <div class="timer-progress" style="width: ${(state.geniusTimer / 13) * 100}%"></div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="hints-section">
+                            <div class="hints-container" id="hintsContainer">
+                                ${problem.hints.map((hint, index) => {
+                                    const isUnlocked = state.unlockedHints.includes(index);
+                                    const showDescription = state.showDescriptions[index] || state.isCorrect;
+                                    const isLocked = !isUnlocked;
+                                    const canUnlock = index <= 2 || (index > 2 && state.unlockedHints.includes(index - 1));
+                                    
+                                    return `
+                                        <div class="hint-item ${isLocked ? 'locked' : ''}" id="hint-${index}">
+                                            <div class="hint-content">
+                                                <div class="hint-header">
+                                                    <div class="hint-left">
+                                                        <div class="hint-number">${index + 1}</div>
+                                                        <div class="hint-text">
+                                                            ${isUnlocked ? hint : '🔒 잠긴 힌트'}
+                                                        </div>
+                                                    </div>
+                                                    ${isLocked && index >= 2 && canUnlock ? `
+                                                        <div class="hint-controls">
+                                                            <button class="unlock-btn" onclick="unlockHint(${index})">
+                                                                🔓1
+                                                            </button>
+                                                            <button class="ad-unlock-btn" onclick="watchAdForHint(${index})">
+                                                                📺 광고보기
+                                                            </button>
+                                                        </div>
+                                                    ` : ''}
+                                                </div>
+                                                ${isUnlocked && showDescription ? `
+                                                    <div class="description">
+                                                        ${problem.descriptions[index]}
+                                                    </div>
+                                                ` : ''}
+                                                ${isUnlocked && state.canShowDescriptions && !showDescription && !state.isCorrect ? `
+                                                    <div class="hint-controls" style="margin-top: 6px;">
+                                                        <button class="unlock-btn" onclick="unlockDescription(${index})">
+                                                            설명보기 🔓1
+                                                        </button>
+                                                        <button class="ad-unlock-btn" onclick="watchAdForDescription(${index})">
+                                                            설명보기 📺
+                                                        </button>
+                                                    </div>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+
+                            ${state.unlockedHints.includes(5) && !state.isCorrect ? `
+                                <div class="show-answer-section">
+                                    <button class="show-answer-btn" onclick="showAnswer()">
+                                        정답보기
+                                        <span>🔓3</span>
+                                        <span>📺 광고보기</span>
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div class="answer-section">
+                            ${!state.isCorrect ? `
+                                <div class="info-grid">
+                                    <div class="info-box">
+                                        <div class="info-label">글자수</div>
+                                        <div class="info-value">
+                                            ${state.showCharacterCount ? characterCount : '?'}
+                                        </div>
+                                    </div>
+                                    <div class="info-box category">
+                                        <div class="info-label">분류</div>
+                                        <div class="info-value">
+                                            ${state.showCategory ? problem.category : '?'}
+                                            ${state.unlockedHints.includes(4) && !state.showCategory ? `
+                                                <button class="unlock-small" onclick="unlockCategory()">해금</button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                    <div class="info-box chosung">
+                                        <div class="info-label">초성</div>
+                                        <div class="info-value">
+                                            ${state.showChosung ? problem.chosung : '?'}
+                                            ${state.unlockedHints.includes(5) && !state.showChosung ? `
+                                                <button class="unlock-small" onclick="unlockChosung()">해금</button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-input-section">
+                                    <input 
+                                        type="text" 
+                                        class="answer-input" 
+                                        placeholder="정답을 입력하세요 (Enter 또는 입력버튼으로 확인)"
+                                        value="${state.userAnswer}"
+                                        autocomplete="off"
+                                        oninput="updateUserAnswer(this.value)"
+                                        onkeydown="if(event.key === 'Enter') checkAnswer(this.value)"
+                                        id="answerInput"
+                                    />
+                                    <button class="submit-button" onclick="checkAnswer(document.getElementById('answerInput').value)">
+                                        입력
+                                    </button>
+                                </div>
+                            ` : `
+                                <div class="correct-answer">
+                                    <div class="correct-icon">🎯</div>
+                                    <div class="correct-text">${problem.answer.join(', ')}</div>
+                                    <div class="correct-category">${problem.category}</div>
+                                </div>
+                                
+                                <button class="next-button" onclick="nextProblem()">
+                                    ${gameState.currentProblem === 5 ? '🏆 라운드 완료' : '➜ 다음 문제'}
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                    
+                    <div class="music-panel"></div>
+                </div>
+            `;
             
-            if (userAnswer === problem.answer) {
-                // 정답일 경우
-                handleCorrectAnswer();
+            document.getElementById('app').innerHTML = html;
+            updateMusicPanel();
+            
+            // ✅ 새 문제 시작 시 무조건 맨 위로
+            if (isNewProblem) {
+                setTimeout(() => {
+                    ScrollManager.forceScrollToTop();
+                }, 100);
+            }
+            
+            // ✅ 정답 맞춘 경우 힌트 컨테이너 맨 위로 스크롤
+            if (state.isCorrect) {
+                setTimeout(() => {
+                    ScrollManager.scrollToHintsTop();
+                }, 150);
+            }
+        }
+
+        // 다음 문제
+        function nextProblem() {
+            AudioManager.playSound('click');
+            
+            if (gameState.currentProblem < 5) {
+                gameState.currentProblem++;
+                gameState.currentProblemState = {
+                    unlockedHints: [0, 1],
+                    showDescriptions: [false, false, false, false, false, false],
+                    canShowDescriptions: false,
+                    showCharacterCount: false,
+                    showCategory: false,
+                    showChosung: false,
+                    userAnswer: '',
+                    isCorrect: false,
+                    geniusTimer: 13,
+                    geniusTimerActive: true,
+                    timerInterval: null
+                };
+                startGeniusTimer();
+                renderGameScreen(true);
+                saveGameState();
             } else {
-                // 오답일 경우
-                alert('틀렸습니다. 다시 시도해보세요.');
-                answerInput.value = '';
-                answerInput.focus();
+                gameState.completedRounds.push(gameState.currentRound);
+                gameState.keys += 1;
+                AudioManager.playSound('complete');
+                showRoundComplete();
+                saveGameState();
             }
         }
 
-        // 정답 처리
-        function handleCorrectAnswer() {
-            // 천재 타이머 중지
-            clearGeniusTimer();
-            geniusTimer.style.display = 'none';
+        // 힌트 해금
+        function unlockHint(hintIndex) {
+            const state = gameState.currentProblemState;
+            if (state.unlockedHints.includes(hintIndex)) return;
             
-            // 키 획득 (천재 타이머가 활성화된 경우 추가 키 획득)
-            let keysEarned = 1;
-            if (gameState.timerInterval) {
-                keysEarned = 2;
+            if (hintIndex > 2) {
+                const prevHintUnlocked = state.unlockedHints.includes(hintIndex - 1);
+                if (!prevHintUnlocked) {
+                    alert('이전 힌트를 먼저 해금해주세요!');
+                    return;
+                }
             }
             
-            gameState.keys += keysEarned;
-            
-            // 다음 문제로 이동
-            gameState.currentProblemIndex++;
-            
-            // UI 업데이트
-            updateUI();
-            
-            // 게임 상태 저장
-            saveGameState();
-            
-            // 다음 문제 표시
-            setTimeout(() => {
-                showCurrentProblem();
-            }, 1500);
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.unlockedHints.push(hintIndex);
+                AudioManager.playSound('hint');
+                
+                if (hintIndex === 3 && !state.canShowDescriptions) {
+                    state.canShowDescriptions = true;
+                }
+                
+                if (hintIndex === 3) {
+                    state.showCharacterCount = true;
+                }
+                if (hintIndex === 4) {
+                    state.showCategory = true;
+                }
+                if (hintIndex === 5) {
+                    state.showChosung = true;
+                }
+                
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
         }
 
-        // 정답 보기
-        function showAnswer() {
-            const problem = gameState.problems[gameState.currentProblemIndex];
-            alert(`정답은 "${problem.answer}" 입니다.`);
+        // 정답 확인 함수 - ✅ 핵심: 정답 맞추면 힌트 맨 위로 스크롤
+        function checkAnswer(value) {
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
             
-            // 다음 문제로 이동
-            gameState.currentProblemIndex++;
+            const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
+            const correctAnswers = problem.answer.map(ans => 
+                ans.toLowerCase().replace(/\s+/g, '')
+            );
             
-            // UI 업데이트
-            updateUI();
+            if (correctAnswers.includes(normalizedAnswer)) {
+                const usedHints = state.unlockedHints.length;
+                let soundType = 'correct';
+                
+                if (usedHints <= 2) {
+                    soundType = 'genius';
+                }
+                
+                const keyReward = showCongratulationPopup(usedHints, false);
+                
+                if (keyReward > 0) {
+                    gameState.keys += keyReward;
+                }
+                
+                AudioManager.playSound(soundType);
+                state.isCorrect = true;
+                state.unlockedHints = [0,1,2,3,4,5];
+                state.showDescriptions = [true,true,true,true,true,true];
+                state.showCharacterCount = true;
+                state.showCategory = true;
+                state.showChosung = true;
+                state.geniusTimerActive = false;
+                
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                }
+                
+                renderGameScreen();
+                
+                // ✅ ✅ ✅ 핵심: 정답 맞추면 힌트 컨테이너 맨 위로 스크롤
+                setTimeout(() => {
+                    ScrollManager.scrollToHintsTop();
+                }, 200);
+                
+                saveGameState();
+            } else {
+                AudioManager.playSound('wrong');
+                const input = document.querySelector('.answer-input');
+                if (input) {
+                    input.style.animation = 'shake 0.3s';
+                    setTimeout(() => {
+                        input.style.animation = '';
+                        input.select();
+                    }, 300);
+                }
+            }
+        }
+
+        // 나머지 함수들 (기존과 동일)
+        function showAllRoundsCompleted() {
+            const html = `
+                <div class="container">
+                    <div class="start-screen">
+                        <div class="magic-orb"></div>
+                        <div class="title-main">🎉 모든 라운드 완료!</div>
+                        <div class="subtitle">당신은 진정한 연상천재입니다!</div>
+                        <div class="highlight">더 많은 라운드가 업데이트 될 예정입니다</div>
+                        <button class="start-button" onclick="showRoundMap()">
+                            🏠 메인으로
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app').innerHTML = html;
+        }
+
+        function startGeniusTimer() {
+            const state = gameState.currentProblemState;
+            if (state.timerInterval) clearInterval(state.timerInterval);
             
-            // 게임 상태 저장
-            saveGameState();
-            
-            // 다음 문제 표시
-            setTimeout(() => {
-                showCurrentProblem();
+            state.timerInterval = setInterval(() => {
+                if (!state.geniusTimerActive || state.isCorrect) {
+                    clearInterval(state.timerInterval);
+                    return;
+                }
+                
+                state.geniusTimer--;
+                
+                const timerProgress = document.querySelector('.timer-progress');
+                if (timerProgress) {
+                    timerProgress.style.width = `${(state.geniusTimer / 13) * 100}%`;
+                }
+                
+                const timerCount = document.querySelector('.genius-timer-count');
+                if (timerCount) {
+                    timerCount.textContent = `${state.geniusTimer}초`;
+                }
+                
+                if (state.geniusTimer <= 0) {
+                    state.geniusTimerActive = false;
+                    if (!state.unlockedHints.includes(2)) {
+                        state.unlockedHints.push(2);
+                    }
+                    state.showCharacterCount = true;
+                    
+                    if (state.unlockedHints.includes(5)) {
+                        state.showCategory = true;
+                        state.showChosung = true;
+                    }
+                    
+                    renderGameScreen();
+                    clearInterval(state.timerInterval);
+                }
             }, 1000);
         }
 
-        // 라운드 완료 팝업 표시
-        function showRoundCompletePopup() {
+        function watchAdForHint(hintIndex) {
+            // 광고 시뮬레이션
+            alert('광고를 시청했습니다! 힌트가 해금되었습니다.');
+            unlockHint(hintIndex);
+        }
+
+        function unlockDescription(descriptionIndex) {
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showDescriptions[descriptionIndex] = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function watchAdForDescription(descriptionIndex) {
+            // 광고 시뮬레이션
+            alert('광고를 시청했습니다! 설명이 해금되었습니다.');
+            const state = gameState.currentProblemState;
+            state.showDescriptions[descriptionIndex] = true;
+            renderGameScreen();
+            saveGameState();
+        }
+
+        function unlockCategory() {
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showCategory = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function unlockChosung() {
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showChosung = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function showAnswer() {
+            if (gameState.keys >= 3) {
+                showAnswerConfirm();
+            } else {
+                watchAdForAnswer();
+            }
+        }
+
+        function showAnswerConfirm() {
+            if (confirm('정답을 보시겠습니까? (열쇠 3개 사용)')) {
+                if (gameState.keys >= 3) {
+                    gameState.keys -= 3;
+                    const problem = gameState.problems[gameState.currentProblem];
+                    const state = gameState.currentProblemState;
+                    
+                    state.isCorrect = true;
+                    state.unlockedHints = [0,1,2,3,4,5];
+                    state.showDescriptions = [true,true,true,true,true,true];
+                    state.showCharacterCount = true;
+                    state.showCategory = true;
+                    state.showChosung = true;
+                    state.geniusTimerActive = false;
+                    
+                    if (state.timerInterval) {
+                        clearInterval(state.timerInterval);
+                    }
+                    
+                    renderGameScreen();
+                    
+                    // ✅ 정답 보기로 넘어갈 때도 힌트 맨 위로 스크롤
+                    setTimeout(() => {
+                        ScrollManager.scrollToHintsTop();
+                    }, 200);
+                    
+                    saveGameState();
+                }
+            }
+        }
+
+        function watchAdForAnswer() {
+            // 광고 시뮬레이션
+            alert('광고를 시청했습니다! 정답을 확인합니다.');
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            
+            state.isCorrect = true;
+            state.unlockedHints = [0,1,2,3,4,5];
+            state.showDescriptions = [true,true,true,true,true,true];
+            state.showCharacterCount = true;
+            state.showCategory = true;
+            state.showChosung = true;
+            state.geniusTimerActive = false;
+            
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+            
+            renderGameScreen();
+            
+            // ✅ 광고 보고 정답 확인할 때도 힌트 맨 위로 스크롤
+            setTimeout(() => {
+                ScrollManager.scrollToHintsTop();
+            }, 200);
+            
+            saveGameState();
+        }
+
+        function updateUserAnswer(value) {
+            gameState.currentProblemState.userAnswer = value;
+        }
+
+        function showRoundComplete() {
             // 배너 광고 랜덤 선택
             const bannerNumber = Math.floor(Math.random() * 5) + 1;
             const bannerSrc = `banner${bannerNumber}.jpg`;
             
-            const popup = document.createElement('div');
-            popup.className = 'congratulation-popup';
-            popup.innerHTML = `
-                <h2>라운드 완료!</h2>
-                <p>축하합니다! 라운드 ${gameState.currentRound}을 완료했습니다!</p>
-                <div class="key-reward">+1 열쇠를 획득했습니다!</div>
-                
-                <!-- 배너 광고 -->
-                <div class="banner-ad">
-                    <img src="${bannerSrc}" alt="배너 광고">
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="compact-header">
+                            <div class="header-left">
+                                <button class="home-button" onclick="showRoundMap()">🏠</button>
+                                <div class="round-info-compact">
+                                    <div class="round-title">라운드 완료!</div>
+                                    <div class="problem-number">축하합니다!</div>
+                                </div>
+                            </div>
+                            <div class="header-right">
+                                <div class="key-count">🔑 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="correct-answer">
+                            <div class="correct-icon">🎉</div>
+                            <div class="correct-title">라운드 ${gameState.currentRound} 완료!</div>
+                            <div class="correct-text">+1 열쇠를 획득했습니다!</div>
+                            <div class="correct-category">다음 라운드에 도전해보세요</div>
+                        </div>
+                        
+                        <!-- 배너 광고 추가 -->
+                        <div class="banner-ad">
+                            <img src="${bannerSrc}" alt="배너 광고">
+                        </div>
+                        
+                        <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px;">
+                            🚀 다음 라운드
+                        </button>
+                        <button class="next-button" onclick="showRoundMap()" style="border-color: #666; color: #666; box-shadow: 0 0 10px rgba(102, 102, 102, 0.3);">
+                            🗺️ 메인으로
+                        </button>
+                    </div>
                 </div>
-                
-                <div class="popup-buttons">
-                    <button class="popup-button next-round" id="nextRoundButton">다음 라운드</button>
-                    <button class="popup-button main-menu" id="mainMenuButton">메인으로</button>
+            `;
+            document.getElementById('app').innerHTML = html;
+        }
+
+        function showCongratulationPopup(hintsUsed, usedChosung) {
+            let popupData = {};
+            
+            switch(hintsUsed) {
+                case 2:
+                    popupData = {
+                        title: "와우! 천재셨군요!",
+                        type: "genius",
+                        icon: "💡",
+                        reward: 1
+                    };
+                    break;
+                case 3:
+                    popupData = {
+                        title: "제법인데요?",
+                        type: "sharp",
+                        icon: "😏",
+                        reward: 0
+                    };
+                    break;
+                case 4:
+                    popupData = {
+                        title: "쏘쏘~?",
+                        type: "focus",
+                        icon: "🤪",
+                        reward: 0
+                    };
+                    break;
+                case 5:
+                    popupData = {
+                        title: "피곤하신가봐요",
+                        type: "sleepy",
+                        icon: "😴",
+                        reward: 0
+                    };
+                    break;
+                default:
+                    popupData = {
+                        title: "할많하않",
+                        type: "chosung",
+                        icon: "💨",
+                        reward: 0
+                    };
+            }
+            
+            const popupHtml = `
+                <div class="congratulation-popup ${popupData.type}">
+                    <div class="popup-icon">${popupData.icon}</div>
+                    <div class="popup-title">${popupData.title}</div>
+                    ${popupData.reward > 0 ? `
+                        <div class="popup-reward">🔑 +${popupData.reward} 열쇠 획득!</div>
+                    ` : ''}
                 </div>
             `;
             
-            document.body.appendChild(popup);
+            document.body.insertAdjacentHTML('beforeend', popupHtml);
             
-            // 다음 라운드 버튼 이벤트
-            document.getElementById('nextRoundButton').addEventListener('click', function() {
-                gameState.currentRound++;
-                gameState.currentProblemIndex = 0;
-                gameState.unlockedHints = [];
-                
-                // 더 많은 문제 로드 (실제 구현에서는 서버에서 다음 라운드 문제 가져오기)
-                loadProblems();
-                
-                document.body.removeChild(popup);
-                showCurrentProblem();
-            });
+            setTimeout(() => {
+                const popup = document.querySelector('.congratulation-popup');
+                if (popup) {
+                    popup.remove();
+                }
+            }, 2000);
             
-            // 메인 메뉴 버튼 이벤트
-            document.getElementById('mainMenuButton').addEventListener('click', function() {
-                document.body.removeChild(popup);
-                goHome();
-            });
+            return popupData.reward;
         }
 
-        // UI 업데이트
-        function updateUI() {
-            keyCountValue.textContent = gameState.keys;
-        }
-
-        // 게임 상태 저장
-        function saveGameState() {
-            const stateToSave = {
-                currentRound: gameState.currentRound,
-                currentProblemIndex: gameState.currentProblemIndex,
-                keys: gameState.keys,
-                unlockedHints: gameState.unlockedHints,
-                isSoundOn: gameState.isSoundOn,
-                isVibrationOn: gameState.isVibrationOn
-            };
-            
-            localStorage.setItem('brainGameState', JSON.stringify(stateToSave));
-        }
-
-        // 게임 상태 로드
-        function loadGameState() {
-            const savedState = localStorage.getItem('brainGameState');
-            
-            if (savedState) {
-                const state = JSON.parse(savedState);
-                
-                gameState.currentRound = state.currentRound || 1;
-                gameState.currentProblemIndex = state.currentProblemIndex || 0;
-                gameState.keys = state.keys || 0;
-                gameState.unlockedHints = state.unlockedHints || [];
-                gameState.isSoundOn = state.isSoundOn !== undefined ? state.isSoundOn : true;
-                gameState.isVibrationOn = state.isVibrationOn !== undefined ? state.isVibrationOn : true;
-                
-                // 설정 토글 업데이트
-                soundToggle.checked = gameState.isSoundOn;
-                vibrationToggle.checked = gameState.isVibrationOn;
-                
-                updateUI();
+        function toggleMusicPanel() {
+            const panel = document.querySelector('.music-panel');
+            const buttons = document.querySelectorAll('.settings-button-header');
+            if (panel) {
+                panel.classList.toggle('active');
+                buttons.forEach(button => {
+                    button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
+                });
+                if (panel.classList.contains('active')) {
+                    updateMusicPanel();
+                }
             }
         }
 
-        // 초기화
-        window.addEventListener('load', function() {
-            // 게임 상태 로드
-            loadGameState();
-        });
+        function updateMusicPanel() {
+            const panel = document.querySelector('.music-panel');
+            if (panel) {
+                panel.innerHTML = `
+                    <div class="music-title">🎵 사운드 설정</div>
+                    <div class="music-controls">
+                        <button class="sound-control bgm-control ${AudioManager.bgmEnabled ? 'active' : ''}" onclick="AudioManager.toggleBGM()">
+                            ${AudioManager.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF'}
+                        </button>
+                        <button class="sound-control sfx-control ${AudioManager.sfxEnabled ? 'active' : ''}" onclick="AudioManager.toggleSFX()">
+                            ${AudioManager.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF'}
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // CSS 애니메이션
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 앱 초기화
+        async function initApp() {
+            await AudioManager.init();
+            renderStartScreen();
+        }
+
+        // 앱 시작
+        initApp();
     </script>
 </body>
 </html>
