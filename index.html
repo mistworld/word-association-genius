@@ -36,7 +36,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a2a 100%);
+            background: linear-gradient(135deg, #0a0a1a 0%, #151530 50%, #0a0a25 100%);
             min-height: 100vh;
             color: #ffffff;
             overflow-x: hidden;
@@ -52,8 +52,8 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.15) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
         }
@@ -106,13 +106,13 @@
         .magic-orb {
             width: 120px;
             height: 120px;
-            background: radial-gradient(circle at 30% 30%, #ff00ff, #00ffff, #00ff00);
+            background: radial-gradient(circle at 30% 30%, #ff00ff, #00ffff);
             border-radius: 50%;
             margin-bottom: 30px;
             animation: float 3s ease-in-out infinite;
             box-shadow: 
-                0 0 60px rgba(255, 0, 255, 0.8),
-                inset 0 0 20px rgba(255, 255, 255, 0.4);
+                0 0 50px rgba(255, 0, 255, 0.6),
+                inset 0 0 20px rgba(255, 255, 255, 0.3);
             position: relative;
         }
 
@@ -134,7 +134,7 @@
             font-size: 3em;
             font-weight: 900;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #ff00ff, #00ffff, #00ff00, #ffff00);
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: glow 2s ease-in-out infinite alternate;
@@ -152,7 +152,7 @@
             color: #00ffff;
             margin-bottom: 10px;
             font-weight: 500;
-            text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
 
         .highlight {
@@ -160,11 +160,11 @@
             color: #ffff00;
             font-weight: bold;
             margin-bottom: 40px;
-            text-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
         }
 
         .start-button {
-            background: rgba(10, 10, 30, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             color: #00ffff;
             border: 2px solid #00ffff;
             border-radius: 25px;
@@ -174,8 +174,8 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 
-                0 0 25px rgba(0, 255, 255, 0.4),
-                inset 0 0 20px rgba(0, 255, 255, 0.2);
+                0 0 20px rgba(0, 255, 255, 0.3),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -185,7 +185,7 @@
         }
 
         .start-button:hover {
-            box-shadow: 0 0 35px rgba(0, 255, 255, 0.6);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
         }
 
         .start-button:active {
@@ -199,10 +199,10 @@
 
         /* 게임 헤더 */
         .header {
-            background: rgba(10, 10, 30, 0.95);
+            background: rgba(10, 14, 39, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
             padding: 8px 15px;
             box-shadow: 0 2px 20px rgba(0,0,0,0.3);
             position: sticky;
@@ -227,13 +227,13 @@
         .home-button {
             width: 35px;
             height: 35px;
-            background: rgba(10, 10, 30, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             border: 2px solid #ff00ff;
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
             transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -241,7 +241,7 @@
         }
 
         .home-button:hover {
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.5);
         }
 
         .home-button:active {
@@ -259,13 +259,13 @@
             font-weight: bold;
             color: #00ffff;
             letter-spacing: -0.3px;
-            text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
 
         .problem-number {
             font-size: 12px;
             color: #ff00ff;
-            text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+            text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
         }
 
         .header-right {
@@ -278,25 +278,25 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            background: rgba(10, 10, 30, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             border: 2px solid #ffff00;
             padding: 6px 10px;
             border-radius: 15px;
             font-size: 12px;
             font-weight: bold;
             color: #ffff00;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
-            text-shadow: 0 0 10px rgba(255, 255, 0, 0.7);
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
+            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
         }
 
         .key-count:hover {
-            box-shadow: 0 0 30px rgba(255, 255, 0, 0.6);
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.5);
         }
 
         .settings-button-header {
             width: 35px;
             height: 35px;
-            background: rgba(10, 10, 30, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             border: 2px solid #00ffff;
             border-radius: 10px;
             cursor: pointer;
@@ -306,11 +306,11 @@
             align-items: center;
             justify-content: center;
             color: #00ffff;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
         }
 
         .settings-button-header:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
         }
 
         .settings-button-header:active {
@@ -320,7 +320,7 @@
         .progress-dots {
             display: flex;
             gap: 3px;
-            background: rgba(0, 255, 255, 0.15);
+            background: rgba(0, 255, 255, 0.1);
             padding: 4px 6px;
             border-radius: 10px;
         }
@@ -336,28 +336,28 @@
         .dot.completed {
             background: #00ffff;
             transform: scale(1.2);
-            box-shadow: 0 0 8px rgba(0, 255, 255, 0.9);
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
         }
 
         .dot.current {
             background: #ff00ff;
             transform: scale(1.4);
-            box-shadow: 0 0 0 2px rgba(255, 0, 255, 0.4);
+            box-shadow: 0 0 0 2px rgba(255, 0, 255, 0.3);
         }
 
         /* 천재 타이머 */
         .genius-timer {
-            background: rgba(10, 10, 30, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             border: 2px solid #ffff00;
             border-radius: 8px;
             padding: 6px 8px;
             margin: 5px 0;
             color: #ffff00;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
         }
 
         .genius-timer:hover {
-            box-shadow: 0 0 30px rgba(255, 255, 0, 0.6);
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.5);
         }
 
         .genius-timer-header {
@@ -373,18 +373,18 @@
             gap: 4px;
             font-size: 11px;
             font-weight: bold;
-            text-shadow: 0 0 8px rgba(255, 255, 0, 0.7);
+            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
         }
 
         .genius-timer-count {
             font-size: 12px;
             font-weight: bold;
-            text-shadow: 0 0 8px rgba(255, 255, 0, 0.7);
+            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
         }
 
         .timer-bar {
             height: 4px;
-            background: rgba(255, 255, 0, 0.4);
+            background: rgba(255, 255, 0, 0.3);
             border-radius: 2px;
             overflow: hidden;
         }
@@ -394,12 +394,12 @@
             background: #ffff00;
             transition: width 0.65s linear;
             border-radius: 2px;
-            box-shadow: 0 0 8px rgba(255, 255, 0, 0.9);
+            box-shadow: 0 0 5px rgba(255, 255, 0, 0.8);
         }
 
         /* 메인 콘텐츠 */
         .main-content {
-            background: rgba(10, 10, 30, 0.95);
+            background: rgba(10, 14, 39, 0.95);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-radius: 20px 20px 0 0;
@@ -414,11 +414,11 @@
 
         /* 힌트 섹션 */
         .hints-section {
-            background: rgba(15, 15, 35, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             border-radius: 15px;
             padding: 12px;
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            box-shadow: 0 6px 25px rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 6px 20px rgba(0, 255, 255, 0.1);
             flex: 1;
             min-height: 0;
             display: flex;
@@ -437,7 +437,7 @@
         }
 
         .hints-container::-webkit-scrollbar-thumb {
-            background: rgba(0, 255, 255, 0.6);
+            background: rgba(0, 255, 255, 0.5);
             border-radius: 2px;
         }
 
@@ -450,7 +450,7 @@
 
         .hint-item.locked {
             opacity: 0.7;
-            background: rgba(25, 20, 40, 0.7);
+            background: rgba(30, 25, 45, 0.7);
         }
 
         .hint-content {
@@ -482,7 +482,7 @@
             font-weight: 900;
             flex-shrink: 0;
             border: 2px solid;
-            background: rgba(10, 10, 30, 0.8);
+            background: rgba(20, 15, 30, 0.8);
             transition: all 0.3s;
             color: white;
         }
@@ -500,106 +500,106 @@
             gap: 4px;
         }
 
-        /* 힌트 아이템별 색상 - 네온 효과 강화 */
+        /* 힌트 아이템별 색상 - 네온 효과 추가 */
         .hint-item:nth-child(1) {
-            background: rgba(15, 15, 35, 0.9);
-            border: 2px solid rgba(255, 0, 127, 0.6);
-            box-shadow: 0 0 25px rgba(255, 0, 127, 0.3);
+            background: rgba(20, 15, 30, 0.9);
+            border: 2px solid rgba(255, 0, 127, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.2);
         }
         .hint-item:nth-child(1):hover {
-            box-shadow: 0 0 35px rgba(255, 0, 127, 0.5);
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.4);
         }
         .hint-item:nth-child(1) .hint-number { 
-            background: rgba(255, 0, 127, 0.3) !important; 
-            border-color: rgba(255, 0, 127, 0.8) !important; 
+            background: rgba(255, 0, 127, 0.2) !important; 
+            border-color: rgba(255, 0, 127, 0.6) !important; 
             color: #ff007f !important; 
-            text-shadow: 0 0 15px rgba(255, 0, 127, 0.9) !important; 
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4) !important;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.8) !important; 
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3) !important;
         }
 
         .hint-item:nth-child(2) {
-            background: rgba(15, 15, 35, 0.9);
-            border: 2px solid rgba(255, 100, 0, 0.6);
-            box-shadow: 0 0 25px rgba(255, 100, 0, 0.3);
+            background: rgba(20, 15, 30, 0.9);
+            border: 2px solid rgba(255, 100, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 100, 0, 0.2);
         }
         .hint-item:nth-child(2):hover {
-            box-shadow: 0 0 35px rgba(255, 100, 0, 0.5);
+            box-shadow: 0 0 30px rgba(255, 100, 0, 0.4);
         }
         .hint-item:nth-child(2) .hint-number { 
-            background: rgba(255, 100, 0, 0.3) !important; 
-            border-color: rgba(255, 100, 0, 0.8) !important; 
+            background: rgba(255, 100, 0, 0.2) !important; 
+            border-color: rgba(255, 100, 0, 0.6) !important; 
             color: #ff6400 !important; 
-            text-shadow: 0 0 15px rgba(255, 100, 0, 0.9) !important; 
-            box-shadow: 0 0 20px rgba(255, 100, 0, 0.4) !important;
+            text-shadow: 0 0 10px rgba(255, 100, 0, 0.8) !important; 
+            box-shadow: 0 0 15px rgba(255, 100, 0, 0.3) !important;
         }
 
         .hint-item:nth-child(3) {
-            background: rgba(15, 15, 35, 0.9);
-            border: 2px solid rgba(0, 255, 127, 0.6);
-            box-shadow: 0 0 25px rgba(0, 255, 127, 0.3);
+            background: rgba(20, 15, 30, 0.9);
+            border: 2px solid rgba(0, 255, 127, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 127, 0.2);
         }
         .hint-item:nth-child(3):hover {
-            box-shadow: 0 0 35px rgba(0, 255, 127, 0.5);
+            box-shadow: 0 0 30px rgba(0, 255, 127, 0.4);
         }
         .hint-item:nth-child(3) .hint-number { 
-            background: rgba(0, 255, 127, 0.3) !important; 
-            border-color: rgba(0, 255, 127, 0.8) !important; 
+            background: rgba(0, 255, 127, 0.2) !important; 
+            border-color: rgba(0, 255, 127, 0.6) !important; 
             color: #00ff7f !important; 
-            text-shadow: 0 0 15px rgba(0, 255, 127, 0.9) !important; 
-            box-shadow: 0 0 20px rgba(0, 255, 127, 0.4) !important;
+            text-shadow: 0 0 10px rgba(0, 255, 127, 0.8) !important; 
+            box-shadow: 0 0 15px rgba(0, 255, 127, 0.3) !important;
         }
 
         .hint-item:nth-child(4) {
-            background: rgba(15, 15, 35, 0.9);
-            border: 2px solid rgba(0, 200, 255, 0.6);
-            box-shadow: 0 0 25px rgba(0, 200, 255, 0.3);
+            background: rgba(20, 15, 30, 0.9);
+            border: 2px solid rgba(0, 200, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.2);
         }
         .hint-item:nth-child(4):hover {
-            box-shadow: 0 0 35px rgba(0, 200, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 200, 255, 0.4);
         }
         .hint-item:nth-child(4) .hint-number { 
-            background: rgba(0, 200, 255, 0.3) !important; 
-            border-color: rgba(0, 200, 255, 0.8) !important; 
+            background: rgba(0, 200, 255, 0.2) !important; 
+            border-color: rgba(0, 200, 255, 0.6) !important; 
             color: #00c8ff !important; 
-            text-shadow: 0 0 15px rgba(0, 200, 255, 0.9) !important; 
-            box-shadow: 0 0 20px rgba(0, 200, 255, 0.4) !important;
+            text-shadow: 0 0 10px rgba(0, 200, 255, 0.8) !important; 
+            box-shadow: 0 0 15px rgba(0, 200, 255, 0.3) !important;
         }
 
         .hint-item:nth-child(5) {
-            background: rgba(15, 15, 35, 0.9);
-            border: 2px solid rgba(200, 100, 255, 0.6);
-            box-shadow: 0 0 25px rgba(200, 100, 255, 0.3);
+            background: rgba(20, 15, 30, 0.9);
+            border: 2px solid rgba(200, 100, 255, 0.5);
+            box-shadow: 0 0 20px rgba(200, 100, 255, 0.2);
         }
         .hint-item:nth-child(5):hover {
-            box-shadow: 0 0 35px rgba(200, 100, 255, 0.5);
+            box-shadow: 0 0 30px rgba(200, 100, 255, 0.4);
         }
         .hint-item:nth-child(5) .hint-number { 
-            background: rgba(200, 100, 255, 0.3) !important; 
-            border-color: rgba(200, 100, 255, 0.8) !important; 
+            background: rgba(200, 100, 255, 0.2) !important; 
+            border-color: rgba(200, 100, 255, 0.6) !important; 
             color: #c864ff !important; 
-            text-shadow: 0 0 15px rgba(200, 100, 255, 0.9) !important; 
-            box-shadow: 0 0 20px rgba(200, 100, 255, 0.4) !important;
+            text-shadow: 0 0 10px rgba(200, 100, 255, 0.8) !important; 
+            box-shadow: 0 0 15px rgba(200, 100, 255, 0.3) !important;
         }
 
         .hint-item:nth-child(6) {
-            background: rgba(15, 15, 35, 0.9);
-            border: 2px solid rgba(255, 220, 0, 0.6);
-            box-shadow: 0 0 25px rgba(255, 220, 0, 0.3);
+            background: rgba(20, 15, 30, 0.9);
+            border: 2px solid rgba(255, 220, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 220, 0, 0.2);
         }
         .hint-item:nth-child(6):hover {
-            box-shadow: 0 0 35px rgba(255, 220, 0, 0.5);
+            box-shadow: 0 0 30px rgba(255, 220, 0, 0.4);
         }
         .hint-item:nth-child(6) .hint-number { 
-            background: rgba(255, 220, 0, 0.3) !important; 
-            border-color: rgba(255, 220, 0, 0.8) !important; 
+            background: rgba(255, 220, 0, 0.2) !important; 
+            border-color: rgba(255, 220, 0, 0.6) !important; 
             color: #ffdc00 !important; 
-            text-shadow: 0 0 15px rgba(255, 220, 0, 0.9) !important; 
-            box-shadow: 0 0 20px rgba(255, 220, 0, 0.4) !important;
+            text-shadow: 0 0 10px rgba(255, 220, 0, 0.8) !important; 
+            box-shadow: 0 0 15px rgba(255, 220, 0, 0.3) !important;
         }
 
-        /* 광고보기 버튼들 - 디자인 개선 */
+        /* 잠긴 힌트 버튼 */
         .unlock-btn {
-            background: rgba(10, 10, 30, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             color: #ff6400;
             border: 2px solid #ff6400;
             border-radius: 8px;
@@ -611,45 +611,20 @@
             align-items: center;
             gap: 4px;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(255, 100, 0, 0.4);
+            box-shadow: 0 0 10px rgba(255, 100, 0, 0.3);
         }
 
         .unlock-btn:hover {
-            box-shadow: 0 0 25px rgba(255, 100, 0, 0.6);
+            box-shadow: 0 0 20px rgba(255, 100, 0, 0.5);
         }
 
         .unlock-btn:active {
             transform: scale(0.95);
         }
 
-        /* 광고보기 버튼 전용 스타일 */
-        .ad-unlock-btn {
-            background: rgba(10, 10, 30, 0.9);
-            color: #00ff7f;
-            border: 2px solid #00ff7f;
-            border-radius: 8px;
-            padding: 6px 10px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 255, 127, 0.4);
-        }
-
-        .ad-unlock-btn:hover {
-            box-shadow: 0 0 25px rgba(0, 255, 127, 0.6);
-        }
-
-        .ad-unlock-btn:active {
-            transform: scale(0.95);
-        }
-
         .description {
-            background: rgba(0, 255, 255, 0.15);
-            border: 1px solid rgba(0, 255, 255, 0.4);
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
             border-radius: 8px;
             padding: 10px;
             margin-top: 8px;
@@ -667,35 +642,35 @@
         }
 
         .info-box {
-            background: rgba(15, 15, 35, 0.9);
-            border: 2px solid rgba(0, 255, 255, 0.4);
+            background: rgba(20, 15, 30, 0.9);
+            border: 2px solid rgba(0, 255, 255, 0.3);
             border-radius: 12px;
             padding: 12px;
             text-align: center;
             transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
         }
 
         .info-box:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
         }
 
         .info-box.category {
-            background: rgba(15, 15, 35, 0.9);
-            border-color: rgba(255, 0, 255, 0.5);
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+            background: rgba(20, 15, 30, 0.9);
+            border-color: rgba(255, 0, 255, 0.4);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
         }
         .info-box.category:hover {
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.4);
         }
 
         .info-box.chosung {
-            background: rgba(15, 15, 35, 0.9);
-            border-color: rgba(255, 255, 0, 0.5);
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
+            background: rgba(20, 15, 30, 0.9);
+            border-color: rgba(255, 255, 0, 0.4);
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.2);
         }
         .info-box.chosung:hover {
-            box-shadow: 0 0 30px rgba(255, 255, 0, 0.5);
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.4);
         }
 
         .info-label {
@@ -704,7 +679,7 @@
             margin-bottom: 4px;
             font-weight: 600;
             text-transform: uppercase;
-            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
         }
 
         .info-value {
@@ -714,7 +689,7 @@
         }
 
         .unlock-small {
-            background: rgba(10, 10, 30, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             color: #ff6400;
             border: 2px solid #ff6400;
             border-radius: 6px;
@@ -726,11 +701,11 @@
             align-items: center;
             gap: 3px;
             margin-top: 4px;
-            box-shadow: 0 0 12px rgba(255, 100, 0, 0.4);
+            box-shadow: 0 0 8px rgba(255, 100, 0, 0.3);
         }
 
         .unlock-small:hover {
-            box-shadow: 0 0 20px rgba(255, 100, 0, 0.6);
+            box-shadow: 0 0 15px rgba(255, 100, 0, 0.5);
         }
 
         /* 정답 입력 섹션 */
@@ -746,12 +721,12 @@
             padding: 15px;
             font-size: 16px;
             font-weight: 600;
-            border: 2px solid rgba(0, 255, 255, 0.6);
+            border: 2px solid rgba(0, 255, 255, 0.5);
             border-radius: 12px;
-            background: rgba(15, 15, 35, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             color: #ffffff;
             transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
         }
 
         .answer-input::placeholder {
@@ -761,12 +736,12 @@
         .answer-input:focus {
             outline: none;
             border-color: #ff00ff;
-            box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.3), 0 0 25px rgba(255, 0, 255, 0.4);
-            background: rgba(15, 15, 35, 1);
+            box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.2), 0 0 20px rgba(255, 0, 255, 0.3);
+            background: rgba(20, 15, 30, 1);
         }
 
         .submit-button {
-            background: rgba(15, 15, 35, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             color: #00ffff;
             border: 2px solid #00ffff;
             border-radius: 12px;
@@ -775,12 +750,12 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
             white-space: nowrap;
         }
 
         .submit-button:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
         }
 
         .submit-button:active {
@@ -789,17 +764,17 @@
 
         /* 정답 맞췄을 때 */
         .correct-answer {
-            background: rgba(15, 15, 35, 0.9);
-            border: 2px solid rgba(0, 255, 255, 0.4);
+            background: rgba(20, 15, 30, 0.9);
+            border: 2px solid rgba(0, 255, 255, 0.3);
             border-radius: 15px;
             padding: 20px;
             text-align: center;
             color: #ffffff;
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
         }
 
         .correct-answer:hover {
-            box-shadow: 0 0 35px rgba(0, 255, 255, 0.6);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
         }
 
         .correct-icon {
@@ -827,12 +802,12 @@
             font-size: 14px;
             color: #00ffff;
             font-style: italic;
-            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
         }
 
         .next-button {
             width: 100%;
-            background: rgba(15, 15, 35, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             color: #00ffff;
             border: 2px solid #00ffff;
             padding: 15px;
@@ -841,14 +816,14 @@
             font-weight: 900;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-top: 10px;
         }
 
         .next-button:hover {
-            box-shadow: 0 0 35px rgba(0, 255, 255, 0.6);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
         }
 
         .next-button:active {
@@ -862,7 +837,7 @@
 
         .show-answer-btn {
             width: 100%;
-            background: rgba(15, 15, 35, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             color: #ff6400;
             border: 2px solid #ff6400;
             border-radius: 10px;
@@ -875,11 +850,11 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(255, 100, 0, 0.4);
+            box-shadow: 0 0 15px rgba(255, 100, 0, 0.3);
         }
 
         .show-answer-btn:hover {
-            box-shadow: 0 0 30px rgba(255, 100, 0, 0.6);
+            box-shadow: 0 0 25px rgba(255, 100, 0, 0.5);
         }
 
         .show-answer-btn:active {
@@ -893,17 +868,22 @@
             padding: 10px;
         }
 
+        .banner-ad a {
+            display: inline-block;
+            text-decoration: none;
+        }
+
         .banner-ad img {
             width: 300px;
             height: 200px;
             border-radius: 12px;
-            border: 2px solid rgba(0, 255, 255, 0.4);
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
             transition: all 0.3s;
         }
 
         .banner-ad img:hover {
-            box-shadow: 0 0 35px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
             transform: scale(1.02);
         }
 
@@ -913,7 +893,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(15, 15, 35, 0.95);
+            background: rgba(20, 15, 30, 0.95);
             border: 2px solid #00ffff;
             border-radius: 20px;
             padding: 25px;
@@ -963,14 +943,14 @@
             position: fixed;
             top: 60px;
             right: 15px;
-            background: rgba(15, 15, 35, 0.95);
+            background: rgba(20, 15, 30, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 15px;
             border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 8px 30px rgba(0, 255, 255, 0.3);
             z-index: 98;
-            border: 2px solid rgba(0, 255, 255, 0.6);
+            border: 2px solid rgba(0, 255, 255, 0.5);
             display: none;
             min-width: 160px;
         }
@@ -991,14 +971,14 @@
             color: #00ffff;
             margin-bottom: 8px;
             text-align: center;
-            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
         }
 
         .sound-control {
             padding: 10px 12px;
-            background: rgba(15, 15, 35, 0.9);
+            background: rgba(20, 15, 30, 0.9);
             color: #00ffff;
-            border: 2px solid rgba(0, 255, 255, 0.6);
+            border: 2px solid rgba(0, 255, 255, 0.5);
             border-radius: 10px;
             font-size: 12px;
             font-weight: bold;
@@ -1008,18 +988,18 @@
             align-items: center;
             gap: 6px;
             justify-content: center;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
         }
 
         .sound-control:hover {
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         }
 
         .sound-control.active {
             background: rgba(0, 255, 255, 0.2);
             color: #00ffff;
-            border-color: rgba(0, 255, 255, 0.9);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            border-color: rgba(0, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
         }
 
         .sound-control:active {
@@ -1047,35 +1027,35 @@
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
-            background: rgba(15, 15, 35, 0.9);
-            border: 2px solid rgba(0, 255, 255, 0.4);
+            background: rgba(20, 15, 30, 0.9);
+            border: 2px solid rgba(0, 255, 255, 0.3);
             color: #00ffff;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
         }
 
         .round-button:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
         }
 
         .round-button.completed {
             background: rgba(0, 255, 255, 0.2);
-            border-color: rgba(0, 255, 255, 0.9);
+            border-color: rgba(0, 255, 255, 0.8);
             color: #00ffff;
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
         }
         .round-button.completed:hover {
-            box-shadow: 0 0 35px rgba(0, 255, 255, 0.7);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
         }
 
         .round-button.current {
             background: rgba(255, 0, 255, 0.2);
-            border-color: rgba(255, 0, 255, 0.9);
+            border-color: rgba(255, 0, 255, 0.8);
             color: #ff00ff;
-            box-shadow: 0 0 25px rgba(255, 0, 255, 0.6);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
             animation: pulse 2s infinite;
         }
         .round-button.current:hover {
-            box-shadow: 0 0 35px rgba(255, 0, 255, 0.8);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.7);
         }
 
         .round-button.locked {
@@ -1567,7 +1547,7 @@
                                                             <button class="unlock-btn" onclick="unlockHint(${index})">
                                                                 🔓1
                                                             </button>
-                                                            <button class="ad-unlock-btn" onclick="watchAdForHint(${index})">
+                                                            <button class="unlock-btn" onclick="watchAdForHint(${index})" style="border-color: #00ff7f; color: #00ff7f; box-shadow: 0 0 10px rgba(0, 255, 127, 0.3);">
                                                                 📺 광고보기
                                                             </button>
                                                         </div>
@@ -1583,7 +1563,7 @@
                                                         <button class="unlock-btn" onclick="unlockDescription(${index})">
                                                             설명보기 🔓1
                                                         </button>
-                                                        <button class="ad-unlock-btn" onclick="watchAdForDescription(${index})">
+                                                        <button class="unlock-btn" onclick="watchAdForDescription(${index})" style="border-color: #00ff7f; color: #00ff7f; box-shadow: 0 0 10px rgba(0, 255, 127, 0.3);">
                                                             설명보기 📺
                                                         </button>
                                                     </div>
@@ -2029,7 +2009,9 @@
                         
                         <!-- 배너 광고 추가 -->
                         <div class="banner-ad">
-                            <img src="${bannerSrc}" alt="배너 광고">
+                            <a href="https://smartstore.naver.com/gemfarm" target="_blank">
+                                <img src="${bannerSrc}" alt="배너 광고">
+                            </a>
                         </div>
                         
                         <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px;">
