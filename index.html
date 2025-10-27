@@ -9,12 +9,12 @@
     <meta name="description" content="당신은 천재인가요? 시냅스가 연결되는 짜릿한 쾌감을 느껴보세요!">
     <meta name="keywords" content="연상게임, 퀴즈, IQ테스트, 브레인게임, 두뇌게임">
     <meta name="author" content="연상천재">
-    <meta name="theme-color" content="#0f0c29">
+    <meta name="theme-color" content="#6A0DAD">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="연상천재">
-    <meta name="msapplication-TileColor" content="#0f0c29">
+    <meta name="msapplication-TileColor" content="#6A0DAD">
     <meta name="msapplication-tap-highlight" content="no">
     
     <!-- 캐시 방지 메타태그 -->
@@ -22,9 +22,6 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta name="version" content="1.0.12">
-    
-    <!-- 폰트 -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -35,19 +32,18 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
         }
 
         body {
-            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #1a0b2e 0%, #2d1b69 100%);
             min-height: 100vh;
-            color: #00fffc;
+            color: #ffffff;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* 사이버펑크 브레인 배경 */
+        /* 마녀스러운 브레인 배경 */
         body::before {
             content: '';
             position: fixed;
@@ -56,9 +52,9 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 255, 252, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(0, 255, 252, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(106, 13, 173, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(168, 216, 234, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 105, 180, 0.3) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
             animation: synapse 3s ease-in-out infinite;
@@ -66,24 +62,24 @@
 
         @keyframes synapse {
             0%, 100% { 
-                opacity: 0.3; 
+                opacity: 0.2; 
                 filter: hue-rotate(0deg);
             }
             50% { 
-                opacity: 0.6; 
-                filter: hue-rotate(90deg);
+                opacity: 0.4; 
+                filter: hue-rotate(180deg);
             }
         }
 
-        /* 별똥별 애니메이션 - 사이버펑크 버전 */
+        /* 별똥별 애니메이션 */
         .shooting-star {
             position: fixed;
             top: 0;
             width: 2px;
             height: 2px;
-            background: #00fffc;
+            background: white;
             border-radius: 50%;
-            box-shadow: 0 0 10px 2px #00fffc, 0 0 20px 4px #ff00ff;
+            box-shadow: 0 0 10px 2px white;
             animation: shoot 3s linear infinite;
             opacity: 0;
             z-index: -1;
@@ -108,7 +104,7 @@
             flex-direction: column;
         }
 
-        /* 사이버펑크 시작 화면 */
+        /* 마녀스러운 시작 화면 */
         .start-screen {
             display: flex;
             flex-direction: column;
@@ -123,15 +119,14 @@
         .magic-orb {
             width: 120px;
             height: 120px;
-            background: radial-gradient(circle at 30% 30%, #00fffc, #ff00ff);
+            background: radial-gradient(circle at 30% 30%, #9C27B0, #6A0DAD);
             border-radius: 50%;
             margin-bottom: 30px;
             animation: float 3s ease-in-out infinite;
             box-shadow: 
-                0 0 50px rgba(0, 255, 252, 0.6),
+                0 0 50px rgba(156, 39, 176, 0.6),
                 inset 0 0 20px rgba(255, 255, 255, 0.3);
             position: relative;
-            border: 2px solid #ff00ff;
         }
 
         .magic-orb::before {
@@ -152,41 +147,38 @@
             font-size: 3em;
             font-weight: 900;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #00fffc, #ff00ff, #00fffc);
+            background: linear-gradient(135deg, #E040FB, #7B1FA2, #00BCD4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: glow 2s ease-in-out infinite alternate;
             line-height: 1.1;
-            text-shadow: 0 0 30px rgba(0, 255, 252, 0.5);
-            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(224, 64, 251, 0.5);
         }
 
         @keyframes glow {
-            from { text-shadow: 0 0 20px rgba(0, 255, 252, 0.5), 0 0 30px rgba(255, 0, 255, 0.3); }
-            to { text-shadow: 0 0 30px rgba(0, 255, 252, 0.8), 0 0 40px rgba(255, 0, 255, 0.6), 0 0 50px rgba(0, 255, 252, 0.4); }
+            from { text-shadow: 0 0 20px rgba(224, 64, 251, 0.5); }
+            to { text-shadow: 0 0 30px rgba(224, 64, 251, 0.8), 0 0 40px rgba(224, 64, 251, 0.6); }
         }
 
         .subtitle {
             font-size: 1.3em;
-            color: #ff00ff;
+            color: #E040FB;
             margin-bottom: 10px;
             font-weight: 500;
-            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
-            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(224, 64, 251, 0.5);
         }
 
         .highlight {
             font-size: 1.1em;
-            color: #00fffc;
+            color: #00BCD4;
             font-weight: bold;
             margin-bottom: 40px;
-            text-shadow: 0 0 10px rgba(0, 255, 252, 0.5);
-            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
         }
 
         .start-button {
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
-            color: #0f0c29;
+            background: linear-gradient(135deg, #9C27B0, #E040FB);
+            color: white;
             border: none;
             border-radius: 25px;
             padding: 18px 40px;
@@ -195,16 +187,14 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 
-                0 10px 30px rgba(0, 255, 252, 0.4),
-                0 0 20px rgba(255, 0, 255, 0.3);
+                0 10px 30px rgba(156, 39, 176, 0.4),
+                0 0 20px rgba(224, 64, 251, 0.3);
             display: flex;
             align-items: center;
             gap: 10px;
             animation: pulse 2s ease-in-out infinite;
             position: relative;
             overflow: hidden;
-            letter-spacing: 1px;
-            border: 1px solid #00fffc;
         }
 
         .start-button:active {
@@ -212,18 +202,18 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(0, 255, 252, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(0, 255, 252, 0.6), 0 0 25px rgba(255, 0, 255, 0.4); }
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(156, 39, 176, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(156, 39, 176, 0.6); }
         }
 
-        /* 게임 헤더 - 사이버펑크 */
+        /* 게임 헤더 */
         .header {
-            background: rgba(15, 12, 41, 0.95);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid #00fffc;
+            border-bottom: 1px solid rgba(156, 39, 176, 0.2);
             padding: 8px 15px;
-            box-shadow: 0 2px 20px rgba(0, 255, 252, 0.2);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -246,18 +236,17 @@
         .home-button {
             width: 35px;
             height: 35px;
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            background: linear-gradient(135deg, #9C27B0, #E040FB);
             border: none;
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
             transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
+            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #0f0c29;
-            border: 1px solid #00fffc;
+            color: white;
         }
 
         .home-button:active {
@@ -273,13 +262,13 @@
         .round-title {
             font-size: 16px;
             font-weight: bold;
-            color: #00fffc;
+            color: #6A0DAD;
             letter-spacing: -0.3px;
         }
 
         .problem-number {
             font-size: 12px;
-            color: #ff00ff;
+            color: #E040FB;
         }
 
         .header-right {
@@ -292,21 +281,20 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            background: linear-gradient(135deg, #FFD93D, #FF9AA2);
             padding: 6px 10px;
             border-radius: 15px;
             font-size: 12px;
             font-weight: bold;
-            color: #0f0c29;
-            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
-            border: 1px solid #00fffc;
+            color: #2d1b69;
+            box-shadow: 0 4px 12px rgba(255, 154, 162, 0.4);
         }
 
         .settings-button-header {
             width: 35px;
             height: 35px;
-            background: rgba(15, 12, 41, 0.9);
-            border: 1px solid #00fffc;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(156, 39, 176, 0.2);
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
@@ -314,7 +302,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #00fffc;
+            color: #6A0DAD;
         }
 
         .settings-button-header:active {
@@ -324,40 +312,38 @@
         .progress-dots {
             display: flex;
             gap: 3px;
-            background: rgba(0, 255, 252, 0.1);
+            background: rgba(156, 39, 176, 0.1);
             padding: 4px 6px;
             border-radius: 10px;
-            border: 1px solid rgba(0, 255, 252, 0.3);
         }
 
         .dot {
             width: 5px;
             height: 5px;
             border-radius: 50%;
-            background: #302b63;
+            background: #DDD;
             transition: all 0.3s;
         }
 
         .dot.completed {
-            background: linear-gradient(135deg, #00fffc, #0097A7);
+            background: linear-gradient(135deg, #00BCD4, #0097A7);
             transform: scale(1.2);
         }
 
         .dot.current {
-            background: linear-gradient(135deg, #ff00ff, #9C27B0);
+            background: linear-gradient(135deg, #E040FB, #9C27B0);
             transform: scale(1.4);
-            box-shadow: 0 0 0 2px rgba(255, 0, 255, 0.3);
+            box-shadow: 0 0 0 2px rgba(224, 64, 251, 0.3);
         }
 
-        /* 천재 타이머 - 사이버펑크 */
+        /* 천재 타이머 */
         .genius-timer {
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            background: linear-gradient(135deg, #FFD93D, #FFB347);
             border-radius: 8px;
             padding: 6px 8px;
             margin: 5px 0;
-            color: #0f0c29;
-            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
-            border: 1px solid #00fffc;
+            color: #2d1b69;
+            box-shadow: 0 4px 12px rgba(255, 179, 71, 0.4);
         }
 
         .genius-timer-header {
@@ -382,42 +368,40 @@
 
         .timer-bar {
             height: 4px;
-            background: rgba(15, 12, 41, 0.3);
+            background: rgba(45, 27, 105, 0.3);
             border-radius: 2px;
             overflow: hidden;
         }
 
         .timer-progress {
             height: 100%;
-            background: #0f0c29;
+            background: #2d1b69;
             transition: width 0.65s linear;
             border-radius: 2px;
         }
 
-        /* 메인 콘텐츠 - 사이버펑크 */
+        /* 메인 콘텐츠 */
         .main-content {
-            background: rgba(15, 12, 41, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-radius: 20px 20px 0 0;
             padding: 15px;
-            box-shadow: 0 -4px 30px rgba(0, 255, 252, 0.1);
+            box-shadow: 0 -4px 30px rgba(0,0,0,0.1);
             flex: 1;
             margin-top: auto;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            border: 1px solid #00fffc;
-            border-bottom: none;
         }
 
-        /* 힌트 섹션 - 사이버펑크 */
+        /* 힌트 섹션 */
         .hints-section {
-            background: linear-gradient(135deg, rgba(0, 255, 252, 0.1), rgba(255, 0, 255, 0.05));
+            background: linear-gradient(135deg, rgba(232, 248, 245, 0.95), rgba(254, 249, 231, 0.95));
             border-radius: 15px;
             padding: 12px;
-            border: 1px solid #00fffc;
-            box-shadow: 0 6px 20px rgba(0, 255, 252, 0.2);
+            border: 1px solid rgba(174, 214, 241, 0.3);
+            box-shadow: 0 6px 20px rgba(133, 193, 233, 0.2);
             flex: 1;
             min-height: 0;
             display: flex;
@@ -436,13 +420,13 @@
         }
 
         .hints-container::-webkit-scrollbar-thumb {
-            background: rgba(0, 255, 252, 0.5);
+            background: rgba(133, 193, 233, 0.5);
             border-radius: 2px;
         }
 
         .hint-item {
-            background: rgba(15, 12, 41, 0.8);
-            border: 1px solid #00fffc;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(174, 214, 241, 0.5);
             border-radius: 12px;
             margin-bottom: 8px;
             overflow: hidden;
@@ -451,7 +435,7 @@
 
         .hint-item.locked {
             opacity: 0.7;
-            background: rgba(15, 12, 41, 0.5);
+            background: rgba(248, 249, 250, 0.7);
         }
 
         .hint-content {
@@ -475,23 +459,22 @@
         .hint-number {
             width: 28px;
             height: 28px;
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            background: linear-gradient(135deg, #85C1E9, #BB8FCE);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #0f0c29;
+            color: white;
             font-size: 14px;
             font-weight: 900;
-            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
+            box-shadow: 0 4px 12px rgba(133, 193, 233, 0.4);
             flex-shrink: 0;
-            border: 1px solid #00fffc;
         }
 
         .hint-text {
             font-size: 16px;
             font-weight: 600;
-            color: #00fffc;
+            color: #2c3e50;
             line-height: 1.4;
             flex: 1;
         }
@@ -501,10 +484,10 @@
             gap: 4px;
         }
 
-        /* 잠긴 힌트 버튼 - 사이버펑크 */
+        /* 잠긴 힌트 버튼 */
         .unlock-btn {
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
-            color: #0f0c29;
+            background: linear-gradient(135deg, #F8C471, #F1948A);
+            color: white;
             border: none;
             border-radius: 8px;
             padding: 6px 10px;
@@ -515,8 +498,7 @@
             align-items: center;
             gap: 4px;
             transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0, 255, 252, 0.4);
-            border: 1px solid #00fffc;
+            box-shadow: 0 2px 8px rgba(241, 148, 138, 0.4);
         }
 
         .unlock-btn:active {
@@ -524,17 +506,17 @@
         }
 
         .description {
-            background: rgba(0, 255, 252, 0.1);
-            border: 1px solid rgba(0, 255, 252, 0.3);
+            background: rgba(133, 193, 233, 0.1);
+            border: 1px solid rgba(133, 193, 233, 0.3);
             border-radius: 8px;
             padding: 10px;
             margin-top: 8px;
             font-size: 14px;
             line-height: 1.4;
-            color: #00fffc;
+            color: #2c3e50;
         }
 
-        /* 정보 그리드 - 사이버펑크 */
+        /* 정보 그리드 */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -543,8 +525,8 @@
         }
 
         .info-box {
-            background: rgba(15, 12, 41, 0.8);
-            border: 1px solid #00fffc;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(174, 214, 241, 0.5);
             border-radius: 12px;
             padding: 12px;
             text-align: center;
@@ -552,18 +534,18 @@
         }
 
         .info-box.category {
-            background: rgba(0, 255, 252, 0.15);
-            border-color: #00fffc;
+            background: rgba(133, 193, 233, 0.15);
+            border-color: rgba(133, 193, 233, 0.4);
         }
 
         .info-box.chosung {
-            background: rgba(255, 0, 255, 0.15);
-            border-color: #ff00ff;
+            background: rgba(241, 148, 138, 0.15);
+            border-color: rgba(241, 148, 138, 0.4);
         }
 
         .info-label {
             font-size: 11px;
-            color: #ff00ff;
+            color: #7f8c8d;
             margin-bottom: 4px;
             font-weight: 600;
             text-transform: uppercase;
@@ -572,12 +554,12 @@
         .info-value {
             font-size: 15px;
             font-weight: 900;
-            color: #00fffc;
+            color: #2c3e50;
         }
 
         .unlock-small {
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
-            color: #0f0c29;
+            background: linear-gradient(135deg, #F8C471, #F1948A);
+            color: white;
             border: none;
             border-radius: 6px;
             padding: 4px 8px;
@@ -588,11 +570,10 @@
             align-items: center;
             gap: 3px;
             margin-top: 4px;
-            box-shadow: 0 2px 6px rgba(0, 255, 252, 0.4);
-            border: 1px solid #00fffc;
+            box-shadow: 0 2px 6px rgba(241, 148, 138, 0.4);
         }
 
-        /* 정답 입력 섹션 - 사이버펑크 */
+        /* 정답 입력 섹션 */
         .answer-input-section {
             display: flex;
             gap: 10px;
@@ -605,28 +586,28 @@
             padding: 15px;
             font-size: 16px;
             font-weight: 600;
-            border: 2px solid #00fffc;
+            border: 2px solid rgba(174, 214, 241, 0.5);
             border-radius: 12px;
-            background: rgba(15, 12, 41, 0.8);
-            color: #00fffc;
+            background: rgba(255, 255, 255, 0.95);
+            color: #2c3e50;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 255, 252, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .answer-input::placeholder {
-            color: #ff00ff;
+            color: #95a5a6;
         }
 
         .answer-input:focus {
             outline: none;
-            border-color: #ff00ff;
-            box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.2), 0 4px 15px rgba(0, 255, 252, 0.1);
-            background: rgba(15, 12, 41, 0.9);
+            border-color: #85C1E9;
+            box-shadow: 0 0 0 3px rgba(133, 193, 233, 0.2), 0 4px 15px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 1);
         }
 
         .submit-button {
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
-            color: #0f0c29;
+            background: linear-gradient(135deg, #85C1E9, #BB8FCE);
+            color: white;
             border: none;
             border-radius: 12px;
             padding: 15px 20px;
@@ -634,23 +615,22 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 255, 252, 0.4);
+            box-shadow: 0 4px 15px rgba(133, 193, 233, 0.4);
             white-space: nowrap;
-            border: 1px solid #00fffc;
         }
 
         .submit-button:active {
             transform: scale(0.95);
         }
 
-        /* 정답 맞췄을 때 - 사이버펑크 */
+        /* 정답 맞췄을 때 */
         .correct-answer {
-            background: linear-gradient(135deg, rgba(0, 255, 252, 0.1), rgba(255, 0, 255, 0.1));
-            border: 2px solid #00fffc;
+            background: linear-gradient(135deg, rgba(133, 193, 233, 0.15), rgba(187, 143, 206, 0.15));
+            border: 2px solid rgba(133, 193, 233, 0.3);
             border-radius: 15px;
             padding: 20px;
             text-align: center;
-            color: #00fffc;
+            color: #2c3e50;
         }
 
         .correct-icon {
@@ -662,28 +642,28 @@
             font-size: 20px;
             font-weight: 900;
             margin-bottom: 8px;
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            background: linear-gradient(135deg, #85C1E9, #BB8FCE);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .correct-text {
             font-size: 18px;
-            color: #00fffc;
+            color: #2c3e50;
             margin-bottom: 8px;
             font-weight: 700;
         }
 
         .correct-category {
             font-size: 14px;
-            color: #ff00ff;
+            color: #7f8c8d;
             font-style: italic;
         }
 
         .next-button {
             width: 100%;
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
-            color: #0f0c29;
+            background: linear-gradient(135deg, #85C1E9, #BB8FCE);
+            color: white;
             border: none;
             padding: 15px;
             border-radius: 12px;
@@ -691,26 +671,25 @@
             font-weight: 900;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 6px 20px rgba(0, 255, 252, 0.4);
+            box-shadow: 0 6px 20px rgba(133, 193, 233, 0.4);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-top: 10px;
-            border: 1px solid #00fffc;
         }
 
         .next-button:active {
             transform: scale(0.98);
         }
 
-        /* 정답보기 버튼 - 사이버펑크 */
+        /* 정답보기 버튼 */
         .show-answer-section {
             padding: 10px 0;
         }
 
         .show-answer-btn {
             width: 100%;
-            background: linear-gradient(135deg, #ff00ff, #00fffc);
-            color: #0f0c29;
+            background: linear-gradient(135deg, #F1948A, #E67E22);
+            color: white;
             border: none;
             border-radius: 10px;
             padding: 12px;
@@ -722,28 +701,27 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s;
-            border: 1px solid #ff00ff;
         }
 
         .show-answer-btn:active {
             transform: scale(0.98);
         }
 
-        /* 축하 팝업 - 사이버펑크 */
+        /* 축하 팝업 */
         .congratulation-popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            background: linear-gradient(135deg, #85C1E9, #BB8FCE);
             border-radius: 20px;
             padding: 25px;
             text-align: center;
-            color: #0f0c29;
+            color: white;
             z-index: 1000;
-            box-shadow: 0 15px 40px rgba(0, 255, 252, 0.4);
+            box-shadow: 0 15px 40px rgba(133, 193, 233, 0.4);
             animation: popIn 0.5s ease-out;
-            border: 2px solid #00fffc;
+            border: 2px solid rgba(255,255,255,0.3);
             min-width: 280px;
             max-width: 85%;
         }
@@ -768,7 +746,7 @@
         .popup-reward {
             margin-top: 10px;
             padding: 8px 12px;
-            background: rgba(15, 12, 41, 0.2);
+            background: rgba(255,255,255,0.2);
             border-radius: 10px;
             font-size: 14px;
             font-weight: bold;
@@ -780,19 +758,19 @@
             100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
-        /* 음악 패널 - 사이버펑크 */
+        /* 음악 패널 */
         .music-panel {
             position: fixed;
             top: 60px;
             right: 15px;
-            background: rgba(15, 12, 41, 0.98);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 15px;
             border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0, 255, 252, 0.3);
+            box-shadow: 0 8px 30px rgba(133, 193, 233, 0.3);
             z-index: 98;
-            border: 1px solid #00fffc;
+            border: 1px solid rgba(174, 214, 241, 0.5);
             display: none;
             min-width: 160px;
         }
@@ -810,16 +788,16 @@
         .music-title {
             font-size: 14px;
             font-weight: bold;
-            color: #00fffc;
+            color: #85C1E9;
             margin-bottom: 8px;
             text-align: center;
         }
 
         .sound-control {
             padding: 10px 12px;
-            background: rgba(15, 12, 41, 0.9);
-            color: #00fffc;
-            border: 2px solid #00fffc;
+            background: rgba(248, 249, 250, 0.9);
+            color: #2c3e50;
+            border: 2px solid transparent;
             border-radius: 10px;
             font-size: 12px;
             font-weight: bold;
@@ -832,17 +810,17 @@
         }
 
         .sound-control.active {
-            background: linear-gradient(135deg, #00fffc, #ff00ff);
-            color: #0f0c29;
-            border-color: #00fffc;
-            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.3);
+            background: linear-gradient(135deg, #85C1E9, #BB8FCE);
+            color: white;
+            border-color: rgba(133, 193, 233, 0.3);
+            box-shadow: 0 4px 12px rgba(133, 193, 233, 0.3);
         }
 
         .sound-control:active {
             transform: scale(0.95);
         }
 
-        /* 라운드 맵 - 사이버펑크 */
+        /* 라운드 맵 */
         .round-map {
             padding: 20px;
         }
@@ -863,54 +841,30 @@
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
-            border: 2px solid #00fffc;
         }
 
         .round-button.completed {
-            background: linear-gradient(135deg, #00fffc, #0097A7);
-            color: #0f0c29;
-            box-shadow: 0 6px 20px rgba(0, 255, 252, 0.4);
+            background: linear-gradient(135deg, #85C1E9, #5DADE2);
+            color: white;
+            box-shadow: 0 6px 20px rgba(133, 193, 233, 0.4);
         }
 
         .round-button.current {
-            background: linear-gradient(135deg, #ff00ff, #9C27B0);
-            color: #0f0c29;
-            box-shadow: 0 6px 20px rgba(255, 0, 255, 0.5);
+            background: linear-gradient(135deg, #BB8FCE, #9B59B6);
+            color: white;
+            box-shadow: 0 6px 20px rgba(187, 143, 206, 0.5);
             animation: pulse 2s infinite;
         }
 
         .round-button.locked {
-            background: rgba(15, 12, 41, 0.8);
-            color: #302b63;
+            background: rgba(248, 249, 250, 0.8);
+            color: #CCCCCC;
             cursor: not-allowed;
-            border: 1px solid #302b63;
+            border: 1px solid rgba(221, 221, 221, 0.5);
         }
 
         .round-button:active:not(.locked) {
             transform: scale(0.95);
-        }
-
-        /* 배너 광고 */
-        .banner-ad {
-            margin: 20px auto;
-            text-align: center;
-            border: 2px solid #00fffc;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 255, 252, 0.3);
-            max-width: 300px;
-        }
-
-        .banner-ad a {
-            display: block;
-            text-decoration: none;
-        }
-
-        .banner-ad img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            display: block;
         }
 
         /* 로딩 스피너 */
@@ -918,9 +872,9 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(0, 255, 252, 0.3);
+            border: 3px solid rgba(255,255,255,.3);
             border-radius: 50%;
-            border-top-color: #00fffc;
+            border-top-color: #85C1E9;
             animation: spin 1s ease-in-out infinite;
         }
 
@@ -1181,13 +1135,6 @@
             return false;
         }
 
-        // 랜덤 배너 생성
-        function getRandomBanner() {
-            const banners = ['banner1.jpg', 'banner2.jpg', 'banner3.jpg', 'banner4.jpg', 'banner5.jpg'];
-            const randomIndex = Math.floor(Math.random() * banners.length);
-            return banners[randomIndex];
-        }
-
         // 시작 화면 렌더링
         function renderStartScreen() {
             createShootingStars();
@@ -1231,7 +1178,7 @@
                     
                     <div class="main-content">
                         <div class="round-map">
-                            <h2 style="text-align: center; margin-bottom: 20px; color: #00fffc; font-size: 18px;">
+                            <h2 style="text-align: center; margin-bottom: 20px; color: #6A0DAD; font-size: 18px;">
                                 ${hasSave ? '이어하기 가능!' : '라운드 선택'}
                             </h2>
                             <div class="round-grid">
@@ -1386,7 +1333,7 @@
                                                             <button class="unlock-btn" onclick="unlockHint(${index})">
                                                                 🔓1
                                                             </button>
-                                                            <button class="unlock-btn" onclick="watchAdForHint(${index})" style="background: linear-gradient(135deg, #00fffc, #0097A7);">
+                                                            <button class="unlock-btn" onclick="watchAdForHint(${index})" style="background: linear-gradient(135deg, #58D68D, #28B463);">
                                                                 📺 광고보기
                                                             </button>
                                                         </div>
@@ -1402,7 +1349,7 @@
                                                         <button class="unlock-btn" onclick="unlockDescription(${index})">
                                                             설명보기 🔓1
                                                         </button>
-                                                        <button class="unlock-btn" onclick="watchAdForDescription(${index})" style="background: linear-gradient(135deg, #00fffc, #0097A7);">
+                                                        <button class="unlock-btn" onclick="watchAdForDescription(${index})" style="background: linear-gradient(135deg, #58D68D, #28B463);">
                                                             설명보기 📺
                                                         </button>
                                                     </div>
@@ -1816,7 +1763,6 @@
         }
 
         function showRoundComplete() {
-            const randomBanner = getRandomBanner();
             const html = `
                 <div class="container">
                     <div class="header">
@@ -1843,17 +1789,10 @@
                             <div class="correct-category">다음 라운드에 도전해보세요</div>
                         </div>
                         
-                        <!-- 배너 광고 추가 -->
-                        <div class="banner-ad">
-                            <a href="https://smartstore.naver.com/gemfarm" target="_blank">
-                                <img src="${randomBanner}" alt="광고 배너">
-                            </a>
-                        </div>
-                        
                         <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px;">
                             🚀 다음 라운드
                         </button>
-                        <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #302b63, #24243e);">
+                        <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #888, #666);">
                             🗺️ 메인으로
                         </button>
                     </div>
