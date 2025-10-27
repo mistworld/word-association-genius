@@ -9,12 +9,12 @@
     <meta name="description" content="당신은 천재인가요? 시냅스가 연결되는 짜릿한 쾌감을 느껴보세요!">
     <meta name="keywords" content="연상게임, 퀴즈, IQ테스트, 브레인게임, 두뇌게임">
     <meta name="author" content="연상천재">
-    <meta name="theme-color" content="#0a0e27">
+    <meta name="theme-color" content="#0f0c29">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="연상천재">
-    <meta name="msapplication-TileColor" content="#0a0e27">
+    <meta name="msapplication-TileColor" content="#0f0c29">
     <meta name="msapplication-tap-highlight" content="no">
     
     <!-- 캐시 방지 메타태그 -->
@@ -22,6 +22,9 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta name="version" content="1.0.12">
+    
+    <!-- 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -32,18 +35,19 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #0a0a1a 0%, #151530 50%, #0a0a25 100%);
+            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             min-height: 100vh;
-            color: #ffffff;
+            color: #00fffc;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* 네온 브레인 배경 */
+        /* 사이버펑크 브레인 배경 */
         body::before {
             content: '';
             position: fixed;
@@ -52,21 +56,34 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 252, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(0, 255, 252, 0.1) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
+            animation: synapse 3s ease-in-out infinite;
         }
 
-        /* 별똥별 애니메이션 */
+        @keyframes synapse {
+            0%, 100% { 
+                opacity: 0.3; 
+                filter: hue-rotate(0deg);
+            }
+            50% { 
+                opacity: 0.6; 
+                filter: hue-rotate(90deg);
+            }
+        }
+
+        /* 별똥별 애니메이션 - 사이버펑크 버전 */
         .shooting-star {
             position: fixed;
             top: 0;
             width: 2px;
             height: 2px;
-            background: #00ffff;
+            background: #00fffc;
             border-radius: 50%;
-            box-shadow: 0 0 10px 2px #00ffff;
+            box-shadow: 0 0 10px 2px #00fffc, 0 0 20px 4px #ff00ff;
             animation: shoot 3s linear infinite;
             opacity: 0;
             z-index: -1;
@@ -91,7 +108,7 @@
             flex-direction: column;
         }
 
-        /* 네온 시작 화면 */
+        /* 사이버펑크 시작 화면 */
         .start-screen {
             display: flex;
             flex-direction: column;
@@ -106,14 +123,15 @@
         .magic-orb {
             width: 120px;
             height: 120px;
-            background: radial-gradient(circle at 30% 30%, #ff00ff, #00ffff);
+            background: radial-gradient(circle at 30% 30%, #00fffc, #ff00ff);
             border-radius: 50%;
             margin-bottom: 30px;
             animation: float 3s ease-in-out infinite;
             box-shadow: 
-                0 0 50px rgba(255, 0, 255, 0.6),
+                0 0 50px rgba(0, 255, 252, 0.6),
                 inset 0 0 20px rgba(255, 255, 255, 0.3);
             position: relative;
+            border: 2px solid #ff00ff;
         }
 
         .magic-orb::before {
@@ -134,39 +152,42 @@
             font-size: 3em;
             font-weight: 900;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            background: linear-gradient(135deg, #00fffc, #ff00ff, #00fffc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: glow 2s ease-in-out infinite alternate;
             line-height: 1.1;
-            text-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+            text-shadow: 0 0 30px rgba(0, 255, 252, 0.5);
+            letter-spacing: 2px;
         }
 
         @keyframes glow {
-            from { text-shadow: 0 0 20px rgba(255, 0, 255, 0.5); }
-            to { text-shadow: 0 0 30px rgba(255, 0, 255, 0.8), 0 0 40px rgba(0, 255, 255, 0.6); }
+            from { text-shadow: 0 0 20px rgba(0, 255, 252, 0.5), 0 0 30px rgba(255, 0, 255, 0.3); }
+            to { text-shadow: 0 0 30px rgba(0, 255, 252, 0.8), 0 0 40px rgba(255, 0, 255, 0.6), 0 0 50px rgba(0, 255, 252, 0.4); }
         }
 
         .subtitle {
             font-size: 1.3em;
-            color: #00ffff;
+            color: #ff00ff;
             margin-bottom: 10px;
             font-weight: 500;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+            letter-spacing: 1px;
         }
 
         .highlight {
             font-size: 1.1em;
-            color: #ffff00;
+            color: #00fffc;
             font-weight: bold;
             margin-bottom: 40px;
-            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            text-shadow: 0 0 10px rgba(0, 255, 252, 0.5);
+            letter-spacing: 1px;
         }
 
         .start-button {
-            background: rgba(20, 15, 30, 0.9);
-            color: #00ffff;
-            border: 2px solid #00ffff;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border: none;
             border-radius: 25px;
             padding: 18px 40px;
             font-size: 1.3em;
@@ -174,18 +195,16 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.3),
-                inset 0 0 20px rgba(0, 255, 255, 0.1);
+                0 10px 30px rgba(0, 255, 252, 0.4),
+                0 0 20px rgba(255, 0, 255, 0.3);
             display: flex;
             align-items: center;
             gap: 10px;
             animation: pulse 2s ease-in-out infinite;
             position: relative;
             overflow: hidden;
-        }
-
-        .start-button:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            letter-spacing: 1px;
+            border: 1px solid #00fffc;
         }
 
         .start-button:active {
@@ -193,18 +212,18 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(0, 255, 252, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(0, 255, 252, 0.6), 0 0 25px rgba(255, 0, 255, 0.4); }
         }
 
-        /* 게임 헤더 */
+        /* 게임 헤더 - 사이버펑크 */
         .header {
-            background: rgba(10, 14, 39, 0.95);
+            background: rgba(15, 12, 41, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            border-bottom: 1px solid #00fffc;
             padding: 8px 15px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 20px rgba(0, 255, 252, 0.2);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -227,21 +246,18 @@
         .home-button {
             width: 35px;
             height: 35px;
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid #ff00ff;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            border: none;
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ff00ff;
-        }
-
-        .home-button:hover {
-            box-shadow: 0 0 25px rgba(255, 0, 255, 0.5);
+            color: #0f0c29;
+            border: 1px solid #00fffc;
         }
 
         .home-button:active {
@@ -257,15 +273,13 @@
         .round-title {
             font-size: 16px;
             font-weight: bold;
-            color: #00ffff;
+            color: #00fffc;
             letter-spacing: -0.3px;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
 
         .problem-number {
             font-size: 12px;
             color: #ff00ff;
-            text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
         }
 
         .header-right {
@@ -278,26 +292,21 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid #ffff00;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
             padding: 6px 10px;
             border-radius: 15px;
             font-size: 12px;
             font-weight: bold;
-            color: #ffff00;
-            box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
-            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
-        }
-
-        .key-count:hover {
-            box-shadow: 0 0 25px rgba(255, 255, 0, 0.5);
+            color: #0f0c29;
+            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
+            border: 1px solid #00fffc;
         }
 
         .settings-button-header {
             width: 35px;
             height: 35px;
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid #00ffff;
+            background: rgba(15, 12, 41, 0.9);
+            border: 1px solid #00fffc;
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
@@ -305,12 +314,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-        }
-
-        .settings-button-header:hover {
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+            color: #00fffc;
         }
 
         .settings-button-header:active {
@@ -320,44 +324,40 @@
         .progress-dots {
             display: flex;
             gap: 3px;
-            background: rgba(0, 255, 255, 0.1);
+            background: rgba(0, 255, 252, 0.1);
             padding: 4px 6px;
             border-radius: 10px;
+            border: 1px solid rgba(0, 255, 252, 0.3);
         }
 
         .dot {
             width: 5px;
             height: 5px;
             border-radius: 50%;
-            background: #333;
+            background: #302b63;
             transition: all 0.3s;
         }
 
         .dot.completed {
-            background: #00ffff;
+            background: linear-gradient(135deg, #00fffc, #0097A7);
             transform: scale(1.2);
-            box-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
         }
 
         .dot.current {
-            background: #ff00ff;
+            background: linear-gradient(135deg, #ff00ff, #9C27B0);
             transform: scale(1.4);
             box-shadow: 0 0 0 2px rgba(255, 0, 255, 0.3);
         }
 
-        /* 천재 타이머 */
+        /* 천재 타이머 - 사이버펑크 */
         .genius-timer {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid #ffff00;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
             border-radius: 8px;
             padding: 6px 8px;
             margin: 5px 0;
-            color: #ffff00;
-            box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
-        }
-
-        .genius-timer:hover {
-            box-shadow: 0 0 25px rgba(255, 255, 0, 0.5);
+            color: #0f0c29;
+            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
+            border: 1px solid #00fffc;
         }
 
         .genius-timer-header {
@@ -373,52 +373,51 @@
             gap: 4px;
             font-size: 11px;
             font-weight: bold;
-            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
         }
 
         .genius-timer-count {
             font-size: 12px;
             font-weight: bold;
-            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
         }
 
         .timer-bar {
             height: 4px;
-            background: rgba(255, 255, 0, 0.3);
+            background: rgba(15, 12, 41, 0.3);
             border-radius: 2px;
             overflow: hidden;
         }
 
         .timer-progress {
             height: 100%;
-            background: #ffff00;
+            background: #0f0c29;
             transition: width 0.65s linear;
             border-radius: 2px;
-            box-shadow: 0 0 5px rgba(255, 255, 0, 0.8);
         }
 
-        /* 메인 콘텐츠 */
+        /* 메인 콘텐츠 - 사이버펑크 */
         .main-content {
-            background: rgba(10, 14, 39, 0.95);
+            background: rgba(15, 12, 41, 0.95);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-radius: 20px 20px 0 0;
             padding: 15px;
-            box-shadow: 0 -4px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 -4px 30px rgba(0, 255, 252, 0.1);
             flex: 1;
             margin-top: auto;
             display: flex;
             flex-direction: column;
             gap: 12px;
+            border: 1px solid #00fffc;
+            border-bottom: none;
         }
 
-        /* 힌트 섹션 */
+        /* 힌트 섹션 - 사이버펑크 */
         .hints-section {
-            background: rgba(20, 15, 30, 0.9);
+            background: linear-gradient(135deg, rgba(0, 255, 252, 0.1), rgba(255, 0, 255, 0.05));
             border-radius: 15px;
             padding: 12px;
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            box-shadow: 0 6px 20px rgba(0, 255, 255, 0.1);
+            border: 1px solid #00fffc;
+            box-shadow: 0 6px 20px rgba(0, 255, 252, 0.2);
             flex: 1;
             min-height: 0;
             display: flex;
@@ -437,11 +436,13 @@
         }
 
         .hints-container::-webkit-scrollbar-thumb {
-            background: rgba(0, 255, 255, 0.5);
+            background: rgba(0, 255, 252, 0.5);
             border-radius: 2px;
         }
 
         .hint-item {
+            background: rgba(15, 12, 41, 0.8);
+            border: 1px solid #00fffc;
             border-radius: 12px;
             margin-bottom: 8px;
             overflow: hidden;
@@ -450,7 +451,7 @@
 
         .hint-item.locked {
             opacity: 0.7;
-            background: rgba(30, 25, 45, 0.7);
+            background: rgba(15, 12, 41, 0.5);
         }
 
         .hint-content {
@@ -474,23 +475,23 @@
         .hint-number {
             width: 28px;
             height: 28px;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #0f0c29;
             font-size: 14px;
             font-weight: 900;
+            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
             flex-shrink: 0;
-            border: 2px solid;
-            background: rgba(20, 15, 30, 0.8);
-            transition: all 0.3s;
-            color: white;
+            border: 1px solid #00fffc;
         }
 
         .hint-text {
             font-size: 16px;
             font-weight: 600;
-            color: #ffffff;
+            color: #00fffc;
             line-height: 1.4;
             flex: 1;
         }
@@ -500,108 +501,11 @@
             gap: 4px;
         }
 
-        /* 힌트 아이템별 색상 - 네온 효과 추가 */
-        .hint-item:nth-child(1) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(255, 0, 127, 0.5);
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.2);
-        }
-        .hint-item:nth-child(1):hover {
-            box-shadow: 0 0 30px rgba(255, 0, 127, 0.4);
-        }
-        .hint-item:nth-child(1) .hint-number { 
-            background: rgba(255, 0, 127, 0.2) !important; 
-            border-color: rgba(255, 0, 127, 0.6) !important; 
-            color: #ff007f !important; 
-            text-shadow: 0 0 10px rgba(255, 0, 127, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3) !important;
-        }
-
-        .hint-item:nth-child(2) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(255, 100, 0, 0.5);
-            box-shadow: 0 0 20px rgba(255, 100, 0, 0.2);
-        }
-        .hint-item:nth-child(2):hover {
-            box-shadow: 0 0 30px rgba(255, 100, 0, 0.4);
-        }
-        .hint-item:nth-child(2) .hint-number { 
-            background: rgba(255, 100, 0, 0.2) !important; 
-            border-color: rgba(255, 100, 0, 0.6) !important; 
-            color: #ff6400 !important; 
-            text-shadow: 0 0 10px rgba(255, 100, 0, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(255, 100, 0, 0.3) !important;
-        }
-
-        .hint-item:nth-child(3) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(0, 255, 127, 0.5);
-            box-shadow: 0 0 20px rgba(0, 255, 127, 0.2);
-        }
-        .hint-item:nth-child(3):hover {
-            box-shadow: 0 0 30px rgba(0, 255, 127, 0.4);
-        }
-        .hint-item:nth-child(3) .hint-number { 
-            background: rgba(0, 255, 127, 0.2) !important; 
-            border-color: rgba(0, 255, 127, 0.6) !important; 
-            color: #00ff7f !important; 
-            text-shadow: 0 0 10px rgba(0, 255, 127, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(0, 255, 127, 0.3) !important;
-        }
-
-        .hint-item:nth-child(4) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(0, 200, 255, 0.5);
-            box-shadow: 0 0 20px rgba(0, 200, 255, 0.2);
-        }
-        .hint-item:nth-child(4):hover {
-            box-shadow: 0 0 30px rgba(0, 200, 255, 0.4);
-        }
-        .hint-item:nth-child(4) .hint-number { 
-            background: rgba(0, 200, 255, 0.2) !important; 
-            border-color: rgba(0, 200, 255, 0.6) !important; 
-            color: #00c8ff !important; 
-            text-shadow: 0 0 10px rgba(0, 200, 255, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(0, 200, 255, 0.3) !important;
-        }
-
-        .hint-item:nth-child(5) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(200, 100, 255, 0.5);
-            box-shadow: 0 0 20px rgba(200, 100, 255, 0.2);
-        }
-        .hint-item:nth-child(5):hover {
-            box-shadow: 0 0 30px rgba(200, 100, 255, 0.4);
-        }
-        .hint-item:nth-child(5) .hint-number { 
-            background: rgba(200, 100, 255, 0.2) !important; 
-            border-color: rgba(200, 100, 255, 0.6) !important; 
-            color: #c864ff !important; 
-            text-shadow: 0 0 10px rgba(200, 100, 255, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(200, 100, 255, 0.3) !important;
-        }
-
-        .hint-item:nth-child(6) {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(255, 220, 0, 0.5);
-            box-shadow: 0 0 20px rgba(255, 220, 0, 0.2);
-        }
-        .hint-item:nth-child(6):hover {
-            box-shadow: 0 0 30px rgba(255, 220, 0, 0.4);
-        }
-        .hint-item:nth-child(6) .hint-number { 
-            background: rgba(255, 220, 0, 0.2) !important; 
-            border-color: rgba(255, 220, 0, 0.6) !important; 
-            color: #ffdc00 !important; 
-            text-shadow: 0 0 10px rgba(255, 220, 0, 0.8) !important; 
-            box-shadow: 0 0 15px rgba(255, 220, 0, 0.3) !important;
-        }
-
-        /* 잠긴 힌트 버튼 */
+        /* 잠긴 힌트 버튼 - 사이버펑크 */
         .unlock-btn {
-            background: rgba(20, 15, 30, 0.9);
-            color: #ff6400;
-            border: 2px solid #ff6400;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border: none;
             border-radius: 8px;
             padding: 6px 10px;
             font-size: 11px;
@@ -611,11 +515,8 @@
             align-items: center;
             gap: 4px;
             transition: all 0.3s;
-            box-shadow: 0 0 10px rgba(255, 100, 0, 0.3);
-        }
-
-        .unlock-btn:hover {
-            box-shadow: 0 0 20px rgba(255, 100, 0, 0.5);
+            box-shadow: 0 2px 8px rgba(0, 255, 252, 0.4);
+            border: 1px solid #00fffc;
         }
 
         .unlock-btn:active {
@@ -623,17 +524,17 @@
         }
 
         .description {
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            background: rgba(0, 255, 252, 0.1);
+            border: 1px solid rgba(0, 255, 252, 0.3);
             border-radius: 8px;
             padding: 10px;
             margin-top: 8px;
             font-size: 14px;
             line-height: 1.4;
-            color: #ffffff;
+            color: #00fffc;
         }
 
-        /* 정보 그리드 */
+        /* 정보 그리드 - 사이버펑크 */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -642,56 +543,42 @@
         }
 
         .info-box {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(0, 255, 255, 0.3);
+            background: rgba(15, 12, 41, 0.8);
+            border: 1px solid #00fffc;
             border-radius: 12px;
             padding: 12px;
             text-align: center;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-        }
-
-        .info-box:hover {
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
         }
 
         .info-box.category {
-            background: rgba(20, 15, 30, 0.9);
-            border-color: rgba(255, 0, 255, 0.4);
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
-        }
-        .info-box.category:hover {
-            box-shadow: 0 0 25px rgba(255, 0, 255, 0.4);
+            background: rgba(0, 255, 252, 0.15);
+            border-color: #00fffc;
         }
 
         .info-box.chosung {
-            background: rgba(20, 15, 30, 0.9);
-            border-color: rgba(255, 255, 0, 0.4);
-            box-shadow: 0 0 15px rgba(255, 255, 0, 0.2);
-        }
-        .info-box.chosung:hover {
-            box-shadow: 0 0 25px rgba(255, 255, 0, 0.4);
+            background: rgba(255, 0, 255, 0.15);
+            border-color: #ff00ff;
         }
 
         .info-label {
             font-size: 11px;
-            color: #00ffff;
+            color: #ff00ff;
             margin-bottom: 4px;
             font-weight: 600;
             text-transform: uppercase;
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
         }
 
         .info-value {
             font-size: 15px;
             font-weight: 900;
-            color: #ffffff;
+            color: #00fffc;
         }
 
         .unlock-small {
-            background: rgba(20, 15, 30, 0.9);
-            color: #ff6400;
-            border: 2px solid #ff6400;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border: none;
             border-radius: 6px;
             padding: 4px 8px;
             font-size: 10px;
@@ -701,14 +588,11 @@
             align-items: center;
             gap: 3px;
             margin-top: 4px;
-            box-shadow: 0 0 8px rgba(255, 100, 0, 0.3);
+            box-shadow: 0 2px 6px rgba(0, 255, 252, 0.4);
+            border: 1px solid #00fffc;
         }
 
-        .unlock-small:hover {
-            box-shadow: 0 0 15px rgba(255, 100, 0, 0.5);
-        }
-
-        /* 정답 입력 섹션 */
+        /* 정답 입력 섹션 - 사이버펑크 */
         .answer-input-section {
             display: flex;
             gap: 10px;
@@ -721,60 +605,52 @@
             padding: 15px;
             font-size: 16px;
             font-weight: 600;
-            border: 2px solid rgba(0, 255, 255, 0.5);
+            border: 2px solid #00fffc;
             border-radius: 12px;
-            background: rgba(20, 15, 30, 0.9);
-            color: #ffffff;
+            background: rgba(15, 12, 41, 0.8);
+            color: #00fffc;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 255, 252, 0.1);
         }
 
         .answer-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: #ff00ff;
         }
 
         .answer-input:focus {
             outline: none;
             border-color: #ff00ff;
-            box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.2), 0 0 20px rgba(255, 0, 255, 0.3);
-            background: rgba(20, 15, 30, 1);
+            box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.2), 0 4px 15px rgba(0, 255, 252, 0.1);
+            background: rgba(15, 12, 41, 0.9);
         }
 
         .submit-button {
-            background: rgba(20, 15, 30, 0.9);
-            color: #00ffff;
-            border: 2px solid #00ffff;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border: none;
             border-radius: 12px;
             padding: 15px 20px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 255, 252, 0.4);
             white-space: nowrap;
-        }
-
-        .submit-button:hover {
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+            border: 1px solid #00fffc;
         }
 
         .submit-button:active {
             transform: scale(0.95);
         }
 
-        /* 정답 맞췄을 때 */
+        /* 정답 맞췄을 때 - 사이버펑크 */
         .correct-answer {
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(0, 255, 255, 0.3);
+            background: linear-gradient(135deg, rgba(0, 255, 252, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid #00fffc;
             border-radius: 15px;
             padding: 20px;
             text-align: center;
-            color: #ffffff;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-        }
-
-        .correct-answer:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+            color: #00fffc;
         }
 
         .correct-icon {
@@ -786,60 +662,56 @@
             font-size: 20px;
             font-weight: 900;
             margin-bottom: 8px;
-            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .correct-text {
             font-size: 18px;
-            color: #ffffff;
+            color: #00fffc;
             margin-bottom: 8px;
             font-weight: 700;
         }
 
         .correct-category {
             font-size: 14px;
-            color: #00ffff;
+            color: #ff00ff;
             font-style: italic;
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
         }
 
         .next-button {
             width: 100%;
-            background: rgba(20, 15, 30, 0.9);
-            color: #00ffff;
-            border: 2px solid #00ffff;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border: none;
             padding: 15px;
             border-radius: 12px;
             font-size: 16px;
             font-weight: 900;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 255, 252, 0.4);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-top: 10px;
-        }
-
-        .next-button:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            border: 1px solid #00fffc;
         }
 
         .next-button:active {
             transform: scale(0.98);
         }
 
-        /* 정답보기 버튼 */
+        /* 정답보기 버튼 - 사이버펑크 */
         .show-answer-section {
             padding: 10px 0;
         }
 
         .show-answer-btn {
             width: 100%;
-            background: rgba(20, 15, 30, 0.9);
-            color: #ff6400;
-            border: 2px solid #ff6400;
+            background: linear-gradient(135deg, #ff00ff, #00fffc);
+            color: #0f0c29;
+            border: none;
             border-radius: 10px;
             padding: 12px;
             font-size: 14px;
@@ -850,58 +722,28 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(255, 100, 0, 0.3);
-        }
-
-        .show-answer-btn:hover {
-            box-shadow: 0 0 25px rgba(255, 100, 0, 0.5);
+            border: 1px solid #ff00ff;
         }
 
         .show-answer-btn:active {
             transform: scale(0.98);
         }
 
-        /* 배너 광고 스타일 */
-        .banner-ad {
-            margin: 20px 0;
-            text-align: center;
-            padding: 10px;
-        }
-
-        .banner-ad a {
-            display: inline-block;
-            text-decoration: none;
-        }
-
-        .banner-ad img {
-            width: 300px;
-            height: 200px;
-            border-radius: 12px;
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-            transition: all 0.3s;
-        }
-
-        .banner-ad img:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
-            transform: scale(1.02);
-        }
-
-        /* 축하 팝업 */
+        /* 축하 팝업 - 사이버펑크 */
         .congratulation-popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(20, 15, 30, 0.95);
-            border: 2px solid #00ffff;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
             border-radius: 20px;
             padding: 25px;
             text-align: center;
-            color: white;
+            color: #0f0c29;
             z-index: 1000;
-            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 15px 40px rgba(0, 255, 252, 0.4);
             animation: popIn 0.5s ease-out;
+            border: 2px solid #00fffc;
             min-width: 280px;
             max-width: 85%;
         }
@@ -926,7 +768,7 @@
         .popup-reward {
             margin-top: 10px;
             padding: 8px 12px;
-            background: rgba(0, 255, 255, 0.2);
+            background: rgba(15, 12, 41, 0.2);
             border-radius: 10px;
             font-size: 14px;
             font-weight: bold;
@@ -938,19 +780,19 @@
             100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
-        /* 음악 패널 */
+        /* 음악 패널 - 사이버펑크 */
         .music-panel {
             position: fixed;
             top: 60px;
             right: 15px;
-            background: rgba(20, 15, 30, 0.95);
+            background: rgba(15, 12, 41, 0.98);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 15px;
             border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 8px 30px rgba(0, 255, 252, 0.3);
             z-index: 98;
-            border: 2px solid rgba(0, 255, 255, 0.5);
+            border: 1px solid #00fffc;
             display: none;
             min-width: 160px;
         }
@@ -968,17 +810,16 @@
         .music-title {
             font-size: 14px;
             font-weight: bold;
-            color: #00ffff;
+            color: #00fffc;
             margin-bottom: 8px;
             text-align: center;
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
         }
 
         .sound-control {
             padding: 10px 12px;
-            background: rgba(20, 15, 30, 0.9);
-            color: #00ffff;
-            border: 2px solid rgba(0, 255, 255, 0.5);
+            background: rgba(15, 12, 41, 0.9);
+            color: #00fffc;
+            border: 2px solid #00fffc;
             border-radius: 10px;
             font-size: 12px;
             font-weight: bold;
@@ -988,25 +829,20 @@
             align-items: center;
             gap: 6px;
             justify-content: center;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
-        }
-
-        .sound-control:hover {
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         }
 
         .sound-control.active {
-            background: rgba(0, 255, 255, 0.2);
-            color: #00ffff;
-            border-color: rgba(0, 255, 255, 0.8);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border-color: #00fffc;
+            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.3);
         }
 
         .sound-control:active {
             transform: scale(0.95);
         }
 
-        /* 라운드 맵 */
+        /* 라운드 맵 - 사이버펑크 */
         .round-map {
             padding: 20px;
         }
@@ -1027,47 +863,54 @@
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
-            background: rgba(20, 15, 30, 0.9);
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            color: #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-        }
-
-        .round-button:hover {
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+            border: 2px solid #00fffc;
         }
 
         .round-button.completed {
-            background: rgba(0, 255, 255, 0.2);
-            border-color: rgba(0, 255, 255, 0.8);
-            color: #00ffff;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-        }
-        .round-button.completed:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+            background: linear-gradient(135deg, #00fffc, #0097A7);
+            color: #0f0c29;
+            box-shadow: 0 6px 20px rgba(0, 255, 252, 0.4);
         }
 
         .round-button.current {
-            background: rgba(255, 0, 255, 0.2);
-            border-color: rgba(255, 0, 255, 0.8);
-            color: #ff00ff;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+            background: linear-gradient(135deg, #ff00ff, #9C27B0);
+            color: #0f0c29;
+            box-shadow: 0 6px 20px rgba(255, 0, 255, 0.5);
             animation: pulse 2s infinite;
-        }
-        .round-button.current:hover {
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.7);
         }
 
         .round-button.locked {
-            background: rgba(30, 25, 45, 0.8);
-            color: #666;
+            background: rgba(15, 12, 41, 0.8);
+            color: #302b63;
             cursor: not-allowed;
-            border: 2px solid rgba(102, 102, 102, 0.5);
-            box-shadow: none;
+            border: 1px solid #302b63;
         }
 
         .round-button:active:not(.locked) {
             transform: scale(0.95);
+        }
+
+        /* 배너 광고 */
+        .banner-ad {
+            margin: 20px auto;
+            text-align: center;
+            border: 2px solid #00fffc;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 255, 252, 0.3);
+            max-width: 300px;
+        }
+
+        .banner-ad a {
+            display: block;
+            text-decoration: none;
+        }
+
+        .banner-ad img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
         }
 
         /* 로딩 스피너 */
@@ -1075,9 +918,9 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
+            border: 3px solid rgba(0, 255, 252, 0.3);
             border-radius: 50%;
-            border-top-color: #00ffff;
+            border-top-color: #00fffc;
             animation: spin 1s ease-in-out infinite;
         }
 
@@ -1332,16 +1175,17 @@
             const saved = localStorage.getItem('game_save');
             if (saved) {
                 const saveData = JSON.parse(saved);
-                // ✅ 저장된 진행도 유지 (항상 1번 문제부터 시작하는 문제 수정)
-                gameState.currentRound = saveData.currentRound;
-                gameState.currentProblem = saveData.currentProblem; // ✅ 저장된 문제 번호 사용
-                gameState.keys = saveData.keys;
-                gameState.completedRounds = saveData.completedRounds;
-                gameState.problems = saveData.problems;
-                gameState.currentProblemState = saveData.currentProblemState;
+                Object.assign(gameState, saveData);
                 return true;
             }
             return false;
+        }
+
+        // 랜덤 배너 생성
+        function getRandomBanner() {
+            const banners = ['banner1.jpg', 'banner2.jpg', 'banner3.jpg', 'banner4.jpg', 'banner5.jpg'];
+            const randomIndex = Math.floor(Math.random() * banners.length);
+            return banners[randomIndex];
         }
 
         // 시작 화면 렌더링
@@ -1387,8 +1231,8 @@
                     
                     <div class="main-content">
                         <div class="round-map">
-                            <h2 style="text-align: center; margin-bottom: 20px; color: #00ffff; font-size: 18px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">
-                                라운드 선택
+                            <h2 style="text-align: center; margin-bottom: 20px; color: #00fffc; font-size: 18px;">
+                                ${hasSave ? '이어하기 가능!' : '라운드 선택'}
                             </h2>
                             <div class="round-grid">
                                 ${Array.from({ length: 100 }, (_, i) => {
@@ -1443,28 +1287,23 @@
                     return;
                 }
                 
-                // ✅ 진행도 유지: 저장된 currentProblem이 있으면 사용, 없으면 0부터 시작
-                const savedCurrentProblem = gameState.currentProblem;
                 gameState.currentRound = roundNumber;
-                gameState.currentProblem = savedCurrentProblem || 0;
+                gameState.currentProblem = 0;
                 gameState.problems = roundProblems;
                 
-                // ✅ 현재 문제 상태도 저장된 거 사용하거나 새로 생성
-                if (!gameState.currentProblemState) {
-                    gameState.currentProblemState = {
-                        unlockedHints: [0, 1],
-                        showDescriptions: [false, false, false, false, false, false],
-                        canShowDescriptions: false,
-                        showCharacterCount: false,
-                        showCategory: false,
-                        showChosung: false,
-                        userAnswer: '',
-                        isCorrect: false,
-                        geniusTimer: 13,
-                        geniusTimerActive: true,
-                        timerInterval: null
-                    };
-                }
+                gameState.currentProblemState = {
+                    unlockedHints: [0, 1],
+                    showDescriptions: [false, false, false, false, false, false],
+                    canShowDescriptions: false,
+                    showCharacterCount: false,
+                    showCategory: false,
+                    showChosung: false,
+                    userAnswer: '',
+                    isCorrect: false,
+                    geniusTimer: 13,
+                    geniusTimerActive: true,
+                    timerInterval: null
+                };
                 
                 startGeniusTimer();
                 renderGameScreen(true);
@@ -1547,7 +1386,7 @@
                                                             <button class="unlock-btn" onclick="unlockHint(${index})">
                                                                 🔓1
                                                             </button>
-                                                            <button class="unlock-btn" onclick="watchAdForHint(${index})" style="border-color: #00ff7f; color: #00ff7f; box-shadow: 0 0 10px rgba(0, 255, 127, 0.3);">
+                                                            <button class="unlock-btn" onclick="watchAdForHint(${index})" style="background: linear-gradient(135deg, #00fffc, #0097A7);">
                                                                 📺 광고보기
                                                             </button>
                                                         </div>
@@ -1563,7 +1402,7 @@
                                                         <button class="unlock-btn" onclick="unlockDescription(${index})">
                                                             설명보기 🔓1
                                                         </button>
-                                                        <button class="unlock-btn" onclick="watchAdForDescription(${index})" style="border-color: #00ff7f; color: #00ff7f; box-shadow: 0 0 10px rgba(0, 255, 127, 0.3);">
+                                                        <button class="unlock-btn" onclick="watchAdForDescription(${index})" style="background: linear-gradient(135deg, #00fffc, #0097A7);">
                                                             설명보기 📺
                                                         </button>
                                                     </div>
@@ -1977,10 +1816,7 @@
         }
 
         function showRoundComplete() {
-            // 배너 광고 랜덤 선택
-            const bannerNumber = Math.floor(Math.random() * 5) + 1;
-            const bannerSrc = `banner${bannerNumber}.jpg`;
-            
+            const randomBanner = getRandomBanner();
             const html = `
                 <div class="container">
                     <div class="header">
@@ -2010,14 +1846,14 @@
                         <!-- 배너 광고 추가 -->
                         <div class="banner-ad">
                             <a href="https://smartstore.naver.com/gemfarm" target="_blank">
-                                <img src="${bannerSrc}" alt="배너 광고">
+                                <img src="${randomBanner}" alt="광고 배너">
                             </a>
                         </div>
                         
                         <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px;">
                             🚀 다음 라운드
                         </button>
-                        <button class="next-button" onclick="showRoundMap()" style="border-color: #666; color: #666; box-shadow: 0 0 10px rgba(102, 102, 102, 0.3);">
+                        <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #302b63, #24243e);">
                             🗺️ 메인으로
                         </button>
                     </div>
