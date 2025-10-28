@@ -1793,9 +1793,15 @@
             const state = gameState.currentProblemState;
             const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
             
+            
             // ✅ 이미 푼 문제면 정답 확인 불가
             if (isProblemSolved(gameState.currentRound, gameState.currentProblem)) {
                 alert('이미 푼 문제입니다!');
+                return;
+            }
+            
+            // ✅ 현재 상태에서 이미 정답 처리된 경우도 막기
+            if (state.isCorrect) {
                 return;
             }
             
@@ -1810,7 +1816,7 @@
                 let keyReward = 0;
                 
                 // ✅ 천재보너스 조건: 힌트 2개 이하 + 13초 안 + 처음 푸는 문제
-                if (usedHints <= 2 && state.geniusTimer > 0 && !isProblemRewarded(gameState.currentRound, gameState.currentProblem)) {
+                if (usedHints <= 2 && state.geniusTimer > 0 && !isProblemSolved(gameState.currentRound, gameState.currentProblem) && !isProblemRewarded(gameState.currentRound, gameState.currentProblem)) {
                     soundType = 'genius';
                     keyReward = 1;
                     // 보상 기록
