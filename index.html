@@ -1497,13 +1497,6 @@
                 
                 if (!isAlreadySolved) {
                     startGeniusTimer();
-                } else {
-                    // 이미 푼 문제면 당시 힌트 개수로 축하 팝업 표시
-                    const savedData = gameState.solvedProblems[problemId];
-                    const hintsUsed = (savedData && savedData.hintsUsed) ? savedData.hintsUsed : 6;
-                    setTimeout(() => {
-                        showCongratulationPopup(hintsUsed, false);
-                    }, 500);
                 }
                 
                 
@@ -1679,7 +1672,7 @@
                                     <div class="correct-icon">${isAlreadySolved ? '🔁' : '🎯'}</div>
                                     <div class="correct-text">${problem.answer.join(', ')}</div>
                                     <div class="correct-category">${problem.category}</div>
-                                    ${isAlreadySolved ? '<div style="color: #ff00ff; margin-top: 8px; font-size: 14px;">✅ 이미 푼 문제입니다</div>' : ''}
+                                    
                                 </div>
                                 
                                 <button class="next-button" onclick="nextProblem()">
@@ -1737,15 +1730,8 @@
                 
                 if (!isAlreadySolved) {
                     startGeniusTimer();
-                } else {
-                    // 이미 푼 문제면 당시 힌트 개수로 축하 팝업 표시
-                    const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
-                    const savedData = gameState.solvedProblems[problemId];
-                    const hintsUsed = (savedData && savedData.hintsUsed) ? savedData.hintsUsed : 6;
-                    setTimeout(() => {
-                        showCongratulationPopup(hintsUsed, false);
-                    }, 500);
                 }
+                
                 
                 renderGameScreen(true);
                 saveGameState();
@@ -1811,17 +1797,6 @@
             const state = gameState.currentProblemState;
             const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
             
-            
-            // ✅ 이미 푼 문제면 정답 확인 불가
-            if (isProblemSolved(gameState.currentRound, gameState.currentProblem)) {
-                alert('이미 푼 문제입니다!');
-                return;
-            }
-            
-            // ✅ 현재 상태에서 이미 정답 처리된 경우도 막기
-            if (state.isCorrect) {
-                return;
-            }
             
             const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
             const correctAnswers = problem.answer.map(ans => 
@@ -2097,7 +2072,7 @@
                         <div class="correct-answer">
                             <div class="correct-icon">🎉</div>
                             <div class="correct-title">라운드 ${gameState.currentRound} 완료!</div>
-                            <div class="correct-text">${isFirstCompletion ? '+1 열쇠를 획득했습니다!' : '이미 완료한 라운드입니다!'}</div>
+                            <div class="correct-text">라운드를 완료했습니다!</div>
                             <div class="correct-category">다음 라운드에 도전해보세요</div>
                         </div>
                         
