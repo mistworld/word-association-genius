@@ -1207,33 +1207,35 @@
                 }
             },
 
-            toggleBGM() {
-                this.bgmEnabled = !this.bgmEnabled;
-                if (this.bgmEnabled) {
-                    this.startBGM();
-                } else {
-                    if (this.currentBGM) {
-                        this.currentBGM.pause();
-                        this.currentBGM.currentTime = 0;
-                    }
-                }
-                this.saveSettings();
-                this.updateMusicControls();
-                if (this.sfxEnabled) {
-                    this.hintSound.currentTime = 0;
-                    this.hintSound.play().catch(() => {});
-                }
-            },
+toggleBGM() {
+    this.bgmEnabled = !this.bgmEnabled;
+    if (this.bgmEnabled) {
+        this.startBGM();
+    } else {
+        if (this.currentBGM) {
+            this.currentBGM.pause();
+            this.currentBGM.currentTime = 0;
+        }
+    }
+    this.saveSettings();
+    // ✅ 즉시 UI 업데이트
+    this.updateMusicControls();
+    if (this.sfxEnabled) {
+        this.hintSound.currentTime = 0;
+        this.hintSound.play().catch(() => {});
+    }
+},
 
-            toggleSFX() {
-                this.sfxEnabled = !this.sfxEnabled;
-                this.saveSettings();
-                this.updateMusicControls();
-                if (this.sfxEnabled) {
-                    this.hintSound.currentTime = 0;
-                    this.hintSound.play().catch(() => {});
-                }
-            },
+toggleSFX() {
+    this.sfxEnabled = !this.sfxEnabled;
+    this.saveSettings();
+    // ✅ 즉시 UI 업데이트  
+    this.updateMusicControls();
+    if (this.sfxEnabled) {
+        this.hintSound.currentTime = 0;
+        this.hintSound.play().catch(() => {});
+    }
+},
 
             saveSettings() {
                 const settings = {
@@ -1252,20 +1254,20 @@
                 }
             },
 
-            updateMusicControls() {
-                const bgmButton = document.querySelector('.bgm-control');
-                const sfxButton = document.querySelector('.sfx-control');
-                
-                if (bgmButton) {
-                    bgmButton.textContent = this.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF';
-                    bgmButton.className = this.bgmEnabled ? 'sound-control active' : 'sound-control';
-                }
-                
-                if (sfxButton) {
-                    sfxButton.textContent = this.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF';
-                    sfxButton.className = this.sfxEnabled ? 'sound-control active' : 'sound-control';
-                }
-            }
+updateMusicControls() {
+    const bgmButton = document.querySelector('.bgm-control');
+    const sfxButton = document.querySelector('.sfx-control');
+    
+    if (bgmButton) {
+        bgmButton.textContent = this.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF';
+        bgmButton.className = `sound-control bgm-control ${this.bgmEnabled ? 'active' : ''}`;
+    }
+    
+    if (sfxButton) {
+        sfxButton.textContent = this.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF';
+        sfxButton.className = `sound-control sfx-control ${this.sfxEnabled ? 'active' : ''}`;
+    }
+}
         };
 
         // ✅ 게임 상태 관리 - 수정된 구조
@@ -1347,9 +1349,9 @@
                 <div class="container">
                     <div class="start-screen">
                         <div class="magic-orb"></div>
-                        <div class="title-main">⚡연상천재⚡</div>
-                        <div class="subtitle">뇌가 터질 것 같은 쾌감</div>
-                        <div class="highlight">당신은 IQ 140 천재입니까?</div>
+                        <div class="title-main">🔥연상천재🔥</div>
+                        <div class="subtitle">시냅스가 폭발하는 짜릿함</div>
+                        <div class="highlight">당신은 천재⚡입니까?</div>
                         <button class="start-button" onclick="AudioManager.playSound('click'); showRoundMap()">
                             🧠 시냅스 가동
                         </button>
@@ -2137,36 +2139,39 @@
             return popupData.reward;
         }
 
-        function toggleMusicPanel() {
-            const panel = document.querySelector('.music-panel');
-            const buttons = document.querySelectorAll('.settings-button-header');
-            if (panel) {
-                panel.classList.toggle('active');
-                buttons.forEach(button => {
-                    button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
-                });
-                if (panel.classList.contains('active')) {
-                    updateMusicPanel();
-                }
-            }
+function toggleMusicPanel() {
+    const panel = document.querySelector('.music-panel');
+    const buttons = document.querySelectorAll('.settings-button-header');
+    if (panel) {
+        panel.classList.toggle('active');
+        buttons.forEach(button => {
+            button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
+        });
+        // ✅ 패널이 열릴 때마다 최신 상태로 업데이트
+        if (panel.classList.contains('active')) {
+            updateMusicPanel();
         }
+    }
+}
 
-        function updateMusicPanel() {
-            const panel = document.querySelector('.music-panel');
-            if (panel) {
-                panel.innerHTML = `
-                    <div class="music-title">🎵 사운드 설정</div>
-                    <div class="music-controls">
-                        <button class="sound-control bgm-control ${AudioManager.bgmEnabled ? 'active' : ''}" onclick="AudioManager.toggleBGM()">
-                            ${AudioManager.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF'}
-                        </button>
-                        <button class="sound-control sfx-control ${AudioManager.sfxEnabled ? 'active' : ''}" onclick="AudioManager.toggleSFX()">
-                            ${AudioManager.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF'}
-                        </button>
-                    </div>
-                `;
-            }
-        }
+function updateMusicPanel() {
+    const panel = document.querySelector('.music-panel');
+    if (panel) {
+        panel.innerHTML = `
+            <div class="music-title">🎵 사운드 설정</div>
+            <div class="music-controls">
+                <button class="sound-control bgm-control ${AudioManager.bgmEnabled ? 'active' : ''}" 
+                        onclick="AudioManager.toggleBGM(); updateMusicPanel();">
+                    ${AudioManager.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF'}
+                </button>
+                <button class="sound-control sfx-control ${AudioManager.sfxEnabled ? 'active' : ''}" 
+                        onclick="AudioManager.toggleSFX(); updateMusicPanel();">
+                    ${AudioManager.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF'}
+                </button>
+            </div>
+        `;
+    }
+}
 
         // CSS 애니메이션
         const style = document.createElement('style');
