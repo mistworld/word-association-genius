@@ -1154,7 +1154,8 @@
             keys: 15,
             completedRounds: [],
             problems: [],
-            currentProblemState: null
+            currentProblemState: null,
+            solvedProblems: {} // ✅ 추가: 풀린 문제 기록
         };
 
         // 진행도 저장
@@ -1165,7 +1166,8 @@
                 keys: gameState.keys,
                 completedRounds: gameState.completedRounds,
                 problems: gameState.problems,
-                currentProblemState: gameState.currentProblemState
+                currentProblemState: gameState.currentProblemState,
+                solvedProblems: gameState.solvedProblems // ✅ 추가
             };
             localStorage.setItem('game_save', JSON.stringify(saveData));
         }
@@ -1291,7 +1293,7 @@
                 const savedState = JSON.parse(localStorage.getItem('game_save') || '{}');
                 let currentProblem = 0;
                 
-                // 같은 라운드이고, 이전에 풀었던 문제가 있다면 다음 문제부터 시작
+                // 같은 라운드이고, 풀었던 문제가 있다면 다음 문제부터 시작
                 if (savedState.currentRound === roundNumber && savedState.currentProblem !== undefined) {
                     currentProblem = savedState.currentProblem < 5 ? savedState.currentProblem + 1 : 0;
                 }
@@ -1300,20 +1302,22 @@
                 gameState.currentProblem = currentProblem; // ✅ 수정: 저장된 위치부터 시작
                 gameState.problems = roundProblems;
                 
-                // ✅ 수정: 이미 풀린 문제인지 확인 (현재 문제가 0보다 크면 이미 풀었던 문제)
-                const isAlreadySolved = currentProblem > 0;
+                // ✅ 수정: 이미 풀린 문제인지 확인 (라운드+문제번호로 고유키 생성)
+                const problemKey = `${roundNumber}-${currentProblem}`;
+                const isAlreadySolved = gameState.solvedProblems && gameState.solvedProblems[problemKey];
                 
+                // ✅ 수정: 이미 푼 문제면 정답 맞춘 직후 화면 그대로 보여주기
                 gameState.currentProblemState = {
-                    unlockedHints: isAlreadySolved ? [0,1,2,3,4,5] : [0, 1], // ✅ 이미 풀린 문제면 모든 힌트 오픈
+                    unlockedHints: isAlreadySolved ? [0,1,2,3,4,5] : [0, 1],
                     showDescriptions: isAlreadySolved ? [true,true,true,true,true,true] : [false, false, false, false, false, false],
                     canShowDescriptions: isAlreadySolved ? true : false,
                     showCharacterCount: isAlreadySolved ? true : false,
                     showCategory: isAlreadySolved ? true : false,
                     showChosung: isAlreadySolved ? true : false,
                     userAnswer: '',
-                    isCorrect: isAlreadySolved ? true : false, // ✅ 이미 풀린 문제면 정답 상태로
+                    isCorrect: isAlreadySolved ? true : false, // ✅ 이미 푼 문제면 정답 바로 표시
                     geniusTimer: 13,
-                    geniusTimerActive: isAlreadySolved ? false : true, // ✅ 이미 풀린 문제면 타이머 비활성화
+                    geniusTimerActive: isAlreadySolved ? false : true, // ✅ 이미 푼 문제면 타이머 비활성화
                     timerInterval: null
                 };
                 
@@ -1622,13 +1626,19 @@
                 state.showChosung = true;
                 state.geniusTimerActive = false;
                 
+                // ✅ 추가: 풀린 문제 기록
+                if (!gameState.solvedProblems) {
+                    gameState.solvedProblems = {};
+                }
+                const problemKey = `${gameState.currentRound}-${gameState.currentProblem}`;
+                gameState.solvedProblems[problemKey] = true;
+                
                 if (state.timerInterval) {
                     clearInterval(state.timerInterval);
                 }
                 
                 renderGameScreen();
                 
-                // ✅ ✅ ✅ 핵심: 정답 맞추면 힌트 컨테이너 맨 위로 스크롤
                 setTimeout(() => {
                     ScrollManager.scrollToHintsTop();
                 }, 200);
