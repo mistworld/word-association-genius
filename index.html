@@ -1549,7 +1549,7 @@
                         </div>
                         
                         ${state.geniusTimerActive && !state.isCorrect ? `
-                            <div class="genius-timer">
+                            <div class="genius-timer${state.geniusTimer <= 5 ? ' timer-warning' : ''}">
                                 <div class="genius-timer-header">
                                     <div class="genius-timer-text">⚡ 천재 보너스 시간</div>
                                     <div class="genius-timer-count">${state.geniusTimer}초</div>
@@ -1669,7 +1669,7 @@
                                 </div>
                             ` : `
                                 <div class="correct-answer">
-                                    <div class="correct-icon">✅</div>
+                                    <div class="correct-icon" style="animation: checkBounce 0.6s ease;">✅</div>
                                     <div class="correct-text">${problem.answer.join(', ')}</div>
                                     <div class="correct-category">${problem.category}</div>
                                     
@@ -2070,7 +2070,7 @@
                     
                     <div class="main-content">
                         <div class="correct-answer">
-                            <div class="correct-icon">🎉</div>
+                            <div class="correct-icon" style="animation: checkBounce 0.6s ease, spin 2s linear infinite;">🎉</div>
                             <div class="correct-title">라운드 ${gameState.currentRound} 완료!</div>
                             <div class="correct-text">라운드를 완료했습니다!</div>
                             <div class="correct-category">다음 라운드에 도전해보세요</div>
@@ -2086,7 +2086,7 @@
                         <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px;">
                             🚀 다음 라운드
                         </button>
-                        <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #302b63, #24243e);">
+                        <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #4a4570, #3d3a5c);">
                             🗺️ 메인으로
                         </button>
                     </div>
@@ -2180,6 +2180,12 @@
         function updateMusicPanel() {
             const panel = document.querySelector('.music-panel');
             if (panel) {
+                // 통계 계산
+                const totalProblems = 600;
+                const solvedCount = Object.keys(gameState.solvedProblems).length;
+                const geniusCount = Object.keys(gameState.rewardedProblems).length;
+                const currentKeys = gameState.keys;
+                
                 panel.innerHTML = `
                     <div class="music-title">🎵 사운드 설정</div>
                     <div class="music-controls">
@@ -2190,6 +2196,13 @@
                             ${AudioManager.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF'}
                         </button>
                     </div>
+                    
+                    <div class="music-title" style="margin-top: 20px;">📊 내 기록</div>
+                    <div style="color: #00fffc; font-size: 14px; line-height: 1.8; padding: 10px 0;">
+                        <div>완료한 문제: ${solvedCount}/${totalProblems}</div>
+                        <div>천재 보너스: ${geniusCount}개</div>
+                        <div>현재 열쇠: ${currentKeys}개</div>
+                    </div>
                 `;
             }
         }
@@ -2198,6 +2211,51 @@
         const style = document.createElement('style');
         style.textContent = `
             @keyframes shake {
+
+        /* 정답 체크 튕기기 애니메이션 */
+        @keyframes checkBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* 축하 파티클 애니메이션 */
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(300px) rotate(360deg); opacity: 0; }
+        }
+
+        /* 힌트 카드 뒤집기 */
+        @keyframes flipCard {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(180deg); }
+        }
+
+        /* 타이머 깜빡임 (5초 이하) */
+        @keyframes timerBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* 정답 팝업 애니메이션 강화 */
+        .congratulation-popup.genius {
+            animation: checkBounce 0.5s ease, popIn 0.3s ease !important;
+        }
+
+        .congratulation-popup.sharp,
+        .congratulation-popup.focus,
+        .congratulation-popup.sleepy,
+        .congratulation-popup.chosung {
+            animation: popIn 0.4s ease !important;
+        }
+
+        /* 타이머 경고 상태 */
+        .timer-warning {
+            animation: timerBlink 0.5s ease-in-out infinite;
+        }
+
+        .timer-warning .timer-progress {
+            background: linear-gradient(90deg, #ff0080, #ff4040) !important;
+        }
                 0%, 100% { transform: translateX(0); }
                 25% { transform: translateX(-5px); }
                 75% { transform: translateX(5px); }
