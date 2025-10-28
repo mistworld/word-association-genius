@@ -1232,7 +1232,7 @@
                     <div class="main-content">
                         <div class="round-map">
                             <h2 style="text-align: center; margin-bottom: 20px; color: #00fffc; font-size: 18px;">
-                                ${hasSave ? '이어하기 가능!' : '라운드 선택'}
+                                라운드 선택
                             </h2>
                             <div class="round-grid">
                                 ${Array.from({ length: 100 }, (_, i) => {
@@ -1287,25 +1287,40 @@
                     return;
                 }
                 
+                // ✅ 수정: 저장된 진행상황에서 현재 문제 위치 가져오기
+                const savedState = JSON.parse(localStorage.getItem('game_save') || '{}');
+                let currentProblem = 0;
+                
+                // 같은 라운드이고, 이전에 풀었던 문제가 있다면 다음 문제부터 시작
+                if (savedState.currentRound === roundNumber && savedState.currentProblem !== undefined) {
+                    currentProblem = savedState.currentProblem < 5 ? savedState.currentProblem + 1 : 0;
+                }
+                
                 gameState.currentRound = roundNumber;
-                gameState.currentProblem = 0;
+                gameState.currentProblem = currentProblem; // ✅ 수정: 저장된 위치부터 시작
                 gameState.problems = roundProblems;
                 
+                // ✅ 수정: 이미 풀린 문제인지 확인 (현재 문제가 0보다 크면 이미 풀었던 문제)
+                const isAlreadySolved = currentProblem > 0;
+                
                 gameState.currentProblemState = {
-                    unlockedHints: [0, 1],
-                    showDescriptions: [false, false, false, false, false, false],
-                    canShowDescriptions: false,
-                    showCharacterCount: false,
-                    showCategory: false,
-                    showChosung: false,
+                    unlockedHints: isAlreadySolved ? [0,1,2,3,4,5] : [0, 1], // ✅ 이미 풀린 문제면 모든 힌트 오픈
+                    showDescriptions: isAlreadySolved ? [true,true,true,true,true,true] : [false, false, false, false, false, false],
+                    canShowDescriptions: isAlreadySolved ? true : false,
+                    showCharacterCount: isAlreadySolved ? true : false,
+                    showCategory: isAlreadySolved ? true : false,
+                    showChosung: isAlreadySolved ? true : false,
                     userAnswer: '',
-                    isCorrect: false,
+                    isCorrect: isAlreadySolved ? true : false, // ✅ 이미 풀린 문제면 정답 상태로
                     geniusTimer: 13,
-                    geniusTimerActive: true,
+                    geniusTimerActive: isAlreadySolved ? false : true, // ✅ 이미 풀린 문제면 타이머 비활성화
                     timerInterval: null
                 };
                 
-                startGeniusTimer();
+                if (!isAlreadySolved) {
+                    startGeniusTimer();
+                }
+                
                 renderGameScreen(true);
                 saveGameState();
                 
@@ -1381,7 +1396,7 @@
                                                             ${isUnlocked ? hint : '🔒 잠긴 힌트'}
                                                         </div>
                                                     </div>
-                                                    ${isLocked && index >= 2 && canUnlock ? `
+                                                    ${isLocked && index >= 2 && canUnlock && !state.isCorrect ? `
                                                         <div class="hint-controls">
                                                             <button class="unlock-btn" onclick="unlockHint(${index})">
                                                                 🔓1
