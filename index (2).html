@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
+    <title>연상천재 - IQ 140 연상퀴즈</title>
+    
+    <!-- PWA 메타태그 -->
+    <meta name="description" content="당신은 천재인가요? 시냅스가 연결되는 짜릿한 쾌감을 느껴보세요!">
+    <meta name="keywords" content="연상게임, 퀴즈, IQ테스트, 브레인게임, 두뇌게임">
+    <meta name="author" content="연상천재">
+    <meta name="theme-color" content="#0f0c29">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="연상천재">
+    <meta name="msapplication-TileColor" content="#0f0c29">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- 캐시 방지 메타태그 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="version" content="1.0.12">
+    
+    <!-- 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        body {
+            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #00fffc;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 사이버펑크 브레인 배경 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 252, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(0, 255, 252, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: synapse 3s ease-in-out infinite;
+        }
+
+        @keyframes synapse {
+            0%, 100% { 
+                opacity: 0.3; 
+                filter: hue-rotate(0deg);
+            }
+            50% { 
+                opacity: 0.6; 
+                filter: hue-rotate(90deg);
+            }
+        }
+
+        /* 별똥별 애니메이션 - 사이버펑크 버전 */
+        .shooting-star {
+            position: fixed;
+            top: 0;
+            width: 2px;
+            height: 2px;
+            background: #00fffc;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px #00fffc, 0 0 20px 4px #ff00ff;
+            animation: shoot 3s linear infinite;
+            opacity: 0;
+            z-index: -1;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(0) translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100vw) translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 100%;
+            min-height: 100vh;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 사이버펑크 시작 화면 */
+        .start-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 30px 20px;
+            text-align: center;
+            background: transparent;
+        }
+
+        .magic-orb {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 30% 30%, #00fffc, #ff00ff);
+            border-radius: 50%;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 
+                0 0 50px rgba(0, 255, 252, 0.6),
+                inset 0 0 20px rgba(255, 255, 255, 0.3);
+            position: relative;
+            border: 2px solid #ff00ff;
+        }
+
+        .magic-orb::before {
+            content: '🧠';
+            font-size: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .title-main {
+            font-size: 3em;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #00fffc, #ff00ff, #00fffc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+            line-height: 1.1;
+            text-shadow: 0 0 30px rgba(0, 255, 252, 0.5);
+            letter-spacing: 2px;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(0, 255, 252, 0.5), 0 0 30px rgba(255, 0, 255, 0.3); }
+            to { text-shadow: 0 0 30px rgba(0, 255, 252, 0.8), 0 0 40px rgba(255, 0, 255, 0.6), 0 0 50px rgba(0, 255, 252, 0.4); }
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #ff00ff;
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .highlight {
+            font-size: 1.1em;
+            color: #00fffc;
+            font-weight: bold;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(0, 255, 252, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border: none;
+            border-radius: 25px;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 
+                0 10px 30px rgba(0, 255, 252, 0.4),
+                0 0 20px rgba(255, 0, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: pulse 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+            border: 1px solid #00fffc;
+        }
+
+        .start-button:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(0, 255, 252, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(0, 255, 252, 0.6), 0 0 25px rgba(255, 0, 255, 0.4); }
+        }
+
+        /* 게임 헤더 - 사이버펑크 */
+        .header {
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid #00fffc;
+            padding: 8px 15px;
+            box-shadow: 0 2px 20px rgba(0, 255, 252, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .compact-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .home-button {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f0c29;
+            border: 1px solid #00fffc;
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        .round-info-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .round-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #00fffc;
+            letter-spacing: -0.3px;
+        }
+
+        .problem-number {
+            font-size: 12px;
+            color: #ff00ff;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .key-count {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #0f0c29;
+            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
+            border: 1px solid #00fffc;
+        }
+
+        .settings-button-header {
+            width: 35px;
+            height: 35px;
+            background: rgba(15, 12, 41, 0.9);
+            border: 1px solid #00fffc;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00fffc;
+        }
+
+        .settings-button-header:active {
+            transform: scale(0.95);
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 3px;
+            background: rgba(0, 255, 252, 0.1);
+            padding: 4px 6px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 252, 0.3);
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #302b63;
+            transition: all 0.3s;
+        }
+
+        .dot.completed {
+            background: linear-gradient(135deg, #00fffc, #0097A7);
+            transform: scale(1.2);
+        }
+
+        .dot.current {
+            background: linear-gradient(135deg, #ff00ff, #9C27B0);
+            transform: scale(1.4);
+            box-shadow: 0 0 0 2px rgba(255, 0, 255, 0.3);
+        }
+
+        /* 천재 타이머 - 사이버펑크 */
+        .genius-timer {
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            border-radius: 8px;
+            padding: 6px 8px;
+            margin: 5px 0;
+            color: #0f0c29;
+            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
+            border: 1px solid #00fffc;
+        }
+
+        .genius-timer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .genius-timer-text {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .genius-timer-count {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .timer-bar {
+            height: 4px;
+            background: rgba(15, 12, 41, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .timer-progress {
+            height: 100%;
+            background: #0f0c29;
+            transition: width 0.65s linear;
+            border-radius: 2px;
+        }
+
+        /* 메인 콘텐츠 - 사이버펑크 */
+        .main-content {
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px 20px 0 0;
+            padding: 15px;
+            box-shadow: 0 -4px 30px rgba(0, 255, 252, 0.1);
+            flex: 1;
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border: 1px solid #00fffc;
+            border-bottom: none;
+        }
+
+        /* 힌트 섹션 - 사이버펑크 */
+        .hints-section {
+            background: linear-gradient(135deg, rgba(0, 255, 252, 0.1), rgba(255, 0, 255, 0.05));
+            border-radius: 15px;
+            padding: 12px;
+            border: 1px solid #00fffc;
+            box-shadow: 0 6px 20px rgba(0, 255, 252, 0.2);
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hints-container {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+            scroll-behavior: auto;
+        }
+
+        .hints-container::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .hints-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 252, 0.5);
+            border-radius: 2px;
+        }
+
+        .hint-item {
+            background: rgba(15, 12, 41, 0.8);
+            border: 1px solid #00fffc;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .hint-item.locked {
+            opacity: 0.7;
+            background: rgba(15, 12, 41, 0.5);
+        }
+
+        .hint-content {
+            padding: 12px;
+        }
+
+        .hint-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .hint-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .hint-number {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f0c29;
+            font-size: 14px;
+            font-weight: 900;
+            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
+            flex-shrink: 0;
+            border: 1px solid #00fffc;
+        }
+
+        .hint-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #00fffc;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .hint-controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        /* 잠긴 힌트 버튼 - 사이버펑크 */
+        .unlock-btn {
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 255, 252, 0.4);
+            border: 1px solid #00fffc;
+        }
+
+        .unlock-btn:active {
+            transform: scale(0.95);
+        }
+
+        .description {
+            background: rgba(0, 255, 252, 0.1);
+            border: 1px solid rgba(0, 255, 252, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #00fffc;
+        }
+
+        /* 정보 그리드 - 사이버펑크 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .info-box {
+            background: rgba(15, 12, 41, 0.8);
+            border: 1px solid #00fffc;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .info-box.category {
+            background: rgba(0, 255, 252, 0.15);
+            border-color: #00fffc;
+        }
+
+        .info-box.chosung {
+            background: rgba(255, 0, 255, 0.15);
+            border-color: #ff00ff;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #ff00ff;
+            margin-bottom: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 900;
+            color: #00fffc;
+        }
+
+        .unlock-small {
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-top: 4px;
+            box-shadow: 0 2px 6px rgba(0, 255, 252, 0.4);
+            border: 1px solid #00fffc;
+        }
+
+        /* 정답 입력 섹션 - 사이버펑크 */
+        .answer-input-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .answer-input {
+            flex: 1;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid #00fffc;
+            border-radius: 12px;
+            background: rgba(15, 12, 41, 0.8);
+            color: #00fffc;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 255, 252, 0.1);
+        }
+
+        .answer-input::placeholder {
+            color: #ff00ff;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.2), 0 4px 15px rgba(0, 255, 252, 0.1);
+            background: rgba(15, 12, 41, 0.9);
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 255, 252, 0.4);
+            white-space: nowrap;
+            border: 1px solid #00fffc;
+        }
+
+        .submit-button:active {
+            transform: scale(0.95);
+        }
+
+        /* 정답 맞췄을 때 - 사이버펑크 */
+        .correct-answer {
+            background: linear-gradient(135deg, rgba(0, 255, 252, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid #00fffc;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: #00fffc;
+        }
+
+        .correct-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .correct-title {
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .correct-text {
+            font-size: 18px;
+            color: #00fffc;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .correct-category {
+            font-size: 14px;
+            color: #ff00ff;
+            font-style: italic;
+        }
+
+        .next-button {
+            width: 100%;
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(0, 255, 252, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+            border: 1px solid #00fffc;
+        }
+
+        .next-button:active {
+            transform: scale(0.98);
+        }
+
+        /* 정답보기 버튼 - 사이버펑크 */
+        .show-answer-section {
+            padding: 10px 0;
+        }
+
+        .show-answer-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #ff00ff, #00fffc);
+            color: #0f0c29;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            border: 1px solid #ff00ff;
+        }
+
+        .show-answer-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 축하 팝업 - 사이버펑크 */
+        .congratulation-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            color: #0f0c29;
+            z-index: 1000;
+            box-shadow: 0 15px 40px rgba(0, 255, 252, 0.4);
+            animation: popIn 0.5s ease-out;
+            border: 2px solid #00fffc;
+            min-width: 280px;
+            max-width: 85%;
+        }
+
+        .popup-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+            animation: bounce 1s ease-in-out;
+        }
+
+        .popup-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .popup-message {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .popup-reward {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(15, 12, 41, 0.2);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            70% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* 음악 패널 - 사이버펑크 */
+        .music-panel {
+            position: fixed;
+            top: 60px;
+            right: 15px;
+            background: rgba(15, 12, 41, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 255, 252, 0.3);
+            z-index: 98;
+            border: 1px solid #00fffc;
+            display: none;
+            min-width: 160px;
+        }
+
+        .music-panel.active {
+            display: block;
+        }
+
+        .music-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .music-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #00fffc;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .sound-control {
+            padding: 10px 12px;
+            background: rgba(15, 12, 41, 0.9);
+            color: #00fffc;
+            border: 2px solid #00fffc;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .sound-control.active {
+            background: linear-gradient(135deg, #00fffc, #ff00ff);
+            color: #0f0c29;
+            border-color: #00fffc;
+            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.3);
+        }
+
+        .sound-control:active {
+            transform: scale(0.95);
+        }
+
+        /* 라운드 맵 - 사이버펑크 */
+        .round-map {
+            padding: 20px;
+        }
+
+        .round-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .round-button {
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            border: 2px solid #00fffc;
+        }
+
+        .round-button.completed {
+            background: linear-gradient(135deg, #00fffc, #0097A7);
+            color: #0f0c29;
+            box-shadow: 0 6px 20px rgba(0, 255, 252, 0.4);
+        }
+
+        .round-button.current {
+            background: linear-gradient(135deg, #ff00ff, #9C27B0);
+            color: #0f0c29;
+            box-shadow: 0 6px 20px rgba(255, 0, 255, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .round-button.locked {
+            background: rgba(15, 12, 41, 0.8);
+            color: #302b63;
+            cursor: not-allowed;
+            border: 1px solid #302b63;
+        }
+
+        .round-button:active:not(.locked) {
+            transform: scale(0.95);
+        }
+
+        /* 배너 광고 */
+        .banner-ad {
+            margin: 20px auto;
+            text-align: center;
+            border: 2px solid #00fffc;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 255, 252, 0.3);
+            max-width: 300px;
+        }
+
+        .banner-ad a {
+            display: block;
+            text-decoration: none;
+        }
+
+        .banner-ad img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 로딩 스피너 */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 255, 252, 0.3);
+            border-radius: 50%;
+            border-top-color: #00fffc;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        // 별똥별 생성
+        function createShootingStars() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const star = document.createElement('div');
+                    star.className = 'shooting-star';
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.animationDelay = Math.random() * 5 + 's';
+                    document.body.appendChild(star);
+                    
+                    setTimeout(() => {
+                        star.remove();
+                    }, 3000);
+                }, i * 1000);
+            }
+        }
+
+        // ✅ 스크롤 관리자 - 정답 맞추면 힌트 맨 위로 스크롤
+        const ScrollManager = {
+            // 새 문제 시작 시 무조건 맨 위로
+            forceScrollToTop() {
+                window.scrollTo(0, 0);
+                
+                const hintsContainer = document.querySelector('.hints-container');
+                if (hintsContainer) {
+                    hintsContainer.scrollTop = 0;
+                    
+                    setTimeout(() => {
+                        hintsContainer.scrollTop = 0;
+                    }, 50);
+                }
+            },
+            
+            // 정답 맞췄을 때 힌트 컨테이너 맨 위로 스크롤
+            scrollToHintsTop() {
+                const hintsContainer = document.querySelector('.hints-container');
+                if (hintsContainer) {
+                    hintsContainer.scrollTop = 0;
+                }
+                window.scrollTo(0, 0);
+            },
+            
+            // 힌트 해금 시: 스크롤 이동 없이 현재 위치 유지
+            scrollToHintIfNeeded(hintElement) {
+                return;
+            }
+        };
+
+        // 오디오 관리자
+        const AudioManager = {
+            bgm1: null,
+            bgm2: null,
+            currentBGM: null,
+            correctSound: null,
+            wrongSound: null,
+            hintSound: null,
+            clickSound: null,
+            completeSound: null,
+            geniusSound: null,
+            isAudioUnlocked: false,
+            isPlaying: false,
+            bgmEnabled: true,
+            sfxEnabled: true,
+            currentBGMIndex: 0,
+
+            async init() {
+                try {
+                    this.bgm1 = new Audio('bgm1.mp3');
+                    this.bgm2 = new Audio('bgm2.mp3');
+                    
+                    this.correctSound = new Audio('correct.mp3');
+                    this.wrongSound = new Audio('wrong.mp3');
+                    this.hintSound = new Audio('hint.mp3');
+                    this.completeSound = new Audio('complete.mp3');
+                    this.geniusSound = new Audio('genius.mp3');
+                    
+                    [this.bgm1, this.bgm2].forEach(bgm => {
+                        bgm.loop = false;
+                        bgm.volume = 0.4;
+                        bgm.preload = 'auto';
+                    });
+                    
+                    [this.correctSound, this.wrongSound, this.hintSound, 
+                     this.completeSound, this.geniusSound].forEach(sound => {
+                        sound.volume = 0.6;
+                        sound.preload = 'auto';
+                    });
+                    
+                    this.currentBGM = this.bgm1;
+                    this.isAudioUnlocked = true;
+                    
+                    this.loadSettings();
+                    
+                    if (this.bgmEnabled) {
+                        await this.startBGM();
+                    }
+                    
+                } catch (error) {
+                    console.log('오디오 초기화 실패:', error);
+                }
+            },
+
+            async startBGM() {
+                if (!this.currentBGM || !this.bgmEnabled) return;
+                
+                try {
+                    await this.currentBGM.play();
+                    this.isPlaying = true;
+                    
+                    this.currentBGM.onended = () => {
+                        this.switchBGM();
+                    };
+                    
+                } catch (error) {
+                    console.log('BGM 재생 실패:', error);
+                }
+            },
+
+            switchBGM() {
+                this.currentBGMIndex = (this.currentBGMIndex + 1) % 2;
+                this.currentBGM = this.currentBGMIndex === 0 ? this.bgm1 : this.bgm2;
+                this.startBGM();
+            },
+
+            async playSound(soundType) {
+                if (!this.sfxEnabled || !this.isAudioUnlocked) return;
+                
+                let sound = null;
+                
+                switch(soundType) {
+                    case 'correct': sound = this.correctSound; break;
+                    case 'wrong': sound = this.wrongSound; break;
+                    case 'hint': sound = this.hintSound; break;
+                    case 'complete': sound = this.completeSound; break;
+                    case 'genius': sound = this.geniusSound; break;
+                    case 'click': sound = this.hintSound; break;
+                }
+                
+                if (sound) {
+                    try {
+                        sound.currentTime = 0;
+                        await sound.play();
+                    } catch (error) {}
+                }
+            },
+
+            toggleBGM() {
+                this.bgmEnabled = !this.bgmEnabled;
+                if (this.bgmEnabled) {
+                    this.startBGM();
+                } else {
+                    if (this.currentBGM) {
+                        this.currentBGM.pause();
+                        this.currentBGM.currentTime = 0;
+                    }
+                }
+                this.saveSettings();
+                this.updateMusicControls();
+                if (this.sfxEnabled) {
+                    this.hintSound.currentTime = 0;
+                    this.hintSound.play().catch(() => {});
+                }
+            },
+
+            toggleSFX() {
+                this.sfxEnabled = !this.sfxEnabled;
+                this.saveSettings();
+                this.updateMusicControls();
+                if (this.sfxEnabled) {
+                    this.hintSound.currentTime = 0;
+                    this.hintSound.play().catch(() => {});
+                }
+            },
+
+            saveSettings() {
+                const settings = {
+                    bgmEnabled: this.bgmEnabled,
+                    sfxEnabled: this.sfxEnabled
+                };
+                localStorage.setItem('audio_settings', JSON.stringify(settings));
+            },
+
+            loadSettings() {
+                const saved = localStorage.getItem('audio_settings');
+                if (saved) {
+                    const settings = JSON.parse(saved);
+                    this.bgmEnabled = settings.bgmEnabled !== false;
+                    this.sfxEnabled = settings.sfxEnabled !== false;
+                }
+            },
+
+            updateMusicControls() {
+                const bgmButton = document.querySelector('.bgm-control');
+                const sfxButton = document.querySelector('.sfx-control');
+                
+                if (bgmButton) {
+                    bgmButton.textContent = this.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF';
+                    bgmButton.className = this.bgmEnabled ? 'sound-control active' : 'sound-control';
+                }
+                
+                if (sfxButton) {
+                    sfxButton.textContent = this.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF';
+                    sfxButton.className = this.sfxEnabled ? 'sound-control active' : 'sound-control';
+                }
+            }
+        };
+
+        // 게임 상태 관리
+        let gameState = {
+            currentScreen: 'start',
+            currentRound: 1,
+            currentProblem: 0,
+            keys: 15,
+            completedRounds: [],
+            problems: [],
+            currentProblemState: null,
+            solvedProblems: {} // ✅ 추가: 풀린 문제 기록
+        };
+
+        // 진행도 저장
+        function saveGameState() {
+            const saveData = {
+                currentRound: gameState.currentRound,
+                currentProblem: gameState.currentProblem,
+                keys: gameState.keys,
+                completedRounds: gameState.completedRounds,
+                problems: gameState.problems,
+                currentProblemState: gameState.currentProblemState,
+                solvedProblems: gameState.solvedProblems // ✅ 추가
+            };
+            localStorage.setItem('game_save', JSON.stringify(saveData));
+        }
+
+        // 진행도 불러오기
+        function loadGameState() {
+            const saved = localStorage.getItem('game_save');
+            if (saved) {
+                const saveData = JSON.parse(saved);
+                Object.assign(gameState, saveData);
+                return true;
+            }
+            return false;
+        }
+
+        // 랜덤 배너 생성
+        function getRandomBanner() {
+            const banners = ['banner1.jpg', 'banner2.jpg', 'banner3.jpg', 'banner4.jpg', 'banner5.jpg'];
+            const randomIndex = Math.floor(Math.random() * banners.length);
+            return banners[randomIndex];
+        }
+
+        // 시작 화면 렌더링
+        function renderStartScreen() {
+            createShootingStars();
+            const html = `
+                <div class="container">
+                    <div class="start-screen">
+                        <div class="magic-orb"></div>
+                        <div class="title-main">⚡연상천재⚡</div>
+                        <div class="subtitle">뇌가 터질 것 같은 쾌감</div>
+                        <div class="highlight">당신은 IQ 140 천재입니까?</div>
+                        <button class="start-button" onclick="AudioManager.playSound('click'); showRoundMap()">
+                            🧠 시냅스 가동
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app').innerHTML = html;
+            setInterval(createShootingStars, 5000);
+        }
+
+        // 라운드 맵 렌더링
+        function showRoundMap() {
+            const hasSave = loadGameState();
+            
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="compact-header">
+                            <div class="header-left">
+                                <div class="round-info-compact">
+                                    <div class="round-title">연상천재</div>
+                                    <div class="problem-number">라운드를 선택하세요</div>
+                                </div>
+                            </div>
+                            <div class="header-right">
+                                <div class="key-count">🔑 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="round-map">
+                            <h2 style="text-align: center; margin-bottom: 20px; color: #00fffc; font-size: 18px;">
+                                라운드 선택
+                            </h2>
+                            <div class="round-grid">
+                                ${Array.from({ length: 100 }, (_, i) => {
+                                    const roundNumber = i + 1;
+                                    const isCompleted = gameState.completedRounds.includes(roundNumber);
+                                    const maxCompleted = gameState.completedRounds.length > 0 ? Math.max(...gameState.completedRounds) : 0;
+                                    const isCurrent = roundNumber === maxCompleted + 1;
+                                    const isLocked = roundNumber > maxCompleted + 1 && !isCompleted;
+                                    
+                                    return `
+                                        <button 
+                                            class="round-button ${isCompleted ? 'completed' : isCurrent ? 'current' : isLocked ? 'locked' : 'current'}"
+                                            onclick="${isLocked ? '' : `startRound(${roundNumber})`}"
+                                            ${isLocked ? 'disabled' : ''}
+                                        >
+                                            ${roundNumber}
+                                            ${isCompleted ? '✅' : isCurrent ? '⭐' : isLocked ? '🔒' : '🎯'}
+                                        </button>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="music-panel"></div>
+                </div>
+            `;
+            
+            document.getElementById('app').innerHTML = html;
+            gameState.currentScreen = 'roundMap';
+            updateMusicPanel();
+        }
+
+        // 라운드 시작
+        async function startRound(roundNumber) {
+            AudioManager.playSound('click');
+            
+            try {
+                const fileNumber = Math.ceil(roundNumber / 10);
+                const response = await fetch(`problems_${fileNumber}.json`);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const allProblems = await response.json();
+                const problemsPerRound = 6;
+                const startIndex = (roundNumber - 1) * problemsPerRound;
+                const fileStartIndex = startIndex - ((fileNumber - 1) * 60);
+                const roundProblems = allProblems.slice(fileStartIndex, fileStartIndex + problemsPerRound);
+
+                if (roundProblems.length === 0) {
+                    showAllRoundsCompleted();
+                    return;
+                }
+                
+                // ✅ 수정: 저장된 진행상황에서 현재 문제 위치 가져오기
+                const savedState = JSON.parse(localStorage.getItem('game_save') || '{}');
+                let currentProblem = 0;
+                
+                // 같은 라운드이고, 풀었던 문제가 있다면 다음 문제부터 시작
+                if (savedState.currentRound === roundNumber && savedState.currentProblem !== undefined) {
+                    currentProblem = savedState.currentProblem < 5 ? savedState.currentProblem + 1 : 0;
+                }
+                
+                gameState.currentRound = roundNumber;
+                gameState.currentProblem = currentProblem; // ✅ 수정: 저장된 위치부터 시작
+                gameState.problems = roundProblems;
+                
+                // ✅ 수정: 이미 풀린 문제인지 확인 (라운드+문제번호로 고유키 생성)
+                const problemKey = `${roundNumber}-${currentProblem}`;
+                const isAlreadySolved = gameState.solvedProblems && gameState.solvedProblems[problemKey];
+                
+                // ✅ 수정: 이미 푼 문제면 정답 맞춘 직후 화면 그대로 보여주기
+                gameState.currentProblemState = {
+                    unlockedHints: isAlreadySolved ? [0,1,2,3,4,5] : [0, 1],
+                    showDescriptions: isAlreadySolved ? [true,true,true,true,true,true] : [false, false, false, false, false, false],
+                    canShowDescriptions: isAlreadySolved ? true : false,
+                    showCharacterCount: isAlreadySolved ? true : false,
+                    showCategory: isAlreadySolved ? true : false,
+                    showChosung: isAlreadySolved ? true : false,
+                    userAnswer: '',
+                    isCorrect: isAlreadySolved ? true : false, // ✅ 이미 푼 문제면 정답 바로 표시
+                    geniusTimer: 13,
+                    geniusTimerActive: isAlreadySolved ? false : true, // ✅ 이미 푼 문제면 타이머 비활성화
+                    timerInterval: null
+                };
+                
+                if (!isAlreadySolved) {
+                    startGeniusTimer();
+                }
+                
+                renderGameScreen(true);
+                saveGameState();
+                
+            } catch (error) {
+                console.error('라운드 시작 실패:', error);
+                alert('문제를 불러오는데 실패했습니다.\n\n에러: ' + error.message);
+                showRoundMap();
+            }
+        }
+
+        // 게임 화면 렌더링
+        function renderGameScreen(isNewProblem = false) {
+            if (!gameState.currentProblemState || gameState.problems.length === 0) {
+                showRoundMap();
+                return;
+            }
+
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            const characterCount = problem.characterCount || (problem.answer && problem.answer[0] ? problem.answer[0].length : '?');
+
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="compact-header">
+                            <div class="header-left">
+                                <button class="home-button" onclick="AudioManager.playSound('click'); showRoundMap()">🏠</button>
+                                <div class="round-info-compact">
+                                    <div class="round-title">라운드 ${gameState.currentRound}</div>
+                                    <div class="problem-number">문제 ${gameState.currentProblem + 1}/6</div>
+                                </div>
+                            </div>
+                            <div class="header-right">
+                                <div class="key-count">🔑 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
+                                <div class="progress-dots">
+                                    ${Array.from({ length: 6 }, (_, i) => `
+                                        <div class="dot ${i < gameState.currentProblem ? 'completed' : i === gameState.currentProblem ? 'current' : ''}"></div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${state.geniusTimerActive && !state.isCorrect ? `
+                            <div class="genius-timer">
+                                <div class="genius-timer-header">
+                                    <div class="genius-timer-text">⚡ 천재 보너스 시간</div>
+                                    <div class="genius-timer-count">${state.geniusTimer}초</div>
+                                </div>
+                                <div class="timer-bar">
+                                    <div class="timer-progress" style="width: ${(state.geniusTimer / 13) * 100}%"></div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="hints-section">
+                            <div class="hints-container" id="hintsContainer">
+                                ${problem.hints.map((hint, index) => {
+                                    const isUnlocked = state.unlockedHints.includes(index);
+                                    const showDescription = state.showDescriptions[index] || state.isCorrect;
+                                    const isLocked = !isUnlocked;
+                                    const canUnlock = index <= 2 || (index > 2 && state.unlockedHints.includes(index - 1));
+                                    
+                                    return `
+                                        <div class="hint-item ${isLocked ? 'locked' : ''}" id="hint-${index}">
+                                            <div class="hint-content">
+                                                <div class="hint-header">
+                                                    <div class="hint-left">
+                                                        <div class="hint-number">${index + 1}</div>
+                                                        <div class="hint-text">
+                                                            ${isUnlocked ? hint : '🔒 잠긴 힌트'}
+                                                        </div>
+                                                    </div>
+                                                    ${isLocked && index >= 2 && canUnlock && !state.isCorrect ? `
+                                                        <div class="hint-controls">
+                                                            <button class="unlock-btn" onclick="unlockHint(${index})">
+                                                                🔓1
+                                                            </button>
+                                                            <button class="unlock-btn" onclick="watchAdForHint(${index})" style="background: linear-gradient(135deg, #00fffc, #0097A7);">
+                                                                📺 광고보기
+                                                            </button>
+                                                        </div>
+                                                    ` : ''}
+                                                </div>
+                                                ${isUnlocked && showDescription ? `
+                                                    <div class="description">
+                                                        ${problem.descriptions[index]}
+                                                    </div>
+                                                ` : ''}
+                                                ${isUnlocked && state.canShowDescriptions && !showDescription && !state.isCorrect ? `
+                                                    <div class="hint-controls" style="margin-top: 6px;">
+                                                        <button class="unlock-btn" onclick="unlockDescription(${index})">
+                                                            설명보기 🔓1
+                                                        </button>
+                                                        <button class="unlock-btn" onclick="watchAdForDescription(${index})" style="background: linear-gradient(135deg, #00fffc, #0097A7);">
+                                                            설명보기 📺
+                                                        </button>
+                                                    </div>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+
+                            ${state.unlockedHints.includes(5) && !state.isCorrect ? `
+                                <div class="show-answer-section">
+                                    <button class="show-answer-btn" onclick="showAnswer()">
+                                        정답보기
+                                        <span>🔓3</span>
+                                        <span>📺 광고보기</span>
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div class="answer-section">
+                            ${!state.isCorrect ? `
+                                <div class="info-grid">
+                                    <div class="info-box">
+                                        <div class="info-label">글자수</div>
+                                        <div class="info-value">
+                                            ${state.showCharacterCount ? characterCount : '?'}
+                                        </div>
+                                    </div>
+                                    <div class="info-box category">
+                                        <div class="info-label">분류</div>
+                                        <div class="info-value">
+                                            ${state.showCategory ? problem.category : '?'}
+                                            ${state.unlockedHints.includes(4) && !state.showCategory ? `
+                                                <button class="unlock-small" onclick="unlockCategory()">해금</button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                    <div class="info-box chosung">
+                                        <div class="info-label">초성</div>
+                                        <div class="info-value">
+                                            ${state.showChosung ? problem.chosung : '?'}
+                                            ${state.unlockedHints.includes(5) && !state.showChosung ? `
+                                                <button class="unlock-small" onclick="unlockChosung()">해금</button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-input-section">
+                                    <input 
+                                        type="text" 
+                                        class="answer-input" 
+                                        placeholder="정답을 입력하세요 (Enter 또는 입력버튼으로 확인)"
+                                        value="${state.userAnswer}"
+                                        autocomplete="off"
+                                        oninput="updateUserAnswer(this.value)"
+                                        onkeydown="if(event.key === 'Enter') checkAnswer(this.value)"
+                                        id="answerInput"
+                                    />
+                                    <button class="submit-button" onclick="checkAnswer(document.getElementById('answerInput').value)">
+                                        입력
+                                    </button>
+                                </div>
+                            ` : `
+                                <div class="correct-answer">
+                                    <div class="correct-icon">🎯</div>
+                                    <div class="correct-text">${problem.answer.join(', ')}</div>
+                                    <div class="correct-category">${problem.category}</div>
+                                </div>
+                                
+                                <button class="next-button" onclick="nextProblem()">
+                                    ${gameState.currentProblem === 5 ? '🏆 라운드 완료' : '➜ 다음 문제'}
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                    
+                    <div class="music-panel"></div>
+                </div>
+            `;
+            
+            document.getElementById('app').innerHTML = html;
+            updateMusicPanel();
+            
+            // ✅ 새 문제 시작 시 무조건 맨 위로
+            if (isNewProblem) {
+                setTimeout(() => {
+                    ScrollManager.forceScrollToTop();
+                }, 100);
+            }
+            
+            // ✅ 정답 맞춘 경우 힌트 컨테이너 맨 위로 스크롤
+            if (state.isCorrect) {
+                setTimeout(() => {
+                    ScrollManager.scrollToHintsTop();
+                }, 150);
+            }
+        }
+
+        // 다음 문제
+        function nextProblem() {
+            AudioManager.playSound('click');
+            
+            if (gameState.currentProblem < 5) {
+                gameState.currentProblem++;
+                gameState.currentProblemState = {
+                    unlockedHints: [0, 1],
+                    showDescriptions: [false, false, false, false, false, false],
+                    canShowDescriptions: false,
+                    showCharacterCount: false,
+                    showCategory: false,
+                    showChosung: false,
+                    userAnswer: '',
+                    isCorrect: false,
+                    geniusTimer: 13,
+                    geniusTimerActive: true,
+                    timerInterval: null
+                };
+                startGeniusTimer();
+                renderGameScreen(true);
+                saveGameState();
+            } else {
+                gameState.completedRounds.push(gameState.currentRound);
+                gameState.keys += 1;
+                AudioManager.playSound('complete');
+                showRoundComplete();
+                saveGameState();
+            }
+        }
+
+        // 힌트 해금
+        function unlockHint(hintIndex) {
+            const state = gameState.currentProblemState;
+            if (state.unlockedHints.includes(hintIndex)) return;
+            
+            if (hintIndex > 2) {
+                const prevHintUnlocked = state.unlockedHints.includes(hintIndex - 1);
+                if (!prevHintUnlocked) {
+                    alert('이전 힌트를 먼저 해금해주세요!');
+                    return;
+                }
+            }
+            
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.unlockedHints.push(hintIndex);
+                AudioManager.playSound('hint');
+                
+                if (hintIndex === 3 && !state.canShowDescriptions) {
+                    state.canShowDescriptions = true;
+                }
+                
+                if (hintIndex === 3) {
+                    state.showCharacterCount = true;
+                }
+                if (hintIndex === 4) {
+                    state.showCategory = true;
+                }
+                if (hintIndex === 5) {
+                    state.showChosung = true;
+                }
+                
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        // 정답 확인 함수 - ✅ 핵심: 정답 맞추면 힌트 맨 위로 스크롤
+        function checkAnswer(value) {
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            
+            const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
+            const correctAnswers = problem.answer.map(ans => 
+                ans.toLowerCase().replace(/\s+/g, '')
+            );
+            
+            if (correctAnswers.includes(normalizedAnswer)) {
+                const usedHints = state.unlockedHints.length;
+                let soundType = 'correct';
+                
+                if (usedHints <= 2) {
+                    soundType = 'genius';
+                }
+                
+                const keyReward = showCongratulationPopup(usedHints, false);
+                
+                if (keyReward > 0) {
+                    gameState.keys += keyReward;
+                }
+                
+                AudioManager.playSound(soundType);
+                state.isCorrect = true;
+                state.unlockedHints = [0,1,2,3,4,5];
+                state.showDescriptions = [true,true,true,true,true,true];
+                state.showCharacterCount = true;
+                state.showCategory = true;
+                state.showChosung = true;
+                state.geniusTimerActive = false;
+                
+                // ✅ 추가: 풀린 문제 기록
+                if (!gameState.solvedProblems) {
+                    gameState.solvedProblems = {};
+                }
+                const problemKey = `${gameState.currentRound}-${gameState.currentProblem}`;
+                gameState.solvedProblems[problemKey] = true;
+                
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                }
+                
+                renderGameScreen();
+                
+                setTimeout(() => {
+                    ScrollManager.scrollToHintsTop();
+                }, 200);
+                
+                saveGameState();
+            } else {
+                AudioManager.playSound('wrong');
+                const input = document.querySelector('.answer-input');
+                if (input) {
+                    input.style.animation = 'shake 0.3s';
+                    setTimeout(() => {
+                        input.style.animation = '';
+                        input.select();
+                    }, 300);
+                }
+            }
+        }
+
+        // 나머지 함수들 (기존과 동일)
+        function showAllRoundsCompleted() {
+            const html = `
+                <div class="container">
+                    <div class="start-screen">
+                        <div class="magic-orb"></div>
+                        <div class="title-main">🎉 모든 라운드 완료!</div>
+                        <div class="subtitle">당신은 진정한 연상천재입니다!</div>
+                        <div class="highlight">더 많은 라운드가 업데이트 될 예정입니다</div>
+                        <button class="start-button" onclick="showRoundMap()">
+                            🏠 메인으로
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app').innerHTML = html;
+        }
+
+        function startGeniusTimer() {
+            const state = gameState.currentProblemState;
+            if (state.timerInterval) clearInterval(state.timerInterval);
+            
+            state.timerInterval = setInterval(() => {
+                if (!state.geniusTimerActive || state.isCorrect) {
+                    clearInterval(state.timerInterval);
+                    return;
+                }
+                
+                state.geniusTimer--;
+                
+                const timerProgress = document.querySelector('.timer-progress');
+                if (timerProgress) {
+                    timerProgress.style.width = `${(state.geniusTimer / 13) * 100}%`;
+                }
+                
+                const timerCount = document.querySelector('.genius-timer-count');
+                if (timerCount) {
+                    timerCount.textContent = `${state.geniusTimer}초`;
+                }
+                
+                if (state.geniusTimer <= 0) {
+                    state.geniusTimerActive = false;
+                    if (!state.unlockedHints.includes(2)) {
+                        state.unlockedHints.push(2);
+                    }
+                    state.showCharacterCount = true;
+                    
+                    if (state.unlockedHints.includes(5)) {
+                        state.showCategory = true;
+                        state.showChosung = true;
+                    }
+                    
+                    renderGameScreen();
+                    clearInterval(state.timerInterval);
+                }
+            }, 1000);
+        }
+
+        function watchAdForHint(hintIndex) {
+            // 광고 시뮬레이션
+            alert('광고를 시청했습니다! 힌트가 해금되었습니다.');
+            unlockHint(hintIndex);
+        }
+
+        function unlockDescription(descriptionIndex) {
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showDescriptions[descriptionIndex] = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function watchAdForDescription(descriptionIndex) {
+            // 광고 시뮬레이션
+            alert('광고를 시청했습니다! 설명이 해금되었습니다.');
+            const state = gameState.currentProblemState;
+            state.showDescriptions[descriptionIndex] = true;
+            renderGameScreen();
+            saveGameState();
+        }
+
+        function unlockCategory() {
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showCategory = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function unlockChosung() {
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showChosung = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('열쇠가 부족합니다!');
+            }
+        }
+
+        function showAnswer() {
+            if (gameState.keys >= 3) {
+                showAnswerConfirm();
+            } else {
+                watchAdForAnswer();
+            }
+        }
+
+        function showAnswerConfirm() {
+            if (confirm('정답을 보시겠습니까? (열쇠 3개 사용)')) {
+                if (gameState.keys >= 3) {
+                    gameState.keys -= 3;
+                    const problem = gameState.problems[gameState.currentProblem];
+                    const state = gameState.currentProblemState;
+                    
+                    state.isCorrect = true;
+                    state.unlockedHints = [0,1,2,3,4,5];
+                    state.showDescriptions = [true,true,true,true,true,true];
+                    state.showCharacterCount = true;
+                    state.showCategory = true;
+                    state.showChosung = true;
+                    state.geniusTimerActive = false;
+                    
+                    if (state.timerInterval) {
+                        clearInterval(state.timerInterval);
+                    }
+                    
+                    renderGameScreen();
+                    
+                    // ✅ 정답 보기로 넘어갈 때도 힌트 맨 위로 스크롤
+                    setTimeout(() => {
+                        ScrollManager.scrollToHintsTop();
+                    }, 200);
+                    
+                    saveGameState();
+                }
+            }
+        }
+
+        function watchAdForAnswer() {
+            // 광고 시뮬레이션
+            alert('광고를 시청했습니다! 정답을 확인합니다.');
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            
+            state.isCorrect = true;
+            state.unlockedHints = [0,1,2,3,4,5];
+            state.showDescriptions = [true,true,true,true,true,true];
+            state.showCharacterCount = true;
+            state.showCategory = true;
+            state.showChosung = true;
+            state.geniusTimerActive = false;
+            
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+            
+            renderGameScreen();
+            
+            // ✅ 광고 보고 정답 확인할 때도 힌트 맨 위로 스크롤
+            setTimeout(() => {
+                ScrollManager.scrollToHintsTop();
+            }, 200);
+            
+            saveGameState();
+        }
+
+        function updateUserAnswer(value) {
+            gameState.currentProblemState.userAnswer = value;
+        }
+
+        function showRoundComplete() {
+            const randomBanner = getRandomBanner();
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="compact-header">
+                            <div class="header-left">
+                                <button class="home-button" onclick="showRoundMap()">🏠</button>
+                                <div class="round-info-compact">
+                                    <div class="round-title">라운드 완료!</div>
+                                    <div class="problem-number">축하합니다!</div>
+                                </div>
+                            </div>
+                            <div class="header-right">
+                                <div class="key-count">🔑 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="correct-answer">
+                            <div class="correct-icon">🎉</div>
+                            <div class="correct-title">라운드 ${gameState.currentRound} 완료!</div>
+                            <div class="correct-text">+1 열쇠를 획득했습니다!</div>
+                            <div class="correct-category">다음 라운드에 도전해보세요</div>
+                        </div>
+                        
+                        <!-- 배너 광고 추가 -->
+                        <div class="banner-ad">
+                            <a href="https://smartstore.naver.com/gemfarm" target="_blank">
+                                <img src="${randomBanner}" alt="광고 배너">
+                            </a>
+                        </div>
+                        
+                        <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px;">
+                            🚀 다음 라운드
+                        </button>
+                        <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #302b63, #24243e);">
+                            🗺️ 메인으로
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app').innerHTML = html;
+        }
+
+        function showCongratulationPopup(hintsUsed, usedChosung) {
+            let popupData = {};
+            
+            switch(hintsUsed) {
+                case 2:
+                    popupData = {
+                        title: "와우! 천재셨군요!",
+                        type: "genius",
+                        icon: "💡",
+                        reward: 1
+                    };
+                    break;
+                case 3:
+                    popupData = {
+                        title: "제법인데요?",
+                        type: "sharp",
+                        icon: "😏",
+                        reward: 0
+                    };
+                    break;
+                case 4:
+                    popupData = {
+                        title: "쏘쏘~?",
+                        type: "focus",
+                        icon: "🤪",
+                        reward: 0
+                    };
+                    break;
+                case 5:
+                    popupData = {
+                        title: "피곤하신가봐요",
+                        type: "sleepy",
+                        icon: "😴",
+                        reward: 0
+                    };
+                    break;
+                default:
+                    popupData = {
+                        title: "할많하않",
+                        type: "chosung",
+                        icon: "💨",
+                        reward: 0
+                    };
+            }
+            
+            const popupHtml = `
+                <div class="congratulation-popup ${popupData.type}">
+                    <div class="popup-icon">${popupData.icon}</div>
+                    <div class="popup-title">${popupData.title}</div>
+                    ${popupData.reward > 0 ? `
+                        <div class="popup-reward">🔑 +${popupData.reward} 열쇠 획득!</div>
+                    ` : ''}
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', popupHtml);
+            
+            setTimeout(() => {
+                const popup = document.querySelector('.congratulation-popup');
+                if (popup) {
+                    popup.remove();
+                }
+            }, 2000);
+            
+            return popupData.reward;
+        }
+
+        function toggleMusicPanel() {
+            const panel = document.querySelector('.music-panel');
+            const buttons = document.querySelectorAll('.settings-button-header');
+            if (panel) {
+                panel.classList.toggle('active');
+                buttons.forEach(button => {
+                    button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
+                });
+                if (panel.classList.contains('active')) {
+                    updateMusicPanel();
+                }
+            }
+        }
+
+        function updateMusicPanel() {
+            const panel = document.querySelector('.music-panel');
+            if (panel) {
+                panel.innerHTML = `
+                    <div class="music-title">🎵 사운드 설정</div>
+                    <div class="music-controls">
+                        <button class="sound-control bgm-control ${AudioManager.bgmEnabled ? 'active' : ''}" onclick="AudioManager.toggleBGM()">
+                            ${AudioManager.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF'}
+                        </button>
+                        <button class="sound-control sfx-control ${AudioManager.sfxEnabled ? 'active' : ''}" onclick="AudioManager.toggleSFX()">
+                            ${AudioManager.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF'}
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // CSS 애니메이션
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 앱 초기화
+        async function initApp() {
+            await AudioManager.init();
+            renderStartScreen();
+        }
+
+        // 앱 시작
+        initApp();
+    </script>
+</body>
+</html>
