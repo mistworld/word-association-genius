@@ -1154,8 +1154,7 @@
             keys: 15,
             completedRounds: [],
             problems: [],
-            currentProblemState: null,
-            solvedProblems: {} // ✅ 추가: 풀린 문제 기록
+            currentProblemState: null
         };
 
         // 진행도 저장
@@ -1166,8 +1165,7 @@
                 keys: gameState.keys,
                 completedRounds: gameState.completedRounds,
                 problems: gameState.problems,
-                currentProblemState: gameState.currentProblemState,
-                solvedProblems: gameState.solvedProblems // ✅ 추가
+                currentProblemState: gameState.currentProblemState
             };
             localStorage.setItem('game_save', JSON.stringify(saveData));
         }
@@ -1261,83 +1259,88 @@
                     
                     <div class="music-panel"></div>
                 </div>
-`;
+            `;
             
-document.getElementById('app').innerHTML = html;
-gameState.currentScreen = 'roundMap';
-updateMusicPanel();
-}
-
-// 라운드 시작
-async function startRound(roundNumber) {
-    AudioManager.playSound('click');
-    
-    try {
-        const fileNumber = Math.ceil(roundNumber / 10);
-        const response = await fetch(`problems_${fileNumber}.json`);
-        
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
-        const allProblems = await response.json();
-        const problemsPerRound = 6;
-        const startIndex = (roundNumber - 1) * problemsPerRound;
-        const fileStartIndex = startIndex - ((fileNumber - 1) * 60);
-        const roundProblems = allProblems.slice(fileStartIndex, fileStartIndex + problemsPerRound);
-
-        if (roundProblems.length === 0) {
-            showAllRoundsCompleted();
-            return;
+            document.getElementById('app').innerHTML = html;
+            gameState.currentScreen = 'roundMap';
+            updateMusicPanel();
         }
 
-        // ✅ 수정: 저장된 진행상황에서 현재 문제 위치 가져오기
-        const savedState = JSON.parse(localStorage.getItem('game_save') || '{}');
-        let currentProblem = 0;
+        // 라운드 시작
+        async function startRound(roundNumber) {
+            AudioManager.playSound('click');
+            
+            try {
+                const fileNumber = Math.ceil(roundNumber / 10);
+                const response = await fetch(`problems_${fileNumber}.json`);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const allProblems = await response.json();
+                const problemsPerRound = 6;
+                const startIndex = (roundNumber - 1) * problemsPerRound;
+                const fileStartIndex = startIndex - ((fileNumber - 1) * 60);
+                const roundProblems = allProblems.slice(fileStartIndex, fileStartIndex + problemsPerRound);
 
-        // 같은 라운드이고, 풀었던 문제가 있다면 다음 문제부터 시작
-        if (savedState.currentRound === roundNumber && savedState.currentProblem !== undefined) {
-            currentProblem = savedState.currentProblem < 5 ? savedState.currentProblem + 1 : 0;
+                if (roundProblems.length === 0) {
+                    showAllRoundsCompleted();
+                    return;
+                }
+                
+                // ✅ 수정: 저장된 진행상황에서 정확한 현재 문제 위치 가져오기
+                const savedState = JSON.parse(localStorage.getItem('game_save') || '{}');
+                let currentProblem = 0;
+                
+                // 같은 라운드이고, 이전에 풀었던 문제가 있다면 다음 문제부터 시작
+                if (savedState.currentRound === roundNumber && savedState.currentProblem !== undefined) {
+                    // ✅ 수정: 이미 푼 문제는 건너뛰고 다음 문제부터 시작
+                    currentProblem = savedState.currentProblem;
+                    // 현재 문제가 이미 풀린 상태라면 다음 문제로
+                    if (savedState.currentProblemState && savedState.currentProblemState.isCorrect) {
+                        currentProblem = Math.min(savedState.currentProblem + 1, 5);
+                    }
+                }
+                
+                gameState.currentRound = roundNumber;
+                gameState.currentProblem = currentProblem; // ✅ 수정: 저장된 위치부터 시작
+                gameState.problems = roundProblems;
+                
+                // ✅ 수정: 현재 문제가 이미 풀렸는지 확인
+                const currentProblemData = roundProblems[currentProblem];
+                const isAlreadySolved = savedState.currentRound === roundNumber && 
+                                      savedState.currentProblemState && 
+                                      savedState.currentProblemState.isCorrect &&
+                                      savedState.currentProblem === currentProblem;
+                
+                gameState.currentProblemState = {
+                    unlockedHints: isAlreadySolved ? [0,1,2,3,4,5] : [0, 1], // ✅ 이미 풀린 문제면 모든 힌트 오픈
+                    showDescriptions: isAlreadySolved ? [true,true,true,true,true,true] : [false, false, false, false, false, false],
+                    canShowDescriptions: isAlreadySolved ? true : false,
+                    showCharacterCount: isAlreadySolved ? true : false,
+                    showCategory: isAlreadySolved ? true : false,
+                    showChosung: isAlreadySolved ? true : false,
+                    userAnswer: '',
+                    isCorrect: isAlreadySolved ? true : false, // ✅ 이미 풀린 문제면 정답 상태로
+                    geniusTimer: 13,
+                    geniusTimerActive: isAlreadySolved ? false : true, // ✅ 이미 풀린 문제면 타이머 비활성화
+                    timerInterval: null
+                };
+                
+                if (!isAlreadySolved) {
+                    startGeniusTimer();
+                }
+                
+                renderGameScreen(true);
+                saveGameState();
+                
+            } catch (error) {
+                console.error('라운드 시작 실패:', error);
+                alert('문제를 불러오는데 실패했습니다.\n\n에러: ' + error.message);
+                showRoundMap();
+            }
         }
 
-gameState.currentRound = roundNumber;
-gameState.currentProblem = currentProblem;
-gameState.problems = roundProblems;
-
-// ✅ 수정: 이미 풀린 문제인지 확인 (현재 진행중인 문제는 제외)
-const problemKey = `${roundNumber}-${currentProblem}`;
-// 현재 진행중인 라운드의 현재 문제는 새 문제로 취급
-const isCurrentProblem = (savedState.currentRound === roundNumber && savedState.currentProblem === currentProblem);
-const isAlreadySolved = gameState.solvedProblems && gameState.solvedProblems[problemKey] && !isCurrentProblem;
-
-// ✅ 수정: 이미 푼 문제면 정답 맞춘 직후 화면 그대로 보여주기
-gameState.currentProblemState = {
-    unlockedHints: isAlreadySolved ? [0,1,2,3,4,5] : [0, 1],
-    showDescriptions: isAlreadySolved ? [true,true,true,true,true,true] : [false, false, false, false, false, false],
-    canShowDescriptions: isAlreadySolved ? true : false,
-    showCharacterCount: isAlreadySolved ? true : false,
-    showCategory: isAlreadySolved ? true : false,
-    showChosung: isAlreadySolved ? true : false,
-    userAnswer: '',
-    isCorrect: isAlreadySolved ? true : false, // ✅ 이미 푼 문제면 정답 바로 표시
-    geniusTimer: 13,
-    geniusTimerActive: isAlreadySolved ? false : true, // ✅ 이미 푼 문제면 타이머 비활성화
-    timerInterval: null
-};
-
-if (!isAlreadySolved) {
-    startGeniusTimer();
-}
-
-        renderGameScreen(true);
-        saveGameState();
-        
-    } catch (error) {
-        console.error('라운드 시작 실패:', error);
-        alert('문제를 불러오는데 실패했습니다.\n\n에러: ' + error.message);
-        showRoundMap();
-    }
-}
-
-// 게임 화면 렌더링
+        // 게임 화면 렌더링
         function renderGameScreen(isNewProblem = false) {
             if (!gameState.currentProblemState || gameState.problems.length === 0) {
                 showRoundMap();
@@ -1347,6 +1350,84 @@ if (!isAlreadySolved) {
             const problem = gameState.problems[gameState.currentProblem];
             const state = gameState.currentProblemState;
             const characterCount = problem.characterCount || (problem.answer && problem.answer[0] ? problem.answer[0].length : '?');
+
+            // ✅ 수정: 이미 푼 문제인 경우 정답 화면만 표시
+            if (state.isCorrect) {
+                const html = `
+                    <div class="container">
+                        <div class="header">
+                            <div class="compact-header">
+                                <div class="header-left">
+                                    <button class="home-button" onclick="AudioManager.playSound('click'); showRoundMap()">🏠</button>
+                                    <div class="round-info-compact">
+                                        <div class="round-title">라운드 ${gameState.currentRound}</div>
+                                        <div class="problem-number">문제 ${gameState.currentProblem + 1}/6 - 이미 푼 문제</div>
+                                    </div>
+                                </div>
+                                <div class="header-right">
+                                    <div class="key-count">🔑 ${gameState.keys}</div>
+                                    <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
+                                    <div class="progress-dots">
+                                        ${Array.from({ length: 6 }, (_, i) => `
+                                            <div class="dot ${i < gameState.currentProblem ? 'completed' : i === gameState.currentProblem ? 'current' : ''}"></div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="main-content">
+                            <div class="hints-section">
+                                <div class="hints-container" id="hintsContainer">
+                                    ${problem.hints.map((hint, index) => {
+                                        return `
+                                            <div class="hint-item">
+                                                <div class="hint-content">
+                                                    <div class="hint-header">
+                                                        <div class="hint-left">
+                                                            <div class="hint-number">${index + 1}</div>
+                                                            <div class="hint-text">${hint}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="description">
+                                                        ${problem.descriptions[index]}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                            
+                            <div class="answer-section">
+                                <div class="correct-answer">
+                                    <div class="correct-icon">✅</div>
+                                    <div class="correct-text">${problem.answer.join(', ')}</div>
+                                    <div class="correct-category">${problem.category}</div>
+                                    <div style="margin-top: 10px; font-size: 14px; color: #ff00ff;">
+                                        이미 푼 문제입니다
+                                    </div>
+                                </div>
+                                
+                                <button class="next-button" onclick="nextProblem()">
+                                    ${gameState.currentProblem === 5 ? '🏆 라운드 완료' : '➜ 다음 문제'}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="music-panel"></div>
+                    </div>
+                `;
+                
+                document.getElementById('app').innerHTML = html;
+                updateMusicPanel();
+                
+                // ✅ 정답 맞춘 경우 힌트 컨테이너 맨 위로 스크롤
+                setTimeout(() => {
+                    ScrollManager.scrollToHintsTop();
+                }, 150);
+                return;
+            }
 
             const html = `
                 <div class="container">
@@ -1600,6 +1681,12 @@ if (!isAlreadySolved) {
             const problem = gameState.problems[gameState.currentProblem];
             const state = gameState.currentProblemState;
             
+            // ✅ 수정: 이미 푼 문제인 경우 열쇠 중복 획득 방지
+            if (state.isCorrect) {
+                alert('이미 푼 문제입니다!');
+                return;
+            }
+            
             const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
             const correctAnswers = problem.answer.map(ans => 
                 ans.toLowerCase().replace(/\s+/g, '')
@@ -1615,32 +1702,26 @@ if (!isAlreadySolved) {
                 
                 const keyReward = showCongratulationPopup(usedHints, false);
                 
-if (keyReward > 0) {
-    gameState.keys += keyReward;
-}
-
-AudioManager.playSound(soundType);
-state.isCorrect = true;
-
-// ✅ 추가: 풀린 문제 기록
-if (!gameState.solvedProblems) {
-    gameState.solvedProblems = {};
-}
-const problemKey = `${gameState.currentRound}-${gameState.currentProblem}`;
-gameState.solvedProblems[problemKey] = true;
-
-state.unlockedHints = [0,1,2,3,4,5];
-state.showDescriptions = [true,true,true,true,true,true];
-state.showCharacterCount = true;
-state.showCategory = true;
-state.showChosung = true;
-state.geniusTimerActive = false;
+                if (keyReward > 0) {
+                    gameState.keys += keyReward;
+                }
+                
+                AudioManager.playSound(soundType);
+                state.isCorrect = true;
+                state.unlockedHints = [0,1,2,3,4,5];
+                state.showDescriptions = [true,true,true,true,true,true];
+                state.showCharacterCount = true;
+                state.showCategory = true;
+                state.showChosung = true;
+                state.geniusTimerActive = false;
+                
                 if (state.timerInterval) {
                     clearInterval(state.timerInterval);
                 }
                 
                 renderGameScreen();
                 
+                // ✅ ✅ ✅ 핵심: 정답 맞추면 힌트 컨테이너 맨 위로 스크롤
                 setTimeout(() => {
                     ScrollManager.scrollToHintsTop();
                 }, 200);
