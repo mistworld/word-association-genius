@@ -1092,14 +1092,16 @@
             },
             
             exitGame() {
-                // 게임 종료
-                if (navigator.app) {
+                // 게임 종료 - 실제 앱 종료 시도
+                if (window.navigator && navigator.app && navigator.app.exitApp) {
                     navigator.app.exitApp();
-                } else if (navigator.device) {
+                } else if (window.navigator && navigator.device && navigator.device.exitApp) {
                     navigator.device.exitApp();
                 } else {
-                    window.close();
+                    // 웹 브라우저에서는 시작 화면으로 이동
+                    renderStartScreen();
                 }
+                this.closeExitPopup();
             },
             
             setScreen(screen) {
@@ -1257,13 +1259,23 @@
                 const sfxButton = document.querySelector('.sfx-control');
                 
                 if (bgmButton) {
-                    bgmButton.textContent = this.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF';
-                    bgmButton.className = this.bgmEnabled ? 'sound-control active' : 'sound-control';
+                    if (this.bgmEnabled) {
+                        bgmButton.textContent = '🔊 BGM ON';
+                        bgmButton.className = 'sound-control active';
+                    } else {
+                        bgmButton.textContent = '🔇 BGM OFF';
+                        bgmButton.className = 'sound-control';
+                    }
                 }
                 
                 if (sfxButton) {
-                    sfxButton.textContent = this.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF';
-                    sfxButton.className = this.sfxEnabled ? 'sound-control active' : 'sound-control';
+                    if (this.sfxEnabled) {
+                        sfxButton.textContent = '🎵 효과음 ON';
+                        sfxButton.className = 'sound-control active';
+                    } else {
+                        sfxButton.textContent = '🔕 효과음 OFF';
+                        sfxButton.className = 'sound-control';
+                    }
                 }
             }
         };
@@ -1785,7 +1797,7 @@
                 let soundType = 'correct';
                 let keyReward = 0;
                 
-                // ✅ 천재보너스 조건: 힌트 2개 이하 + 13초 안 + 처음 푸는 문제
+                // ✅ 천재보너스 조건: 힌트 2개 이하 + 13초 안 + 아직 보상 안 받은 문제
                 if (usedHints <= 2 && state.geniusTimer > 0 && !isProblemRewarded(gameState.currentRound, gameState.currentProblem)) {
                     soundType = 'genius';
                     keyReward = 1;
