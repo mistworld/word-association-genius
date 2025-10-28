@@ -1092,16 +1092,28 @@
             },
             
             exitGame() {
-                // 게임 종료 - 실제 앱 종료 시도
-                if (window.navigator && navigator.app && navigator.app.exitApp) {
+                // 팝업 먼저 제거
+                const popup = document.querySelector('.exit-popup');
+                if (popup) {
+                    popup.remove();
+                }
+                
+                // 게임 종료 시도
+                if (navigator.app) {
                     navigator.app.exitApp();
-                } else if (window.navigator && navigator.device && navigator.device.exitApp) {
+                } else if (navigator.device) {
                     navigator.device.exitApp();
                 } else {
-                    // 웹 브라우저에서는 시작 화면으로 이동
-                    renderStartScreen();
+                    // 웹 브라우저인 경우
+                    window.close();
+                    // window.close()가 작동하지 않을 수 있으므로 대체 방법
+                    if (!window.closed) {
+                        // 빈 페이지로 이동하거나 종료 안내 표시
+                        if (confirm('브라우저가 자동 종료를 허용하지 않습니다.\n탭을 직접 닫아주세요.')) {
+                            window.location.href = 'about:blank';
+                        }
+                    }
                 }
-                this.closeExitPopup();
             },
             
             setScreen(screen) {
@@ -1221,6 +1233,7 @@
                 }
                 this.saveSettings();
                 this.updateMusicControls();
+                updateMusicPanel();
                 if (this.sfxEnabled) {
                     this.hintSound.currentTime = 0;
                     this.hintSound.play().catch(() => {});
@@ -1231,6 +1244,7 @@
                 this.sfxEnabled = !this.sfxEnabled;
                 this.saveSettings();
                 this.updateMusicControls();
+                updateMusicPanel();
                 if (this.sfxEnabled) {
                     this.hintSound.currentTime = 0;
                     this.hintSound.play().catch(() => {});
@@ -1259,23 +1273,13 @@
                 const sfxButton = document.querySelector('.sfx-control');
                 
                 if (bgmButton) {
-                    if (this.bgmEnabled) {
-                        bgmButton.textContent = '🔊 BGM ON';
-                        bgmButton.className = 'sound-control active';
-                    } else {
-                        bgmButton.textContent = '🔇 BGM OFF';
-                        bgmButton.className = 'sound-control';
-                    }
+                    bgmButton.textContent = this.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF';
+                    bgmButton.className = this.bgmEnabled ? 'sound-control active' : 'sound-control';
                 }
                 
                 if (sfxButton) {
-                    if (this.sfxEnabled) {
-                        sfxButton.textContent = '🎵 효과음 ON';
-                        sfxButton.className = 'sound-control active';
-                    } else {
-                        sfxButton.textContent = '🔕 효과음 OFF';
-                        sfxButton.className = 'sound-control';
-                    }
+                    sfxButton.textContent = this.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF';
+                    sfxButton.className = this.sfxEnabled ? 'sound-control active' : 'sound-control';
                 }
             }
         };
@@ -1703,20 +1707,28 @@
             
             if (gameState.currentProblem < 5) {
                 gameState.currentProblem++;
+                
+                // ✅ 1번 버그 수정: 다음 문제가 이미 푼 문제인지 확인
+                const isAlreadySolved = isProblemSolved(gameState.currentRound, gameState.currentProblem);
+                
                 gameState.currentProblemState = {
-                    unlockedHints: [0, 1],
-                    showDescriptions: [false, false, false, false, false, false],
-                    canShowDescriptions: false,
-                    showCharacterCount: false,
-                    showCategory: false,
-                    showChosung: false,
+                    unlockedHints: isAlreadySolved ? [0,1,2,3,4,5] : [0, 1],
+                    showDescriptions: isAlreadySolved ? [true,true,true,true,true,true] : [false, false, false, false, false, false],
+                    canShowDescriptions: isAlreadySolved ? true : false,
+                    showCharacterCount: isAlreadySolved ? true : false,
+                    showCategory: isAlreadySolved ? true : false,
+                    showChosung: isAlreadySolved ? true : false,
                     userAnswer: '',
-                    isCorrect: false,
+                    isCorrect: isAlreadySolved ? true : false,
                     geniusTimer: 13,
-                    geniusTimerActive: true,
+                    geniusTimerActive: isAlreadySolved ? false : true,
                     timerInterval: null
                 };
-                startGeniusTimer();
+                
+                if (!isAlreadySolved) {
+                    startGeniusTimer();
+                }
+                
                 renderGameScreen(true);
                 saveGameState();
             } else {
@@ -1797,7 +1809,7 @@
                 let soundType = 'correct';
                 let keyReward = 0;
                 
-                // ✅ 천재보너스 조건: 힌트 2개 이하 + 13초 안 + 아직 보상 안 받은 문제
+                // ✅ 천재보너스 조건: 힌트 2개 이하 + 13초 안 + 처음 푸는 문제
                 if (usedHints <= 2 && state.geniusTimer > 0 && !isProblemRewarded(gameState.currentRound, gameState.currentProblem)) {
                     soundType = 'genius';
                     keyReward = 1;
