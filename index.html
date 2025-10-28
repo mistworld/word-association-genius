@@ -1091,23 +1091,16 @@
                 history.pushState(null, null, location.href);
             },
             
-            exitGame() {
-                // 게임 종료
-                if (navigator.app) {
-                    navigator.app.exitApp();
-                } else if (navigator.device) {
-                    navigator.device.exitApp();
-                } else {
-                    window.close();
-                }
-            },
-            
-            setScreen(screen) {
-                this.currentScreen = screen;
-                // 히스토리 상태 추가
-                history.pushState(null, null, location.href);
-            }
-        };
+exitGame() {
+    // 게임 종료 = 시작화면으로 돌아가기
+    renderStartScreen();
+    
+    // 팝업 닫기
+    const popup = document.querySelector('.exit-popup');
+    if (popup) {
+        popup.remove();
+    }
+},
 
         // 오디오 관리자
         const AudioManager = {
@@ -1766,75 +1759,67 @@ updateMusicControls() {
         }
 
         // ✅ 2번 문제 해결: 정답 확인 함수 - 수정된 버전
-        function checkAnswer(value) {
-            const problem = gameState.problems[gameState.currentProblem];
-            const state = gameState.currentProblemState;
-            const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
-            
-            // ✅ 이미 푼 문제면 정답 확인 불가
-            if (isProblemSolved(gameState.currentRound, gameState.currentProblem)) {
-                alert('이미 푼 문제입니다!');
-                return;
-            }
-            
-            const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
-            const correctAnswers = problem.answer.map(ans => 
-                ans.toLowerCase().replace(/\s+/g, '')
-            );
-            
-            if (correctAnswers.includes(normalizedAnswer)) {
-                const usedHints = state.unlockedHints.length;
-                let soundType = 'correct';
-                let keyReward = 0;
-                
-                // ✅ 천재보너스 조건: 힌트 2개 이하 + 13초 안 + 처음 푸는 문제
-                if (usedHints <= 2 && state.geniusTimer > 0 && !isProblemRewarded(gameState.currentRound, gameState.currentProblem)) {
-                    soundType = 'genius';
-                    keyReward = 1;
-                    // 보상 기록
-                    gameState.rewardedProblems[problemId] = true;
-                }
-                
-                if (keyReward > 0) {
-                    gameState.keys += keyReward;
-                }
-                
-                AudioManager.playSound(soundType);
-                state.isCorrect = true;
-                state.unlockedHints = [0,1,2,3,4,5];
-                state.showDescriptions = [true,true,true,true,true,true];
-                state.showCharacterCount = true;
-                state.showCategory = true;
-                state.showChosung = true;
-                state.geniusTimerActive = false;
-                
-                // ✅ 문제 풀이 상태 기록
-                gameState.solvedProblems[problemId] = true;
-                
-                if (state.timerInterval) {
-                    clearInterval(state.timerInterval);
-                }
-                
-                renderGameScreen();
-                
-                setTimeout(() => {
-                    ScrollManager.scrollToHintsTop();
-                }, 200);
-                
-                saveGameState();
-            } else {
-                AudioManager.playSound('wrong');
-                const input = document.querySelector('.answer-input');
-                if (input) {
-                    input.style.animation = 'shake 0.3s';
-                    setTimeout(() => {
-                        input.style.animation = '';
-                        input.select();
-                    }, 300);
-                }
-            }
+function checkAnswer(value) {
+    const problem = gameState.problems[gameState.currentProblem];
+    const state = gameState.currentProblemState;
+    const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
+    
+    // ✅ 이미 푼 문제면 정답 화면만 보여주고 끝
+    if (isProblemSolved(gameState.currentRound, gameState.currentProblem)) {
+        state.isCorrect = true;
+        state.unlockedHints = [0,1,2,3,4,5];
+        state.showDescriptions = [true,true,true,true,true,true];
+        state.showCharacterCount = true;
+        state.showCategory = true;
+        state.showChosung = true;
+        state.geniusTimerActive = false;
+        
+        renderGameScreen();
+        return; // 🔥 여기서 return 해야 열쇠 안 줌!
+    }
+    
+    const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
+    const correctAnswers = problem.answer.map(ans => 
+        ans.toLowerCase().replace(/\s+/g, '')
+    );
+    
+    if (correctAnswers.includes(normalizedAnswer)) {
+        const usedHints = state.unlockedHints.length;
+        let soundType = 'correct';
+        let keyReward = 0;
+        
+        // ✅ 천재보너스 조건: 힌트 2개 이하 + 13초 안 + 처음 푸는 문제
+        if (usedHints <= 2 && state.geniusTimer > 0 && !isProblemRewarded(gameState.currentRound, gameState.currentProblem)) {
+            soundType = 'genius';
+            keyReward = 1;
+            // 보상 기록
+            gameState.rewardedProblems[problemId] = true;
         }
-
+        
+        if (keyReward > 0) {
+            gameState.keys += keyReward;
+        }
+        
+        AudioManager.playSound(soundType);
+        state.isCorrect = true;
+        state.unlockedHints = [0,1,2,3,4,5];
+        state.showDescriptions = [true,true,true,true,true,true];
+        state.showCharacterCount = true;
+        state.showCategory = true;
+        state.showChosung = true;
+        state.geniusTimerActive = false;
+        
+        // ✅ 문제 풀이 상태 기록
+        gameState.solvedProblems[problemId] = true;
+        
+        if (state.timerInterval) {
+            clearInterval(state.timerInterval);
+        }
+        
+        renderGameScreen();
+        saveGameState();
+    }
+}
         // 나머지 함수들 (기존과 동일하지만 필요한 부분 수정)
         function showAllRoundsCompleted() {
             const html = `
