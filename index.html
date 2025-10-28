@@ -1335,7 +1335,8 @@
         // ✅ 이미 푼 문제인지 확인
         function isProblemSolved(round, problem) {
             const problemId = getProblemId(round, problem);
-            return gameState.solvedProblems[problemId] || false;
+            const data = gameState.solvedProblems[problemId];
+            return data && (data.solved === true || data === true);
         }
 
         // ✅ 이미 보상 받은 문제인지 확인
@@ -1363,9 +1364,9 @@
                 <div class="container">
                     <div class="start-screen">
                         <div class="magic-orb"></div>
-                        <div class="title-main">🔥연상천재🔥</div>
-                        <div class="subtitle">시냅스가 폭발하는 짜릿함</div>
-                        <div class="highlight">당신은 천재⚡입니까?</div>
+                        <div class="title-main">⚡연상천재⚡</div>
+                        <div class="subtitle">뇌가 터질 것 같은 쾌감</div>
+                        <div class="highlight">당신은 IQ 140 천재입니까?</div>
                         <button class="start-button" onclick="AudioManager.playSound('click'); showRoundMap()">
                             🧠 시냅스 가동
                         </button>
@@ -1496,7 +1497,15 @@
                 
                 if (!isAlreadySolved) {
                     startGeniusTimer();
+                } else {
+                    // 이미 푼 문제면 당시 힌트 개수로 축하 팝업 표시
+                    const savedData = gameState.solvedProblems[problemId];
+                    const hintsUsed = (savedData && savedData.hintsUsed) ? savedData.hintsUsed : 6;
+                    setTimeout(() => {
+                        showCongratulationPopup(hintsUsed, false);
+                    }, 500);
                 }
+                
                 
                 renderGameScreen(true);
                 saveGameState();
@@ -1725,8 +1734,17 @@
                     timerInterval: null
                 };
                 
+                
                 if (!isAlreadySolved) {
                     startGeniusTimer();
+                } else {
+                    // 이미 푼 문제면 당시 힌트 개수로 축하 팝업 표시
+                    const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
+                    const savedData = gameState.solvedProblems[problemId];
+                    const hintsUsed = (savedData && savedData.hintsUsed) ? savedData.hintsUsed : 6;
+                    setTimeout(() => {
+                        showCongratulationPopup(hintsUsed, false);
+                    }, 500);
                 }
                 
                 renderGameScreen(true);
@@ -1837,7 +1855,7 @@
                 state.geniusTimerActive = false;
                 
                 // ✅ 문제 풀이 상태 기록
-                gameState.solvedProblems[problemId] = true;
+                gameState.solvedProblems[problemId] = { solved: true, hintsUsed: usedHints };
                 
                 if (state.timerInterval) {
                     clearInterval(state.timerInterval);
@@ -1845,6 +1863,9 @@
                 
                 renderGameScreen();
                 
+                
+                // 축하 팝업 표시
+                showCongratulationPopup(usedHints, false);
                 setTimeout(() => {
                     ScrollManager.scrollToHintsTop();
                 }, 200);
@@ -1999,7 +2020,7 @@
                     state.geniusTimerActive = false;
                     
                     // ✅ 정답 보기로 풀었어도 풀이 상태는 기록 (재도전 방지)
-                    gameState.solvedProblems[problemId] = true;
+                    gameState.solvedProblems[problemId] = { solved: true, hintsUsed: state.unlockedHints.length };
                     
                     if (state.timerInterval) {
                         clearInterval(state.timerInterval);
@@ -2031,7 +2052,7 @@
             state.geniusTimerActive = false;
             
             // ✅ 정답 보기로 풀었어도 풀이 상태는 기록 (재도전 방지)
-            gameState.solvedProblems[problemId] = true;
+            gameState.solvedProblems[problemId] = { solved: true, hintsUsed: state.unlockedHints.length };
             
             if (state.timerInterval) {
                 clearInterval(state.timerInterval);
