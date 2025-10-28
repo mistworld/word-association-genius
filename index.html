@@ -1091,16 +1091,23 @@
                 history.pushState(null, null, location.href);
             },
             
-exitGame() {
-    // 게임 종료 = 시작화면으로 돌아가기
-    renderStartScreen();
-    
-    // 팝업 닫기
-    const popup = document.querySelector('.exit-popup');
-    if (popup) {
-        popup.remove();
-    }
-},
+            exitGame() {
+                // 게임 종료
+                if (navigator.app) {
+                    navigator.app.exitApp();
+                } else if (navigator.device) {
+                    navigator.device.exitApp();
+                } else {
+                    window.close();
+                }
+            },
+            
+            setScreen(screen) {
+                this.currentScreen = screen;
+                // 히스토리 상태 추가
+                history.pushState(null, null, location.href);
+            }
+        };
 
         // 오디오 관리자
         const AudioManager = {
@@ -1200,35 +1207,33 @@ exitGame() {
                 }
             },
 
-toggleBGM() {
-    this.bgmEnabled = !this.bgmEnabled;
-    if (this.bgmEnabled) {
-        this.startBGM();
-    } else {
-        if (this.currentBGM) {
-            this.currentBGM.pause();
-            this.currentBGM.currentTime = 0;
-        }
-    }
-    this.saveSettings();
-    // ✅ 즉시 UI 업데이트
-    this.updateMusicControls();
-    if (this.sfxEnabled) {
-        this.hintSound.currentTime = 0;
-        this.hintSound.play().catch(() => {});
-    }
-},
+            toggleBGM() {
+                this.bgmEnabled = !this.bgmEnabled;
+                if (this.bgmEnabled) {
+                    this.startBGM();
+                } else {
+                    if (this.currentBGM) {
+                        this.currentBGM.pause();
+                        this.currentBGM.currentTime = 0;
+                    }
+                }
+                this.saveSettings();
+                this.updateMusicControls();
+                if (this.sfxEnabled) {
+                    this.hintSound.currentTime = 0;
+                    this.hintSound.play().catch(() => {});
+                }
+            },
 
-toggleSFX() {
-    this.sfxEnabled = !this.sfxEnabled;
-    this.saveSettings();
-    // ✅ 즉시 UI 업데이트  
-    this.updateMusicControls();
-    if (this.sfxEnabled) {
-        this.hintSound.currentTime = 0;
-        this.hintSound.play().catch(() => {});
-    }
-},
+            toggleSFX() {
+                this.sfxEnabled = !this.sfxEnabled;
+                this.saveSettings();
+                this.updateMusicControls();
+                if (this.sfxEnabled) {
+                    this.hintSound.currentTime = 0;
+                    this.hintSound.play().catch(() => {});
+                }
+            },
 
             saveSettings() {
                 const settings = {
@@ -1247,20 +1252,20 @@ toggleSFX() {
                 }
             },
 
-updateMusicControls() {
-    const bgmButton = document.querySelector('.bgm-control');
-    const sfxButton = document.querySelector('.sfx-control');
-    
-    if (bgmButton) {
-        bgmButton.textContent = this.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF';
-        bgmButton.className = `sound-control bgm-control ${this.bgmEnabled ? 'active' : ''}`;
-    }
-    
-    if (sfxButton) {
-        sfxButton.textContent = this.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF';
-        sfxButton.className = `sound-control sfx-control ${this.sfxEnabled ? 'active' : ''}`;
-    }
-}
+            updateMusicControls() {
+                const bgmButton = document.querySelector('.bgm-control');
+                const sfxButton = document.querySelector('.sfx-control');
+                
+                if (bgmButton) {
+                    bgmButton.textContent = this.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF';
+                    bgmButton.className = this.bgmEnabled ? 'sound-control active' : 'sound-control';
+                }
+                
+                if (sfxButton) {
+                    sfxButton.textContent = this.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF';
+                    sfxButton.className = this.sfxEnabled ? 'sound-control active' : 'sound-control';
+                }
+            }
         };
 
         // ✅ 게임 상태 관리 - 수정된 구조
@@ -1342,9 +1347,9 @@ updateMusicControls() {
                 <div class="container">
                     <div class="start-screen">
                         <div class="magic-orb"></div>
-                        <div class="title-main">🔥연상천재🔥</div>
-                        <div class="subtitle">시냅스가 폭발하는 짜릿함</div>
-                        <div class="highlight">당신은 천재⚡입니까?</div>
+                        <div class="title-main">⚡연상천재⚡</div>
+                        <div class="subtitle">뇌가 터질 것 같은 쾌감</div>
+                        <div class="highlight">당신은 IQ 140 천재입니까?</div>
                         <button class="start-button" onclick="AudioManager.playSound('click'); showRoundMap()">
                             🧠 시냅스 가동
                         </button>
@@ -1759,67 +1764,75 @@ updateMusicControls() {
         }
 
         // ✅ 2번 문제 해결: 정답 확인 함수 - 수정된 버전
-function checkAnswer(value) {
-    const problem = gameState.problems[gameState.currentProblem];
-    const state = gameState.currentProblemState;
-    const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
-    
-    // ✅ 이미 푼 문제면 정답 화면만 보여주고 끝
-    if (isProblemSolved(gameState.currentRound, gameState.currentProblem)) {
-        state.isCorrect = true;
-        state.unlockedHints = [0,1,2,3,4,5];
-        state.showDescriptions = [true,true,true,true,true,true];
-        state.showCharacterCount = true;
-        state.showCategory = true;
-        state.showChosung = true;
-        state.geniusTimerActive = false;
-        
-        renderGameScreen();
-        return; // 🔥 여기서 return 해야 열쇠 안 줌!
-    }
-    
-    const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
-    const correctAnswers = problem.answer.map(ans => 
-        ans.toLowerCase().replace(/\s+/g, '')
-    );
-    
-    if (correctAnswers.includes(normalizedAnswer)) {
-        const usedHints = state.unlockedHints.length;
-        let soundType = 'correct';
-        let keyReward = 0;
-        
-        // ✅ 천재보너스 조건: 힌트 2개 이하 + 13초 안 + 처음 푸는 문제
-        if (usedHints <= 2 && state.geniusTimer > 0 && !isProblemRewarded(gameState.currentRound, gameState.currentProblem)) {
-            soundType = 'genius';
-            keyReward = 1;
-            // 보상 기록
-            gameState.rewardedProblems[problemId] = true;
+        function checkAnswer(value) {
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
+            
+            // ✅ 이미 푼 문제면 정답 확인 불가
+            if (isProblemSolved(gameState.currentRound, gameState.currentProblem)) {
+                alert('이미 푼 문제입니다!');
+                return;
+            }
+            
+            const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
+            const correctAnswers = problem.answer.map(ans => 
+                ans.toLowerCase().replace(/\s+/g, '')
+            );
+            
+            if (correctAnswers.includes(normalizedAnswer)) {
+                const usedHints = state.unlockedHints.length;
+                let soundType = 'correct';
+                let keyReward = 0;
+                
+                // ✅ 천재보너스 조건: 힌트 2개 이하 + 13초 안 + 처음 푸는 문제
+                if (usedHints <= 2 && state.geniusTimer > 0 && !isProblemRewarded(gameState.currentRound, gameState.currentProblem)) {
+                    soundType = 'genius';
+                    keyReward = 1;
+                    // 보상 기록
+                    gameState.rewardedProblems[problemId] = true;
+                }
+                
+                if (keyReward > 0) {
+                    gameState.keys += keyReward;
+                }
+                
+                AudioManager.playSound(soundType);
+                state.isCorrect = true;
+                state.unlockedHints = [0,1,2,3,4,5];
+                state.showDescriptions = [true,true,true,true,true,true];
+                state.showCharacterCount = true;
+                state.showCategory = true;
+                state.showChosung = true;
+                state.geniusTimerActive = false;
+                
+                // ✅ 문제 풀이 상태 기록
+                gameState.solvedProblems[problemId] = true;
+                
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                }
+                
+                renderGameScreen();
+                
+                setTimeout(() => {
+                    ScrollManager.scrollToHintsTop();
+                }, 200);
+                
+                saveGameState();
+            } else {
+                AudioManager.playSound('wrong');
+                const input = document.querySelector('.answer-input');
+                if (input) {
+                    input.style.animation = 'shake 0.3s';
+                    setTimeout(() => {
+                        input.style.animation = '';
+                        input.select();
+                    }, 300);
+                }
+            }
         }
-        
-        if (keyReward > 0) {
-            gameState.keys += keyReward;
-        }
-        
-        AudioManager.playSound(soundType);
-        state.isCorrect = true;
-        state.unlockedHints = [0,1,2,3,4,5];
-        state.showDescriptions = [true,true,true,true,true,true];
-        state.showCharacterCount = true;
-        state.showCategory = true;
-        state.showChosung = true;
-        state.geniusTimerActive = false;
-        
-        // ✅ 문제 풀이 상태 기록
-        gameState.solvedProblems[problemId] = true;
-        
-        if (state.timerInterval) {
-            clearInterval(state.timerInterval);
-        }
-        
-        renderGameScreen();
-        saveGameState();
-    }
-}
+
         // 나머지 함수들 (기존과 동일하지만 필요한 부분 수정)
         function showAllRoundsCompleted() {
             const html = `
@@ -2124,39 +2137,36 @@ function checkAnswer(value) {
             return popupData.reward;
         }
 
-function toggleMusicPanel() {
-    const panel = document.querySelector('.music-panel');
-    const buttons = document.querySelectorAll('.settings-button-header');
-    if (panel) {
-        panel.classList.toggle('active');
-        buttons.forEach(button => {
-            button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
-        });
-        // ✅ 패널이 열릴 때마다 최신 상태로 업데이트
-        if (panel.classList.contains('active')) {
-            updateMusicPanel();
+        function toggleMusicPanel() {
+            const panel = document.querySelector('.music-panel');
+            const buttons = document.querySelectorAll('.settings-button-header');
+            if (panel) {
+                panel.classList.toggle('active');
+                buttons.forEach(button => {
+                    button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
+                });
+                if (panel.classList.contains('active')) {
+                    updateMusicPanel();
+                }
+            }
         }
-    }
-}
 
-function updateMusicPanel() {
-    const panel = document.querySelector('.music-panel');
-    if (panel) {
-        panel.innerHTML = `
-            <div class="music-title">🎵 사운드 설정</div>
-            <div class="music-controls">
-                <button class="sound-control bgm-control ${AudioManager.bgmEnabled ? 'active' : ''}" 
-                        onclick="AudioManager.toggleBGM(); updateMusicPanel();">
-                    ${AudioManager.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF'}
-                </button>
-                <button class="sound-control sfx-control ${AudioManager.sfxEnabled ? 'active' : ''}" 
-                        onclick="AudioManager.toggleSFX(); updateMusicPanel();">
-                    ${AudioManager.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF'}
-                </button>
-            </div>
-        `;
-    }
-}
+        function updateMusicPanel() {
+            const panel = document.querySelector('.music-panel');
+            if (panel) {
+                panel.innerHTML = `
+                    <div class="music-title">🎵 사운드 설정</div>
+                    <div class="music-controls">
+                        <button class="sound-control bgm-control ${AudioManager.bgmEnabled ? 'active' : ''}" onclick="AudioManager.toggleBGM()">
+                            ${AudioManager.bgmEnabled ? '🔊 BGM ON' : '🔇 BGM OFF'}
+                        </button>
+                        <button class="sound-control sfx-control ${AudioManager.sfxEnabled ? 'active' : ''}" onclick="AudioManager.toggleSFX()">
+                            ${AudioManager.sfxEnabled ? '🎵 효과음 ON' : '🔕 효과음 OFF'}
+                        </button>
+                    </div>
+                `;
+            }
+        }
 
         // CSS 애니메이션
         const style = document.createElement('style');
