@@ -447,14 +447,15 @@
             margin-bottom: 8px;
             overflow: hidden;
             transition: all 0.3s;
-            animation: neonPulse 6s ease-in-out infinite;
+            animation: neonPulse 6s ease-in-out infinite !important;
         }
 
         .hint-item.locked {
             opacity: 0.7;
             opacity: 0.5; background: rgba(10, 8, 25, 0.9);
-            animation: lockedShake 5s ease-in-out infinite, neonPulse 6s ease-in-out infinite;
+            animation: lockedShake 5s ease-in-out infinite, neonPulse 6s ease-in-out infinite !important;
             background: rgba(15, 12, 41, 0.5);
+            filter: blur(0.8px) brightness(0.7) !important;
         }
 
         .hint-content {
@@ -552,7 +553,7 @@
             padding: 12px;
             text-align: center;
             transition: all 0.3s;
-            animation: neonPulse 6s ease-in-out infinite;
+            animation: neonPulse 6s ease-in-out infinite !important;
         }
 
         .info-box.category {
@@ -987,6 +988,257 @@
 
         .exit-popup-btn:active {
             transform: scale(0.95);
+        }
+
+        /* ✅ 수정된 CSS 애니메이션들 */
+        @keyframes keyBigZoomIn {
+            0% { 
+                transform: scale(0.05) rotate(0deg); 
+                opacity: 0; 
+                filter: brightness(1);
+            }
+            30% { 
+                transform: scale(8) rotate(180deg); 
+                opacity: 0.9;
+                filter: brightness(3) drop-shadow(0 0 50px #FFD700);
+            }
+            60% {
+                transform: scale(6) rotate(360deg);
+                opacity: 1;
+                filter: brightness(2.5) drop-shadow(0 0 80px #FFD700);
+            }
+            100% { 
+                transform: scale(4) rotate(360deg); 
+                opacity: 1;
+                filter: brightness(2) drop-shadow(0 0 30px #FFD700);
+            }
+        }
+
+        /* ✅ 팝업 애니메이션 강제 적용 */
+        .congratulation-popup.genius {
+            animation: popIn 0.5s ease-out !important;
+        }
+
+        .congratulation-popup.genius .popup-icon {
+            animation: blinkGlow 0.2s ease-in-out 6, zoomSpinBig 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+        }
+
+        .congratulation-popup.sharp .popup-icon {
+            animation: wiggleStrong 0.3s ease 5, shootingStar 1.5s ease !important;
+        }
+
+        .congratulation-popup.focus .popup-icon {
+            animation: spinWave 0.45s ease 5 !important;
+        }
+
+        .congratulation-popup.sleepy .popup-icon {
+            animation: floatSlowSleepy 0.9s ease-in-out 4 !important;
+        }
+
+        .congratulation-popup.chosung .popup-icon {
+            animation: flyAwaySmoke 0.4s ease 6 !important;
+        }
+
+        /* ✅ 팝업 아이콘 애니메이션 */
+        @keyframes blinkGlow {
+            0%, 100% { 
+                opacity: 1; 
+                filter: brightness(2) drop-shadow(0 0 30px #FFD700) drop-shadow(0 0 50px #FFA500);
+            }
+            50% { 
+                opacity: 0.1; 
+                filter: brightness(0.2) drop-shadow(0 0 5px #FFD700);
+            }
+        }
+
+        @keyframes zoomSpinBig {
+            0% { 
+                transform: scale(0.05) rotate(-90deg); 
+                opacity: 0;
+            }
+            65% { 
+                transform: scale(1.8) rotate(400deg); 
+            }
+            100% { 
+                transform: scale(1) rotate(360deg); 
+                opacity: 1;
+            }
+        }
+
+        @keyframes wiggleStrong {
+            0%, 100% { 
+                transform: rotate(0deg) scale(1); 
+            }
+            25% { 
+                transform: rotate(-30deg) scale(1.2); 
+            }
+            75% { 
+                transform: rotate(30deg) scale(1.2); 
+            }
+        }
+
+        @keyframes shootingStar {
+            0% { 
+                filter: brightness(1) drop-shadow(0 0 10px #00fffc);
+            }
+            35% {
+                filter: brightness(3) drop-shadow(0 0 50px #00fffc) drop-shadow(20px 20px 40px #b867ff);
+            }
+            70% { 
+                filter: brightness(2.5) drop-shadow(0 0 40px #00fffc) drop-shadow(15px 15px 30px #b867ff);
+            }
+            100% { 
+                filter: brightness(1) drop-shadow(0 0 10px #00fffc);
+            }
+        }
+
+        @keyframes spinWave {
+            0% { 
+                transform: rotate(0deg) scale(1); 
+                filter: hue-rotate(0deg) blur(0px) brightness(1);
+            }
+            25% { 
+                transform: rotate(180deg) scale(1.5); 
+                filter: hue-rotate(90deg) blur(3px) brightness(1.5);
+            }
+            50% { 
+                transform: rotate(360deg) scale(1); 
+                filter: hue-rotate(180deg) blur(0px) brightness(1);
+            }
+            75% { 
+                transform: rotate(540deg) scale(1.5); 
+                filter: hue-rotate(270deg) blur(3px) brightness(1.5);
+            }
+            100% { 
+                transform: rotate(720deg) scale(1); 
+                filter: hue-rotate(360deg) blur(0px) brightness(1);
+            }
+        }
+
+        @keyframes floatSlowSleepy {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 1;
+            }
+            25% { 
+                transform: translateY(-25px) rotate(-10deg); 
+                opacity: 0.7;
+            }
+            50% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 1;
+            }
+            75% { 
+                transform: translateY(-25px) rotate(10deg); 
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes flyAwaySmoke {
+            0% { 
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg); 
+                opacity: 1;
+                filter: blur(0px);
+            }
+            35% { 
+                transform: translateX(50px) translateY(-20px) scale(0.5) rotate(180deg); 
+                opacity: 0.3;
+                filter: blur(4px);
+            }
+            65% {
+                transform: translateX(-40px) translateY(15px) scale(0.6) rotate(300deg);
+                opacity: 0.4;
+                filter: blur(3px);
+            }
+            100% { 
+                transform: translateX(0) translateY(0) scale(1) rotate(360deg); 
+                opacity: 1;
+                filter: blur(0px);
+            }
+        }
+
+        /* ✅ Z Z Z 효과 */
+        .congratulation-popup.sleepy {
+            position: relative;
+        }
+
+        .congratulation-popup.sleepy::after {
+            content: 'Z Z Z';
+            position: absolute;
+            top: 20%;
+            right: 15%;
+            font-size: 2em;
+            color: #00fffc;
+            opacity: 0;
+            animation: zzzFloat 2.5s ease-in-out infinite;
+            font-weight: 900;
+            text-shadow: 0 0 15px #00fffc;
+        }
+
+        @keyframes zzzFloat {
+            0% { 
+                opacity: 0; 
+                transform: translateY(0px) translateX(0px) scale(0.4);
+            }
+            45% { 
+                opacity: 1; 
+                transform: translateY(-40px) translateX(20px) scale(1.2);
+            }
+            100% { 
+                opacity: 0; 
+                transform: translateY(-80px) translateX(40px) scale(0.6);
+            }
+        }
+
+        /* ✅ 힌트 카드 뒤집기 효과 */
+        @keyframes flipUnlock {
+            0% { transform: rotateY(0deg); opacity: 0.5; }
+            50% { transform: rotateY(90deg); opacity: 0.7; }
+            100% { transform: rotateY(0deg); opacity: 1; }
+        }
+
+        /* ✅ 네온 펄스 효과 */
+        @keyframes neonPulse {
+            0%, 100% { 
+                box-shadow: 0 0 5px rgba(0, 255, 252, 0.3), 0 0 10px rgba(255, 107, 157, 0.2);
+            }
+            50% { 
+                box-shadow: 0 0 10px rgba(0, 255, 252, 0.6), 0 0 20px rgba(255, 107, 157, 0.4);
+            }
+        }
+
+        /* ✅ 잠긴 힌트 흔들림 */
+        @keyframes lockedShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+
+        /* ✅ 정답 체크 튕기기 */
+        @keyframes checkBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* ✅ 입력창 흔들림 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* ✅ 타이머 깜빡임 */
+        @keyframes timerBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .timer-warning {
+            animation: timerBlink 0.5s ease-in-out infinite !important;
+        }
+
+        .timer-warning .timer-progress {
+            background: linear-gradient(90deg, #ff0080, #ff4040) !important;
         }
     </style>
 </head>
@@ -1503,7 +1755,6 @@
                     startGeniusTimer();
                 }
                 
-                
                 renderGameScreen(true);
                 saveGameState();
                 
@@ -1731,11 +1982,9 @@
                     timerInterval: null
                 };
                 
-                
                 if (!isAlreadySolved) {
                     startGeniusTimer();
                 }
-                
                 
                 renderGameScreen(true);
                 saveGameState();
@@ -1795,7 +2044,7 @@
                 setTimeout(() => {
                     const hintElement = document.getElementById(`hint-${hintIndex}`);
                     if (hintElement) {
-                        hintElement.style.animation = 'flipUnlock 0.6s ease, neonPulse 6s ease-in-out infinite 0.6s';
+                        hintElement.style.animation = 'flipUnlock 0.6s ease, neonPulse 6s ease-in-out infinite 0.6s !important';
                     }
                 }, 100);
             } else {
@@ -1808,7 +2057,6 @@
             const problem = gameState.problems[gameState.currentProblem];
             const state = gameState.currentProblemState;
             const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
-            
             
             const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
             const correctAnswers = problem.answer.map(ans => 
@@ -1849,7 +2097,6 @@
                 }
                 
                 renderGameScreen();
-                
                 
                 // 축하 팝업 표시
                 showCongratulationPopup(usedHints, false);
@@ -2083,7 +2330,7 @@
                     
                     <div class="main-content">
                         <div class="correct-answer">
-                            <div class="correct-icon" style="font-size: 5em; animation: keyBigZoomIn 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);">🔑</div>
+                            <div class="correct-icon" style="font-size: 5em; animation: keyBigZoomIn 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;">🔑</div>
                             <div class="correct-title" style="margin-top: 25px;">라운드 ${gameState.currentRound} 완료!</div>
                             <div style="color: #b867ff; font-size: 1.4em; margin-top: 15px; font-weight: 700; text-shadow: 0 0 20px rgba(184, 103, 255, 0.8);">열쇠를 획득하셨습니다!</div>
                         </div>
@@ -2111,20 +2358,19 @@
         function getPopupIconStyle(type) {
             switch(type) {
                 case "genius":
-                    return "font-size: 5em; animation: blinkGlow 0.2s ease-in-out 6, zoomSpinBig 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);";
+                    return "font-size: 5em;";
                 case "sharp":
-                    return "font-size: 4.5em; animation: wiggleStrong 0.3s ease 5, shootingStar 1.5s ease;";
+                    return "font-size: 4.5em;";
                 case "focus":
-                    return "font-size: 4.5em; animation: spinWave 0.45s ease 5;";
+                    return "font-size: 4.5em;";
                 case "sleepy":
-                    return "font-size: 4.5em; animation: floatSlowSleepy 0.9s ease-in-out 4;";
+                    return "font-size: 4.5em;";
                 case "chosung":
-                    return "font-size: 4.5em; animation: flyAwaySmoke 0.4s ease 6;";
+                    return "font-size: 4.5em;";
                 default:
                     return "font-size: 3em;";
             }
         }
-
 
         function showCongratulationPopup(hintsUsed, usedChosung) {
             let popupData = {};
@@ -2235,283 +2481,6 @@
                 `;
             }
         }
-        // CSS 애니메이션
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-
-        /* 정답 체크 튕기기 애니메이션 */
-        @keyframes checkBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        /* 축하 파티클 애니메이션 */
-        @keyframes confetti {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(300px) rotate(360deg); opacity: 0; }
-        }
-
-        /* 힌트 카드 뒤집기 */
-        @keyframes flipCard {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(180deg); }
-        }
-
-        /* 타이머 깜빡임 (5초 이하) */
-        @keyframes timerBlink {
-
-        /* 열쇠 줌인 애니메이션 */
-        @keyframes keyZoomIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* 🔑 라운드 완료 열쇠 화면 가득 확대 */
-        @keyframes keyBigZoomIn {
-            0% { 
-                transform: scale(0.05); 
-                opacity: 0; 
-            }
-            45% { 
-                transform: scale(6); 
-                opacity: 1;
-            }
-            75% {
-                transform: scale(5);
-                opacity: 1;
-            }
-            100% { 
-                transform: scale(3); 
-                opacity: 1; 
-            }
-        }
-
-        /* 네온 펄스 (힌트 박스) */
-        @keyframes neonPulse {
-            0%, 100% { 
-                box-shadow: 0 0 5px rgba(0, 255, 252, 0.3), 0 0 10px rgba(255, 107, 157, 0.2);
-            }
-            50% { 
-                box-shadow: 0 0 10px rgba(0, 255, 252, 0.6), 0 0 20px rgba(255, 107, 157, 0.4);
-            }
-        }
-
-        /* 힌트 카드 뒤집기 */
-        @keyframes flipUnlock {
-            0% { transform: rotateY(0deg); opacity: 0.5; }
-            50% { transform: rotateY(90deg); opacity: 0.7; }
-            100% { transform: rotateY(0deg); opacity: 1; }
-        }
-
-        /* 잠긴 힌트 흔들림 */
-        @keyframes lockedShake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
-        }
-
-        /* 💡 천재 팝업 - 깜빡이는 전구 + 강렬한 줌 */
-        .congratulation-popup.genius .popup-icon {
-            font-size: 5em !important;
-            animation: blinkGlow 0.2s ease-in-out 6, zoomSpinBig 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
-        }
-        @keyframes blinkGlow {
-            0%, 100% { 
-                opacity: 1; 
-                filter: brightness(2) drop-shadow(0 0 30px #FFD700) drop-shadow(0 0 50px #FFA500);
-            }
-            50% { 
-                opacity: 0.1; 
-                filter: brightness(0.2) drop-shadow(0 0 5px #FFD700);
-            }
-        }
-        @keyframes zoomSpinBig {
-            0% { 
-                transform: scale(0.05) rotate(-90deg); 
-                opacity: 0;
-            }
-            65% { 
-                transform: scale(1.8) rotate(400deg); 
-            }
-            100% { 
-                transform: scale(1) rotate(360deg); 
-                opacity: 1;
-            }
-        }
-
-        /* 😏 제법 팝업 - 좌우 흔들림 + 별똥별 */
-        .congratulation-popup.sharp .popup-icon {
-            font-size: 4.5em !important;
-            animation: wiggleStrong 0.3s ease 5, shootingStar 1.5s ease !important;
-        }
-        @keyframes wiggleStrong {
-            0%, 100% { 
-                transform: rotate(0deg) scale(1); 
-            }
-            25% { 
-                transform: rotate(-30deg) scale(1.2); 
-            }
-            75% { 
-                transform: rotate(30deg) scale(1.2); 
-            }
-        }
-        @keyframes shootingStar {
-            0% { 
-                filter: brightness(1) drop-shadow(0 0 10px #00fffc);
-            }
-            35% {
-                filter: brightness(3) drop-shadow(0 0 50px #00fffc) drop-shadow(20px 20px 40px #b867ff);
-            }
-            70% { 
-                filter: brightness(2.5) drop-shadow(0 0 40px #00fffc) drop-shadow(15px 15px 30px #b867ff);
-            }
-            100% { 
-                filter: brightness(1) drop-shadow(0 0 10px #00fffc);
-            }
-        }
-
-        /* 🤪 쏘쏘 팝업 - 빙글빙글 회전 + 물결 효과 */
-        .congratulation-popup.focus .popup-icon {
-            font-size: 4.5em !important;
-            animation: spinWave 0.45s ease 5 !important;
-        }
-        @keyframes spinWave {
-            0% { 
-                transform: rotate(0deg) scale(1); 
-                filter: hue-rotate(0deg) blur(0px) brightness(1);
-            }
-            25% { 
-                transform: rotate(180deg) scale(1.5); 
-                filter: hue-rotate(90deg) blur(3px) brightness(1.5);
-            }
-            50% { 
-                transform: rotate(360deg) scale(1); 
-                filter: hue-rotate(180deg) blur(0px) brightness(1);
-            }
-            75% { 
-                transform: rotate(540deg) scale(1.5); 
-                filter: hue-rotate(270deg) blur(3px) brightness(1.5);
-            }
-            100% { 
-                transform: rotate(720deg) scale(1); 
-                filter: hue-rotate(360deg) blur(0px) brightness(1);
-            }
-        }
-
-        /* 😴 피곤 팝업 - 위아래 + Z Z Z */
-        .congratulation-popup.sleepy {
-            position: relative;
-        }
-        .congratulation-popup.sleepy .popup-icon {
-            font-size: 4.5em !important;
-            animation: floatSlowSleepy 0.9s ease-in-out 4 !important;
-        }
-        @keyframes floatSlowSleepy {
-            0%, 100% { 
-                transform: translateY(0) rotate(0deg); 
-                opacity: 1;
-            }
-            25% { 
-                transform: translateY(-25px) rotate(-10deg); 
-                opacity: 0.7;
-            }
-            50% { 
-                transform: translateY(0) rotate(0deg); 
-                opacity: 1;
-            }
-            75% { 
-                transform: translateY(-25px) rotate(10deg); 
-                opacity: 0.7;
-            }
-        }
-        /* Z Z Z 효과 */
-        .congratulation-popup.sleepy::after {
-            content: 'Z Z Z';
-            position: absolute;
-            top: 20%;
-            right: 15%;
-            font-size: 2em;
-            color: #00fffc;
-            opacity: 0;
-            animation: zzzFloat 2.5s ease-in-out infinite;
-            font-weight: 900;
-            text-shadow: 0 0 15px #00fffc;
-        }
-        @keyframes zzzFloat {
-            0% { 
-                opacity: 0; 
-                transform: translateY(0px) translateX(0px) scale(0.4);
-            }
-            45% { 
-                opacity: 1; 
-                transform: translateY(-40px) translateX(20px) scale(1.2);
-            }
-            100% { 
-                opacity: 0; 
-                transform: translateY(-80px) translateX(40px) scale(0.6);
-            }
-        }
-
-        /* 💨 할많하않 팝업 - 빠르게 날아감 + 연기 */
-        .congratulation-popup.chosung .popup-icon {
-            font-size: 4.5em !important;
-            animation: flyAwaySmoke 0.4s ease 6 !important;
-        }
-        @keyframes flyAwaySmoke {
-            0% { 
-                transform: translateX(0) translateY(0) scale(1) rotate(0deg); 
-                opacity: 1;
-                filter: blur(0px);
-            }
-            35% { 
-                transform: translateX(50px) translateY(-20px) scale(0.5) rotate(180deg); 
-                opacity: 0.3;
-                filter: blur(4px);
-            }
-            65% {
-                transform: translateX(-40px) translateY(15px) scale(0.6) rotate(300deg);
-                opacity: 0.4;
-                filter: blur(3px);
-            }
-            100% { 
-                transform: translateX(0) translateY(0) scale(1) rotate(360deg); 
-                opacity: 1;
-                filter: blur(0px);
-            }
-        }
-
-        /* 힌트 박스에 네온 효과 적용 */
-        .hint-item {
-            animation: neonPulse 4s ease-in-out infinite;
-        }
-
-        /* 잠긴 힌트 효과 */
-        .hint-item.locked {
-            filter: blur(1px);
-            animation: lockedShake 3s ease-in-out infinite, neonPulse 4s ease-in-out infinite;
-        }
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        /* 정답 팝업 애니메이션 강화 */
-
-        /* 타이머 경고 상태 */
-        .timer-warning {
-            animation: timerBlink 0.5s ease-in-out infinite;
-        }
-
-        .timer-warning .timer-progress {
-            background: linear-gradient(90deg, #ff0080, #ff4040) !important;
-        }
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-5px); }
-                75% { transform: translateX(5px); }
-            }
-        `;
-        document.head.appendChild(style);
 
         // 앱 초기화
         async function initApp() {
