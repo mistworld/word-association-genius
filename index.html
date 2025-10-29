@@ -1906,7 +1906,7 @@
                         ${state.geniusTimerActive && !state.isCorrect ? `
                             <div class="genius-timer${state.geniusTimer <= 5 ? ' timer-warning' : ''}">
                                 <div class="genius-timer-header">
-                                    <div class="genius-timer-text">⚡ 천재 보너스 시간</div>
+                                    <div class="genius-timer-text">⚡ 13초 보너스</div>
                                     <div class="genius-timer-count">${state.geniusTimer}초</div>
                                 </div>
                                 <div class="timer-bar">
@@ -2581,10 +2581,9 @@
                         </button>
                     </div>
                     
-                    <div style="color: #00fffc; font-size: 14px; line-height: 1.8; padding: 15px 0; margin-top: 10px; border-top: 1px solid rgba(0, 255, 252, 0.2);">
+                    <div style="color: #00fffc; font-size: 14px; line-height: 1.8; padding: 12px 0; margin-top: 10px; border-top: 1px solid rgba(0, 255, 252, 0.2);">
                         <div>완료한 문제: ${solvedCount}/${totalProblems}</div>
-                        <div>천재 보너스: ${geniusCount}개</div>
-                        <div>현재 문어: ${currentKeys}개</div>
+                        <div>13초 보너스: ${geniusCount}개</div>
                     </div>
                 `;
             }
