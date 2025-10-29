@@ -1163,37 +1163,52 @@
         }
 
         /* ✅ 수정된 네온 펄스 효과 (찌리릭 효과 포함) */
-        @keyframes neonPulse {
-            0%, 85% { 
-                box-shadow: 0 0 5px rgba(0, 255, 252, 0.3);
-                border-color: #00fffc;
-            }
-            87% { 
-                box-shadow: 0 0 15px rgba(0, 255, 252, 0.8), 0 0 25px rgba(255, 107, 157, 0.6);
-                border-color: #b867ff;
-            }
-            89% { 
-                box-shadow: 0 0 5px rgba(0, 255, 252, 0.3);
-                border-color: #00fffc;
-            }
-            91% { 
-                box-shadow: 0 0 12px rgba(0, 255, 252, 0.7), 0 0 20px rgba(255, 107, 157, 0.5);
-                border-color: #ff0080;
-                filter: hue-rotate(45deg);
-            }
-            93%, 100% { 
-                box-shadow: 0 0 5px rgba(0, 255, 252, 0.3);
-                border-color: #00fffc;
-                filter: hue-rotate(0deg);
-            }
-        }
+/* 🎯 미니멀 트레이스 효과 - 민트색으로 */
+@keyframes minimalTrace {
+    0%, 100% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset 0 0 0 rgba(0, 255, 252, 0);
+    }
+    10% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset -20px -10px 20px rgba(0, 255, 252, 0.15);
+    }
+    30% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset 20px -10px 20px rgba(0, 255, 252, 0.2);
+    }
+    50% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset 20px 10px 20px rgba(0, 255, 252, 0.15);
+    }
+    70% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset -20px 10px 20px rgba(0, 255, 252, 0.2);
+    }
+    90% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset -20px -10px 20px rgba(0, 255, 252, 0.15);
+    }
+}
 
-        /* ✅ 잠긴 힌트 흔들림 */
-        @keyframes lockedShake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
-        }
+/* 🎯 열린 힌트에만 효과 적용 */
+.hint-item:not(.locked) {
+    animation: minimalTrace 12s ease-in-out infinite !important;
+}
+
+/* 🎯 각 힌트별 다른 타이밍 */
+.hint-item:not(.locked):nth-child(1) { animation-delay: 2s; }
+.hint-item:not(.locked):nth-child(2) { animation-delay: 5s; }
+.hint-item:not(.locked):nth-child(3) { animation-delay: 8s; }
+.hint-item:not(.locked):nth-child(4) { animation-delay: 11s; }
+.hint-item:not(.locked):nth-child(5) { animation-delay: 14s; }
+.hint-item:not(.locked):nth-child(6) { animation-delay: 17s; }
 
         /* ✅ 정답 체크 튕기기 */
         @keyframes checkBounce {
