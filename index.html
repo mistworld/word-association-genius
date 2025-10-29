@@ -83,7 +83,7 @@
             height: 2px;
             background: #00fffc;
             border-radius: 50%;
-            box-shadow: 0 0 10px 2px #00fffc, 0 0 20px 4px #ff6b9d;
+            box-shadow: 0 0 10px 2px #00fffc, 0 0 20px 4px #b867ff;
             animation: shoot 3s linear infinite;
             opacity: 0;
             z-index: -1;
@@ -123,7 +123,7 @@
         .magic-orb {
             width: 120px;
             height: 120px;
-            background: radial-gradient(circle at 30% 30%, #00fffc, #ff6b9d);
+            background: radial-gradient(circle at 30% 30%, #00fffc, #b867ff);
             border-radius: 50%;
             margin-bottom: 30px;
             animation: float 3s ease-in-out infinite;
@@ -131,7 +131,7 @@
                 0 0 50px rgba(0, 255, 252, 0.6),
                 inset 0 0 20px rgba(255, 255, 255, 0.3);
             position: relative;
-            border: 2px solid #ff6b9d;
+            border: 2px solid #b867ff;
         }
 
         .magic-orb::before {
@@ -152,7 +152,7 @@
             font-size: 3em;
             font-weight: 900;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #00fffc, #ff6b9d, #00fffc);
+            background: linear-gradient(135deg, #00fffc, #b867ff, #00fffc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: glow 2s ease-in-out infinite alternate;
@@ -168,7 +168,7 @@
 
         .subtitle {
             font-size: 1.3em;
-            color: #ff6b9d;
+            color: #b867ff;
             margin-bottom: 10px;
             font-weight: 500;
             text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
@@ -185,7 +185,7 @@
         }
 
         .start-button {
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             color: #0f0c29;
             border: none;
             border-radius: 25px;
@@ -246,7 +246,7 @@
         .home-button {
             width: 35px;
             height: 35px;
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -279,7 +279,7 @@
 
         .problem-number {
             font-size: 12px;
-            color: #ff6b9d;
+            color: #b867ff;
         }
 
         .header-right {
@@ -292,7 +292,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             padding: 6px 10px;
             border-radius: 15px;
             font-size: 12px;
@@ -344,14 +344,14 @@
         }
 
         .dot.current {
-            background: linear-gradient(135deg, #ff6b9d, #9C27B0);
+            background: linear-gradient(135deg, #b867ff, #9C27B0);
             transform: scale(1.4);
             box-shadow: 0 0 0 2px rgba(255, 0, 255, 0.3);
         }
 
         /* 천재 타이머 - 사이버펑크 */
         .genius-timer {
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             border-radius: 8px;
             padding: 6px 8px;
             margin: 5px 0;
@@ -448,11 +448,14 @@
             overflow: hidden;
             transition: all 0.3s;
         }
+            animation: neonPulse 4s ease-in-out infinite;
 
         .hint-item.locked {
             opacity: 0.7;
             background: rgba(15, 12, 41, 0.5);
         }
+            filter: blur(1px);
+            animation: lockedShake 3s ease-in-out infinite, neonPulse 4s ease-in-out infinite;
 
         .hint-content {
             padding: 12px;
@@ -475,7 +478,7 @@
         .hint-number {
             width: 28px;
             height: 28px;
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -503,7 +506,7 @@
 
         /* 잠긴 힌트 버튼 - 사이버펑크 */
         .unlock-btn {
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             color: #0f0c29;
             border: none;
             border-radius: 8px;
@@ -558,12 +561,12 @@
 
         .info-box.chosung {
             background: rgba(255, 0, 255, 0.15);
-            border-color: #ff6b9d;
+            border-color: #b867ff;
         }
 
         .info-label {
             font-size: 11px;
-            color: #ff6b9d;
+            color: #b867ff;
             margin-bottom: 4px;
             font-weight: 600;
             text-transform: uppercase;
@@ -576,7 +579,7 @@
         }
 
         .unlock-small {
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             color: #0f0c29;
             border: none;
             border-radius: 6px;
@@ -614,18 +617,18 @@
         }
 
         .answer-input::placeholder {
-            color: #ff6b9d;
+            color: #b867ff;
         }
 
         .answer-input:focus {
             outline: none;
-            border-color: #ff6b9d;
+            border-color: #b867ff;
             box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.2), 0 4px 15px rgba(0, 255, 252, 0.1);
             background: rgba(15, 12, 41, 0.9);
         }
 
         .submit-button {
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             color: #0f0c29;
             border: none;
             border-radius: 12px;
@@ -662,7 +665,7 @@
             font-size: 20px;
             font-weight: 900;
             margin-bottom: 8px;
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -676,13 +679,13 @@
 
         .correct-category {
             font-size: 14px;
-            color: #ff6b9d;
+            color: #b867ff;
             font-style: italic;
         }
 
         .next-button {
             width: 100%;
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             color: #0f0c29;
             border: none;
             padding: 15px;
@@ -709,7 +712,7 @@
 
         .show-answer-btn {
             width: 100%;
-            background: linear-gradient(135deg, #ff6b9d, #00fffc);
+            background: linear-gradient(135deg, #b867ff, #00fffc);
             color: #0f0c29;
             border: none;
             border-radius: 10px;
@@ -722,7 +725,7 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s;
-            border: 1px solid #ff6b9d;
+            border: 1px solid #b867ff;
         }
 
         .show-answer-btn:active {
@@ -735,7 +738,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             border-radius: 20px;
             padding: 25px;
             text-align: center;
@@ -832,7 +835,7 @@
         }
 
         .sound-control.active {
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             color: #0f0c29;
             border-color: #00fffc;
             box-shadow: 0 4px 12px rgba(0, 255, 252, 0.3);
@@ -873,7 +876,7 @@
         }
 
         .round-button.current {
-            background: linear-gradient(135deg, #ff6b9d, #9C27B0);
+            background: linear-gradient(135deg, #b867ff, #9C27B0);
             color: #0f0c29;
             box-shadow: 0 6px 20px rgba(255, 0, 255, 0.5);
             animation: pulse 2s infinite;
@@ -940,7 +943,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #00fffc, #ff6b9d);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             border-radius: 20px;
             padding: 25px;
             text-align: center;
@@ -977,8 +980,8 @@
 
         .exit-popup-btn.no {
             background: #0f0c29;
-            color: #ff6b9d;
-            border: 2px solid #ff6b9d;
+            color: #b867ff;
+            border: 2px solid #b867ff;
         }
 
         .exit-popup-btn:active {
@@ -1915,12 +1918,6 @@
                     renderGameScreen();
                     
                     // 키보드 유지를 위해 input 다시 포커스
-                    setTimeout(() => {
-                        const input = document.querySelector(".answer-input");
-                        if (input && !state.isCorrect) {
-                            input.focus();
-                        }
-                    }, 100);
                     clearInterval(state.timerInterval);
                 }
             }, 1000);
@@ -2078,8 +2075,9 @@
                     
                     <div class="main-content">
                         <div class="correct-answer">
-                            <div class="correct-icon" style="animation: keyZoomIn 1s ease, spin 2s linear infinite;">🔑</div>
+                            <div class="correct-icon" style="animation: keyBigZoomIn 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);">🔑</div>
                             <div class="correct-title">라운드 ${gameState.currentRound} 완료!</div>
+                            <div class="correct-subtitle" style="color: #b867ff; font-size: 1.2em; margin-top: 10px; font-weight: 600;">열쇠를 획득하셨습니다!</div>
                         </div>
                         
                         <!-- 배너 광고 추가 -->
@@ -2092,7 +2090,7 @@
                         <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px; font-size: 20px; font-weight: 700;">
                             다음 라운드
                         </button>
-                        <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #00fffc, #ff6b9d); font-size: 18px; font-weight: 700;">
+                        <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #00fffc, #b867ff); font-size: 18px; font-weight: 700;">
                             메인으로
                         </button>
                     </div>
@@ -2244,13 +2242,29 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
+        /* 열쇠 화면 가득 확대 애니메이션 - 라운드 완료용 */
+        @keyframes keyBigZoomIn {
+            0% { 
+                transform: scale(0.1); 
+                opacity: 0; 
+            }
+            50% { 
+                transform: scale(4); 
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(2.5); 
+                opacity: 1; 
+            }
+        }
+
         /* 네온 펄스 (힌트 박스) */
         @keyframes neonPulse {
             0%, 100% { 
-                box-shadow: 0 0 5px rgba(0, 255, 252, 0.3), 0 0 10px rgba(255, 107, 157, 0.2);
+                box-shadow: 0 0 5px rgba(0, 255, 252, 0.3), 0 0 10px rgba(184, 103, 255, 0.2);
             }
             50% { 
-                box-shadow: 0 0 10px rgba(0, 255, 252, 0.6), 0 0 20px rgba(255, 107, 157, 0.4);
+                box-shadow: 0 0 10px rgba(0, 255, 252, 0.6), 0 0 20px rgba(184, 103, 255, 0.4);
             }
         }
 
@@ -2268,54 +2282,161 @@
             75% { transform: translateX(2px); }
         }
 
-        /* 천재 팝업 - 깜빡이는 전구 */
+        /* 천재 팝업 - 깜빡이는 전구 + 파티클 효과 */
         .congratulation-popup.genius .popup-icon {
-            animation: blink 0.5s ease-in-out 3, zoomSpin 0.6s ease !important;
+            animation: blinkGlow 0.3s ease-in-out 4, zoomSpinBig 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+            font-size: 4em !important;
         }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+        @keyframes blinkGlow {
+            0%, 100% { 
+                opacity: 1; 
+                filter: brightness(1) drop-shadow(0 0 20px #FFD700);
+            }
+            50% { 
+                opacity: 0.2; 
+                filter: brightness(0.5) drop-shadow(0 0 5px #FFD700);
+            }
         }
-        @keyframes zoomSpin {
-            0% { transform: scale(0.5) rotate(0deg); }
-            100% { transform: scale(1) rotate(360deg); }
+        @keyframes zoomSpinBig {
+            0% { 
+                transform: scale(0.2) rotate(0deg); 
+                opacity: 0;
+            }
+            70% { 
+                transform: scale(1.5) rotate(360deg); 
+            }
+            100% { 
+                transform: scale(1) rotate(360deg); 
+                opacity: 1;
+            }
         }
 
-        /* 제법 팝업 - 좌우 흔들림 */
+        /* 제법 팝업 - 좌우 흔들림 + 별똥별 */
         .congratulation-popup.sharp .popup-icon {
-            animation: wiggle 0.5s ease 2 !important;
+            animation: wiggleStrong 0.4s ease 3, shootingStar 1s ease !important;
+            font-size: 3.5em !important;
         }
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-15deg); }
-            75% { transform: rotate(15deg); }
+        @keyframes wiggleStrong {
+            0%, 100% { 
+                transform: rotate(0deg) scale(1); 
+            }
+            25% { 
+                transform: rotate(-20deg) scale(1.1); 
+            }
+            75% { 
+                transform: rotate(20deg) scale(1.1); 
+            }
+        }
+        @keyframes shootingStar {
+            0% { 
+                filter: brightness(1) drop-shadow(0 0 10px #00fffc);
+            }
+            50% { 
+                filter: brightness(2) drop-shadow(0 0 30px #00fffc) drop-shadow(10px 10px 20px #b867ff);
+            }
+            100% { 
+                filter: brightness(1) drop-shadow(0 0 10px #00fffc);
+            }
         }
 
-        /* 쏘쏘 팝업 - 빙글빙글 */
+        /* 쏘쏘 팝업 - 빙글빙글 회전 + 물결 효과 */
         .congratulation-popup.focus .popup-icon {
-            animation: spinFast 0.8s ease 2 !important;
+            animation: spinWave 0.6s ease 3 !important;
+            font-size: 3.5em !important;
         }
-        @keyframes spinFast {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(720deg); }
+        @keyframes spinWave {
+            0% { 
+                transform: rotate(0deg) scale(1); 
+                filter: hue-rotate(0deg) blur(0px);
+            }
+            25% { 
+                transform: rotate(180deg) scale(1.3); 
+                filter: hue-rotate(90deg) blur(1px);
+            }
+            50% { 
+                transform: rotate(360deg) scale(1); 
+                filter: hue-rotate(180deg) blur(0px);
+            }
+            75% { 
+                transform: rotate(540deg) scale(1.3); 
+                filter: hue-rotate(270deg) blur(1px);
+            }
+            100% { 
+                transform: rotate(720deg) scale(1); 
+                filter: hue-rotate(360deg) blur(0px);
+            }
         }
 
         /* 피곤 팝업 - 위아래 + Z Z Z */
         .congratulation-popup.sleepy .popup-icon {
-            animation: floatSlow 1s ease-in-out 2 !important;
+            animation: floatSlowSleepy 1.2s ease-in-out 2 !important;
+            font-size: 3.5em !important;
         }
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        @keyframes floatSlowSleepy {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 1;
+            }
+            25% { 
+                transform: translateY(-15px) rotate(-5deg); 
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 1;
+            }
+            75% { 
+                transform: translateY(-15px) rotate(5deg); 
+                opacity: 0.8;
+            }
+        }
+        /* Z Z Z 효과 */
+        .congratulation-popup.sleepy::after {
+            content: 'Z Z Z';
+            position: absolute;
+            top: 20%;
+            right: 15%;
+            font-size: 1.5em;
+            color: #00fffc;
+            opacity: 0;
+            animation: zzzFloat 2s ease-in-out infinite;
+        }
+        @keyframes zzzFloat {
+            0% { 
+                opacity: 0; 
+                transform: translateY(0px) translateX(0px);
+            }
+            50% { 
+                opacity: 1; 
+                transform: translateY(-30px) translateX(10px);
+            }
+            100% { 
+                opacity: 0; 
+                transform: translateY(-60px) translateX(20px);
+            }
         }
 
-        /* 할많하않 팝업 - 빠르게 날아감 */
+        /* 할많하않 팝업 - 빠르게 날아감 + 연기처럼 퍼짐 */
         .congratulation-popup.chosung .popup-icon {
-            animation: flyAway 0.5s ease 2 !important;
+            animation: flyAwaySmoke 0.5s ease 3 !important;
+            font-size: 3.5em !important;
         }
-        @keyframes flyAway {
-            0% { transform: translateX(0) scale(1); }
-            100% { transform: translateX(20px) scale(0.8); opacity: 0.7; }
+        @keyframes flyAwaySmoke {
+            0% { 
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg); 
+                opacity: 1;
+                filter: blur(0px);
+            }
+            50% { 
+                transform: translateX(30px) translateY(-10px) scale(0.7) rotate(180deg); 
+                opacity: 0.5;
+                filter: blur(2px);
+            }
+            100% { 
+                transform: translateX(0) translateY(0) scale(1) rotate(360deg); 
+                opacity: 1;
+                filter: blur(0px);
+            }
         }
 
         /* 힌트 박스에 네온 효과 적용 */
