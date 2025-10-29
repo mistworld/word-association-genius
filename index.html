@@ -447,15 +447,15 @@
             margin-bottom: 8px;
             overflow: hidden;
             transition: all 0.3s;
+            animation: neonPulse 6s ease-in-out infinite;
         }
-            animation: neonPulse 5s ease-in-out infinite;
 
         .hint-item.locked {
             opacity: 0.7;
+            filter: blur(1px);
+            animation: lockedShake 5s ease-in-out infinite, neonPulse 6s ease-in-out infinite;
             background: rgba(15, 12, 41, 0.5);
         }
-            filter: blur(0.8px);
-            animation: lockedShake 4s ease-in-out infinite, neonPulse 5s ease-in-out infinite;
 
         .hint-content {
             padding: 12px;
@@ -1790,13 +1790,13 @@
                 renderGameScreen();
                 saveGameState();
                 
-                // 힌트 해금 애니메이션 효과
+                // 힌트 해금 카드 뒤집기 애니메이션
                 setTimeout(() => {
                     const hintElement = document.getElementById(`hint-${hintIndex}`);
                     if (hintElement) {
-                        hintElement.style.animation = 'flipUnlock 0.6s ease';
+                        hintElement.style.animation = 'flipUnlock 0.6s ease, neonPulse 6s ease-in-out infinite 0.6s';
                     }
-                }, 50);
+                }, 100);
             } else {
                 alert('열쇠가 부족합니다!');
             }
@@ -2082,9 +2082,9 @@
                     
                     <div class="main-content">
                         <div class="correct-answer">
-                            <div class="correct-icon" style="animation: keyBigZoomIn 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);">🔑</div>
+                            <div class="correct-icon" style="font-size: 5em; animation: keyBigZoomIn 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);">🔑</div>
                             <div class="correct-title" style="margin-top: 25px;">라운드 ${gameState.currentRound} 완료!</div>
-                            <div class="correct-subtitle" style="color: #b867ff; font-size: 1.3em; margin-top: 12px; font-weight: 600; text-shadow: 0 0 15px rgba(184, 103, 255, 0.6);">열쇠를 획득하셨습니다!</div>
+                            <div style="color: #b867ff; font-size: 1.4em; margin-top: 15px; font-weight: 700; text-shadow: 0 0 20px rgba(184, 103, 255, 0.8);">열쇠를 획득하셨습니다!</div>
                         </div>
                         
                         <!-- 배너 광고 추가 -->
@@ -2249,22 +2249,22 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* 열쇠 화면 가득 확대 애니메이션 - 라운드 완료용 */
+        /* 🔑 라운드 완료 열쇠 화면 가득 확대 */
         @keyframes keyBigZoomIn {
             0% { 
-                transform: scale(0.1); 
+                transform: scale(0.05); 
                 opacity: 0; 
             }
-            40% { 
-                transform: scale(5); 
+            45% { 
+                transform: scale(6); 
                 opacity: 1;
             }
-            70% {
-                transform: scale(4.5);
+            75% {
+                transform: scale(5);
                 opacity: 1;
             }
             100% { 
-                transform: scale(2.8); 
+                transform: scale(3); 
                 opacity: 1; 
             }
         }
@@ -2293,28 +2293,28 @@
             75% { transform: translateX(2px); }
         }
 
-        /* 천재 팝업 - 깜빡이는 전구 + 파티클 */
+        /* 💡 천재 팝업 - 깜빡이는 전구 + 강렬한 줌 */
         .congratulation-popup.genius .popup-icon {
-            animation: blinkGlow 0.25s ease-in-out 5, zoomSpinBig 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
-            font-size: 4.5em !important;
+            font-size: 5em !important;
+            animation: blinkGlow 0.2s ease-in-out 6, zoomSpinBig 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
         }
         @keyframes blinkGlow {
             0%, 100% { 
                 opacity: 1; 
-                filter: brightness(1.5) drop-shadow(0 0 25px #FFD700) drop-shadow(0 0 35px #FFA500);
+                filter: brightness(2) drop-shadow(0 0 30px #FFD700) drop-shadow(0 0 50px #FFA500);
             }
             50% { 
-                opacity: 0.15; 
-                filter: brightness(0.3) drop-shadow(0 0 5px #FFD700);
+                opacity: 0.1; 
+                filter: brightness(0.2) drop-shadow(0 0 5px #FFD700);
             }
         }
         @keyframes zoomSpinBig {
             0% { 
-                transform: scale(0.1) rotate(-45deg); 
+                transform: scale(0.05) rotate(-90deg); 
                 opacity: 0;
             }
-            60% { 
-                transform: scale(1.6) rotate(380deg); 
+            65% { 
+                transform: scale(1.8) rotate(400deg); 
             }
             100% { 
                 transform: scale(1) rotate(360deg); 
@@ -2322,41 +2322,41 @@
             }
         }
 
-        /* 제법 팝업 - 좌우 흔들림 + 별똥별 */
+        /* 😏 제법 팝업 - 좌우 흔들림 + 별똥별 */
         .congratulation-popup.sharp .popup-icon {
-            animation: wiggleStrong 0.35s ease 4, shootingStar 1.2s ease !important;
-            font-size: 4em !important;
+            font-size: 4.5em !important;
+            animation: wiggleStrong 0.3s ease 5, shootingStar 1.5s ease !important;
         }
         @keyframes wiggleStrong {
             0%, 100% { 
                 transform: rotate(0deg) scale(1); 
             }
             25% { 
-                transform: rotate(-25deg) scale(1.15); 
+                transform: rotate(-30deg) scale(1.2); 
             }
             75% { 
-                transform: rotate(25deg) scale(1.15); 
+                transform: rotate(30deg) scale(1.2); 
             }
         }
         @keyframes shootingStar {
             0% { 
                 filter: brightness(1) drop-shadow(0 0 10px #00fffc);
             }
-            30% {
-                filter: brightness(2.5) drop-shadow(0 0 40px #00fffc) drop-shadow(15px 15px 30px #b867ff);
+            35% {
+                filter: brightness(3) drop-shadow(0 0 50px #00fffc) drop-shadow(20px 20px 40px #b867ff);
             }
-            60% { 
-                filter: brightness(2) drop-shadow(0 0 35px #00fffc) drop-shadow(10px 10px 25px #b867ff);
+            70% { 
+                filter: brightness(2.5) drop-shadow(0 0 40px #00fffc) drop-shadow(15px 15px 30px #b867ff);
             }
             100% { 
                 filter: brightness(1) drop-shadow(0 0 10px #00fffc);
             }
         }
 
-        /* 쏘쏘 팝업 - 빙글빙글 회전 + 물결 효과 */
+        /* 🤪 쏘쏘 팝업 - 빙글빙글 회전 + 물결 효과 */
         .congratulation-popup.focus .popup-icon {
-            animation: spinWave 0.5s ease 4 !important;
-            font-size: 4em !important;
+            font-size: 4.5em !important;
+            animation: spinWave 0.45s ease 5 !important;
         }
         @keyframes spinWave {
             0% { 
@@ -2364,16 +2364,16 @@
                 filter: hue-rotate(0deg) blur(0px) brightness(1);
             }
             25% { 
-                transform: rotate(180deg) scale(1.4); 
-                filter: hue-rotate(90deg) blur(2px) brightness(1.3);
+                transform: rotate(180deg) scale(1.5); 
+                filter: hue-rotate(90deg) blur(3px) brightness(1.5);
             }
             50% { 
                 transform: rotate(360deg) scale(1); 
                 filter: hue-rotate(180deg) blur(0px) brightness(1);
             }
             75% { 
-                transform: rotate(540deg) scale(1.4); 
-                filter: hue-rotate(270deg) blur(2px) brightness(1.3);
+                transform: rotate(540deg) scale(1.5); 
+                filter: hue-rotate(270deg) blur(3px) brightness(1.5);
             }
             100% { 
                 transform: rotate(720deg) scale(1); 
@@ -2381,13 +2381,13 @@
             }
         }
 
-        /* 피곤 팝업 - 위아래 + Z Z Z */
+        /* 😴 피곤 팝업 - 위아래 + Z Z Z */
         .congratulation-popup.sleepy {
             position: relative;
         }
         .congratulation-popup.sleepy .popup-icon {
-            animation: floatSlowSleepy 1s ease-in-out 3 !important;
-            font-size: 4em !important;
+            font-size: 4.5em !important;
+            animation: floatSlowSleepy 0.9s ease-in-out 4 !important;
         }
         @keyframes floatSlowSleepy {
             0%, 100% { 
@@ -2395,50 +2395,50 @@
                 opacity: 1;
             }
             25% { 
-                transform: translateY(-20px) rotate(-8deg); 
-                opacity: 0.75;
+                transform: translateY(-25px) rotate(-10deg); 
+                opacity: 0.7;
             }
             50% { 
                 transform: translateY(0) rotate(0deg); 
                 opacity: 1;
             }
             75% { 
-                transform: translateY(-20px) rotate(8deg); 
-                opacity: 0.75;
+                transform: translateY(-25px) rotate(10deg); 
+                opacity: 0.7;
             }
         }
         /* Z Z Z 효과 */
         .congratulation-popup.sleepy::after {
             content: 'Z Z Z';
             position: absolute;
-            top: 25%;
-            right: 20%;
-            font-size: 1.8em;
+            top: 20%;
+            right: 15%;
+            font-size: 2em;
             color: #00fffc;
             opacity: 0;
             animation: zzzFloat 2.5s ease-in-out infinite;
-            font-weight: bold;
-            text-shadow: 0 0 10px #00fffc;
+            font-weight: 900;
+            text-shadow: 0 0 15px #00fffc;
         }
         @keyframes zzzFloat {
             0% { 
                 opacity: 0; 
-                transform: translateY(0px) translateX(0px) scale(0.5);
+                transform: translateY(0px) translateX(0px) scale(0.4);
             }
-            40% { 
+            45% { 
                 opacity: 1; 
-                transform: translateY(-35px) translateX(15px) scale(1);
+                transform: translateY(-40px) translateX(20px) scale(1.2);
             }
             100% { 
                 opacity: 0; 
-                transform: translateY(-70px) translateX(30px) scale(0.7);
+                transform: translateY(-80px) translateX(40px) scale(0.6);
             }
         }
 
-        /* 할많하않 팝업 - 빠르게 날아감 + 연기처럼 퍼짐 */
+        /* 💨 할많하않 팝업 - 빠르게 날아감 + 연기 */
         .congratulation-popup.chosung .popup-icon {
-            animation: flyAwaySmoke 0.45s ease 4 !important;
-            font-size: 4em !important;
+            font-size: 4.5em !important;
+            animation: flyAwaySmoke 0.4s ease 6 !important;
         }
         @keyframes flyAwaySmoke {
             0% { 
@@ -2446,15 +2446,15 @@
                 opacity: 1;
                 filter: blur(0px);
             }
-            40% { 
-                transform: translateX(40px) translateY(-15px) scale(0.6) rotate(180deg); 
+            35% { 
+                transform: translateX(50px) translateY(-20px) scale(0.5) rotate(180deg); 
+                opacity: 0.3;
+                filter: blur(4px);
+            }
+            65% {
+                transform: translateX(-40px) translateY(15px) scale(0.6) rotate(300deg);
                 opacity: 0.4;
                 filter: blur(3px);
-            }
-            60% {
-                transform: translateX(-30px) translateY(10px) scale(0.7) rotate(270deg);
-                opacity: 0.5;
-                filter: blur(2px);
             }
             100% { 
                 transform: translateX(0) translateY(0) scale(1) rotate(360deg); 
