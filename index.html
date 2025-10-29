@@ -452,7 +452,7 @@
 
         .hint-item.locked {
             opacity: 0.7;
-            filter: blur(1px);
+            opacity: 0.5; background: rgba(10, 8, 25, 0.9);
             animation: lockedShake 5s ease-in-out infinite, neonPulse 6s ease-in-out infinite;
             background: rgba(15, 12, 41, 0.5);
         }
@@ -552,6 +552,7 @@
             padding: 12px;
             text-align: center;
             transition: all 0.3s;
+            animation: neonPulse 6s ease-in-out infinite;
         }
 
         .info-box.category {
@@ -2107,6 +2108,24 @@
             BackButtonManager.setScreen('roundMap');
         }
 
+        function getPopupIconStyle(type) {
+            switch(type) {
+                case "genius":
+                    return "font-size: 5em; animation: blinkGlow 0.2s ease-in-out 6, zoomSpinBig 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);";
+                case "sharp":
+                    return "font-size: 4.5em; animation: wiggleStrong 0.3s ease 5, shootingStar 1.5s ease;";
+                case "focus":
+                    return "font-size: 4.5em; animation: spinWave 0.45s ease 5;";
+                case "sleepy":
+                    return "font-size: 4.5em; animation: floatSlowSleepy 0.9s ease-in-out 4;";
+                case "chosung":
+                    return "font-size: 4.5em; animation: flyAwaySmoke 0.4s ease 6;";
+                default:
+                    return "font-size: 3em;";
+            }
+        }
+
+
         function showCongratulationPopup(hintsUsed, usedChosung) {
             let popupData = {};
             
@@ -2154,7 +2173,7 @@
             
             const popupHtml = `
                 <div class="congratulation-popup ${popupData.type}">
-                    <div class="popup-icon">${popupData.icon}</div>
+                    <div class="popup-icon" style="${getPopupIconStyle(popupData.type)}">${popupData.icon}</div>
                     <div class="popup-title">${popupData.title}</div>
                     ${popupData.reward > 0 ? `
                         <div class="popup-reward">🔑 +${popupData.reward} 열쇠 획득!</div>
