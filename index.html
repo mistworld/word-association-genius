@@ -57,7 +57,7 @@
             bottom: 0;
             background: 
                 radial-gradient(circle at 20% 30%, rgba(0, 255, 252, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(0, 255, 252, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 40% 80%, rgba(0, 255, 252, 0.1) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
@@ -83,7 +83,7 @@
             height: 2px;
             background: #00fffc;
             border-radius: 50%;
-            box-shadow: 0 0 10px 2px #00fffc, 0 0 20px 4px #00a2ff;
+            box-shadow: 0 0 10px 2px #00fffc, 0 0 20px 4px #b867ff;
             animation: shoot 3s linear infinite;
             opacity: 0;
             z-index: -1;
@@ -108,7 +108,7 @@
             flex-direction: column;
         }
 
-        /* === 수정: 세련된 시작 화면 === */
+        /* 사이버펑크 시작 화면 */
         .start-screen {
             display: flex;
             flex-direction: column;
@@ -121,44 +121,58 @@
         }
 
         .magic-orb {
-            width: 140px;
-            height: 140px;
-            background: radial-gradient(circle at 30% 30%, #00fffc, #00a2ff);
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle at 30% 30%, #00fffc, #b867ff);
             border-radius: 50%;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             animation: float 3s ease-in-out infinite;
             box-shadow: 
-                0 0 60px rgba(0, 255, 252, 0.8),
-                inset 0 0 30px rgba(255, 255, 255, 0.4);
+                0 0 50px rgba(0, 255, 252, 0.6),
+                inset 0 0 20px rgba(255, 255, 255, 0.3);
             position: relative;
-            border: 3px solid #00fffc;
+            border: 2px solid #b867ff;
         }
 
         .magic-orb::before {
             content: '🐙';
-            font-size: 60px;
+            font-size: 70px;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             animation: 
-                spin 4s linear infinite,
+                rainbowOctopus 3s ease-in-out infinite,
                 tentacleWiggle 2s ease-in-out infinite;
-            filter: 
-                hue-rotate(160deg) 
-                saturate(1.8)
-                brightness(1.1)
-                drop-shadow(0 0 15px rgba(0, 255, 252, 0.8));
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-20px) scale(1.05); }
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(360deg); }
         }
 
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        /* 무지개 색상 효과 */
+        @keyframes rainbowOctopus {
+            0% { 
+                filter: hue-rotate(180deg) drop-shadow(0 0 20px #00fffc);
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+            25% { 
+                filter: hue-rotate(200deg) drop-shadow(0 0 20px #00d4ff);
+                transform: translate(-50%, -50%) scale(1.05) rotate(5deg);
+            }
+            50% { 
+                filter: hue-rotate(220deg) drop-shadow(0 0 20px #0099ff);
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+            75% { 
+                filter: hue-rotate(260deg) drop-shadow(0 0 20px #b867ff);
+                transform: translate(-50%, -50%) scale(1.05) rotate(-5deg);
+            }
+            100% { 
+                filter: hue-rotate(180deg) drop-shadow(0 0 20px #00fffc);
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
         }
 
         /* 다리 꿈틀거림 효과 */
@@ -167,79 +181,75 @@
                 transform: translate(-50%, -50%) scale(1) rotate(0deg);
             }
             25% { 
-                transform: translate(-50%, -50%) scale(1.1) rotate(5deg);
+                transform: translate(-50%, -50%) scale(1.05) rotate(3deg);
             }
             50% { 
                 transform: translate(-50%, -50%) scale(1) rotate(0deg);
             }
             75% { 
-                transform: translate(-50%, -50%) scale(1.1) rotate(-5deg);
+                transform: translate(-50%, -50%) scale(1.05) rotate(-3deg);
             }
         }
 
         .title-main {
-            font-size: 3.5em;
-            font-weight: 900;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #00fffc, #00a2ff, #00fffc);
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #00fffc, #b867ff, #00fffc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: glow 2s ease-in-out infinite alternate;
-            line-height: 1.1;
-            text-shadow: 0 0 40px rgba(0, 255, 252, 0.6);
-            letter-spacing: 3px;
-            font-family: 'Orbitron', sans-serif;
+            line-height: 1.2;
+            text-shadow: none;
+            letter-spacing: 0.1em;
         }
 
         @keyframes glow {
-            from { text-shadow: 0 0 20px rgba(0, 255, 252, 0.5), 0 0 30px rgba(0, 162, 255, 0.3); }
-            to { text-shadow: 0 0 30px rgba(0, 255, 252, 0.8), 0 0 40px rgba(0, 162, 255, 0.6), 0 0 50px rgba(0, 255, 252, 0.4); }
+            from { text-shadow: 0 0 20px rgba(0, 255, 252, 0.5), 0 0 30px rgba(255, 0, 255, 0.3); }
+            to { text-shadow: 0 0 30px rgba(0, 255, 252, 0.8), 0 0 40px rgba(255, 0, 255, 0.6), 0 0 50px rgba(0, 255, 252, 0.4); }
         }
 
         .subtitle {
-            font-size: 1.4em;
-            color: #00a2ff;
-            margin-bottom: 15px;
-            font-weight: 500;
-            text-shadow: 0 0 15px rgba(0, 162, 255, 0.5);
-            letter-spacing: 1px;
-            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1em;
+            color: #b867ff;
+            margin-bottom: 10px;
+            font-weight: 400;
+            text-shadow: none;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
         }
 
         .highlight {
-            font-size: 1.2em;
+            font-size: 1em;
             color: #00fffc;
-            font-weight: bold;
-            margin-bottom: 50px;
-            text-shadow: 0 0 10px rgba(0, 255, 252, 0.5);
-            letter-spacing: 1px;
-            line-height: 1.5;
-            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            margin-bottom: 40px;
+            text-shadow: none;
+            letter-spacing: 0.05em;
+            opacity: 0.85;
         }
 
         .start-button {
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             color: #0f0c29;
             border: none;
-            border-radius: 30px;
-            padding: 20px 45px;
-            font-size: 1.4em;
+            border-radius: 25px;
+            padding: 18px 40px;
+            font-size: 1.3em;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 
-                0 10px 35px rgba(0, 255, 252, 0.5),
-                0 0 25px rgba(0, 162, 255, 0.4);
+                0 10px 30px rgba(0, 255, 252, 0.4),
+                0 0 20px rgba(255, 0, 255, 0.3);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             animation: pulse 2s ease-in-out infinite;
             position: relative;
             overflow: hidden;
             letter-spacing: 1px;
-            border: 2px solid #00fffc;
-            font-family: 'Orbitron', sans-serif;
-            min-height: 60px;
+            border: 1px solid #00fffc;
         }
 
         .start-button:active {
@@ -247,142 +257,11 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 10px 35px rgba(0, 255, 252, 0.5); }
-            50% { transform: scale(1.05); box-shadow: 0 15px 45px rgba(0, 255, 252, 0.7), 0 0 30px rgba(0, 162, 255, 0.5); }
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(0, 255, 252, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(0, 255, 252, 0.6), 0 0 25px rgba(255, 0, 255, 0.4); }
         }
 
-        /* === 수정: 잠긴 힌트 더 어둡게 === */
-        .hint-item.locked {
-            opacity: 0.4;
-            background: rgba(8, 6, 25, 0.9);
-            border-color: rgba(0, 255, 252, 0.1);
-            filter: grayscale(0.5) brightness(0.7);
-            animation: lockedShake 5s ease-in-out infinite !important;
-        }
-
-        /* === 수정: 열쇠 → 문어로 변경 === */
-        .key-count {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
-            padding: 8px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #0f0c29;
-            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
-            border: 1px solid #00fffc;
-        }
-
-        .unlock-btn, .unlock-small {
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
-            color: #0f0c29;
-            border: none;
-            border-radius: 8px;
-            padding: 6px 10px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0, 255, 252, 0.4);
-            border: 1px solid #00fffc;
-        }
-
-        /* === 수정: 천재문어 팝업 더 화려하게 === */
-        .congratulation-popup.genius .popup-icon {
-            animation: 
-                blinkGlow 0.1s ease-in-out 12, 
-                megaSpin 2s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-                colorShift 3s ease-in-out infinite !important;
-            filter: 
-                hue-rotate(160deg)
-                brightness(1.5)
-                saturate(2.5)
-                drop-shadow(0 0 30px #00fffc)
-                drop-shadow(0 0 50px #00a2ff)
-                drop-shadow(0 0 70px #00fffc) !important;
-        }
-
-        @keyframes megaSpin {
-            0% { 
-                transform: scale(0.1) rotate(-180deg); 
-                opacity: 0;
-            }
-            30% { 
-                transform: scale(2) rotate(720deg); 
-                opacity: 1;
-            }
-            70% { 
-                transform: scale(1.8) rotate(1080deg); 
-            }
-            100% { 
-                transform: scale(1.5) rotate(1440deg); 
-                opacity: 1;
-            }
-        }
-
-        @keyframes colorShift {
-            0%, 100% { 
-                filter: 
-                    hue-rotate(160deg)
-                    brightness(1.5)
-                    saturate(2.5)
-                    drop-shadow(0 0 30px #00fffc)
-                    drop-shadow(0 0 50px #00a2ff);
-            }
-            50% { 
-                filter: 
-                    hue-rotate(140deg)
-                    brightness(1.8)
-                    saturate(3)
-                    drop-shadow(0 0 40px #00a2ff)
-                    drop-shadow(0 0 60px #00fffc);
-            }
-        }
-
-        .congratulation-popup.genius .popup-title {
-            font-size: 28px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #00fffc, #00a2ff, #00fffc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 255, 252, 0.8);
-            animation: titlePulse 0.8s ease-in-out infinite alternate;
-        }
-
-        @keyframes titlePulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
-        }
-
-        .congratulation-popup.genius .popup-reward {
-            background: rgba(0, 255, 252, 0.3);
-            border: 2px solid #00fffc;
-            border-radius: 15px;
-            padding: 12px 20px;
-            font-size: 18px;
-            font-weight: 900;
-            color: #00fffc;
-            text-shadow: 0 0 10px rgba(0, 255, 252, 0.8);
-            animation: rewardGlow 1s ease-in-out infinite alternate;
-        }
-
-        @keyframes rewardGlow {
-            from { 
-                box-shadow: 0 0 20px rgba(0, 255, 252, 0.5);
-                transform: scale(1);
-            }
-            to { 
-                box-shadow: 0 0 30px rgba(0, 255, 252, 0.8), 0 0 40px rgba(0, 162, 255, 0.6);
-                transform: scale(1.05);
-            }
-        }
-
-        /* === 기존 스타일 유지 (일부 수정) === */
+        /* 게임 헤더 - 사이버펑크 */
         .header {
             background: rgba(15, 12, 41, 0.95);
             backdrop-filter: blur(20px);
@@ -412,7 +291,7 @@
         .home-button {
             width: 35px;
             height: 35px;
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -424,6 +303,10 @@
             justify-content: center;
             color: #0f0c29;
             border: 1px solid #00fffc;
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
         }
 
         .round-info-compact {
@@ -441,13 +324,27 @@
 
         .problem-number {
             font-size: 12px;
-            color: #00a2ff;
+            color: #b867ff;
         }
 
         .header-right {
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        .key-count {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #00fffc, #b867ff);
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #0f0c29;
+            box-shadow: 0 4px 12px rgba(0, 255, 252, 0.4);
+            border: 1px solid #00fffc;
         }
 
         .settings-button-header {
@@ -463,6 +360,10 @@
             align-items: center;
             justify-content: center;
             color: #00fffc;
+        }
+
+        .settings-button-header:active {
+            transform: scale(0.95);
         }
 
         .progress-dots {
@@ -488,14 +389,14 @@
         }
 
         .dot.current {
-            background: linear-gradient(135deg, #00a2ff, #0077cc);
+            background: linear-gradient(135deg, #b867ff, #9C27B0);
             transform: scale(1.4);
-            box-shadow: 0 0 0 2px rgba(0, 162, 255, 0.3);
+            box-shadow: 0 0 0 2px rgba(255, 0, 255, 0.3);
         }
 
-        /* 천재 타이머 */
+        /* 천재 타이머 - 사이버펑크 */
         .genius-timer {
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             border-radius: 8px;
             padding: 6px 8px;
             margin: 5px 0;
@@ -538,7 +439,7 @@
             border-radius: 2px;
         }
 
-        /* 메인 콘텐츠 */
+        /* 메인 콘텐츠 - 사이버펑크 */
         .main-content {
             background: rgba(15, 12, 41, 0.95);
             backdrop-filter: blur(15px);
@@ -555,9 +456,9 @@
             border-bottom: none;
         }
 
-        /* 힌트 섹션 */
+        /* 힌트 섹션 - 사이버펑크 */
         .hints-section {
-            background: linear-gradient(135deg, rgba(0, 255, 252, 0.1), rgba(0, 162, 255, 0.05));
+            background: linear-gradient(135deg, rgba(0, 255, 252, 0.1), rgba(255, 0, 255, 0.05));
             border-radius: 15px;
             padding: 12px;
             border: 1px solid #00fffc;
@@ -575,6 +476,15 @@
             scroll-behavior: auto;
         }
 
+        .hints-container::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .hints-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 252, 0.5);
+            border-radius: 2px;
+        }
+
         .hint-item {
             background: rgba(15, 12, 41, 0.8);
             border: 1px solid #00fffc;
@@ -582,19 +492,28 @@
             margin-bottom: 8px;
             overflow: hidden;
             transition: all 0.3s;
-            animation: minimalTrace 12s ease-in-out infinite !important;
+            /* ✅ 수정: 네온 펄스 효과 추가 */
+            animation: neonPulse 8s ease-in-out infinite !important;
+        }
+
+        .hint-item.locked {
+            opacity: 0.4;
+            background: rgba(15, 12, 41, 0.3);
+            filter: brightness(0.5);
+            animation: lockedShake 5s ease-in-out infinite, neonPulse 8s ease-in-out infinite !important;
         }
 
         .hint-content {
             padding: 12px;
         }
 
+        /* ✅ 수정된 부분: 힌트 헤더 레이아웃 */
         .hint-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 6px;
-            gap: 8px;
+            gap: 8px; /* ✅ 추가: 요소 사이 간격 */
         }
 
         .hint-left {
@@ -607,7 +526,7 @@
         .hint-number {
             width: 28px;
             height: 28px;
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -628,10 +547,33 @@
             flex: 1;
         }
 
+        /* ✅ 수정된 부분: 힌트 컨트롤 버튼들 */
         .hint-controls {
             display: flex;
             gap: 4px;
-            flex-shrink: 0;
+            flex-shrink: 0; /* ✅ 추가: 버튼이 줄어들지 않게 */
+        }
+
+        /* 잠긴 힌트 버튼 - 사이버펑크 */
+        .unlock-btn {
+            background: linear-gradient(135deg, #00fffc, #b867ff);
+            color: #0f0c29;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 255, 252, 0.4);
+            border: 1px solid #00fffc;
+        }
+
+        .unlock-btn:active {
+            transform: scale(0.95);
         }
 
         .description {
@@ -645,7 +587,7 @@
             color: #00fffc;
         }
 
-        /* 정보 그리드 */
+        /* 정보 그리드 - 사이버펑크 */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -668,13 +610,13 @@
         }
 
         .info-box.chosung {
-            background: rgba(0, 162, 255, 0.15);
-            border-color: #00a2ff;
+            background: rgba(255, 0, 255, 0.15);
+            border-color: #b867ff;
         }
 
         .info-label {
             font-size: 11px;
-            color: #00a2ff;
+            color: #b867ff;
             margin-bottom: 4px;
             font-weight: 600;
             text-transform: uppercase;
@@ -687,7 +629,7 @@
         }
 
         .unlock-small {
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             color: #0f0c29;
             border: none;
             border-radius: 6px;
@@ -703,7 +645,7 @@
             border: 1px solid #00fffc;
         }
 
-        /* 정답 입력 섹션 */
+        /* 정답 입력 섹션 - 사이버펑크 */
         .answer-input-section {
             display: flex;
             gap: 10px;
@@ -722,22 +664,21 @@
             color: #00fffc;
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(0, 255, 252, 0.1);
-            min-height: 50px;
         }
 
         .answer-input::placeholder {
-            color: #00a2ff;
+            color: #b867ff;
         }
 
         .answer-input:focus {
             outline: none;
-            border-color: #00a2ff;
-            box-shadow: 0 0 0 3px rgba(0, 162, 255, 0.2), 0 4px 15px rgba(0, 255, 252, 0.1);
+            border-color: #b867ff;
+            box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.2), 0 4px 15px rgba(0, 255, 252, 0.1);
             background: rgba(15, 12, 41, 0.9);
         }
 
         .submit-button {
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             color: #0f0c29;
             border: none;
             border-radius: 12px;
@@ -749,18 +690,21 @@
             box-shadow: 0 4px 15px rgba(0, 255, 252, 0.4);
             white-space: nowrap;
             border: 1px solid #00fffc;
-            min-height: 50px;
         }
 
-        /* 정답 맞췄을 때 */
+        .submit-button:active {
+            transform: scale(0.95);
+        }
+
+        /* 정답 맞췄을 때 - 사이버펑크 */
         .correct-answer {
-            background: linear-gradient(135deg, rgba(0, 255, 252, 0.1), rgba(0, 162, 255, 0.1));
+            background: linear-gradient(135deg, rgba(0, 255, 252, 0.1), rgba(255, 0, 255, 0.1));
             border: 2px solid #00fffc;
             border-radius: 15px;
-            padding: 15px 20px;
+            padding: 15px 20px; /* ✅ 수정: 패딩 줄임 */
             text-align: center;
             color: #00fffc;
-            margin-bottom: 15px;
+            margin-bottom: 15px; /* ✅ 추가: 아래 여백 */
         }
 
         .correct-icon {
@@ -772,7 +716,7 @@
             font-size: 20px;
             font-weight: 900;
             margin-bottom: 8px;
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -786,13 +730,13 @@
 
         .correct-category {
             font-size: 14px;
-            color: #00a2ff;
+            color: #b867ff;
             font-style: italic;
         }
 
         .next-button {
             width: 100%;
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             color: #0f0c29;
             border: none;
             padding: 15px;
@@ -808,14 +752,18 @@
             border: 1px solid #00fffc;
         }
 
-        /* 정답보기 버튼 */
+        .next-button:active {
+            transform: scale(0.98);
+        }
+
+        /* 정답보기 버튼 - 사이버펑크 */
         .show-answer-section {
             padding: 10px 0;
         }
 
         .show-answer-btn {
             width: 100%;
-            background: linear-gradient(135deg, #00a2ff, #00fffc);
+            background: linear-gradient(135deg, #b867ff, #00fffc);
             color: #0f0c29;
             border: none;
             border-radius: 10px;
@@ -828,16 +776,20 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s;
-            border: 1px solid #00a2ff;
+            border: 1px solid #b867ff;
         }
 
-        /* 축하 팝업 */
+        .show-answer-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 축하 팝업 - 사이버펑크 */
         .congratulation-popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             border-radius: 20px;
             padding: 25px;
             text-align: center;
@@ -857,9 +809,14 @@
         }
 
         .popup-title {
-            font-size: 22px;
-            font-weight: bold;
+            font-size: 26px;
+            font-weight: 900;
             margin-bottom: 8px;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(0, 255, 252, 0.6),
+                2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.05em;
         }
 
         .popup-message {
@@ -882,7 +839,7 @@
             100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
-        /* 음악 패널 */
+        /* 음악 패널 - 사이버펑크 */
         .music-panel {
             position: fixed;
             top: 60px;
@@ -934,13 +891,17 @@
         }
 
         .sound-control.active {
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             color: #0f0c29;
             border-color: #00fffc;
             box-shadow: 0 4px 12px rgba(0, 255, 252, 0.3);
         }
 
-        /* 라운드 맵 */
+        .sound-control:active {
+            transform: scale(0.95);
+        }
+
+        /* 라운드 맵 - 사이버펑크 */
         .round-map {
             padding: 20px;
         }
@@ -971,9 +932,9 @@
         }
 
         .round-button.current {
-            background: linear-gradient(135deg, #00a2ff, #0077cc);
+            background: linear-gradient(135deg, #b867ff, #9C27B0);
             color: #0f0c29;
-            box-shadow: 0 6px 20px rgba(0, 162, 255, 0.5);
+            box-shadow: 0 6px 20px rgba(255, 0, 255, 0.5);
             animation: pulse 2s infinite;
         }
 
@@ -982,6 +943,10 @@
             color: #302b63;
             cursor: not-allowed;
             border: 1px solid #302b63;
+        }
+
+        .round-button:active:not(.locked) {
+            transform: scale(0.95);
         }
 
         /* 배너 광고 */
@@ -1034,7 +999,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #00fffc, #00a2ff);
+            background: linear-gradient(135deg, #00fffc, #b867ff);
             border-radius: 20px;
             padding: 25px;
             text-align: center;
@@ -1071,11 +1036,15 @@
 
         .exit-popup-btn.no {
             background: #0f0c29;
-            color: #00a2ff;
-            border: 2px solid #00a2ff;
+            color: #b867ff;
+            border: 2px solid #b867ff;
         }
 
-        /* 애니메이션들 */
+        .exit-popup-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ✅ 수정된 CSS 애니메이션들 */
         @keyframes keyBigZoomIn_rotate {
             0% { 
                 transform: scale(0.1) rotate(-45deg); 
@@ -1091,8 +1060,21 @@
             }
         }
 
+        /* ✅ 팝업 애니메이션 강제 적용 */
         .congratulation-popup.genius {
             animation: popIn 0.5s ease-out !important;
+        }
+
+        .congratulation-popup.genius .popup-icon {
+            animation: blinkGlow 0.15s ease-in-out 8, zoomSpinBig 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+            /* 🎯 블루계열 문어로 변경 */
+            filter: 
+                hue-rotate(180deg)
+                brightness(1.5)
+                saturate(2.5)
+                drop-shadow(0 0 30px #00fffc)
+                drop-shadow(0 0 50px #00d4ff)
+                drop-shadow(0 0 70px #0099ff) !important;
         }
 
         .congratulation-popup.sharp .popup-icon {
@@ -1111,14 +1093,29 @@
             animation: breathOut 1.5s ease 1 !important;
         }
 
+        /* ✅ 팝업 아이콘 애니메이션 */
         @keyframes blinkGlow {
             0%, 100% { 
                 opacity: 1; 
-                filter: brightness(2) drop-shadow(0 0 30px #00a2ff) drop-shadow(0 0 50px #00a2ff);
+                filter: brightness(2.5) drop-shadow(0 0 40px #00fffc) drop-shadow(0 0 70px #00d4ff) drop-shadow(0 0 100px #0099ff);
             }
             50% { 
                 opacity: 0.1; 
-                filter: brightness(0.2) drop-shadow(0 0 5px #00a2ff00);
+                filter: brightness(0.2) drop-shadow(0 0 5px #00fffc);
+            }
+        }
+
+        @keyframes zoomSpinBig {
+            0% { 
+                transform: scale(0.05) rotate(-90deg); 
+                opacity: 0;
+            }
+            50% { 
+                transform: scale(2.8) rotate(1080deg); 
+            }
+            100% { 
+                transform: scale(1.2) rotate(2160deg); 
+                opacity: 1;
             }
         }
 
@@ -1139,10 +1136,10 @@
                 filter: brightness(1) drop-shadow(0 0 10px #00fffc);
             }
             35% {
-                filter: brightness(3) drop-shadow(0 0 50px #00fffc) drop-shadow(20px 20px 40px #00a2ff);
+                filter: brightness(3) drop-shadow(0 0 50px #00fffc) drop-shadow(20px 20px 40px #b867ff);
             }
             70% { 
-                filter: brightness(2.5) drop-shadow(0 0 40px #00fffc) drop-shadow(15px 15px 30px #00a2ff);
+                filter: brightness(2.5) drop-shadow(0 0 40px #00fffc) drop-shadow(15px 15px 30px #b867ff);
             }
             100% { 
                 filter: brightness(1) drop-shadow(0 0 10px #00fffc);
@@ -1182,7 +1179,7 @@
             }
         }
 
-        /* Z Z Z 효과 */
+        /* ✅ Z Z Z 효과 */
         .congratulation-popup.sleepy {
             position: relative;
         }
@@ -1215,74 +1212,75 @@
             }
         }
 
-        /* 힌트 카드 뒤집기 효과 */
+        /* ✅ 힌트 카드 뒤집기 효과 */
         @keyframes flipUnlock {
             0% { transform: rotateY(0deg); opacity: 0.5; }
             50% { transform: rotateY(90deg); opacity: 0.7; }
             100% { transform: rotateY(0deg); opacity: 1; }
         }
 
-        /* 미니멀 트레이스 효과 */
-        @keyframes minimalTrace {
-            0%, 100% {
-                box-shadow: 
-                    0 0 0 rgba(0, 255, 252, 0),
-                    inset 0 0 0 rgba(0, 255, 252, 0);
-            }
-            10% {
-                box-shadow: 
-                    0 0 0 rgba(0, 255, 252, 0),
-                    inset -20px -10px 20px rgba(0, 255, 252, 0.15);
-            }
-            30% {
-                box-shadow: 
-                    0 0 0 rgba(0, 255, 252, 0),
-                    inset 20px -10px 20px rgba(0, 255, 252, 0.2);
-            }
-            50% {
-                box-shadow: 
-                    0 0 0 rgba(0, 255, 252, 0),
-                    inset 20px 10px 20px rgba(0, 255, 252, 0.15);
-            }
-            70% {
-                box-shadow: 
-                    0 0 0 rgba(0, 255, 252, 0),
-                    inset -20px 10px 20px rgba(0, 255, 252, 0.2);
-            }
-            90% {
-                box-shadow: 
-                    0 0 0 rgba(0, 255, 252, 0),
-                    inset -20px -10px 20px rgba(0, 255, 252, 0.15);
-            }
-        }
+        /* ✅ 수정된 네온 펄스 효과 (찌리릭 효과 포함) */
+/* 🎯 미니멀 트레이스 효과 - 민트색으로 */
+@keyframes minimalTrace {
+    0%, 100% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset 0 0 0 rgba(0, 255, 252, 0);
+    }
+    10% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset -20px -10px 20px rgba(0, 255, 252, 0.15);
+    }
+    30% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset 20px -10px 20px rgba(0, 255, 252, 0.2);
+    }
+    50% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset 20px 10px 20px rgba(0, 255, 252, 0.15);
+    }
+    70% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset -20px 10px 20px rgba(0, 255, 252, 0.2);
+    }
+    90% {
+        box-shadow: 
+            0 0 0 rgba(0, 255, 252, 0),
+            inset -20px -10px 20px rgba(0, 255, 252, 0.15);
+    }
+}
 
-        /* 열린 힌트에만 효과 적용 */
-        .hint-item:not(.locked) {
-            animation: minimalTrace 12s ease-in-out infinite !important;
-        }
+/* 🎯 열린 힌트에만 효과 적용 */
+.hint-item:not(.locked) {
+    animation: minimalTrace 12s ease-in-out infinite !important;
+}
 
-        /* 각 힌트별 다른 타이밍 */
-        .hint-item:not(.locked):nth-child(1) { animation-delay: 2s; }
-        .hint-item:not(.locked):nth-child(2) { animation-delay: 5s; }
-        .hint-item:not(.locked):nth-child(3) { animation-delay: 8s; }
-        .hint-item:not(.locked):nth-child(4) { animation-delay: 11s; }
-        .hint-item:not(.locked):nth-child(5) { animation-delay: 14s; }
-        .hint-item:not(.locked):nth-child(6) { animation-delay: 17s; }
+/* 🎯 각 힌트별 다른 타이밍 */
+.hint-item:not(.locked):nth-child(1) { animation-delay: 2s; }
+.hint-item:not(.locked):nth-child(2) { animation-delay: 5s; }
+.hint-item:not(.locked):nth-child(3) { animation-delay: 8s; }
+.hint-item:not(.locked):nth-child(4) { animation-delay: 11s; }
+.hint-item:not(.locked):nth-child(5) { animation-delay: 14s; }
+.hint-item:not(.locked):nth-child(6) { animation-delay: 17s; }
 
-        /* 정답 체크 튕기기 */
+        /* ✅ 정답 체크 튕기기 */
         @keyframes checkBounce {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.2); }
         }
 
-        /* 입력창 흔들림 */
+        /* ✅ 입력창 흔들림 */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
         }
 
-        /* 타이머 깜빡임 */
+        /* ✅ 타이머 깜빡임 */
         @keyframes timerBlink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
@@ -1318,7 +1316,7 @@
             }
         }
 
-        // 스크롤 관리자
+        // ✅ 스크롤 관리자 - 정답 맞추면 힌트 맨 위로 스크롤
         const ScrollManager = {
             forceScrollToTop() {
                 window.scrollTo(0, 0);
@@ -1339,15 +1337,20 @@
                     hintsContainer.scrollTop = 0;
                 }
                 window.scrollTo(0, 0);
+            },
+            
+            scrollToHintIfNeeded(hintElement) {
+                return;
             }
         };
 
-        // 뒤로가기 관리자
+        // ✅ 뒤로가기 관리자
         const BackButtonManager = {
             init() {
                 this.screens = ['start', 'roundMap', 'game'];
                 this.currentScreen = 'start';
                 
+                // 뒤로가기 이벤트 리스너
                 window.addEventListener('popstate', (event) => {
                     this.handleBackButton();
                 });
@@ -1356,12 +1359,15 @@
             handleBackButton() {
                 switch(this.currentScreen) {
                     case 'game':
+                        // 게임 중 → 라운드맵
                         showRoundMap();
                         break;
                     case 'roundMap':
+                        // 라운드맵 → 종료 확인
                         this.showExitConfirm();
                         break;
                     case 'start':
+                        // 시작화면 → 종료 확인
                         this.showExitConfirm();
                         break;
                 }
@@ -1390,22 +1396,28 @@
                 if (popup) {
                     popup.remove();
                 }
+                // 뒤로가기 취소 (히스토리 다시 추가)
                 history.pushState(null, null, location.href);
             },
             
             exitGame() {
+                // 팝업 먼저 제거
                 const popup = document.querySelector('.exit-popup');
                 if (popup) {
                     popup.remove();
                 }
                 
+                // 게임 종료 시도
                 if (navigator.app) {
                     navigator.app.exitApp();
                 } else if (navigator.device) {
                     navigator.device.exitApp();
                 } else {
+                    // 웹 브라우저인 경우
                     window.close();
+                    // window.close()가 작동하지 않을 수 있으므로 대체 방법
                     if (!window.closed) {
+                        // 빈 페이지로 이동하거나 종료 안내 표시
                         if (confirm('브라우저가 자동 종료를 허용하지 않습니다.\n탭을 직접 닫아주세요.')) {
                             window.location.href = 'about:blank';
                         }
@@ -1415,6 +1427,7 @@
             
             setScreen(screen) {
                 this.currentScreen = screen;
+                // 히스토리 상태 추가
                 history.pushState(null, null, location.href);
             }
         };
@@ -1580,20 +1593,23 @@
             }
         };
 
-        // 게임 상태 관리
+        // ✅ 게임 상태 관리 - 수정된 구조
         let gameState = {
             currentScreen: 'start',
             currentRound: 1,
             currentProblem: 0,
-            keys: 15, // 이제 문어를 의미
+            keys: 15,
             completedRounds: [],
             problems: [],
             currentProblemState: null,
-            solvedProblems: {},
-            rewardedProblems: {},
-            rewardedRounds: []
+            
+            // ✅ 2번 문제 해결: 문제별 풀이 상태 및 보상 기록
+            solvedProblems: {}, // { "5_0": true, "5_1": true, ... }
+            rewardedProblems: {}, // { "5_0": true, ... } - 천재보너스 받은 문제
+            rewardedRounds: [] // [1, 2, 3] - 라운드 완료 보상 받은 라운드
         };
 
+        // ✅ 진행도 저장 - 수정
         function saveGameState() {
             const saveData = {
                 currentRound: gameState.currentRound,
@@ -1609,6 +1625,7 @@
             localStorage.setItem('game_save', JSON.stringify(saveData));
         }
 
+        // ✅ 진행도 불러오기 - 수정
         function loadGameState() {
             const saved = localStorage.getItem('game_save');
             if (saved) {
@@ -1619,21 +1636,25 @@
             return false;
         }
 
+        // ✅ 문제 ID 생성 함수
         function getProblemId(round, problem) {
             return `${round}_${problem}`;
         }
 
+        // ✅ 이미 푼 문제인지 확인
         function isProblemSolved(round, problem) {
             const problemId = getProblemId(round, problem);
             const data = gameState.solvedProblems[problemId];
             return data && (data.solved === true || data === true);
         }
 
+        // ✅ 이미 보상 받은 문제인지 확인
         function isProblemRewarded(round, problem) {
             const problemId = getProblemId(round, problem);
             return gameState.rewardedProblems[problemId] || false;
         }
 
+        // ✅ 이미 보상 받은 라운드인지 확인
         function isRoundRewarded(round) {
             return gameState.rewardedRounds.includes(round);
         }
@@ -1653,10 +1674,10 @@
                     <div class="start-screen">
                         <div class="magic-orb"></div>
                         <div class="title-main">⚡문어퀴즈⚡</div>
-                        <div class="subtitle">문어는 뇌가 9개! 당신은 몇개?</div>
+                        <div class="subtitle">문어는 뇌는 9개! 당신은 몇개?</div>
                         <div class="highlight">단서를 연결해 정답을 찾아보세요</div>
                         <button class="start-button" onclick="AudioManager.playSound('click'); showRoundMap()">
-                            🐙 문어 깨우기
+                            ⚡ 문어 깨우기
                         </button>
                     </div>
                 </div>
@@ -1707,7 +1728,7 @@
                                             ${isLocked ? 'disabled' : ''}
                                         >
                                             ${roundNumber}
-                                            ${isCompleted ? '✅' : isCurrent ? '🐙' : isLocked ? '🔒' : '🎯'}
+                                            ${isCompleted ? '✅' : isCurrent ? '⭐' : isLocked ? '🔒' : '🎯'}
                                         </button>
                                     `;
                                 }).join('')}
@@ -1725,19 +1746,700 @@
             updateMusicPanel();
         }
 
-        // 나머지 JavaScript 함수들은 동일하게 유지 (startRound, renderGameScreen 등)
-        // 단, 문어 관련 텍스트만 수정
+        // ✅ 1번 문제 해결: 라운드 시작 - 수정된 버전
+        async function startRound(roundNumber) {
+            AudioManager.playSound('click');
+            
+            try {
+                const fileNumber = Math.ceil(roundNumber / 10);
+                const response = await fetch(`problems_${fileNumber}.json`);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const allProblems = await response.json();
+                const problemsPerRound = 6;
+                const startIndex = (roundNumber - 1) * problemsPerRound;
+                const fileStartIndex = startIndex - ((fileNumber - 1) * 60);
+                const roundProblems = allProblems.slice(fileStartIndex, fileStartIndex + problemsPerRound);
 
-        // ... (나머지 JavaScript 코드는 동일하게 유지)
+                if (roundProblems.length === 0) {
+                    showAllRoundsCompleted();
+                    return;
+                }
+                
+                // ✅ 1번 문제 해결: 이어하기 기능
+                let currentProblem = 0;
+                
+                // 해당 라운드에서 아직 안 푼 첫 번째 문제 찾기
+                for (let i = 0; i < roundProblems.length; i++) {
+                    if (!isProblemSolved(roundNumber, i)) {
+                        currentProblem = i;
+                        break;
+                    }
+                }
+                
+                // 모든 문제를 다 풀었으면 첫 번째 문제로 (재도전 시)
+                if (currentProblem === 0 && isProblemSolved(roundNumber, 0)) {
+                    currentProblem = 0; // 첫 번째 문제부터 재도전
+                }
+                
+                gameState.currentRound = roundNumber;
+                gameState.currentProblem = currentProblem;
+                gameState.problems = roundProblems;
+                
+                const problemId = getProblemId(roundNumber, currentProblem);
+                const isAlreadySolved = isProblemSolved(roundNumber, currentProblem);
+                
+                gameState.currentProblemState = {
+                    unlockedHints: isAlreadySolved ? [0,1,2,3,4,5] : [0, 1],
+                    showDescriptions: isAlreadySolved ? [true,true,true,true,true,true] : [false, false, false, false, false, false],
+                    canShowDescriptions: isAlreadySolved ? true : false,
+                    showCharacterCount: isAlreadySolved ? true : false,
+                    showCategory: isAlreadySolved ? true : false,
+                    showChosung: isAlreadySolved ? true : false,
+                    userAnswer: '',
+                    isCorrect: isAlreadySolved ? true : false,
+                    geniusTimer: 13,
+                    geniusTimerActive: isAlreadySolved ? false : true,
+                    timerInterval: null
+                };
+                
+                if (!isAlreadySolved) {
+                    startGeniusTimer();
+                }
+                
+                renderGameScreen(true);
+                saveGameState();
+                
+            } catch (error) {
+                console.error('라운드 시작 실패:', error);
+                alert('문제를 불러오는데 실패했습니다.\n\n에러: ' + error.message);
+                showRoundMap();
+            }
+        }
 
-        // 축하 팝업 표시 함수 수정
+        // ✅ 게임 화면 렌더링 - 수정된 버전 (힌트 버튼 레이아웃 개선)
+        function renderGameScreen(isNewProblem = false) {
+            if (!gameState.currentProblemState || gameState.problems.length === 0) {
+                showRoundMap();
+                return;
+            }
+
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            const characterCount = problem.characterCount || (problem.answer && problem.answer[0] ? problem.answer[0].length : '?');
+            const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
+            const isAlreadySolved = isProblemSolved(gameState.currentRound, gameState.currentProblem);
+
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="compact-header">
+                            <div class="header-left">
+                                <button class="home-button" onclick="AudioManager.playSound('click'); showRoundMap()">🏠</button>
+                                <div class="round-info-compact">
+                                    <div class="round-title">라운드 ${gameState.currentRound}</div>
+                                    <div class="problem-number">문제 ${gameState.currentProblem + 1}/6 ${isAlreadySolved ? '✅' : ''}</div>
+                                </div>
+                            </div>
+                            <div class="header-right">
+                                <div class="key-count">🐙 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
+                                <div class="progress-dots">
+                                    ${Array.from({ length: 6 }, (_, i) => {
+                                        const solved = isProblemSolved(gameState.currentRound, i);
+                                        return `
+                                            <div class="dot ${solved ? 'completed' : i === gameState.currentProblem ? 'current' : ''}"></div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${state.geniusTimerActive && !state.isCorrect ? `
+                            <div class="genius-timer${state.geniusTimer <= 5 ? ' timer-warning' : ''}">
+                                <div class="genius-timer-header">
+                                    <div class="genius-timer-text">⚡ 천재 보너스 시간</div>
+                                    <div class="genius-timer-count">${state.geniusTimer}초</div>
+                                </div>
+                                <div class="timer-bar">
+                                    <div class="timer-progress" style="width: ${(state.geniusTimer / 13) * 100}%"></div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="hints-section">
+                            <div class="hints-container" id="hintsContainer">
+                                ${problem.hints.map((hint, index) => {
+                                    const isUnlocked = state.unlockedHints.includes(index);
+                                    const showDescription = state.showDescriptions[index] || state.isCorrect;
+                                    const isLocked = !isUnlocked;
+                                    const canUnlock = index <= 2 || (index > 2 && state.unlockedHints.includes(index - 1));
+                                    
+                                    return `
+                                        <div class="hint-item ${isLocked ? 'locked' : ''}" id="hint-${index}">
+                                            <div class="hint-content">
+                                                <div class="hint-header">
+                                                    <div class="hint-left">
+                                                        <div class="hint-number">${index + 1}</div>
+                                                        <div class="hint-text">
+                                                            ${isUnlocked ? hint : '🔒 잠긴 힌트'}
+                                                        </div>
+                                                    </div>
+                                                    ${isLocked && index >= 2 && canUnlock && !state.isCorrect ? `
+                                                        <div class="hint-controls">
+                                                            <button class="unlock-btn" onclick="unlockHint(${index})">
+                                                                🔓1
+                                                            </button>
+                                                            <button class="unlock-btn" onclick="watchAdForHint(${index})" style="background: linear-gradient(135deg, #00fffc, #0097A7);">
+                                                                📺 광고보기
+                                                            </button>
+                                                        </div>
+                                                    ` : ''}
+                                                    ${isUnlocked && state.canShowDescriptions && !showDescription && !state.isCorrect ? `
+                                                        <div class="hint-controls">
+                                                            <button class="unlock-btn" onclick="unlockDescription(${index})">
+                                                                설명🔓1
+                                                            </button>
+                                                            <button class="unlock-btn" onclick="watchAdForDescription(${index})" style="background: linear-gradient(135deg, #00fffc, #0097A7);">
+                                                                설명📺
+                                                            </button>
+                                                        </div>
+                                                    ` : ''}
+                                                </div>
+                                                ${isUnlocked && showDescription ? `
+                                                    <div class="description">
+                                                        ${problem.descriptions[index]}
+                                                    </div>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+
+                            ${state.unlockedHints.includes(5) && !state.isCorrect ? `
+                                <div class="show-answer-section">
+                                    <button class="show-answer-btn" onclick="showAnswer()">
+                                        정답보기
+                                        <span>🔓3</span>
+                                        <span>📺 광고보기</span>
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div class="answer-section">
+                            ${!state.isCorrect ? `
+                                <div class="info-grid">
+                                    <div class="info-box">
+                                        <div class="info-label">글자수</div>
+                                        <div class="info-value">
+                                            ${state.showCharacterCount ? characterCount : '?'}
+                                        </div>
+                                    </div>
+                                    <div class="info-box category">
+                                        <div class="info-label">분류</div>
+                                        <div class="info-value">
+                                            ${state.showCategory ? problem.category : '?'}
+                                            ${state.unlockedHints.includes(4) && !state.showCategory ? `
+                                                <button class="unlock-small" onclick="unlockCategory()">해금</button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                    <div class="info-box chosung">
+                                        <div class="info-label">초성</div>
+                                        <div class="info-value">
+                                            ${state.showChosung ? problem.chosung : '?'}
+                                            ${state.unlockedHints.includes(5) && !state.showChosung ? `
+                                                <button class="unlock-small" onclick="unlockChosung()">해금</button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-input-section">
+                                    <input 
+                                        type="text" 
+                                        class="answer-input" 
+                                        placeholder="정답을 입력하세요 (Enter 또는 입력버튼으로 확인)"
+                                        value="${state.userAnswer}"
+                                        autocomplete="off"
+                                        oninput="updateUserAnswer(this.value)"
+                                        onkeydown="if(event.key === 'Enter') checkAnswer(this.value)"
+                                        id="answerInput"
+                                    />
+                                    <button class="submit-button" onclick="checkAnswer(document.getElementById('answerInput').value)">
+                                        입력
+                                    </button>
+                                </div>
+                            ` : `
+                                <div class="correct-answer">
+                                    <div class="correct-icon" style="animation: checkBounce 0.6s ease;">✅</div>
+                                    <div class="correct-text">${problem.answer.join(', ')}</div>
+                                    <div class="correct-category">${problem.category}</div>
+                                    
+                                </div>
+                                
+                                <button class="next-button" onclick="nextProblem()">
+                                    ${gameState.currentProblem === 5 ? '🏆 라운드 완료' : '➜ 다음 문제'}
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                    
+                    <div class="music-panel"></div>
+                </div>
+            `;
+            
+            document.getElementById('app').innerHTML = html;
+            BackButtonManager.setScreen('game');
+            updateMusicPanel();
+            
+            if (isNewProblem) {
+                setTimeout(() => {
+                    ScrollManager.forceScrollToTop();
+                }, 100);
+            }
+            
+            if (state.isCorrect) {
+                setTimeout(() => {
+                    ScrollManager.scrollToHintsTop();
+                }, 150);
+            }
+        }
+
+        // ✅ 다음 문제 - 수정된 버전
+        function nextProblem() {
+            AudioManager.playSound('click');
+            
+            if (gameState.currentProblem < 5) {
+                gameState.currentProblem++;
+                
+                // ✅ 1번 버그 수정: 다음 문제가 이미 푼 문제인지 확인
+                const isAlreadySolved = isProblemSolved(gameState.currentRound, gameState.currentProblem);
+                
+                gameState.currentProblemState = {
+                    unlockedHints: isAlreadySolved ? [0,1,2,3,4,5] : [0, 1],
+                    showDescriptions: isAlreadySolved ? [true,true,true,true,true,true] : [false, false, false, false, false, false],
+                    canShowDescriptions: isAlreadySolved ? true : false,
+                    showCharacterCount: isAlreadySolved ? true : false,
+                    showCategory: isAlreadySolved ? true : false,
+                    showChosung: isAlreadySolved ? true : false,
+                    userAnswer: '',
+                    isCorrect: isAlreadySolved ? true : false,
+                    geniusTimer: 13,
+                    geniusTimerActive: isAlreadySolved ? false : true,
+                    timerInterval: null
+                };
+                
+                if (!isAlreadySolved) {
+                    startGeniusTimer();
+                }
+                
+                renderGameScreen(true);
+                saveGameState();
+            } else {
+                // ✅ 2번 문제 해결: 라운드 완료 보상 중복 방지
+                if (!isRoundRewarded(gameState.currentRound)) {
+                    gameState.keys += 1;
+                    gameState.rewardedRounds.push(gameState.currentRound);
+                    AudioManager.playSound('complete');
+                }
+                
+                if (!gameState.completedRounds.includes(gameState.currentRound)) {
+                    gameState.completedRounds.push(gameState.currentRound);
+                }
+                
+                showRoundComplete();
+                saveGameState();
+            }
+        }
+
+        // 힌트 해금
+        function unlockHint(hintIndex) {
+            const state = gameState.currentProblemState;
+            if (state.unlockedHints.includes(hintIndex)) return;
+            
+            if (hintIndex > 2) {
+                const prevHintUnlocked = state.unlockedHints.includes(hintIndex - 1);
+                if (!prevHintUnlocked) {
+                    alert('이전 힌트를 먼저 해금해주세요!');
+                    return;
+                }
+            }
+            
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.unlockedHints.push(hintIndex);
+                AudioManager.playSound('hint');
+                
+                if (hintIndex === 3 && !state.canShowDescriptions) {
+                    state.canShowDescriptions = true;
+                }
+                
+                if (hintIndex === 3) {
+                    state.showCharacterCount = true;
+                }
+                if (hintIndex === 4) {
+                    state.showCategory = true;
+                }
+                if (hintIndex === 5) {
+                    state.showChosung = true;
+                }
+                
+                renderGameScreen();
+                saveGameState();
+                
+                // 힌트 해금 카드 뒤집기 애니메이션
+                setTimeout(() => {
+                    const hintElement = document.getElementById(`hint-${hintIndex}`);
+                    if (hintElement) {
+                        hintElement.style.animation = 'flipUnlock 0.6s ease, neonPulse 8s ease-in-out infinite 0.6s !important';
+                    }
+                }, 100);
+            } else {
+                alert('문어가 부족합니다!');
+            }
+        }
+
+        // ✅ 2번 문제 해결: 정답 확인 함수 - 수정된 버전
+        function checkAnswer(value) {
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
+            
+            const normalizedAnswer = value.toLowerCase().replace(/\s+/g, '');
+            const correctAnswers = problem.answer.map(ans => 
+                ans.toLowerCase().replace(/\s+/g, '')
+            );
+            
+            if (correctAnswers.includes(normalizedAnswer)) {
+                const usedHints = state.unlockedHints.length;
+                let soundType = 'correct';
+                let keyReward = 0;
+                
+                // ✅ 천재보너스 조건: 힌트 2개 이하 + 13초 안 + 처음 푸는 문제
+                if (usedHints <= 2 && state.geniusTimer > 0 && !isProblemSolved(gameState.currentRound, gameState.currentProblem) && !isProblemRewarded(gameState.currentRound, gameState.currentProblem)) {
+                    soundType = 'genius';
+                    keyReward = 1;
+                    // 보상 기록
+                    gameState.rewardedProblems[problemId] = true;
+                }
+                
+                if (keyReward > 0) {
+                    gameState.keys += keyReward;
+                }
+                
+                AudioManager.playSound(soundType);
+                state.isCorrect = true;
+                state.unlockedHints = [0,1,2,3,4,5];
+                state.showDescriptions = [true,true,true,true,true,true];
+                state.showCharacterCount = true;
+                state.showCategory = true;
+                state.showChosung = true;
+                state.geniusTimerActive = false;
+                
+                // ✅ 문제 풀이 상태 기록
+                gameState.solvedProblems[problemId] = { solved: true, hintsUsed: usedHints };
+                
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                }
+                
+                renderGameScreen();
+                
+                // 축하 팝업 표시
+                showCongratulationPopup(usedHints, false);
+                setTimeout(() => {
+                    ScrollManager.scrollToHintsTop();
+                }, 200);
+                
+                saveGameState();
+            } else {
+                AudioManager.playSound('wrong');
+                const input = document.querySelector('.answer-input');
+                if (input) {
+                    input.style.animation = 'shake 0.3s';
+                    setTimeout(() => {
+                        input.style.animation = '';
+                        input.select();
+                    }, 300);
+                }
+            }
+        }
+
+        // 나머지 함수들 (기존과 동일하지만 필요한 부분 수정)
+        function showAllRoundsCompleted() {
+            const html = `
+                <div class="container">
+                    <div class="start-screen">
+                        <div class="magic-orb"></div>
+                        <div class="title-main">🎉 모든 라운드 완료!</div>
+                        <div class="subtitle">당신은 진정한 천재문어입니다!</div>
+                        <div class="highlight">더 많은 라운드가 업데이트 될 예정입니다</div>
+                        <button class="start-button" onclick="showRoundMap()">
+                            🏠 메인으로
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app').innerHTML = html;
+            BackButtonManager.setScreen('start');
+        }
+
+        function startGeniusTimer() {
+            const state = gameState.currentProblemState;
+            if (state.timerInterval) clearInterval(state.timerInterval);
+            
+            state.timerInterval = setInterval(() => {
+                if (!state.geniusTimerActive || state.isCorrect) {
+                    clearInterval(state.timerInterval);
+                    return;
+                }
+                
+                state.geniusTimer--;
+                
+                const timerProgress = document.querySelector('.timer-progress');
+                if (timerProgress) {
+                    timerProgress.style.width = `${(state.geniusTimer / 13) * 100}%`;
+                }
+                
+                const timerCount = document.querySelector('.genius-timer-count');
+                if (timerCount) {
+                    timerCount.textContent = `${state.geniusTimer}초`;
+                }
+                
+                if (state.geniusTimer <= 0) {
+                    state.geniusTimerActive = false;
+                    if (!state.unlockedHints.includes(2)) {
+                        state.unlockedHints.push(2);
+                    }
+                    state.showCharacterCount = true;
+                    
+                    if (state.unlockedHints.includes(5)) {
+                        state.showCategory = true;
+                        state.showChosung = true;
+                    }
+                    
+                    renderGameScreen();
+                    
+                    clearInterval(state.timerInterval);
+                }
+            }, 1000);
+        }
+
+        function watchAdForHint(hintIndex) {
+            alert('광고를 시청했습니다! 힌트가 해금되었습니다.');
+            unlockHint(hintIndex);
+        }
+
+        function unlockDescription(descriptionIndex) {
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showDescriptions[descriptionIndex] = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('문어가 부족합니다!');
+            }
+        }
+
+        function watchAdForDescription(descriptionIndex) {
+            alert('광고를 시청했습니다! 설명이 해금되었습니다.');
+            const state = gameState.currentProblemState;
+            state.showDescriptions[descriptionIndex] = true;
+            renderGameScreen();
+            saveGameState();
+        }
+
+        function unlockCategory() {
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showCategory = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('문어가 부족합니다!');
+            }
+        }
+
+        function unlockChosung() {
+            const state = gameState.currentProblemState;
+            if (gameState.keys > 0) {
+                gameState.keys--;
+                state.showChosung = true;
+                AudioManager.playSound('hint');
+                renderGameScreen();
+                saveGameState();
+            } else {
+                alert('문어가 부족합니다!');
+            }
+        }
+
+        function showAnswer() {
+            if (gameState.keys >= 3) {
+                showAnswerConfirm();
+            } else {
+                watchAdForAnswer();
+            }
+        }
+
+        function showAnswerConfirm() {
+            if (confirm('정답을 보시겠습니까? (문어 3개 사용)')) {
+                if (gameState.keys >= 3) {
+                    gameState.keys -= 3;
+                    const problem = gameState.problems[gameState.currentProblem];
+                    const state = gameState.currentProblemState;
+                    const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
+                    
+                    state.isCorrect = true;
+                    state.unlockedHints = [0,1,2,3,4,5];
+                    state.showDescriptions = [true,true,true,true,true,true];
+                    state.showCharacterCount = true;
+                    state.showCategory = true;
+                    state.showChosung = true;
+                    state.geniusTimerActive = false;
+                    
+                    // ✅ 정답 보기로 풀었어도 풀이 상태는 기록 (재도전 방지)
+                    gameState.solvedProblems[problemId] = { solved: true, hintsUsed: state.unlockedHints.length };
+                    
+                    if (state.timerInterval) {
+                        clearInterval(state.timerInterval);
+                    }
+                    
+                    renderGameScreen();
+                    
+                    setTimeout(() => {
+                        ScrollManager.scrollToHintsTop();
+                    }, 200);
+                    
+                    saveGameState();
+                }
+            }
+        }
+
+        function watchAdForAnswer() {
+            alert('광고를 시청했습니다! 정답을 확인합니다.');
+            const problem = gameState.problems[gameState.currentProblem];
+            const state = gameState.currentProblemState;
+            const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
+            
+            state.isCorrect = true;
+            state.unlockedHints = [0,1,2,3,4,5];
+            state.showDescriptions = [true,true,true,true,true,true];
+            state.showCharacterCount = true;
+            state.showCategory = true;
+            state.showChosung = true;
+            state.geniusTimerActive = false;
+            
+            // ✅ 정답 보기로 풀었어도 풀이 상태는 기록 (재도전 방지)
+            gameState.solvedProblems[problemId] = { solved: true, hintsUsed: state.unlockedHints.length };
+            
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+            
+            renderGameScreen();
+            
+            setTimeout(() => {
+                ScrollManager.scrollToHintsTop();
+            }, 200);
+            
+            saveGameState();
+        }
+
+        function updateUserAnswer(value) {
+            gameState.currentProblemState.userAnswer = value;
+        }
+
+        // ✅ 수정된 showRoundComplete 함수
+        function showRoundComplete() {
+            const randomBanner = getRandomBanner();
+            const isFirstCompletion = !isRoundRewarded(gameState.currentRound);
+            
+            const html = `
+                <div class="container">
+                    <div class="header">
+                        <div class="compact-header">
+                            <div class="header-left">
+                                <button class="home-button" onclick="showRoundMap()">🏠</button>
+                                <div class="round-info-compact">
+                                    <div class="round-title">라운드 완료!</div>
+                                    <div class="problem-number">축하합니다!</div>
+                                </div>
+                            </div>
+                            <div class="header-right">
+                                <div class="key-count">🐙 ${gameState.keys}</div>
+                                <button class="settings-button-header" onclick="toggleMusicPanel()">⚙️</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="correct-answer">
+                            <div class="correct-icon" style="font-size: 4em; animation: keyBigZoomIn_rotate 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);">🐙</div>
+                            <div class="correct-title" style="margin-top: 15px;">라운드 ${gameState.currentRound} 완료!</div>
+                            <div style="color: #b867ff; font-size: 1.1em; margin-top: 8px; font-weight: 700; text-shadow: 0 0 15px rgba(184, 103, 255, 0.8);">
+                                문어를 획득하셨습니다!
+                            </div>
+                        </div>
+                        
+                        <!-- 배너 광고 추가 -->
+                        <div class="banner-ad">
+                            <a href="https://smartstore.naver.com/gemfarm" target="_blank">
+                                <img src="${randomBanner}" alt="광고 배너">
+                            </a>
+                        </div>
+                        
+                        <button class="next-button" onclick="startRound(${gameState.currentRound + 1})" style="margin-bottom: 8px; font-size: 20px; font-weight: 700;">
+                            다음 라운드
+                        </button>
+                        <button class="next-button" onclick="showRoundMap()" style="background: linear-gradient(135deg, #00fffc, #b867ff); font-size: 18px; font-weight: 700;">
+                            메인으로
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app').innerHTML = html;
+            BackButtonManager.setScreen('roundMap');
+            
+            // ✅ 수정: 라운드 완료 시 스크롤 맨 위로 고정
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 100);
+        }
+
+        function getPopupIconStyle(type) {
+            switch(type) {
+                case "genius":
+                    return "font-size: 6em; animation: blinkGlow 0.15s ease-in-out 8, zoomSpinBig 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);";
+                case "sharp":
+                    return "font-size: 4.5em; animation: wiggleStrong 0.3s ease 5, shootingStar 1.5s ease;";
+                case "focus":
+                    return "font-size: 4.5em; animation: spinWave 1.5s ease 1;";  // ✅ 수정: 5→1로 변경
+                case "sleepy":
+                    return "font-size: 4.5em; animation: floatSlowSleepy 0.9s ease-in-out 4;";
+                case "chosung":
+                    return "font-size: 4.5em; animation: breathOut 1.5s ease 1;";  // ✅ 수정: flyAwaySmoke→breathOut으로 변경
+                default:
+                    return "font-size: 3em;";
+            }
+        }
+
         function showCongratulationPopup(hintsUsed, usedChosung) {
             let popupData = {};
             
             switch(hintsUsed) {
                 case 2:
                     popupData = {
-                        title: "와우! 천재문어다!",
+                        title: "🎉 천재문어다!!! 🎉",
                         type: "genius",
                         icon: "🐙",
                         reward: 1
@@ -1798,10 +2500,24 @@
             return popupData.reward;
         }
 
-        // 음악 패널 업데이트 함수 수정
+        function toggleMusicPanel() {
+            const panel = document.querySelector('.music-panel');
+            const buttons = document.querySelectorAll('.settings-button-header');
+            if (panel) {
+                panel.classList.toggle('active');
+                buttons.forEach(button => {
+                    button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
+                });
+                if (panel.classList.contains('active')) {
+                    updateMusicPanel();
+                }
+            }
+        }
+
         function updateMusicPanel() {
             const panel = document.querySelector('.music-panel');
             if (panel) {
+                // 통계 계산
                 const totalProblems = 600;
                 const solvedCount = Object.keys(gameState.solvedProblems).length;
                 const geniusCount = Object.keys(gameState.rewardedProblems).length;
@@ -1821,7 +2537,7 @@
                     <div style="color: #00fffc; font-size: 14px; line-height: 1.8; padding: 15px 0; margin-top: 10px; border-top: 1px solid rgba(0, 255, 252, 0.2);">
                         <div>완료한 문제: ${solvedCount}/${totalProblems}</div>
                         <div>천재 보너스: ${geniusCount}개</div>
-                        <div>현재 문어: ${currentKeys}마리</div>
+                        <div>현재 문어: ${currentKeys}개</div>
                     </div>
                 `;
             }
