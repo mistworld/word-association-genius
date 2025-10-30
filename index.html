@@ -1929,7 +1929,8 @@
 
             const problem = gameState.problems[gameState.currentProblem];
             const state = gameState.currentProblemState;
-            const characterCount = problem.characterCount || (problem.answer && problem.answer[0] ? problem.answer[0].length : '?');
+            // 띄어쓰기 제외하고 글자수 계산
+            const characterCount = problem.characterCount || (problem.answer && problem.answer[0] ? problem.answer[0].replace(/\s/g, '').length : '?');
             const problemId = getProblemId(gameState.currentRound, gameState.currentProblem);
             const isAlreadySolved = isProblemSolved(gameState.currentRound, gameState.currentProblem);
 
@@ -2489,7 +2490,7 @@
                             <div class="correct-icon" style="font-size: 4em; animation: keyBigZoomIn_rotate 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);">🐙</div>
                             <div class="correct-title" style="margin-top: 15px;">라운드 ${gameState.currentRound} 완료!</div>
                             <div style="color: #b867ff; font-size: 1.1em; margin-top: 8px; font-weight: 700; text-shadow: 0 0 15px rgba(184, 103, 255, 0.8);">
-                                +1문어 획득!
+                                문어를 획득하셨습니다!
                             </div>
                         </div>
                         
@@ -2598,12 +2599,15 @@
             
             document.body.insertAdjacentHTML('beforeend', popupHtml);
             
+            // "혹시 천재?" 팝업만 1.5초, 나머지는 2초
+            const displayTime = popupData.type === 'genius' ? 1500 : 2000;
+            
             setTimeout(() => {
                 const popup = document.querySelector('.congratulation-popup');
                 if (popup) {
                     popup.remove();
                 }
-            }, 2000);
+            }, displayTime);
             
             return popupData.reward;
         }
@@ -2612,13 +2616,33 @@
             const panel = document.querySelector('.music-panel');
             const buttons = document.querySelectorAll('.settings-button-header');
             if (panel) {
+                const wasActive = panel.classList.contains('active');
                 panel.classList.toggle('active');
                 buttons.forEach(button => {
                     button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
                 });
                 if (panel.classList.contains('active')) {
                     updateMusicPanel();
+                    
+                    // 바깥 클릭 감지 (한번만 등록)
+                    setTimeout(() => {
+                        document.addEventListener('click', closeMusicPanelOutside, { once: true });
+                    }, 0);
                 }
+            }
+        }
+
+        // 설정 패널 바깥 클릭하면 닫기
+        function closeMusicPanelOutside(e) {
+            const panel = document.querySelector('.music-panel');
+            const buttons = document.querySelectorAll('.settings-button-header');
+            
+            // 패널이나 설정 버튼을 클릭한 게 아니면 닫기
+            if (panel && !panel.contains(e.target) && !Array.from(buttons).some(btn => btn.contains(e.target))) {
+                panel.classList.remove('active');
+                buttons.forEach(button => {
+                    button.innerHTML = '⚙️';
+                });
             }
         }
 
