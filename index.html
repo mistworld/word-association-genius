@@ -1685,11 +1685,12 @@
             },
 
             loadSettings() {
-                // ✅ 수정: 무조건 기본값 ON으로 시작
+                // ✅ 수정: 항상 ON으로 시작 (localStorage 무시)
                 this.bgmEnabled = true;
                 this.sfxEnabled = true;
                 
-                // 저장된 설정이 있고, 명시적으로 false인 경우에만 OFF로 변경
+                // 주석 처리: localStorage 읽지 않음
+                /*
                 const saved = localStorage.getItem('audio_settings');
                 if (saved) {
                     try {
@@ -1704,6 +1705,7 @@
                         console.log('설정 로드 실패:', e);
                     }
                 }
+                */
             },
 
             updateMusicControls() {
@@ -2654,33 +2656,13 @@
             const panel = document.querySelector('.music-panel');
             const buttons = document.querySelectorAll('.settings-button-header');
             if (panel) {
-                const wasActive = panel.classList.contains('active');
                 panel.classList.toggle('active');
                 buttons.forEach(button => {
                     button.innerHTML = panel.classList.contains('active') ? '✖️' : '⚙️';
                 });
                 if (panel.classList.contains('active')) {
                     updateMusicPanel();
-                    
-                    // 바깥 클릭 감지 (한번만 등록)
-                    setTimeout(() => {
-                        document.addEventListener('click', closeMusicPanelOutside, { once: true });
-                    }, 0);
                 }
-            }
-        }
-
-        // 설정 패널 바깥 클릭하면 닫기
-        function closeMusicPanelOutside(e) {
-            const panel = document.querySelector('.music-panel');
-            const buttons = document.querySelectorAll('.settings-button-header');
-            
-            // 패널이나 설정 버튼을 클릭한 게 아니면 닫기
-            if (panel && !panel.contains(e.target) && !Array.from(buttons).some(btn => btn.contains(e.target))) {
-                panel.classList.remove('active');
-                buttons.forEach(button => {
-                    button.innerHTML = '⚙️';
-                });
             }
         }
 
