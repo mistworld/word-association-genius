@@ -24,7 +24,7 @@
     <meta name="version" content="1.0.12">
     
     <!-- 폰트 -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Do+Hyeon&family=Yeon+Sung&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Hahmlet:wght@300;400;500;600&family=IBM+Plex+Sans+KR:wght@400&family=Yeon+Sung&display=swap" rel="stylesheet">
     
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -35,11 +35,11 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            font-family: 'Do Hyeon', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-family: 'Hahmlet', 'IBM Plex Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
         }
 
         body {
-            font-family: 'Do Hyeon', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-family: 'Hahmlet', 'IBM Plex Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             min-height: 100vh;
             color: #00fffc;
@@ -229,7 +229,8 @@
             font-size: 1.6em;
             color: #b867ff;
             margin-bottom: 15px;
-            font-family: 'Do Hyeon', sans-serif;
+            font-family: 'Hahmlet', 'IBM Plex Sans KR', sans-serif;
+            font-weight: 500;
             text-shadow: 
                 0 0 15px rgba(184, 103, 255, 0.6),
                 2px 2px 0 rgba(0, 0, 0, 0.5);
@@ -591,6 +592,7 @@
 
         .hint-text {
             font-size: 17px; /* ✅ 수정: 16→17 (1px 증가) */
+            font-weight: 400; /* ✅ 추가: Hahmlet Regular */
             color: #00fffc;
             line-height: 1.4;
             flex: 1;
@@ -1684,15 +1686,24 @@
             },
 
             loadSettings() {
+                // ✅ 수정: 무조건 기본값 ON으로 시작
+                this.bgmEnabled = true;
+                this.sfxEnabled = true;
+                
+                // 저장된 설정이 있고, 명시적으로 false인 경우에만 OFF로 변경
                 const saved = localStorage.getItem('audio_settings');
                 if (saved) {
-                    const settings = JSON.parse(saved);
-                    this.bgmEnabled = settings.bgmEnabled !== false;
-                    this.sfxEnabled = settings.sfxEnabled !== false;
-                } else {
-                    // ✅ 수정: 처음 접속 시 BGM/효과음 ON 상태로 시작
-                    this.bgmEnabled = true;
-                    this.sfxEnabled = true;
+                    try {
+                        const settings = JSON.parse(saved);
+                        if (settings.bgmEnabled === false) {
+                            this.bgmEnabled = false;
+                        }
+                        if (settings.sfxEnabled === false) {
+                            this.sfxEnabled = false;
+                        }
+                    } catch (e) {
+                        console.log('설정 로드 실패:', e);
+                    }
                 }
             },
 
