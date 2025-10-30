@@ -699,6 +699,7 @@
 
         .answer-input {
             flex: 1;
+            max-width: calc(100% - 80px);
             padding: 15px;
             font-size: 16px;
             font-weight: 600;
@@ -2057,9 +2058,8 @@
                                 </div>
                             ` : `
                                 <div class="correct-answer">
-                                    <div class="correct-icon" style="animation: checkBounce 0.6s ease;">✅</div>
-                                    <div class="correct-text">${problem.answer.join(', ')}</div>
-                                    <div class="correct-category">${problem.category}</div>
+                                    <div class="correct-text" style="font-size: 28px; margin-bottom: 12px;">${problem.answer.join(', ')}</div>
+                                    <div class="correct-category" style="font-size: 18px;">${problem.category}</div>
                                     
                                 </div>
                                 
@@ -2198,6 +2198,7 @@
             
             if (correctAnswers.includes(normalizedAnswer)) {
                 const usedHints = state.unlockedHints.length;
+                console.log('힌트 개수:', usedHints, '언락된 힌트:', state.unlockedHints);
                 let soundType = 'correct';
                 let keyReward = 0;
                 
@@ -2575,7 +2576,7 @@
                 if (popup) {
                     popup.remove();
                 }
-            }, 3000);
+            }, 2000);
             
             return popupData.reward;
         }
