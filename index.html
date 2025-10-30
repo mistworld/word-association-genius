@@ -1590,9 +1590,8 @@
                     
                     this.loadSettings();
                     
-                    if (this.bgmEnabled) {
-                        await this.startBGM();
-                    }
+                    // ✅ 수정: 자동 재생 제거 (브라우저 정책 때문)
+                    // 사용자가 시작 버튼 누를 때 재생됨
                     
                 } catch (error) {
                     console.log('오디오 초기화 실패:', error);
@@ -1810,7 +1809,7 @@
                         <div class="title-main">OCTOPUS QUIZ</div>
                         <div class="subtitle">문어 뇌는 9개, 당신은?</div>
                         <div class="highlight">단서를 연결해 정답을 찾아보세요</div>
-                        <button class="start-button" onclick="AudioManager.playSound('click'); showRoundMap()">
+                        <button class="start-button" onclick="AudioManager.playSound('click'); AudioManager.startBGM(); showRoundMap()">
                             🧠 두뇌 풀가동!
                         </button>
                     </div>
