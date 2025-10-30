@@ -832,10 +832,10 @@
 
         /* 축하 팝업 - 사이버펑크 */
         .congratulation-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
             background: linear-gradient(135deg, #00fffc, #b867ff);
             border-radius: 20px;
             padding: 25px;
@@ -1238,6 +1238,21 @@
             100% { 
                 transform: rotate(360deg) scale(1); 
                 filter: hue-rotate(360deg) blur(0px) brightness(1);
+            }
+        }
+
+        @keyframes floatSlowSleepy {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 1;
+            }
+            25% { 
+                transform: translateY(-10px) rotate(-5deg); 
+                opacity: 0.8;
+            }
+            75% { 
+                transform: translateY(-10px) rotate(5deg); 
+                opacity: 0.8;
             }
         }
 
@@ -2515,6 +2530,12 @@
         }
 
         function showCongratulationPopup(hintsUsed, usedChosung) {
+            // 모바일 키보드 닫기
+            const input = document.getElementById('answerInput');
+            if (input) {
+                input.blur();
+            }
+            
             let popupData = {};
             
             switch(hintsUsed) {
