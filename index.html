@@ -776,7 +776,8 @@
         .correct-category {
             font-size: 14px;
             color: #b867ff;
-            font-style: italic;
+            font-style: normal;
+            font-family: 'IBM Plex Sans KR', sans-serif;
         }
 
         .next-button {
@@ -839,7 +840,7 @@
             padding: 25px;
             text-align: center;
             color: #0f0c29;
-            z-index: 1000;
+            z-index: 9999;
             box-shadow: 0 15px 40px rgba(0, 255, 252, 0.4);
             animation: popIn 0.5s ease-out;
             border: 2px solid #00fffc;
@@ -2043,7 +2044,7 @@
                                     <input 
                                         type="text" 
                                         class="answer-input" 
-                                        placeholder="정답을 입력하세요 (Enter 또는 입력버튼으로 확인)"
+                                        placeholder="정답 입력"
                                         value="${state.userAnswer}"
                                         autocomplete="off"
                                         oninput="updateUserAnswer(this.value)"
@@ -2574,7 +2575,7 @@
                 if (popup) {
                     popup.remove();
                 }
-            }, 2000);
+            }, 3000);
             
             return popupData.reward;
         }
