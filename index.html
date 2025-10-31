@@ -2,8 +2,12 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit-cover, interactive-widget=resizes-content">
     <title>문어퀴즈 - 두뇌 풀가동!</title>
+    
+    <!-- AdMob 광고 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-8301466099937891~3142184604"
+     crossorigin="anonymous"></script>
     
     <!-- PWA 메타태그 -->
     <meta name="description" content="9개의 뇌를 가진 문어처럼 빠르게 연상하라!">
@@ -25,15 +29,6 @@
     
     <!-- 폰트 -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=IBM+Plex+Sans+KR:wght@400&family=Yeon+Sung&display=swap" rel="stylesheet">
-    
-    <!-- ✅ Google AdMob (광고 수익) -->
-    <script>
-        // AdMob 설정
-        const ADMOB_CONFIG = {
-            appId: 'ca-app-pub-8301466099937891~3142184604',
-            rewardedAdId: 'ca-app-pub-8301466099937891/1724504617'
-        };
-    </script>
     
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -2189,7 +2184,7 @@
                 renderGameScreen(true);
                 saveGameState();
             } else {
-                // ✅ 라운드 완료 → 문어 보상만
+                // ✅ 2번 문제 해결: 라운드 완료 보상 중복 방지
                 if (!isRoundRewarded(gameState.currentRound)) {
                     gameState.keys += 1;
                     gameState.rewardedRounds.push(gameState.currentRound);
@@ -2383,31 +2378,8 @@
         }
 
         function watchAdForHint(hintIndex) {
-            // ✅ AdMob 보상형 광고 (앱 버전에서 작동)
-            // 
-            // 네이티브 앱 빌드 후 Capacitor AdMob 플러그인으로 연동:
-            // npm install @capacitor-community/admob
-            // 
-            // if (typeof AdMob !== 'undefined') {
-            //     AdMob.prepareRewardVideoAd({
-            //         adId: ADMOB_CONFIG.rewardedAdId,
-            //         isTesting: false
-            //     }).then(() => {
-            //         return AdMob.showRewardVideoAd();
-            //     }).then(() => {
-            //         // 광고 시청 완료!
-            //         unlockHint(hintIndex);
-            //     }).catch((error) => {
-            //         console.log('광고 로드 실패:', error);
-            //         alert('광고를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.');
-            //     });
-            // } else {
-            
-            // ✅ 현재 웹/PWA 버전: 테스트 모드
-            if (confirm('📺 광고를 시청하시겠습니까?\n\n(앱 버전에서는 15~30초 광고가 재생됩니다)\n(현재는 테스트 모드)')) {
-                unlockHint(hintIndex);
-            }
-            // }
+            alert('광고를 시청했습니다! 힌트가 해금되었습니다.');
+            unlockHint(hintIndex);
         }
 
         function unlockDescription(descriptionIndex) {
@@ -2424,15 +2396,7 @@
         }
 
         function watchAdForDescription(descriptionIndex) {
-            // ✅ 광고 시청 후 설명 해금
-            if (confirm('광고를 시청하시겠습니까?\n(현재는 테스트 모드입니다)')) {
-                const state = gameState.currentProblemState;
-                state.showDescriptions[descriptionIndex] = true;
-                AudioManager.playSound('hint');
-                renderGameScreen();
-                saveGameState();
-            }
-        }
+            alert('광고를 시청했습니다! 설명이 해금되었습니다.');
             const state = gameState.currentProblemState;
             state.showDescriptions[descriptionIndex] = true;
             renderGameScreen();
